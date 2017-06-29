@@ -1,0 +1,19 @@
+<%
+Set fso = Server.CreateObject("Scripting.FileSystemObject")
+'1번째줄부터 파일을 오픈한다
+fullpath = "e:\\test.txt"
+set obj_txt = fso.OpenTextFile(fullpath, 1)
+ 
+Do While Not obj_txt.AtEndOfStream
+    i = 0
+   
+    TempLineData = split(obj_txt.ReadLine,vbTab)
+    response.write trim(TempLineData(i)) & "<BR>"
+   
+    i = i + 1
+Loop
+ 
+obj_txt.Close
+set fso = nothing
+set obj_txt = nothing
+%>

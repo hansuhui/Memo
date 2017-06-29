@@ -1,0 +1,5 @@
+https://www.w3schools.com/graphics/svg_reference.asp
+
+[SVG Reference]
+
+각각 태그에 속성 설명한 페이지 유용 !!

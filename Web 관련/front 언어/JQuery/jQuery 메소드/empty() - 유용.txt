@@ -1,0 +1,28 @@
+[.empty()]
+
+.empty()는 선택한 요소의 내용을 지웁니다. 주의할 점은 내용만 지울 뿐 태그는 남아있다는 것입니다.
+
+
+- 예제 -
+
+버튼을 클릭하면 p 요소의 내용이 지워지는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .empty()</title>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'button' ).click( function() {
+          $( 'p' ).empty();
+        } );
+      } );
+    </script>
+  </head>
+  <body>
+    <button>Click To Empty</button>
+    <p>Lorem Ipsum Dolor</p>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+            $("#ans").live("click", function () {
+                var bbsreplll = $(this).attr('value');
+                alert(bbsreplll);
+            });

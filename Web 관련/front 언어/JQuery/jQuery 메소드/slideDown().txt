@@ -1,0 +1,25 @@
+[.slideDown()]
+
+.slideDown()은 선택한 요소를 아래로 미끄러지듯 나타나게 합니다.
+
+.slideDown( [duration ] [, complete ] )
+
+- duration -
+
+duration에는 완전히 나타날 때까지의 시간이 들어갑니다. 
+fast, slow로 정하거나 400 같은 숫자로 정할 수 있습니다. 
+숫자일 경우 단위는 1000분의 1초이며, fast는 200, slow는 600에 해당합니다. 
+아무것도 입력하지 않으면 기본값 400으로 설정됩니다.
+
+문자로 시간을 정할 때는 따옴표 안에 문자를 넣습니다.
+.slideDown( 'slow' )
+
+숫자로 시간을 정할 때는 숫자만 넣습니다.
+.slideDown( 600 )
+
+- complete -
+
+complete에는 지정한 요소가 나타난 다음 불러올 함수가 들어갑니다.
+.slideDown( function() {
+  // Animation complete.
+} )

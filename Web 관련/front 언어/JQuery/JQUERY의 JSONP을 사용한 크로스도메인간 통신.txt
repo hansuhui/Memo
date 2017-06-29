@@ -1,0 +1,104 @@
+http://www.codejs.co.kr/jquery-jsonp/
+
+
+[첫번째, 요청 URL뒤에 ?callback=? 추가하여 jsonp 요청 구현하기]
+
+jQuery 1.2부터는 JSONP 호출에 대한 네이티브 지원이 제공되고 있다. 
+JSONP 콜백을 지정한 경우 다른 도메인에 있는
+JSON 데이터를 로드할 수 있으며 JSON 콜백은 url?callback=? 라는 구문을 사용하여 지정할 수 있다.
+
+$.getJSON() 방식을 살펴보면 url 맨 끝에 callback=이라는 문자열과 함께 
+실제 함수 이름 대신 ? 기호를 콜백 함수 이름으로
+입력하는 것을 볼 수 있다. 이는 jQuery가 ? 기호를 인라인 함수를 호출하는 
+생성된 함수 이름(예:jsonp1234568416)으로 바꾸기
+때문이다. 굳이 ? 을 적을 필요는 없고 따로 처리하는 콜백함수가 있다면 
+해당 함수의 이름을 적어줘도 무방하다.
+(익명 메소드로 바로 처리할 경우 반드시 ? 를 써줄 것)
+
+
+- Client -
+
+$.getJSON("http://www.codejs.co.kr/jsonp.json?callback=?",
+  function(data) {
+    console.log('성공 - ', data);
+  }
+);
+
+
+Server (jquery에서 생성한 익명의 callback함수명을 받아 감싸서 응답 준비를 합니다.)
+
+
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException {
+    request.setCharacterEncoding("UTF-8");
+    response.setCharacterEncoding("UTF-8");
+          
+    String id = request.getParameter("id");
+    String callBack = request.getParameter("callback");
+  
+    JSONObject obj = new JSONObject();
+    obj.put("result", id);
+    obj.put("go", "테스트");
+          
+    PrintWriter out = response.getWriter();
+    out.write(callBack + "(" + obj.toString() + ")");
+    System.out.println(callBack + "(" + obj.toString() + ")");
+    out.flush();
+    out.close();
+}
+
+
+[두번째, 응답 json에 callback함수로 한번 감싸서 jsonp 구현하기]
+
+- Client -
+
+
+$('a').click(function() {
+  $.ajax({
+    url: "http://www.codejs.co.kr/jsonp.json",
+    dataType: 'jsonp',
+    jsonpCallback: "myCallback",
+    success: function(data) {
+      console.log('성공 - ', data);
+    },
+    error: function(xhr) {
+      console.log('실패 - ', xhr);
+    }
+  });
+});
+
+
+- Server - 
+
+myCallback({"message":"You got an AJAX response via JSONP from another site!"});
+
+
+[세번째, jsonpCallback 옵션없이 사용하기.]
+  
+- Client -
+
+
+$('a').click(function() {
+  $.ajax({
+    url: "http://www.codejs.co.kr/jsonp.json",
+    dataType: 'jsonp',
+    success: function(data) {
+      console.log('성공 - ', data);
+    },
+    error: function(xhr) {
+      console.log('실패 - ', xhr);
+    }
+  });
+});
+
+- Server -
+
+jQuery18305806868467951786_1366340807385({"key":"value"});
+
+
+jQuery18305806868467951786_1366340807385(요청시 마다 바뀜)은 jsonpCallback을 지정하지 않으면 
+jQuery에서 자동으로 callback요청매개변수를 자동 생성해서 요청한다.
+요청을 받은 서버에서는 callback 매개변수값을 함수명으로 사용해서 응답하면 된다.
+
+
+

@@ -1,0 +1,19 @@
+  [HttpPost]
+        public ActionResult pwcheck()
+        {
+            BoardListData bd = new BoardListData();
+            int id = Convert.ToInt32(Request.Params["id"]);
+            string upw = Request.Params["upw"];
+            string pw = bd.QnACheck(id);
+            
+            if(!string.IsNullOrEmpty(pw)&& !string.IsNullOrEmpty(upw)){
+            if (pw.Equals(upw))
+            {
+                string script2 = "<script>opener.$('#formList #bmidx').val(" + id + ");opener.$('#formList').submit();window.close();</script>";
+                return Content(script2);
+            }
+                }
+
+            string script = "<script>alert('암호가 틀렸습니다.'); history.back(); </script>";
+            return Content(script);
+        }

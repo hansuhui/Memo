@@ -1,0 +1,26 @@
+
+- MSSQL Server 버전 확인방법
+ SELECT @@VERSION
+ SELECT SERVERPROPERTY('ProductVersion'), SERVERPROPERTY('ProductLevel'), SERVERPROPERTY('Edition')
+
+
+ SELECT @@VERSION
+ SELECT SERVERPROPERTY('ProductVersion'), SERVERPROPERTY('ProductLevel'), SERVERPROPERTY('Edition')
+
+- SQL Server Express 2008 의 버전 정보 (@@VERSION 이용) 
+   SELECT @@VERSION AS 버전
+
+- SQL Server Express 2008 의 버전 정보 (PROPERTY 이용)
+    SELECT SERVERPROPERTY('ProductVersion') AS ProductVersion, 
+   SERVERPROPERTY('ProductLevel') AS ProductLevel,
+   SERVERPROPERTY('Edition') AS Edition
+
+
+[참고사항] ProductVersion, ProductLevel, Edition의 의미
+ 
+   ProductVersion - SQL Server 인스턴스의 버전으로 'major.minor.build.revision' 형식
+   ProductLevel - SQL Server 인스턴스의 버전 수준
+                         RTM - 초기 릴리스 버전
+                         SP(n) - 서비스팩 n 버전
+   Edition - SQL Server 인스턴스의 설치된 제품 버전
+

@@ -1,0 +1,41 @@
+- LEFT / RIGHT 란? 
+   LEFT는 문자열의 왼쪽부터 일정수치까지의 문자열을 자르는 함수이며, 
+   RIGHT는 문자열의 오른쪽부터 일정수치까지의 문자열을 자르는 함수입니다.
+?
+ 
+ - MSSQL LEFT / RIGHT 사용방법 
+   LEFT('[문자열]', [길이])
+   RIGHT('[문자열]', [길이])
+?
+ 
+ - 테이블 생성 
+   CREATE TABLE dbo.주소록(
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       주소 varchar(30) NOT NULL
+   )
+?
+ 
+ - 데이터 입력 
+   INSERT INTO dbo.주소록 (일련번호, 이름, 주소) VALUES (1, '홍길동', '서울시 중구 회현동')
+   INSERT INTO dbo.주소록 (일련번호, 이름, 주소) VALUES (2, '일지매', '서울시 종로구 인사동')
+   INSERT INTO dbo.주소록 (일련번호, 이름, 주소) VALUES (3, '임꺽정', '서울시 용산구 이태원동')
+ 
+ 
+ - 테이블 입력 결과 확인? 
+   SELECT * FROM dbo.주소록
+ 
+ - 예제 1
+   주소록을 조회하되 주소컬럼의 왼쪽부터 3번째 문자까지만 조회하시오.
+ 
+ 
+ - 예제 1 쿼리
+   SELECT 일련번호, 이름, LEFT(주소, 3) AS 주소 FROM dbo.주소록
+?
+ - 예제 2
+   주소록을 조회하되 이름컬럼의 앞 1글자만 따서 성으로 뒤 2글자를 따서 이름으로 표시하시오.
+ 
+ 
+ - 예제 2 쿼리
+   SELECT 일련번호, LEFT(이름, 1) AS 성, RIGHT(이름, 2) AS 이름, 주소 FROM dbo.주소록
+?

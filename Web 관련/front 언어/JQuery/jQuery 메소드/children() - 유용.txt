@@ -1,0 +1,20 @@
+[.children()]
+
+.children()은 어떤 요소의 자식 요소를 선택합니다.
+
+$( 'div' ).children().css( 'color', 'blue' );
+는 div의 자식 요소 전체의 색을 파란색으로 만듭니다
+
+
+[.click()]
+
+.click()은 선택한 요소를 클릭했을 때 특정 작업을 수행할 수 있게 합니다.
+
+
+예를 들어 button 요소를 클릭했을 때 함수를 실행시키고 싶으면 다음과 같이 합니다.
+
+
+$( 'button' ).click( function() {
+  // function
+} );
+

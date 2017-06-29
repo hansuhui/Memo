@@ -1,0 +1,20 @@
+
+
+테이블 선언
+declare @table table (
+변수 선언
+)
+
+테이블에 값을 insert
+insert @table (인수,인수)
+인수,인수
+
+
+
+declare @table table (
+ GiftNo varbinary
+)
+
+
+insert @table (GiftNo)
+select  convert(varchar,dbo.uf_DecData(GiftNo)) from SaleDtl where SaleCode = '20140228145717516'

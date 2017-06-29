@@ -1,0 +1,30 @@
+2. 받은 smsx.cab파일을 프로젝트에 넣는다.
+ex) js폴더에 입력한다.
+ 
+3. 출력할 페이지에 아래의 코드를 삽입한다.
+<!-- MeadCo ScriptX -->
+  <object id=factory style="display:none" classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" codebase="(자기경로)/smsx.cab#Version=7.4.0.8 "></object>
+ 
+// 스크립트에 아래코드 추가
+function printPage(){
+    factory.printing.header = "가로 페이지 인쇄"; //머릿말 설정
+    factory.printing.footer = ""; //꼬릿말 설정
+    factory.printing.portrait = false; //출력방향 설정: true-세로, false-가로
+    factory.printing.leftMargin = 1.0; //왼쪽 여백 설정
+    factory.printing.topMargin = 1.0; //위쪽 여백 설정
+    factory.printing.rightMargin = 1.0; //오른쪽 여백 설정
+    factory.printing.bottomMargin = 1.0; //아래쪽 여백 설정
+    // factory.printing.printBackground = true; //배경이미지 출력 설정:라이센스 필요
+    factory.printing.Print(false); //출력하기
+   }
+ 
+// 인쇄버튼에서 해당 함수 실행
+$( "#print" ).click(function(){
+         if( navigator.userAgent.indexOf("MSIE") > 0 ){
+          printPage();
+         } else if( navigator.userAgent.indexOf("Chrome") > 0){
+             window.print();
+         }
+    });
+ 
+[출처] scriptx를 이용한 웹출력 제어(smsx.cab)|작성자 3단도라찍기

@@ -1,0 +1,22 @@
+Render
+레이아웃 페이지에 Render선언
+
+@RenderSection("Style", required: false)
+@RenderSection("scripts", required: false)
+
+@RenderBody()
+
+@Scripts.Render("~/bundles/script/admin/defaultInit")
+
+
+
+사용할때 section설정
+@section Style{
+	<style type="css/text">
+		.textcss {
+			text-align: right !important;
+			color: red;
+		}
+	</style>
+
+}

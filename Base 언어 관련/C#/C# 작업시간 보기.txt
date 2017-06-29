@@ -1,0 +1,8 @@
+    public void Main()
+        {
+            var start = DateTime.Now;
+
+            //작업 소스
+
+            Console.WriteLine(DateTime.Now - start);
+        }

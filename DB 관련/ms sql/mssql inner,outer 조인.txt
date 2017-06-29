@@ -1,0 +1,44 @@
+참조
+http://kin.naver.com/qna/detail.nhn?d1id=1&dirId=10205&docId=69965841&qb=aW5uZXIgam9pbg==&enc=utf8&section=kin&rank=1&search_sort=0&spq=1&pid=SNb5ewoRR1wssZxU2jNsssssst4-408091&sid=R1yCf6ciDJ9JbubzcaLzlw%3D%3D
+
+
+Inner join 의 경우는 교집합,
+
+outer join 의 경우는 기준테이블 Key 집합 이라고 볼수 있습니다.
+
+
+ Inner join 의 경우 A, B 테이블 키값중 양쪽에 일치하는 데이터만 대상으로 하며
+
+Outer join 의 경우 Left 냐 Right 냐에 따라 기준 테이블의 모든 키값을 대상으로 합니다.
+
+위 그림에서 Left 일경우 A, Right 일경우 B 가 됩니다.
+
+ 
+
+Inner join 예시
+
+Select *
+
+  from A
+
+         inner join B
+
+         on A.조인키 = B.조인키
+
+ 
+
+Outer join 예시
+
+select *
+
+   from A
+
+          Left Outer Join B    -- Left 의 경우 Join 키워드를 중심으로 왼쪽에 있는 테이블 기준
+
+--Right의 경우 오른쪽기준
+
+           on A.조인키 = B.조인키
+
+ 
+
+참고로 SQL을 잘하려면.. 집합이랑 친숙해져야 합니다. ^^

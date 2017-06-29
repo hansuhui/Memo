@@ -1,0 +1,25 @@
+
+
+DropDownList ("넘어갈 이름값", 속성 ~(넣을값,value지정 , 나올 이름 지정))
+@Html.DropDownList("isUse", new SelectList(ViewBag.isUse,"coCode","coName"))
+
+
+html.BeginForm
+@using (Html.BeginForm("DesignRegNewSave", "Produce", FormMethod.Post, new { id = "frmDetail", name = "frmDetail", enctype = "multipart/form-data" }))
+
+
+
+
+string 크기 넣어가면 자르기
+
+@helper Truncate(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @MvcHtmlString.Create(input)
+    }
+    else
+    {
+         @MvcHtmlString.Create(input).ToString().Substring(0, length);<Text>...</Text>
+    }
+}

@@ -1,0 +1,37 @@
+자바스크립트 정규표현식으로 현재 날짜를 년/월/일 만 출력하기 match 예제
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  </head>
+  <body>
+      <script type='text/javascript'>
+           var now = new Date();
+           // 현재 년/월/일/시간/분/초 를 보기좋게 출력 해줍니다.
+           var nowDate = now.toLocaleString();
+           document.write( nowDate + "<br/> . <br/> . <br/> . <br/>" );
+         
+           // \d - 숫자 , * - 0회 이상 , \D - 문자 , \s - 공백 , ? - 0회 또는 1회 
+           var regExp = /\d*\D?\s\d*\D?\s\d*\D?/;
+            // String 객체의 match 메소드를 사용하여 nowDate의 문자열(시간)을 정규표현식과 매칭되는 문자열을 반환 해줍니다.
+           var result = nowDate.match(regExp);
+            // 정규표현식에 매칭되는 년/월/일 까지만 출력 됩니다.
+           document.write(result);
+       </script>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성
+ 
+toLocaleString  -  월/일/년도 시간:분:초 형식으로 표시 ( Date 객체 메소드 )
+match  -  정규표현식에 매칭되는 문자열을 반환 ( String 객체 메소드 )
+ 

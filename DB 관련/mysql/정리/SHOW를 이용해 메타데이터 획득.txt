@@ -1,0 +1,27 @@
+[데이터베이스 메타데이터 얻기]
+
+MySQL은 데이터베이스 메타데이터, 즉 데이터베이스와 데이터베이스의 객체들에 대한 정보를
+얻을 수 있는 여러가지 방법을 제공한다.
+
+- SHOW DATABASES 나 SHOW TABLES 와 같은 SHOW 문
+
+- INFORMATION_SCHEMA 데이터베이스의 테이블
+
+- mysqlshow 나 mysqldump 같은 커맨드라인 프로그램
+
+[SHOW를 이용해 메타데이터 획득]
+
+MySQL은 많은 타입의 데이터베이스 메타데이터를 출력하는 SHOW문을 제공한다.
+SHOW는 데이터베이스 내용을 지속적으로 파악하고 테이블 구조를 다시 한번 확인하는데
+유용하다. 다음의 예제들은 SHOW 문이 어떻게 사용되는지 보여준다.
+접근 가능한 데이터베이스 리스트를 출력한다.
+
+SHOW DATABASES;
+
+SHOW TABLES FROM 디비명;(임시 테이블은 나오지 않음)
+
+SHOW COLUMNS FROM 테이블명;
+
+SHOW INDEX FORM 테이블명;
+
+SHOW TABLE STATUS FROM 디비명;

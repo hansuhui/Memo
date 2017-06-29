@@ -1,0 +1,29 @@
+ASP 파일의 존재유무를 체크하여 존재하면 삭제하기 
+
+ASP에서 파일의 존재유무를 체크하여 존재하면 삭제하는 방법입니다. 주석에도 달아 놨지만, 함수 호출전에
+server.mappath 함수를 사용해서 파일이 존재하는 full path 를 넘겨 주셔야 합니다. 
+
+<% 
+  fileName = "test.asp" 
+
+  '함수 호출전에 server.mappath 함수로 full path를 구해야 합니다. 
+  filePath = server.mappath(fileName) 
+  If DeleteExistFile(filePath) Then 
+    response.Write fileName & " 파일이 삭제 되었습니다." 
+  Else 
+    response.Write fileName & " 파일이 존재하지 않습니다." 
+  End If
+
+'파일의 존재유무를 체크하여 존재하면 삭제하는 함수 
+Function DeleteExistFile(filePath) 
+  Dim fso, result 
+  Set fso = CreateObject("Scripting.FileSystemObject") 
+  If fso.FileExists(filePath) Then 
+    fso.DeleteFile(filePath) '파일이 존재하면 삭제합니다. 
+    result = 1 
+  Else 
+    result = 0 
+  End If 
+  DeleteExistFile = result 
+End Function 
+%>

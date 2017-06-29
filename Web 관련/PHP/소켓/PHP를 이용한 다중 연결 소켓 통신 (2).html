@@ -1,0 +1,332 @@
+
+<!-- saved from url=(0060)http://www.phpschool.com/class/php_multi_socket_server2.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=EUC-KR"><title>PHP를 이용한 다중 연결 소켓 통신 (2)</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7"></head><body class="ARTICLE" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="ARTICLE"><div class="TITLEPAGE"><h1 class="TITLE"><a name="AEN2"></a>PHP를 이용한 다중 연결 소켓 통신 (2)</h1><h3 class="AUTHOR"><a name="AEN4">이진우</a></h3><div class="AFFILIATION"><span class="ORGNAME">프리랜서<br></span><span class="ORGDIV">프로그래머<br></span><div class="ADDRESS"><p class="ADDRESS">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tt class="EMAIL">&lt;<a href="mailto:jinoos@jinoos.com">jinoos@jinoos.com</a>&gt;</tt><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div></div><hr></div><div class="TOC"><dl><dt><b>차례</b></dt><dt>1. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN17">소개</a></dt><dt>2. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN22">SELECT</a></dt><dd><dl><dt>2.1. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN31">socket_select() 함수</a></dt></dl></dd><dt>3. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN42">프로그램 작성</a></dt><dd><dl><dt>3.1. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN49">서버 만들기</a></dt><dt>3.2. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN67">클라이언트 만들기</a></dt><dt>3.3. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN77">실행하기</a></dt></dl></dd><dt>4. <a href="http://www.phpschool.com/class/php_multi_socket_server2.html#AEN101">결론</a></dt></dl></div><blockquote class="ABSTRACT"><div class="ABSTRACT"><a name="AEN12"></a><p></p><p>        이문서의 배포는 자유로우나 최소한 제작자의 정보는 제외하지 않고 배포해 주세요. 
+        </p><p>        문서가 존재하는 모든곳에 답변을 드릴수 없으므로 <b class="EMPHASIS">질문은 홈페이지(<a href="http://www.jinoos.com/" target="_top">http://www.jinoos.com</a>)에서만 받습니다</b>. 
+        </p><p></p></div></blockquote><div class="SECTION"><hr><h1 class="SECTION"><a name="AEN17"></a>1. 소개</h1><p>        저번강좌(<a href="http://www.jinoos.com/modules.php?name=News&amp;file=article&amp;sid=6" target="_top">PHP를
+        이용한 다중 연결 소켓 통신 (1)</a>)에 간단한 서버/클라이언트 프로그램을 만들어 보았습니다.
+        하지만 이것은 많은 부분이 부족하다는 생각들을 하셨을껍니다.
+        </p><p>        오늘 시간에는 socket_select() 함수를 통해서 다중의 클라이언트 요청을 처리하는 프로그램을 짜 보겠습니다.
+        </p></div><div class="SECTION"><hr><h1 class="SECTION"><a name="AEN22"></a>2. SELECT</h1><p>        저번강좌(<a href="http://www.jinoos.com/modules.php?name=News&amp;file=article&amp;sid=6" target="_top">PHP를
+        이용한 다중 연결 소켓 통신 (1)</a>)의 server.php 에서
+        </p><p>            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">while($cSock = socket_accept($sSock))
+{
+    $date = date("Y/m/d H:i:s");
+    socket_write($cSock, $date);
+    socket_close($cSock);
+}</pre></td></tr></tbody></table>
+        </p><p>        위코드는 클라이언트 소켓이 접속하기를 대기하는 동작입니다. 하지만 socket_accept()함수는 호출된뒤에
+        소켓연결 요청이 들어오면 요청 처리를 하게 됩니다. 프로그램 상에선 메시지를 전송하고 곧바로 클라이언트와
+        소켓을 종료하고 다시 accept 상태(blocking모드)로 전환되는 형태입니다.
+        </p><p>        이와같은 경우는 접속된 클라이언트와 소켓 접속이 반드시 끊어져야(아니면 당연히 끊어야 한다던지) 다른 클라이언트의
+        접속을 처리 할수 있습니다. 하지만 불규칙 적으로 클라이언트가 서버에 요청(소켓접속이 아님)을 하는 상황이라면
+        문제가 될것이 자명 합니다.
+        </p><p>        이와 같은 상황을 처리 하기 위해서 다량의 socket묶음을 동시에 감시하는 SELECT가 있습니다. PHP에서는
+        socket_select() 함수가 바로 그것입니다.
+        </p><div class="SECTION"><hr><h2 class="SECTION"><a name="AEN31"></a>2.1. socket_select() 함수</h2><p>            </p><p></p><div class="VARIABLELIST"><dl><dt><b class="EMPHASIS">int socket_select ( resource &amp;read, resource &amp;write, resource &amp;except, int tv_sec [, int tv_usec] )</b></dt><dd><p>                        read 인자에는 읽기 이벤트를 감시할 Socket Array가 참조됩니다. socket_select() 함수는 Array 
+                        묶음으로 들어오는 소켓들을 감시하다가 이벤트가 발생하면 해당인자를 읽기 이벤트가 발생한 
+                        Socket Array로 변환하고 Blocking 상태가 해제 됩니다.
+                        </p><p>                        write 인자역시 read 인자와 같은 역할로 쓰기 이벤트가 발생할시에 사용된다.(하지만. -_- 어디에 필요하단 말인가. 본인은 이부분이 이해가 잘 안간다. 혹시 알고있다면 알려주기 바란다. except 역시 본인이 사용법을 알아내지 못했다.)
+                        </p><p>                        중요한 인자인 tv_sec는 select가 block 모드로 대기하고 있는 timeout을 설정합니다. 이것을
+                        유용하게 이용하면 일정간격으로 어떠한 작업을 수행하는것도 가능합니다. NULL로 설정하면 
+                        timeout없이 대기 합니다.
+                        </p></dd></dl></div>
+            <p></p></div></div><div class="SECTION"><hr><h1 class="SECTION"><a name="AEN42"></a>3. 프로그램 작성</h1><p>        전장에서 select 함수에 대해 몇가지를 알아 보았습니다. 부족하지만 사용하기엔 크게 문제가 없을 것입니다.
+        </p><p>        오늘 작성한 프로그램은 저번강좌(<a href="http://www.jinoos.com/modules.php?name=News&amp;file=article&amp;sid=6" target="_top">PHP를
+        이용한 다중 연결 소켓 통신 (1)</a>) 에서 작성한 프로그램과 기능은 같지만 약간 복잡한 형태입니다.
+        </p><p>        서버소켓을 생성한뒤에 클라이언트를 대기하고, 클라이언트가 접속하면 클라이언트 소켓을 클라이언트 소켓
+        묶음으로 저장한뒤에 감시합니다. 새로운 클라이언트가 접속하면 다시 클라이언트 묶음에 저장하고 감시를
+        반복하며, 클라이언트에서 <b class="EMPHASIS">time</b>라는 메시지를 수신하면 현재 시간을 바로 송신하고,
+        quit라는 메시지를 수신하면 클라이언트와 접속을 끊습니다.
+        </p><div class="SECTION"><hr><h2 class="SECTION"><a name="AEN49"></a>3.1. 서버 만들기</h2><p>            시작코드는 저번 강좌와 많이 비슷합니다. 다만 무한 루프를 돌면서 서버 소켓과 클라이언트 소켓 묶음을
+            Array로 생성하여 select의 Read 이벤트를 감시합니다.
+            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">...
+while(1)
+{
+    $sockArr = array_merge(array($sSock), $cSock);
+    if(socket_select($sockArr, $tWrite = NULL, $tExcept = NULL, _TIMEOUT) &gt; 0)
+    {
+        ... <b class="EMPHASIS">(1)</b>
+    }
+}
+...</pre></td></tr></tbody></table>
+            Write 이벤트와 Except 이벤트는 무시하기 위해서 NULL 처리 되었습니다. timeout은 주어졌지만
+            본 프로그램에선 크게 의미 없는 상황입니다.
+            </p><p>            위 코드중 socket_select()에서 이벤트가 발생되면 $sockArr 변수에 리턴된 Array를 <b class="EMPHASIS">(1)</b>에서 분석합니다.
+            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">        ...
+        foreach($sockArr as $sock)
+        {
+            if($sock == $sSock)
+            {
+                ... // <b class="EMPHASIS">(2)</b>
+            }else
+            {
+                ... // <b class="EMPHASIS">(3)</b>
+            }
+        }
+        ...</pre></td></tr></tbody></table>
+            서버 소켓에 클라이언트가 접속을 요청했을때 $sockArr에 서버 소켓이 리턴됩니다. 그리하여 <b class="EMPHASIS">(2)</b>에서 클라이언트 소켓을 socket_accept()함수로 접속을 허용합니다.
+            </p><p>            만약 리턴된 소켓이 서버 소켓이 아니라면 클라이언트와 통신중인 소켓입니다. 당연하겠죠. 
+            array_merge(array($sSock), $cSock) 로 서버 소켓과 클라이언트 소멧만을 merge했으니까요.
+            </p><p>            <b class="EMPHASIS">(3)</b>에서는 클라이언트에서 보내는 정보를 읽어들이고 이를 분석해서 
+            처리 하는 부분이 들어 갑니다. 유의해서 봐야 할 부분은 
+            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">                $buf = socket_read($sock, 4096);
+
+                // 접속 종료
+                if(!$buf)
+                {
+                }
+                // 메시지 수신 이벤트
+                else
+                {
+                }</pre></td></tr></tbody></table>
+            $buf 의 내용이 없을때 클라이언트가 접속을 종료함을 의미 한다는 것입니다.
+            </p><p>            자 그럼 이제 실제 코드를 보겠습니다.
+            </p><p>            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">#!/home/dimeclub/www/bin/php/php -q
+&lt;?php
+set_time_limit(0);
+
+define("_IP",    "111.222.333.12");
+define("_PORT",  "65000");
+define("_TIMEOUT", 10);
+
+
+$cSock = array();
+$cInfo = array();
+$sSock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+socket_bind($sSock, _IP, _PORT);
+socket_listen($sSock);
+
+while(1)
+{
+    $sockArr = array_merge(array($sSock), $cSock);
+    if(socket_select($sockArr, $tWrite = NULL, $tExcept = NULL, _TIMEOUT) &gt; 0)
+    {
+        foreach($sockArr as $sock)
+        {
+            // Listen 하고 있는 서버 소켓일 경우
+            // 새로운 클라이언트의 접속을 의미
+            if($sock == $sSock)
+            {
+                $tSock = socket_accept($sSock);
+
+                socket_getpeername($tSock, $sockIp, $sockPort);
+
+                $cSock[$tSock] = $tSock;
+                $cInfo[$tSock] = array('ip'=&gt;$sockIp, 'port'=&gt;$sockPort);
+
+                msg("client connect : ".$sockIp.":".$sockPort."\n");
+            }
+            // 클라이언트 접속해 있는 소켓중 하나일경우
+            // 해당 클라이언트에서 이벤트가 발생함을 의미
+            else
+            {
+                $buf = socket_read($sock, 4096);
+
+                // 접속 종료
+                if(!$buf)
+                {
+                    exceptSocket(&amp;$cSock, &amp;$cInfo, $sock);
+                    msg("client connection broken : ".$sockIp.":".$sockPort."\n");
+                }
+                // 메시지 수신 이벤트
+                else
+                {
+                    msg("recive data : ".$buf."\n");
+                    $thisSockInfo = $cInfo[$sock];
+                    $cmd = substr($buf, 0, 4);
+                    switch($cmd)
+                    {
+                        // 시간전송
+                        case "time":
+                            msg("client(".$thisSockInfo['port'].") time data request\n");
+                            socket_write($sock, date("Y/m/d H:i:s"));
+                            break;
+
+                        // 종료
+                        case "quit":
+                            msg("client(".$thisSockInfo['port'].") quit request\n");
+                            socket_write($sock, "quit");
+                            socket_close($sock);
+                            exceptSocket(&amp;$cSock, &amp;$cInfo, $sock);
+                            break;
+                        default:
+                            msg("client(".$thisSockInfo['port'].") invalid command $cmd\n");
+                            break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+function exceptSocket(&amp;$sockSet, &amp;$infoSet, $sock)
+{
+    unset($sockSet[$sock]);
+    unset($infoSet[$sock]);
+    // array_merge 함수에서 error 발생을 막기위한 처리
+    if(count($sockSet)==0)
+    {
+        $sockSet = array();
+        $infoSet = array();
+    }
+}
+
+function msg($msg)
+{
+    echo "SERVER &gt;&gt; ".$msg;
+}
+?&gt;</pre></td></tr></tbody></table>
+                server.php로 저장합니다. 역시 실행권한은 있어야 겠지요.
+            </p></div><div class="SECTION"><hr><h2 class="SECTION"><a name="AEN67"></a>3.2. 클라이언트 만들기</h2><p>            클라이언트 역시 몇가지를 수정하여 쉘에서 사용자의 입력을 받아 들이도록 처리하였습니다.
+            </p><p>            클라이언트는 서버와 소켓을 연결한뒤 사용자의 키입력을 기다렸다 time을 입력시 서버에 time메시지를 
+            전송하고 quit입력시 프로그램을 종료 합니다. PHP CGI를 이용해서 사용자 키입력을 받아들이는 역할은
+            아래 함수처럼 구현되었습니다.
+            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">function read_data()
+{
+    $in = fopen("php://stdin", "r");
+    $in_string = fgets($in, 255);
+    fclose($in);
+    return $in_string;
+}</pre></td></tr></tbody></table>
+            fopen("php://stdin", "r") 로 원래 의미는 리눅스 시스템에서 fopen("/dev/stdin", "r"),
+            fopen("/proc/self/fd/0", "r"), fopen("dev/fd/0", "r") 입니다. 표준입력을 받아들이는 역할로
+            사용자 키입력을 받아들이죠.
+            </p><p>            만약 표준출력 또는 표출에러 출력을 받아들이려면 fopen("php://stdout","r"), fopen("php://stderr", "r") 
+            로 구현할수 있습니다.
+            </p><p>            클라이언트는 time 라는 서버에 시간 데이터를 요청하는 메시지와 quit 라는 종료 두 메시지를
+            제외하고는 나머지는 무시합니다. 코드상에는 invalid command (not send) 라고 출력하지만 그이상의
+            어떠한 행동도 하지 않고 무시해 버립니다.
+            </p><p>            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="PROGRAMLISTING">#!/home/dimeclub/www/bin/php/php -q
+&lt;?php
+define("_IP",    "111.222.333.12");
+define("_PORT",  "65000");
+
+$sock      = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+socket_connect($sock, _IP, _PORT);
+msg("socket connect to "._IP.":"._PORT."\n");
+
+while(1)
+{
+    msg("Enter command time or quit : ");
+
+    // 사용자의 명령어를 입력받습니다.
+    $stdin = ereg_replace("\n|\r", "", read_data());
+    $stdin = substr($stdin, 0, 4);
+    
+    // time 또는 quit 메시지 말고는 무시 합니다.
+    if($stdin == "time" || $stdin == "quit")
+    {
+        msg("Input command : ".$stdin."\n");
+    }else
+    {
+        msg("invalid command (not send) : ".$stdin."\n");
+        continue;
+    }
+
+    socket_write($sock, $stdin);
+    $sMsg  = socket_read($sock, 4096);
+    if(substr($sMsg, 0, 4) == 'quit')
+    {
+        socket_close($sock);
+        exit;
+    }else
+    {
+        msg("recived data : ".$sMsg."\n");
+    }
+}
+
+// 표준입력을 받아 값을 리턴하는 함수
+function read_data()
+{
+    $in = fopen("php://stdin", "r");
+    $in_string = fgets($in, 255);
+    fclose($in);
+    return $in_string;
+}
+
+// 로그를 출력합니다. 디버그용
+function msg($msg)
+{
+    echo "CLIENT &gt;&gt; ".$msg;
+}
+?&gt;</pre></td></tr></tbody></table>
+            </p><p>            특별히 난해한 부분은 없을꺼라 생각합니다. 역시 위 소스를 client.php로 저장하고 실행권한을 줍니다.
+            </p></div><div class="SECTION"><hr><h2 class="SECTION"><a name="AEN77"></a>3.3. 실행하기</h2><p>            서버를 실행하고 클라이언트를 실행합니다. 클라이언트#1을 실행후 time 메시지를 날리면서 클라이언트#2 실행후 종료, 클라이언트#3 실행후 종료, 그리고 다시 클라이언트#1을 종료 하였습니다.
+            </p><p>            클라이언트#1
+            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="SCREEN">#] ./client.php 
+CLIENT &gt;&gt; socket connect to 111.222.333.12:65000
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:29
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:34
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:41
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:50
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:57
+CLIENT &gt;&gt; Enter command time or quit : quit
+CLIENT &gt;&gt; Input command : quit
+#]</pre></td></tr></tbody></table>
+            </p><p>            클라이언트#2,#3
+            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="SCREEN">#] ./client.php 
+CLIENT &gt;&gt; socket connect to 111.222.333.12:65000
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:31
+CLIENT &gt;&gt; Enter command time or quit : quit
+CLIENT &gt;&gt; Input command : quit
+#] ./client.php 
+CLIENT &gt;&gt; socket connect to 111.222.333.12:65000
+CLIENT &gt;&gt; Enter command time or quit : time
+CLIENT &gt;&gt; Input command : time
+CLIENT &gt;&gt; recived data : 2003/05/09 22:32:47
+CLIENT &gt;&gt; Enter command time or quit : quit
+CLIENT &gt;&gt; Input command : quit
+#] </pre></td></tr></tbody></table>
+            </p><p>            같은 상황의 서버쪽 실행화면입니다.
+            </p><p>            <table border="0" bgcolor="#E0E0E0" width="100%"><tbody><tr><td><pre class="SCREEN">#] ./server.php 
+SERVER &gt;&gt; client connect : 111.222.333.12:32850        -- <b class="EMPHASIS">(4)</b>
+SERVER &gt;&gt; client connect : 111.222.333.12:32868        -- <b class="EMPHASIS">(5)</b>
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32850) time data request
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32868) time data request
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32850) time data request
+SERVER &gt;&gt; recive data : quit                          
+SERVER &gt;&gt; client(32868) quit request                  -- <b class="EMPHASIS">(6)</b>
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32850) time data request
+SERVER &gt;&gt; client connect : 111.222.333.12:32938        -- <b class="EMPHASIS">(7)</b>
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32938) time data request
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32850) time data request
+SERVER &gt;&gt; recive data : quit             
+SERVER &gt;&gt; client(32938) quit request                  -- <b class="EMPHASIS">(8)</b>
+SERVER &gt;&gt; recive data : time
+SERVER &gt;&gt; client(32850) time data request
+SERVER &gt;&gt; recive data : quit
+SERVER &gt;&gt; client(32850) quit request                  -- <b class="EMPHASIS">(9)</b></pre></td></tr></tbody></table>
+            </p><p>            <b class="EMPHASIS">(4)</b>에서 클라이언트포트 32850, <b class="EMPHASIS">(5)</b>에서 32868
+            이렇게 두개의 클라이언트가 접속했습니다. 서버는 두개의 클라이언트에서 time 메시지를
+            수신하면서 동작하다 <b class="EMPHASIS">(6)</b>에서 하나의 클라이언트가 접속을
+            종료하고 <b class="EMPHASIS">(7)</b>에서 다시 하나의 클라이언트가 32938 클라이언트 
+            포트로 다시 접속했습니다. 그리고 다시 time 메시지를 주고 받다 <b class="EMPHASIS">(8)</b>에서
+            하나의 클라이언트가 퇴장하고 그리고 <b class="EMPHASIS">(9)</b>에서 마지막 클라이언트
+            까지 종료 되었습니다.
+            </p><p>            32850, 32868 그리고 32938이 각각 클라이언트 #1, #2, #3 입니다.
+            </p></div></div><div class="SECTION"><hr><h1 class="SECTION"><a name="AEN101"></a>4. 결론</h1><p>        오늘은 SELECT라는 함수를 이용한 다중 소켓 연결 서버를 만들어 보았습니다. SELECT는 간단한 구조에서
+        다중의 클라이언트를 받아들일수 있는 방법으로 이용됩니다. 또한 SELECT 기능은 단일소켓연결의 timeout
+        구현에도 사용할수 있는데 이것은 여러분들이 해보시기 바랍니다.        
+        </p><p>        다음 강좌에서는 PHP의 Process Control Functions을 이용해서 Fork를 이용한 다중 연결 소켓 통신을 
+        해보겠습니다.
+        </p></div></div></body></html>

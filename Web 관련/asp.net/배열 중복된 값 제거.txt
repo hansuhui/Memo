@@ -1,0 +1,27 @@
+// 중복된 배열 값 제거
+        public T[] GetDistinctValues<T>(T[] array)
+        {
+            List<T> tmp = new List<T>();
+            List<T> tmpDuplication = new List<T>();
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (tmp.Contains(array[i]))
+                {
+                    tmpDuplication.Add(array[i]);
+                    continue;
+                }
+
+                tmp.Add(array[i]);
+            }
+            return tmp.ToArray();
+        }
+
+
+사용
+
+
+string[] arrAA = aa.Split(',');
+
+
+ arrAA = GetDistinctValues<string>(arrAA);

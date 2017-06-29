@@ -1,0 +1,3 @@
+
+--테이블 제약 조건 확인하는 쿼리
+ SP_HELPCONSTRAINT MEMBERS

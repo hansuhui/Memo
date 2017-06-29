@@ -1,0 +1,11 @@
+
+
+ event.pageX  : 누른곳에 가로
+ event.pageY  : 누른곳에 세로
+
+
+중앙 가로 구하기 = 클릭위치 가로값 - (팝업가로 사이즈/2)
+중앙 세로 구하기 = 클릭위치 세로값 - (팝업세로 사이즈/2)
+
+    var iLeft = parseInt(event.pageX) - ($("#Code_layer").width() / 2);
+    var iTop = parseInt(event.pageY) - ($("#Code_layer").height()) / 2;

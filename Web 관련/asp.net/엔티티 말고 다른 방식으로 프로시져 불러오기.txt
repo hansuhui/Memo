@@ -1,0 +1,33 @@
+using System.Data;
+using System.Data.Common;
+using DomainModel.Concrete;
+
+
+			DbCommand command = db.GetStoredProcCommand("usp_shops_hisLogList_r");
+			db.AddInParameter(command, "TableName", DbType.String, TableName);
+			db.AddInParameter(command, "Code", DbType.String, Code);
+
+			DataSet ds = db.ExecuteDataSet(command);
+			DataTable dt = ds.Tables[0];
+			DataTable rdt = new DataTable();
+
+			// 컬럼명 정의
+			rdt.Columns.Add("RegDate");
+			rdt.Columns.Add("Context");
+			rdt.Columns.Add("RegUserId");
+
+using (IDataReader r = db.ExecuteReader(command))
+
+		while (r.Read())
+				{
+					s.Corporate = r["Corporate"].ToString();
+					s.ShopName = r["ShopName"].ToString();
+					s.ManagerEmail = r["ManagerEmail"].ToString();
+					s.ManagerTelNo = r["ManagerTelNo"].ToString();
+					s.TelNo = r["TelNo"].ToString();
+					s.JuRegDate = Convert.ToDateTime(r["JuRegDate"]);
+					s.PaymentState = r["PaymentState"].ToString();
+					s.ShopCode = r["ShopCode"].ToString();
+				}
+
+				r.NextResult();

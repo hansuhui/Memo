@@ -1,0 +1,46 @@
+https://www.cmsfactory.net/node/11439
+
+[상속(inheritance)]
+
+CSS 속성은 상속되는 속성이 있고 상속되지 않는 속성이 있습니다.
+
+예를 들어 color는 상속되는 속성입니다. 부모 요소에서 color를 정의하면 자식 요소에도 적용됩니다.
+반면 padding은 상속되지 않습니다. 부모요소에서 padding을 정의해도 자식 요소에 적용되지 않습니다.
+
+다음은 상속의 특성을 비교하는 간단한 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>Inherit</title>
+    <style>
+      .abc {
+        color: red;
+        border: 1px solid #bcbcbc;
+        padding: 10px 20px 20px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="abc">
+      <h1>Heading</h1>
+      <p>Paragraph <em>Emphasize</em></p>
+      <button>Button</button>
+    </div>
+  </body>
+</html>
+
+
+div 요소는 abc 클래스를 가지고 있고 ,abc 클래스는 CSS로 color , border , padding 세계의 속셩을 정의 했습니다.
+
+이중 color 속성은 상속되어 h1 요소와 p 요소, 그리고 p요소 자식 em 요소까지 빨간색으로 만듭니다.
+(button 처럼 상속받지 않는 요소도 있습니다.)
+
+하지만, border와 padding 속성은 상속되지 않아, h1이나 p등 자식 요소에는 테두리가 없고 안쪽 여백도 
+만들어지지 않습니다.
+
+상속 여부를 제대로 파악하지 못하면 원하는 모양으로 디자인하는 게 어려워집니다. 따라서,
+CSS의 각 속성을 공부할 때 , 상속 여부를 확인해두는 것이 좋습니다.
+

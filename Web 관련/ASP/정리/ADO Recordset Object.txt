@@ -1,0 +1,326 @@
+http://www.w3schools.com/asp/ado_ref_recordset.asp
+http://www.msaccess.co.kr/onlinele/list/basic/recordeset/ado/ado_2.htm
+
+RecordSet 개체는 우리가 가져온 정보들을 저장(record)하는 개체 입니다. 
+
+
+
+
+ 
+
+ 
+ 
+
+
+■ Contents
+
+１　Recordset 오브젝트의 작성 방법
+２　Recordset 오브젝트의 Open 방법
+　 · 다이너넷의 레코드셋을 작성
+　 · 테이블 타입의 레코드셋 작성
+　 · 스냅숏 타입의 레코드셋 작성
+　 · 읽어서 이해하고 전용의 레코드셋 작성
+　 · 특정의 레코드를 추출하고 레코드셋 작성
+３　Connection 오브젝트의 Execute 방법
+４　Command 오브젝트의 Execute 방법
+５　폼의 레코드 소스를 기초에 레코드셋 작성
+６　폼에 Recordset 오브젝트의 내용을 표시한다
+ 
+
+ 
+
+１.Recordset 오브젝트의 작성 방법
+
+테이블에 등록되어 있는 데이터나 쿼리를 실행하고 취득한 데이터의 모임을 레코드셋이라고 부른다．Recordset 오브젝트는 이 레코드셋을 취급하는 오브젝트이다．ＶＢ으로 레코드셋을 작성하는 데는 다음의 3 종류의 방법이 있다．
+●Recordset 오브젝트의 Open 방법을 이용한다
+●Connection 오브젝트의 Execute 방법을 이용한다
+●Command 오브젝트의 Execute 방법을 이용한다
+
+ 
+
+２.Recordset 오브젝트의 Open 방법
+Recordset 오브젝트의 Open방법을 실행하면 지정한 데이터베이스 안의 테이블이나 쿼리의 내용을 참조하는 것이 가능하다．
+【서식】recordset.Open Source, ActiveConnection, CursorType, LockType, Options
+
+recordset：열려 있는 Recordset 오브젝트
+Source    : 생략 가능．유효한 Command 오브젝트，SQL 성명，테이블 이름,쿼리 이름을 지정
+ActiveConnection：생략 가능．Connection 오브젝트 또는  접속 정보 문자열을 지정
+CursorType：생략 가능．커서 타입을 정하기 위한 CursorTypeEnum 값을 지정
+LockType： 생략 가능．록(동시 실행)의 종류를 정하기 위한 LockTypeEnum 값을 지정
+Options：생략 가능
+Source인수에는 접속중의 데이터베이스에 포함되는 테이블 이름이나 선택 쿼리 이름，SQL 이름을 지정할 수 있다. 다만 쿼리가 패러미터를 포함하고 있는 경우에는 이 방법으로는 레코드셋을 취득할 수 없다．또 아쿠숀 쿼리 이름을 지정한 경우에는 지정한 액션이 실행된다. 다만 이 경우도 레코드셋을 취득할 수 없다． ADO는 다음의 4 종류의 커서 타입을 정의하고 있다．
+동적 커서 - 다른 유저에 의한 추가，변경，및 삭제의 확인을 하거나，북마크를 사용하지 마시오.  Recordset 종류를 이동을 하거나 제공자가 북마크 를 지원하는 경우에는 북마크를 이용하는 것이 가능하다．
+
+키 세트 커서 - 동적 커서와 같은 작용을 한다. 다만 다른 유저에 의한 레코드의 추가의 확인 및 다른 유저가 삭제한 레코드에의 액세스는 불가능하다. 다른 유저가 변경한 데이터는 표시할 수 있다．언제나 북마크를 사용할 수 있기 때문에 Recordset 안에서의 모든 종류의 이동이 가능하다．
+
+정적 커서 - 데이터의 검색 또는 리포트의 작성에 사용하기 위한 레코드셋이 정적 카피를 제공한다．언제나 북마크를 사용할 수 있기 때문에 Recordset 안에서의 모든 종류의 이동이 가능하다．다른 유저에 의한 추가，변경 또는 삭제는 확인할 수 없다．
+
+전방 스크롤 커서 - Recordset 안에서 전방향 스크롤만 가능하다．다른 유저에 의한 추가，변경 또는 삭제는 확인할 수 없다．Recordset 의 스크롤이 1 만으로 끝나는 경우에 이 커서를 사용하면 퍼포먼스가 향상된다．
+ 
+◆CursorTypeEnum 값
+정수	값	설명
+adOpenDynamic	2	동적 형식의 커서를 엽니다.
+adOpenForwardOnly	0	(기본값) 앞으로 전용 형식 커서를 엽니다.
+adOpenKeyset	1	키 집합 형식의 커서를 엽니다.
+adOpenStatic	3	정적 형식의 커서를 엽니다.
+adOpenUnspecified	-1	커서 타입을 지정하지 않습니다．
+ 
+
+◆LockTypeEnum 값
+정수	값	설명
+adLockBatchOptimistic	4	공유 일괄 업데이트?즉시 업데이트 모드와 대조되는 일괄 업데이트 모드에 필요합니다.
+adLockOptimistic	3	공유 잠금, 레코드별?공급자는 Update 메서드를 호출할 경우에만 레코드를 잠그는 공유 잠금을 사용합니다.
+adLockPessimistic	2	독점 잠금, 레코드별?공급자는 레코드가 성공적으로 편집되도록 하기 위해 대개 편집을 시작하면 그 즉시 데이터 원본의 레코드를 잠급니다.
+adLockReadOnly	1	기본값. 읽기 전용?데이터를 변경할 수 없습니다.．
+adLockUnspecified	-1	록 타입을 지정하지 않습니다．복제품의 경우，복제원과 동일 록 타입이 적용됩니다．
+【예】접속중의 데이터베이스에 포함되는「학생 명부」테이블을 참조한다.
+       （CN은 열려 있는 Connection 오브젝트）
+
+　　Dim RS As ADOBD.Recordset
+    Set RS = New ADODB.Recordset
+    RS.Open "학생 명부",CN,adOpenstatic,adLockReadonly
+Open 방법의 각인수는 Recordset 오브젝트의 속성이기도 하고，먼저 Recordset 오브젝트의 인수를 설정한 경우에는 Open 방법의 인수를 생략할 수 있다．
+【예】접속중의 데이터베이스에 포함되는「학생 명부」테이블을 참조한다.
+       （CN은 열려 있는 Connection 오브젝트）
+
+　　Dim RS As ADOBD.Recordset
+    Set RS = New ADODB.Recordset
+　　RS.Sousce ="학생 명부"　
+    RS.Activeconnection = CN
+    RS.CursorType = "adOpenstatic"
+    RS.LockType = "adLockReadonly"
+    RS.Open
+다이너셋의 레코드셋을 작성
+다이너셋의 Recordset 오브젝트는 선택 쿼리를 실행하고 취득한 레코드의 모임을 표현한다．Recordset 오브젝트의 Open 방법을 이용할 때 LockType인수를 adLockOptimistic으로 하면 편집 가능한 레코드셋을 취득하는 것이 가능하다．이 레코드셋은 VB으로 등록되고 있는 값을 갱신하거나 레코드를 추가·.삭제가 가능하고편집 결과는 레코드셋 아래에 있던 테이블에 반영된다．
+■ 레코드셋의 최종 레코드보다도 뒤에 최신 레코드를 이동하면 Recordset 오브젝트의 EOF 속성의 값이 True가 된다．이것을 이용하여
+
+　　　　　　 Do Until recordset．EOF
+　　　　　　　　　 ·
+　　　　　　　　　 ·　
+　　　　　　 　recordset．MoveNext
+　　　　　　 Loop
+
+위의 루프 구조를 작성하면 레코드셋에 포함되는 모든 레코드를 참조하는 것이 가능하다．
+
+【사용 예】
+
+   Public Sub Exsample()
+       Dim CN As ADODB.Connection
+       Dim RS As ADODB.Recordset
+    
+       '접속
+        Set CN = CurrentProject.Connection
+    
+       '레코드셋을 취득
+        Set RS = New ADODB.Recordset
+        RS.Open "학생 명부", CN, adOpenKeyset, adLockOptimistic
+  
+       Do Until RS.EOF
+         Debug.Print RS!학적 번호, RS!성명，RS!클래스
+         RS.MoveNext
+       Loop
+    
+       '종료
+        RS.Close:  Set RS = Nothing
+        CN.Close:  Set CN = Nothing
+        End Sub
+테이블 타입의 레코드셋을 작성
+테이블 타입의 Recordset 오브젝트는 테이블에 등록되어 있는 레코드의 모임을 표현한다．신규에 레코드를 추가하거나 등록되어 있는 데이터를 갱신 할 수 있다．Open 방법의 options인수에 adCmdTableDirect을 지정하면 테이블 타입의 레코드셋을 작성할 수 있다．
+【사용 예】
+
+   Public Sub Exsample()
+       Dim CN As ADODB.Connection
+       Dim RS As ADODB.Recordset
+    
+       '접속
+        Set CN = CurrentProject.Connection
+    
+       '레코드셋을 취득
+        Set RS = New ADODB.Recordset
+        RS.Open "학생 명부", CN, adOpenKeyset, adLockOptimistic,adCmdTableDirect
+  
+       Do Until RS.EOF
+         Debug.Print RS!학적 번호, RS!성명，RS!클래스
+         RS.MoveNext
+       Loop
+    
+       '종료
+        RS.Close:  Set RS = Nothing
+        CN.Close:  Set CN = Nothing
+        End Sub
+스냅숏 타입의 레코드셋을 작성
+스냅숏 타입의 Recordset 오브젝트는 선택 쿼리를 실행하고 취득한 레코드의 모임이고 레코드셋의 내용 갱신은 할 수 없다．Open 방법의 cursortype인수를 adOpenStatic,，LockType인수를 adLockReadOnly으로 하면 스냅숏 타입의 레코드셋을 작성하는 것이 가능하다．
+【사용 예】
+
+   Public Sub Exsample()
+       Dim CN As ADODB.Connection
+       Dim RS As ADODB.Recordset
+    
+       '접속
+        Set CN = CurrentProject.Connection
+    
+       '레코드셋을 취득
+        Set RS = New ADODB.Recordset
+        RS.Open "학생 명부", CN, adOpenStatic, adLockReadOnly
+  
+       Do Until RS.EOF
+         Debug.Print RS!학적 번호, RS!성명，RS!클래스
+         RS.MoveNext
+       Loop
+    
+       '종료
+        RS.Close:  Set RS = Nothing
+        CN.Close:  Set CN = Nothing
+   End Sub
+읽기전용의 레코드셋을 작성
+Recordset 오브젝트의 Open 방법을 이용할 때 LockType인수를 adLockReadOnly으로 하면 읽어서 이해하고 전용의 레코드셋을 취득하는 것이 가능하다．이 레코드셋은 VB으로 갱신하는 것은 불가능하다．검색이나 Sorting 하고 교환 등 레코드를 갱신할 필요가 없는 경우에 이용한다．
+【사용 예】
+
+   Public Sub Exsample()
+       Dim CN As ADODB.Connection
+       Dim RS As ADODB.Recordset
+    
+       '접속
+        Set CN = CurrentProject.Connection
+    
+       '레코드셋을 취득
+        Set RS = New ADODB.Recordset
+        RS.Open "학생 명부", CN, adOpenKeyset, adLockReadOnly
+  
+       Do Until RS.EOF
+         Debug.Print RS!학적 번호, RS!성명，RS!클래스
+         RS.MoveNext
+       Loop
+    
+       '종료
+       RS.Close:  Set RS = Nothing
+       CN.Close:  Set CN = Nothing
+   End Sub
+특정의 레코드를 추출하고 레코드셋을 작성
+Recordset 오브젝트의 Open 방법의 Sousce속성에는 SQL 성명을 지정하는 것이 가능하다．SQL 성명을 이용하고 기존의 테이블에서 특정의 레코드만을 선택하고 레코드셋을 작성하는 것이 가능하다．
+【사용 예】
+
+   Public Sub Exsample()
+       Dim CN As ADODB.Connection
+       Dim RS As ADODB.Recordset
+       Dim SQL As String
+    
+    
+       '접속
+        Set CN = CurrentProject.Connection
+    
+       '레코드셋을 취득
+        Set RS = New ADODB.Recordset
+        SQL = "SELECT * FROM 학생 명부 WHERE 클래스 = 'TS'"
+        RS.Open SQL, CN, adOpenKeyset, adLockOptimistic
+    
+       '확인 
+        Do Until RS.EOF
+         Debug.Print RS!성명, RS!클래스
+         RS.MoveNext
+        Loop
+    
+       '종료
+        RS.Close:  Set RS = Nothing
+        CN.Close:  Set CN = Nothing
+        End Sub
+３.Connection 오브젝트의 Execute 방법 
+
+Connection 오브젝트이고 Execute 방법을 사용하면 지정한 데이터베이스 안의 테이블 또는 쿼리의 내용을 참조하는 것이 가능하다．단지，이 방법으로 작성한 레코드셋은 전방 스크롤및 읽어서 이해하고 전용 커서가  된다．
+【서식】Set recordset =connection.Execute (CommandText)
+
+recordset: 열려 있는 Recordset 오브젝트
+connection：열려 있는 Connection 오브젝트
+CommandText：실행하는 SQL 성명，테이블 이름，쿼리 이름
+CommandText인수에는 접속중의 데이터베이스에 포함되는 테이블 이름이나 선택 쿼리 이름，SQL 성명을 지정할 수 있다. 다만 쿼리가 패러미터를 포함하고 있는 경우는 이 방법으로는 레코드셋을 취득할 수 없다．또 아쿠숀쿼리 이름을 지정한 경우에는 지정한 액션이 실행된다. 다만 이 경우도 레코드셋을 취득할 수 없다．
+【서식】connection.Execute 아쿠숀쿼리 이름
+【사용 예】
+　　　Public Sub RsConnection()
+ 　　　   Dim CN As ADODB.Connection
+  　　　  Dim RS As ADODB.Recordset
+    
+  　　　  '접속
+  　　　  Set CN = CurrentProject.Connection
+    
+  　　　  '레코드셋을 취득
+   　　　 Set RS = CN.Execute("학생 명부")
+    
+  　　　  '확인
+  　　　  Do Until RS.EOF
+   　　　   Debug.Print RS!학적 번호, RS!성명
+    　　　  RS.MoveNext
+  　　　  Loop
+    
+  　　　  '종료
+   　　　 RS.Close:  Set RS = Nothing
+   　　　 CN.Close:  Set CN = Nothing
+　　　End Sub
+
+４.Command 오브젝트의 Execute 방법
+Command 오브젝트는 데이터베이스에 대하여 실행하는 커맨드를 정의한 오브젝트이다．Execute 방법을 이용하면 테이블을 참조하거나 쿼리나 SQL 성명을 실행하고 레코드셋을 취득하는 것이 가능하다．이 방법으로 취득한 레코드셋은 전방 스크롤 및 읽어서 이해하고 전용 커서가 된다．
+【서식】Set recordset = command.Execute　
+
+recordset：열려 있는 Recordset 오브젝트　
+command：열려 있는 Command 오브젝트　　　　　　　　
+Execute 방법을 실행하는 전에 CommandText속성과 ActiveConnection속성을 설정할 필요가 있다．CommandText속성에는 참조하는 테이블 이름，쿼리 이름，SQL 성명을 대입한다．또 ActiveConnection속성에는 커맨드를 실행하는 데이터베이스에의 접속 정보를 설정한다．
+【사용 예】
+
+　　　Public Sub RsCommand()
+  　　　  Dim CN As ADODB.Connection
+  　　　  Dim CMD As ADODB.Command
+  　　　  Dim RS As ADODB.Recordset
+    
+   　　　 '접속
+ 　　　   Set CN = CurrentProject.Connection
+    
+  　　　  '레코드셋을 취득
+  　　　  Set CMD = New ADODB.Command
+   　　　 CMD.ActiveConnection = CN
+   　　　 CMD.CommandText = "학생 명부"
+   　　　 Set RS = CMD.Execute
+    
+   　　　 '확인 
+　　　    Do Until RS.EOF
+   　　　   Debug.Print RS!학적 번호, RS!성명
+     　　　 RS.MoveNext
+  　　    Loop
+  　     
+   　　　 '종료
+   　　　 Set CMD = Nothing
+   　　　 RS.Close:  Set RS = Nothing
+   　　　 CN.Close:  Set CN = Nothing
+　　　    End Sub
+Command 오브젝트의 CommandText속성에 아쿠숀쿼리 이름을 설정하고 Execute 방법을 실행하면 아쿠숀쿼리를 실행하는 것이 가능하다．아쿠숀쿼리는 레코드셋을 바꾸어 스미게 하지 않는다．
+【서식】Command.Execute
+
+Command：열려 있는 CommandObject
+
+５. 폼의 레코드 소스에 레코드셋을 작성 
+
+ADO의 Recordset 오브젝트에 폼의 레코드 소스를 대입 하는 것은 불가능하다．폼의 레코드 소스를 사용하고 ＶＢ에서 데이터베이스 조작을 하는 경우는 DAO의 Recordset 오브젝트를 사용한다．
+
+ 
+
+６. 폼에 Recordset 오브젝트의 내용을 표시한다.
+작성한 ADO의 Recordset 오브젝트의 내용을 폼에 표시하는 것이 가능하다．단지 VB으로 편집 가능하다. 그러나 폼 위에서 편집하는 것은 불가능하다.
+【사용 예】
+
+　　　Public Sub Sample()
+  　　　  Dim CN As ADODB.Connection
+  　　　  Dim RS As ADODB.Recordset
+ 　　   
+  　　　  '접속
+ 　　　   Set CN = CurrentProject.Connection
+    
+ 　　　   '레코드셋을 취득
+  　　　  Set RS = New ADODB.Recordset
+  　　　  RS.Open "학생 명부", CN, adOpenKeyset, adLockOptimistic
+    
+   　　　 '폼을 열다
+  　　　  DoCmd.OpenForm "F_테스트", acFormDS
+   　　　 Set Forms!F_테스트.Recordset = RS
+    
+   　　　 '종료
+  　　　  RS.Close:  Set RS = Nothing
+  　　　  CN.Close:  Set CN = Nothing
+　　　End Sub

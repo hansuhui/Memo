@@ -1,0 +1,55 @@
+[저장된 html 파일을 이용한 메일 발송하기] 
+
+말많고,탈많은 CDONT를 이용한 메일 발송 하기입니다. CDONT는 윈도우즈2003 서버 이전 버전 군의 서버에서 SMTP 가상 서버를 이용해서 메일을 발송하는 방법인데, 무엇보다 이놈의 문제는 메일발송에 대한 신뢰성이 부족하다는 것입니다. 여기서 소개해 드리는 것은 html파일을 어떻게 읽어들이는 가에 대한 간단한 팁만 눈여겨 보시기 바랍니다.
+기회가 되면 윈도우즈2003 부터 지원되는 CDO를 이용한 메일 발송하기를 간단하게 소개해 드리겠습니다. 
+
+아래쪽은 CDONT 메일 발송하기 예제 입니다. 처음에 소개된 예제는 html 이 변하지 않는다는 조건하에 html 태그를 mail이라는 문자열에 담아서 처리하는 방법이였습니다. 아래의 박스는 그 예를 보여주고 있습니다.
+
+mail = name & "<table width='658' border='0' cellspacing='0' cellpadding='0'>"
+mail = mail & "<tr bgcolor='BDBABD'>" 
+mail = mail & "<td colspan='3' height='1'></td>"
+mail = mail & "</tr>"
+mail = mail & "<tr>"
+mail = mail & "<td bgcolor='BDBABD' width='1'></td>"
+mail = mail & "<td width='656'>"
+mail = mail & "<table width='656' border='0' cellspacing='0' cellpadding='0'>"
+.......................... 
+..........................중간생략
+.......................... 
+
+name = "테스트" '받는고객 이름
+Email = "test@testto.co.kr" '받는사람 메일주소
+fromMail = "test@test.co.kr" '보낸사람 메일주소
+............
+
+content=Replace(Replace(mail,chr(13)&chr(10),""),"[고객이름]",name)
+
+Set objMail = Server.CreateObject("CDONTS.NewMail")
+objMail.From = fromMail
+objMail.To = Email
+objMail.subject = name &"님께 메일을 보냅니다"
+objMail.Body = content
+이번에 소개해 드리는 방법은 파일객체를 생성하여 저장되어 있던 html파일을 읽어들여서 처리하는 방법입니다. 
+html파일의 내용이 변하여도 메일발송에는 아무런 제약이 없습니다. 파일객체가 읽어들일 html파일의 경로만 정확
+하다면 바뀐내용 그대로 메일발송이 이루어집니다. 아래 예제는 파일객체를 생성하여 html파일을 읽어들인후 처리
+하는 예제입니다.
+<%
+Set Fso = Server.CreateObject("Scripting.FileSystemObject") '파일객체 생성 
+Set objfile = Fso.OpenTextFile("C:\mail\testmail.html",1)
+'읽어들인 html파일 열기
+mail = Trim(objfile.ReadAll)
+name = "고객님" '받는고객 이름
+ToMail = "toTest@Test.co.kr" '받는사람 메일주소
+fromMail = "fromTest@test.co.kr" '보낸사람 메일주소
+content=Replace(Replace(mail,chr(13)&chr(10),""),"[고객이름]",name) 
+
+Set objMail = Server.CreateObject("CDONTS.NewMail")
+objMail.From = fromMail
+objMail.To = ToMail 
+objMail.subject = "[메일예제입니다.]" '메일제목
+objMail.Body = content
+objMail.BodyFormat = 0 ' HTML일떄 0, 일반 Text일때 1 으로 설정한다.
+objMail.MailFormat = 0 ' HTML일떄 0, 일반 Text일때 1 으로 설정한다.
+objMail.Send
+Set objMail = nothing
+%>

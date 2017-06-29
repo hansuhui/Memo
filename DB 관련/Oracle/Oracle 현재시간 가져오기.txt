@@ -1,0 +1,15 @@
+볼때
+
+select current_date from dual
+
+
+입력 할때 current_date
+
+update bns_bess_messages SET stream_time=current_date 
+
+
+select to_char(sysdate, 'Dy DD-Mon-YYYY HH24:MI:SS') as "Current Time" from dual;
+update bns_bess_messages SET stream_time=sysdate 
+
+
+변형

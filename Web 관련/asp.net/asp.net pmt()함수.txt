@@ -1,0 +1,42 @@
+참조추가하고 나서
+
+using Microsoft.VisualBasic;
+
+
+
+//double pmt = Financial.Pmt(rate, nper, pv, fv); // parameters are the same as in VB.NET
+
+        //
+        // 요약:
+        //     일정 기간의 고정 지불액과 고정 이자율을 기준으로 연금에 대한 지불액을 Double 형식으로 반환합니다.
+        //
+        // 매개 변수:
+        //   Rate:
+        //     필수 요소. 기간당 이자율을 지정하는 Double 형식입니다. 예를 들어, APR(연간 이자율) 10%로 자동차 대부를 받은 다음
+        //     매월 갚아 나가는 경우 월 이자율은 0.1/12, 즉 0.0083입니다.
+        //
+        //   NPer:
+        //     필수 요소. 연금의 총 지불 기간 수를 지정하는 Double 형식입니다. 예를 들어, 자동차 대부를 받아 4년간 매월 갚아 나가는
+        //     경우 상환 기간은 총 4 × 12, 즉 48입니다.
+        //
+        //   PV:
+        //     필수 요소. 일련의 미래 지불액에 대한 현재 값 또는 총액을 지정하는 Double 형식입니다. 예를 들어, 자동차를 사기 위해 돈을
+        //     빌릴 경우 총 차입 금액은 매월 자동차 대금을 지불할 사람에게 갚아야 할 현재의 금액입니다.
+        //
+        //   FV:
+        //     선택적 요소. 최종 지불 후 앞으로 지불할 미래 값 또는 현금 잔액을 지정하는 Double 형식입니다. 예를 들어, 최종 지불 후의
+        //     대출 값은 $0이므로 대출의 미래 값은 $0입니다. 그러나 자녀의 교육을 위해 18년간 $50,000를 저축하려고 할 경우 $50,000가
+        //     미래 값이 됩니다. 생략된 경우 0이라고 가정합니다.
+        //
+        //   Due:
+        //     선택적 요소. Microsoft.VisualBasic.DueDate 형식의 개체는 지불 기한을 지정합니다. 이 인수는 납입 기한 말에
+        //     납입이 되어야 하면 DueDate.EndOfPeriod이고, 납입 기한 초에 납입이 되어야 하면 DueDate.BegOfPeriod입니다.
+        //     생략된 경우 DueDate.EndOfPeriod를 가정합니다.
+        //
+        // 반환 값:
+        //     일정 기간의 고정 지불액과 고정 이자율을 기준으로 연금에 대한 지불액을 Double 형식으로 반환합니다.
+        //
+        // 예외:
+        //   System.ArgumentException:
+        //     NPer = 0.
+        public static double Pmt(double Rate, double NPer, double PV, double FV = 0, DueDate Due = DueDate.EndOfPeriod);

@@ -1,0 +1,19 @@
+HTTP_COOKIE_VARS : 환경변수
+
+setcookie("쿠키이름","쿠키값","쿠키보관일자","쿠키를 읽는 디렉토리");
+
+setcookie("Test","1","30*25*60*60+time()","/");
+
+30*25*60*60+time() : 30일 동안 저장
+
+사용법
+
+if(HTTP_COOKIE_VARS[Test]){
+//
+}
+
+삭제
+
+setcookie("Test","1","time()","/"); //시간을 변경해서 삭제
+
+

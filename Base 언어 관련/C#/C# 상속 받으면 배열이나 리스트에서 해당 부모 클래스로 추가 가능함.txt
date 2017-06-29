@@ -1,0 +1,23 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Console1
+{
+    class OfType
+    {
+        static void Main_Ex(string[] args)
+        {
+            Base[] Array = { new Base(), new Extended() };
+		
+	    //이건 리스트
+            List<Base> list = new List<Base>();
+            list.Add(new Base());
+            list.Add(new Extended());
+        }
+    }
+
+    class Base {}
+    class Extended : Base {}
+    }
+}

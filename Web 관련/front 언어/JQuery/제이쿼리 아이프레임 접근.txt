@@ -1,0 +1,28 @@
+ - How to access iframe in jQuery  : 접근하는 예
+아래와 같은 iframe이 있다고 가정하고, id는 엘리먼트르 쉽게 접근하기 위해 부여
+<iframe id="iframeID" ...></iframe>
+
+iframe이 내부에 someID라는 id를 가지는 자식 엘리먼트를 포함한다고 할 때,
+<div id="someID">Hello world!</div>
+
+
+다음과 같이 내용을 가져오는 것이 가능하다. 핵심은 contents()에서 find하는 것
+$('#iframeID').contents().find('#someID').html();
+ - Change CSS file with jQuery : 포함된 html문서에 CSS의 linkf를 수정하는 예
+아래와 같은 구조라고 할 때,
+<iframe id="iframeID" ...>
+   <html>
+    ...
+     <link href="style.css" rel="stylesheet" type="text/css" id="styleID" />
+     ...
+</iframe>
+
+style.css를 style2.css로 바꿔치기를 한다고 할 때 아래와 같이 바꿀 수 있다.
+$('#iframeID').contents().find('#styleID').attr('href', 'style2.css');
+물론 값을 가져오는 것도 가능하다.
+var $set_val = $('#iframeID').contents().find('#styleID').attr('href');
+
+스타일시트에 id말고 link로도 접근이 가능하다.
+$('#iframeID').contents().find('link[rel=stylesheet]');
+ 단 여러개일 경우가 있으니 :first 같은 방식으로 구분을 해주는 것이 좋다. 역시 id가 가장 편하다.
+$('#iframeID').contents().find('link[rel=stylesheet]:first');

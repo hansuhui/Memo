@@ -1,0 +1,71 @@
+require(["/Scripts/jquery.jqGrid.min.js"], function (jqGrid) {
+			this.jqGrid = jqGrid;
+			$table.jqGrid({
+				url: searchURL,
+				datatype: "json",
+				colNames: ['숨김', '선택', '등록일', '재고유형', '권종코드', '사업장', '부서', '권종', '권종명', '서비스명', '유효기간', '판매가', '할인', '상태'],
+				colModel: [
+					{ name: 'PCODE', index: 'PCODE', hidden: true },
+					{ name: 'c_PCode', index: 'c_PCode', width: 30, align: "center"},
+					{ name: 'REGDATE', index: 'REGDATE', width: 80, align: "center" },
+					{ name: 'PTYPE', index: 'PTYPE', width: 50, align: "center" },
+					{
+						name: 'JONG2CODE', index: 'JONG2CODE', width: 80, align: "center", formatter: function (cellValue, options, rawObject) { return jqGridhref2(cellValue, rawObject, '1'); }
+					},
+					{ name: 'BUSICODE', index: 'BUSICODE', width: 100, align: "center" },
+					{ name: 'DEPTCODE', index: 'DEPTCODE', width: 170, align: "left" },
+					{ name: 'JONG1CODE', index: 'JONG1CODE', width: 60, align: "center" },
+					{ name: 'JONG2NAME', index: 'JONG2NAME', width: 180, align: "left" },
+					{ name: 'TITLE', index: 'TITLE', width: 180, align: "left" },
+					{ name: 'EXPDATE2', index: 'EXPDATE2', width: 100, align: "left" },
+					{ name: 'PRICE', index: 'PRICE', width: 50, formatter: 'number', sorttype: 'number', align: "right", formatoptions: { thousandsSeparator: "," } },
+					{ name: 'SALERATE', index: 'SALERATE', width: 60, align: "left" },
+					{ name: 'STATE', index: 'STATE', width: 50, align: "left" }
+				],
+				height: $(".resize-grid").height() - 30,
+				rowNum: 1000000,
+				autowidth: true,
+				viewrecords: true,
+				loadonce: true,
+				shrinkToFit: false,	// 가로스크롤
+				mtype: "POST",
+				postData: $("#formSearch").serializeArray(),
+				loadtext: "Loading...",
+				emptyrecords: '등록된 내역이 없습니다.',
+				loadComplete: function (data) {
+					if ($table.getGridParam('reccount') === 0) {
+						var msg = $table.getGridParam('emptyrecords')
+						var colcnt = $table.jqGrid('getGridParam', 'colNames').length;
+						var html = "<tr><td colspan='" + colcnt + "' class='ac' style='padding-top:50px;'>" + msg + "</td></tr>";
+
+						$(".ui-jqgrid-btable tbody").append(html);
+					}
+				},
+				gridComplete: function () {
+					var ids = $table.jqGrid('getDataIDs');
+					var s = 0;
+					for (var i = 0; i < ids.length; i++) {
+						var cl = ids[i];
+						var c_PCoder = $table.getCell(cl, 1);
+						var v_State = $table.getCell(cl, 13);
+						var e_State = "";
+						if (v_State == "1") { e_State = "정상"; } else { e_State = "중지"; }
+						s++;
+						$table.jqGrid('setRowData', cl, { c_PCode: "<input type='checkbox' class='ExcelReMove'  id='c_PCode' name='c_PCode' value=" + c_PCoder + " />" });
+						$table.jqGrid('setRowData', cl, { STATE: "<select id='C_STATE_" + s + "' name='C_STATE_" + s + "' class='ExcelReMove' onchange='StateChange();'><option value='1'>정상</option><option value='0'>중지</option></select><span class='ExcelView' style='display:none;'>" + e_State + "</span>" });
+						$("#C_STATE_" + s + "").val(v_State);
+
+					}
+				}
+			});
+
+
+		});
+
+
+//검색
+
+function DoJsonSearch() {
+	jQuery("#tblList1").jqGrid('setGridParam', { datatype: 'json', page: 1 });
+	jQuery("#tblList1").jqGrid('setGridParam', { url: searchURL, postData: $("#formSearch").serializeArray() }).trigger("reloadGrid");
+}

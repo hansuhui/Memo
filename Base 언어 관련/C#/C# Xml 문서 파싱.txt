@@ -1,0 +1,14 @@
+
+using System.Xml;
+
+
+
+	 string strXml = "xml 문서 경로";
+         XmlDocument xml = new XmlDocument(); // XmlDocument 생성
+         xml.Load(strXml);
+         XmlNodeList xnList = xml.GetElementsByTagName("tagName"); //접근할 노드
+
+	   foreach (XmlNode xn in xnList)
+            {
+		//코드실행
+            }

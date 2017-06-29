@@ -1,0 +1,136 @@
+[break]
+
+break 문은 for, for-in , while , do-while, swich 문에서 실행을 종료합니다.
+
+형태
+break;
+break  식별자;
+
+실행을 종료하므로 break 문 아래에 작성한 문장이 실행되지 않습니다.
+식별자를 작성하면 식별자로 분기합니다. break와 식별자를 한 줄에 작성해야 하며
+세미콜론을 작성해야 합니다.
+
+var k= 0 , m=0;
+
+while(k<1){
+m = m + 1;
+if(m===3){
+   break;
+  }
+}
+
+
+
+break 문을 설명하기 위해 의도적으로 작성한 코드입니다.
+break; 문을 작성하지 않으면 k 변수값을 증가시키지 않으므로 무한 반복을 하게 됩니다.
+break 문은 반복을 강제로 종료시키고 반복 문 밖의 다음 문장으로 이동합니다.
+
+
+var m=0, value = 0;
+start:
+for(var k=0;k<4;k++){
+ m=0;
+for(;m<2;m++){
+if(value ===2){break start;}
+value += 1;
+ }
+}
+alert('end');
+결과 
+1. k : 0 , m = 0 , value = 1
+2. k : 1 , m = 2 , value = 2
+3. end
+
+위 코드의 특징은 앞부분에 "start:"가 작성되어 있으며 가운데 fro 문에 break start;가 
+작성된 점입니다.
+
+for(var k=0;k<4;k++){} 문장은 4회 반복하게 되므로 4번 실행 해야 하지만
+for(;m<2;m++){}에서 break; 문은 해당 for문을 종료 할뿐 밖의 for문을 종료하지 않습니다.
+그런데 두번만 출력되었습니다.
+
+두 번 출력된 것은 break 다음에 식별자(start)를 작성했기 때문입니다.
+break start;를 만나면 start:로 분기합니다. 그래서 밖의 for이 종료된것입니다.
+
+
+-break : 식별자 형태
+
+var value = 0;
+
+outLabel :{
+for(var k=0;k>5 ;k++){
+	alert(value);
+	if(k=== 1){break outLabel;}
+	value = value +1;
+	}
+	alert('end')
+}
+
+결과 0, 1, end
+
+[continue]
+
+continue 문은 for, for-in, while , do-while 문에서 반복문의 처음으로 이동합니다.
+
+형태 
+continue;
+continue 식별자;
+
+continue 문 위치에서 반복문의 처음으로 이동하므로 continue 문 아래에 작성된 문장이 실행되지 않습니다.
+식별자를 작성하면 식별자 위치로 분기합니다. continue와 식별자를 한 줄에 작성하고 세미콜론을 
+작성합니다. 
+
+for 문을 다섯 번 반복한다고 할 때 , 세 번째 반복에서 break문을 만나면 세번만 반복하지만
+,continue 문은 다섯 번을 반복합니다.
+
+for(var k =0; k < 5 ; k++){
+	if(k===2 || k===3){
+	continue;
+	}
+	alert(k);
+}
+
+결과
+0,1,4
+
+for문을 5회 반복하므로 결과가 다섯 번 출력이 되어야 하지만 continue; 문을 만나게 되어
+아래 작성된 문장을 수행하지 않고 블럭의 첫 번째 문장을 실행합니다. 그래서
+2와 3이 출력 되지 않았습니다.
+
+
+
+[return]
+
+return 문은 함수(function) 에서 사용하며 return 문의 표현식 평가 결과를 반환합니다.
+
+형태 
+return;
+return 표현식;
+
+return 문을 만나면 함수가 종료되며 함수를 호출한 문장으로 표현식 평가 결과를 
+갖고 돌아갑니다. return 다음에 표현식을 작성하지 않으면 undefined를 반환합니다.
+
+function amount(){
+return 100+200;
+}
+
+var result = amount();
+alert(result);
+
+결과 : 300
+
+
+아래는 함수 호출과 return 문으로 값을 반환하는 개념적인 시나리오입니다.
+함수를 아직 다루지 않았으므로 return 문 중심으로 살펴봅니다.
+
+함수 호출, 실행 return 문
+
+1.자바스크립트 엔진이 amount()를 만나면 amount함수를 호출합니다.
+{코드}var result = amount(0;
+2. 첫 번째 줄에 작성한 amount 함수가 실행됩니다.
+3. 자바스크립트 엔진이 함수 블록{} 안으로 이동합니다.
+4.return문을 만나게 됩니다.
+{코드} 100+200;
+5.return 다음의 표현식을 먼저 평가하며 300이 됩니다.
+6. return 300;을 실행합니다.
+7. 호출했던 함수로 123을 갖고 돌아갑니다.
+8.갖고 돌아온 값을 result 변수에 할당합니다.

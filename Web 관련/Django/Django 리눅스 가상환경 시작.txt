@@ -1,0 +1,5 @@
+workon 환경명
+
+종료
+
+deactivate

@@ -1,0 +1,6 @@
+Http 메소드
+
+생성(Create) = POST
+읽기(Read) = GET
+갱신(Update) = PUT
+삭제(Delete) = DELETE

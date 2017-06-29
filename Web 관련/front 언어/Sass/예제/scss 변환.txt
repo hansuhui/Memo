@@ -1,0 +1,13 @@
+- node-sass 사용하기 -
+
+
+sudo npm install -g node-sass
+
+#css 파일로 변환
+node-sass style.scss style.css
+
+# 컴파일 하여 ㅍ현재 디렉토리에 저장
+node-sass style.scss -0 
+
+# style.scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일
+node-sass style.scss -w -o /

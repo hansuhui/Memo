@@ -1,0 +1,4 @@
+$("#PopImg").attr("src", val)
+			var Num = parseInt($(window).scrollTop());
+			$("#pop").attr("style", "width:320px;height:480px;position:absolute;left:250px;top:" + (Num) + "px ")
+			$('#pop').show();

@@ -1,0 +1,20 @@
+[TypeScript란]
+
+TypeScript는 컴파일 하면 Javascript가되는 언어이다.(complie-to-Javascript)
+중간 과정이 ㅎ하나 더 생겼다고 불 수 있으나
+
+- 기능의 추가
+- 혁신의 자유로움
+
+으로 볼 수 있고 장점은
+
+- 익숙함
+- 커뮤니티 지원과 툴체인의 발전
+- 거의 종합적인 JavaScript Interop (역주 : Interop = Information Technology)
+
+이라 한다. MS가 공식적으로 지원을 해 준다고 하니 이것 또한 장점으로 볼 수 있을 것 같다.
+
+TypeScript 는 인기있는 에디터들이 모두 지원하며 Sublime Text, Atom, Eclipse, Emacs, WebStorm, Vim 들과 함께 당연히 Microsoft Visual Studio 제품군도 지원한다.
+
+(Visual Studio Code)
+

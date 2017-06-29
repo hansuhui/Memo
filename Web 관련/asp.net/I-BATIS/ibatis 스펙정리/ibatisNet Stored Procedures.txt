@@ -1,0 +1,36 @@
+[Stored Procedures]
+
+¿¹Á¦
+
+<!-- Microsot SQL Server -->
+<procedure id="SwapEmailAddresses" parameterMap="swap-params">
+  ps_swap_email_address
+</procedure>
+... 
+<parameterMap id="swap-params">
+  <parameter property="email1" column="First_Email" />
+  <parameter property="email2" column="Second_Email" />
+</parameterMap>
+
+<!-- Oracle with MS OracleClient provider -->
+<procedure id="InsertCategory" parameterMap="insert-params">
+ prc_InsertCategory
+</procedure>
+... 
+<parameterMap id="insert-params">
+ <parameter property="Name"       column="p_Category_Name"/>
+ <parameter property="GuidString" column="p_Category_Guid" dbType="VarChar"/>
+ <parameter property="Id"         column="p_Category_Id"   dbType="Int32"   type="Int"/>
+</parameterMap>
+
+<!-- Oracle with ODP.NET 10g provider -->
+<statement id="InsertAccount" parameterMap="insert-params">
+ prc_InsertAccount
+</statement>
+... 
+<parameterMap id="insert-params">
+ <parameter property="Id"           dbType="Int32"/>
+ <parameter property="FirstName"    dbType="VarChar2" size="32"/>
+ <parameter property="LastName"     dbType="VarChar2" size="32"/>
+ <parameter property="EmailAddress" dbType="VarChar2" size="128"/>
+</parameterMap>

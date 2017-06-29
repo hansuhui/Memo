@@ -1,0 +1,2 @@
+moveTo(0, 0)
+resizeTo(screen.availWidth, screen.availHeight);

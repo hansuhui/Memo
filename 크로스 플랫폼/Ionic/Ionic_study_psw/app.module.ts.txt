@@ -1,0 +1,43 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import { MyApp } from './app.component';
+import { HomePage } from '../pages/home/home';
+
+@NgModule({
+  declarations: [
+    MyApp,
+    HomePage
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp)
+  ],
+  bootstrap: [IonicApp],
+  entryComponents: [
+    MyApp,
+    HomePage
+  ],
+  providers: [
+    StatusBar,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
+})
+export class AppModule {}
+
+------------------------------------------------------------------------------------------
+1. export가 있으므로 외부에서 import 하여 사용이 가능하다.
+
+2. 
+  declarations: [
+    MyApp,
+    HomePage
+  ],
+
+  이 소스는 MyApp 컴포넌트를 사용하겠다는 뜻
+  
+  IonicModule.forRoot(MyApp) 은 MyApp을 root로 사용한다는 뜻

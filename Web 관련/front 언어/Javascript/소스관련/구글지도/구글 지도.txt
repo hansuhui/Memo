@@ -1,0 +1,29 @@
+
+경도 위도는 구글맵에서 받아오기
+
+  <div class="span7 ">
+                                    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            var mapLatLng = new google.maps.LatLng(37.466896, 126.888343)
+                                            var mapOptions = {
+                                                zoom: 15,
+                                                center: mapLatLng,
+                                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                            }
+                                            var mapGoogle = new google.maps.Map(document.getElementById('divAddress'), mapOptions);
+                                            var mapMarker = new google.maps.Marker({
+                                                map: mapGoogle,
+                                                position: mapLatLng,
+                                                animation: google.maps.Animation.DROP,
+                                                title: "우림라이온스밸리2차"
+
+                                            });
+                                            google.maps.event.addListener(mapMarker, 'click', function () {
+                                                mapGoogle.setCenter(mapMarker.getPosition());
+                                            });
+                                        });
+                                    </script>
+                                    <div id="divAddress" style="width:800px; height:400px;"></div>
+
+                                </div>

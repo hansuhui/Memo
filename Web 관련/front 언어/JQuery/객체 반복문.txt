@@ -1,0 +1,8 @@
+$("선택자").each(function(){$(this)}) 
+포함된 각 객체에 반복문을 작성 
+
+
+예제 
+$("h2").each(function(){console.log($(this).text())})
+
+h2태그를 전부 찾아서 순차적으로 console에 텍스로 로그를 남긴다

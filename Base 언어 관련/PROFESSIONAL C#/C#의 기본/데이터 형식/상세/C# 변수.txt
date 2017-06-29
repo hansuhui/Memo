@@ -1,0 +1,217 @@
+[변수(Variable)]
+
+앞에서 살펴봤듯이 C#에서 변수를 선언할 때는 다음의 문법을 사용한다.
+
+[modifiers] datatype identifier;
+
+예를 들면,
+
+public int i; //클래스 필드, 지역변수들은 엑세스 한정자들을 가지지 못한다.
+
+이 명령문은 어디에서도  엑세스 할 수 있는 public의 엑세스 권한을 가지고 i라는
+이름을 가진 int 형식 변수를 선언한다.컴파일러는 우리가 이 변수를 어떤 특정한 값으로 초기화
+하기 전에는 이 변수를 사용하도록 허락하지 않는다. 하지만 선언을 하게 되면 4바이트가
+스택에 할당이 된다.
+
+일단 선언이 되면 대입 연산자(=)를 이용하여 값을 변수에 할당해 줄 수 있다.
+
+i = 10;
+
+만약 VB6를 사용했다면 다음을 명심하자. C#이 객체와 간단한 데이터 형식을 구분하지 않기
+때문에 어떤 변수가 객체를 가리키도록 지정하고 싶더라도 Set이라는 키워드를 사용할 필요가 없다.
+
+만약 하나의 명령문 안에 여러 개의 변수를 선언하고 초기화하고 싶다면 모든 변수는 같은 데이터 형식을
+가지고 같은 액세스 권한으로 선언된다.
+
+public static int x = 10 , y= 20; //x와 y는 둘다 public static int이다.
+
+여러 개의 변수를 선언하는 데 서로 다른 한정자와 데이터 형식을 대입할 수 없으므로 다음과
+같이 할 수 없다.
+
+public int x = 10, private byre y = 20; 컴파일 되지 않는다.
+
+마지막으로 알아 둘 것은 같은 범위 안에서 같은 이름의 변수가 두 번 선언될 수 없다는 것이다.
+그래서 다음과 같이 할 수 없다.
+
+int x = 20;
+//약간의 코드
+int x = 30;
+
+그렇다면 변수의 볌위에 대해서 대강 알아보자
+
+
+[식별자(Identifier)]
+
+식별자는 변수,클래스나 구조체와 같이 사용자가 정의한 데이터 형식 , 그리고 이러한 데이터
+형식의 멤버에게 지워지는 이름이다. 식별자는 대소문자를 구분하므로 identifier와 Identifier는
+서로 다른 변수이다. C#에서는 어떤 식별자를 사용할 수 있는지에 관한 몇 가지 법칙이 있다.
+
+첫째로 첫번째 문자는 반드시 영문자와 밑줄이어야 하는 것이고 , 두번째 문자부터는 숫자가
+올 수 있다는 것이다. 그리고 다음의 76개의 C# 키워드를 식별자로 사용할 수 없다.
+
+
+--------------------------------------------------------------
+abstract , do , implicit , params , switch ,
+as , double , in  , private , this,
+base  , else , int , protected , throw ,
+bool , enum , interface ,  public , true ,
+break , event , internal , readonly , try ,
+byte , explicit , is , ref , typeof
+case , extern , lock , return , uint , 
+catch , false , long , sbyte , ulong ,
+char , finaly , namespace , sealed , unchecked ,
+checked , fixed , new , short , unsafe ,
+class , float , null , sizeof , ushort ,
+const , for , object ,stackaloc , using ,
+continue , foreach , oprator ,  static , virtual
+decimal , goto , out , string , void ,
+default , if , override , struct , while,
+delegate
+
+--------------------------------------------------------------
+
+만약 다른 언어로 작성된 클래스를 사용해아 하는 경우처럼 이 키워드를 식별자로 사용해야 한다면,
+컴파일러에게 이 단어는 C# 키워드가 아니라 식별자로 사용하러는 것을 명시하기 위해서 @문자를
+식별자 앞에 붙여야 한다. 즉 abstract가 아니라, @abstract는 식별자로 사용 가능하다.
+
+마지막으로 식별자는 \uXXXX (XXXX는 유니코드 문자를 위한 4자리 16진수 이다)의 형태를
+가진 유니코드 문자를 포함할 수 있다.
+
+
+
+[변수 범위(Variable Scope)]
+
+이미 같은 범위 안에서는 같은 이름을 가진 변수들이 선언될 수 없다는 것을 언급했다.
+변수의 범위란 변수가 사용될 수 있는 코드의 영역을 이야기한다. 다음의 코드를 보자.
+
+
+using System;
+
+public class ScopeTest
+{
+   public statuc int Main()
+   {
+	for(int i =0; i < 10 ;i++)
+	{
+	Console,WriteLine(i);
+	}//i의 범위는 여기서 끝난다.
+
+	//변수 i를 다시 선언할 수 있다.
+	//이유는 범위 내에 동일한 이름을 가진 다른 변수가 없기 때문이다.
+	
+	
+	for(int i =9; i >= 0 ;i--)
+	{
+	Console,WriteLine(i);
+	}//i의 범위는 여기서 끝난다.
+
+	return 0;
+   }
+}
+
+
+이 코드는 단순히 0에서 9까지의 숫자를 출력하고 거꾸로 9에서 0까지의 숫자를 출력한다.
+for루프의 문법은 뒤에서 살펴볼 것이니 너무 어려워 말자. 여기에서 눈여겨 볼 것은 변수 i가
+두번 선언 되었다는 것이다. 이렇게 할 수 있는 이유는 두 군데 모두 i가 로프 안에 선언되어서
+루프 내의 지역 변수이기 떄문이다. 루프가 끝나자마자 변수는 범위에서 벗어나게 되고 
+더 이상 엑세스 가능하지 않게 된다.
+
+다른 예를 하나 더 보다
+
+
+
+
+using System;
+
+public class ScopeTest
+{
+   public statuc int Main()
+   {
+	int j = 20;
+	for(int i = 0; i <10 ; i++)
+	{
+	ing j = 30; //이렇게 할 수 없다 - j는 여전히 범위 안에 있다.
+	Console.WriteLine(j+i);
+	}
+	return 0;
+   }
+}
+
+
+[필드(Field)와 지역 변수(Local Variable)]
+
+어떤 경우에는 다른 범위 내에 있는 같은 이름을 가진 두 개의 식별자를 구별할 수 있어서
+컴파일러가 두번째 변수의 선언을 허용할 수 있다. C#에서는 데이터 형식의 내부에 선언되는 
+변수들을 필드(field)로 정의하고 , 메소드 내에 선언된 변수는 따로 
+지역 변수(local variable)라고 구별하기 때문이다.
+
+다음의 코드를 보자.
+
+using System;
+
+public class ScoprTest
+{
+	static int j = 20;
+
+	public static int main()
+	{
+	ing j = 30;
+	Console.WriteLine(j);
+	return 0;
+	}
+}
+
+
+이 코드에는 j라는 이름을 가진 변수가 두개 선언되어 있다 . 하나는 클래스 수준에서 정의되고 
+클래스가 소멸되기 전까지 범위를 벗어나지 않는다. 그리고 j라는 이름을 가진 또 하나의 변수는
+Main 메소드 안에 선언되어 같은 이름을 가진 클래스 수준의 변수와 충돌을 일으키지 않는다.
+그래서 이 코드는 컴파일되고 , 결과로 30을 출력하게 된다.
+
+하지만 우리가 클래스 수준의 변수를 참고 하고 싶을떄는 object.fielddname이라는 문법을 이용하여
+클래스나 구조체의 필드를 객체 밖에서 참조할 수 있다. 예를 들어 하나의 필드를 가진 클래스를
+다음과 같이 정의하면,
+
+class SomeClass
+{
+	public int i = 20;
+}
+
+i 필드에 다음과 같이 엑세스할 있다.
+
+SomeClass obj = new SomeClass();
+int x = obj.i;
+
+
+일반적으로 필드는 현재 범위 안에서 유효하기 때문에 클래스 내부에서는 필드를 이런 식으로
+사용할 필요가 없다. 만약 현재의 범위 내에서 같은 이름을 가진 지역변수를 선언해서 필드를
+숨겨버렸다면 위의 문법을 이용하여 그 필드를 사용할 수 있다. 위의 예에서 정적 메소드 내에서
+정적 필드를 사용하고 있다. 그래서 클래스의 인스턴가 필요하지 않고 그냥 클래스 이름과 함께
+사용할 수 있다.
+
+Console.WriteLine(ScopeTest.j);
+
+만약 인스턴스 필드(클래스의 특정 인스턴스에 속한 필드)에 엑세스하길 원한다면, this 키워드를
+사용하면 된다. this 키워드는 현재 인스턴스의 참조를 획득하기 위해 클래스나
+구조체 내부에서 사용된다. 
+
+
+[변수 한정자(Variable Modifier)]
+
+변수를 선언할 떄 변수가 가질 수 있는 다양한 특성을 함께 지정해 줄 수 있다.
+예를 들어 그 변수가 현재의 클래스 외부 코드에서 엑세스 가능한 것인지, 아니면
+변수의 값이 변경될 수 있는지 등의 특성을 지정해 줄 수 있는데 다음의 한정자를
+이용해 구현할 수 있다.
+
+-internal
+-new
+-private
+-protected
+-public
+-readonly
+-static
+
+이 한정자들은 지역 변수가 아닌 필드에만 사용 가능하다.
+
+new 한정자는 다른 클래스로부터 상속받은 클래스에서만 사용가능하고 , 클래스 내의 필드를
+숨기는 역할을 한다.
+

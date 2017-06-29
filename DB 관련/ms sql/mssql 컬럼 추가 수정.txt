@@ -1,0 +1,14 @@
+컬럼추가 Query
+
+* 추가 *
+alter table [테이블명] add [필드명] [속성]
+ 
+*  TYPE 수정 *
+alter table [테이블명] alter column [컬럼명] [속성]
+ 
+* 컬럼명 수정 *
+exec sp_rename '[테이블명].[수정할컬럼명]', '[수정될 이름]', 'column' 
+ 
+* 컬럼 삭제 *
+alter table [테이블명] dorp column [컬럼명] 
+[출처] [MS-SQL] 컬럼 추가,수정,삭제|작성자 욱이

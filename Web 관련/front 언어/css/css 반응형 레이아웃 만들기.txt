@@ -1,0 +1,108 @@
+[반응형 레이아웃 만들기]
+
+웹사이트의 레이아웃을 만들 때 방문자가 사용하는 모니터의 화면 해상도를 
+고려해야 합니다. 너무 크게 가로폭을 만들면 작은 해상도의 모니터로 접속했을때 
+가로 스크롤이 생겨 컨텐츠를 보는 게 불편하기 때문입니다.
+
+특히 스마트폰이나 태블릿 등 모바일 기기는 화면이 작기 때문에 가독성에 더욱 신경써야 합니다.
+보통 웹사이트가 축소되어 가로 스크롤 없이 컨텐츠를 볼 수 있으나 글자가 너무 작아지기 때문입니다.
+
+이러한 문제를 해결하는 방법 중의 하나가  반응형 웹 디자입니다.해상도에 따라 가로 폭이나 배치를 변경하여 가독성을 높이는
+것이죠.
+
+이러한 작업을 할 수 있게 해주는 속성은 @media입니다. 예를들어
+
+@media screen and (max-width:768px) {
+  body {color: red;}
+}
+
+와 같이 하면 웹 브라우저의 가로 해상도가 768px 이하면 글자색을 빨간색으로 바꿉니다. 즉, 보바일 기기의 
+해상도를 구려하여 적절히 CSS를 수정하거나 추가하는 것이 가능합니다.
+
+주의할 점은 가로폭 조정을 위해서 HTML 문서의 <head>와 </head> 사이에 다음의
+코드를 넣어야 한다는 것입니다.
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+만약 넣지 않으면 모바일 기기로 접속했을때 가로 스크롤이 나오지 않게 되어 축소되어 나옵니다.
+
+간단한 반응형 레이아웃 예제는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tutorial | Layout - Responsive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      #jb-container {
+        width: 940px;
+        margin: 0px auto;
+        padding: 20px;
+        border: 1px solid #bcbcbc;
+      }
+      #jb-header {
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid #bcbcbc;
+      }
+      #jb-content {
+        width: 580px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: left;
+        border: 1px solid #bcbcbc;
+      }
+      #jb-sidebar {
+        width: 260px;
+        padding: 20px;
+        margin-bottom: 20px;
+        float: right;
+        border: 1px solid #bcbcbc;
+      }
+      #jb-footer {
+        clear: both;
+        padding: 20px;
+        border: 1px solid #bcbcbc;
+      }
+      @media screen and (max-width:480px) {
+        #jb-container {
+          width: auto;
+        }
+        #jb-content {
+          float: none;
+          width: auto;
+        }
+        #jb-sidebar {
+          float: none;
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="jb-container">
+      <div id="jb-header">
+        <h1>Responsive Layout</h1>
+      </div>
+      <div id="jb-content">
+        <h2>Content</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet. Proin gravida velit dictum dui consequat malesuada. Aenean et nibh eu purus scelerisque aliquet nec non justo. Aliquam vitae aliquet ipsum. Etiam condimentum varius purus ut ultricies. Mauris id odio pretium, sollicitudin sapien eget, adipiscing risus.</p>
+      </div>
+      <div id="jb-sidebar">
+        <h2>Sidebar</h2>
+        <ul>
+          <li>Lorem</li>
+          <li>Ipsum</li>
+          <li>Dolor</li>
+        </ul>
+      </div>
+      <div id="jb-footer">
+        <p>Copyright</p>
+      </div>
+    </div>
+  </body>
+</html>
+
+

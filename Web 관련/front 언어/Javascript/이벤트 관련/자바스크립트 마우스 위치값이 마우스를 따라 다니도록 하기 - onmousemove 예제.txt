@@ -1,0 +1,52 @@
+자바스크립트 마우스 위치값이 마우스를 따라 다니도록 하기 - onmousemove 예제
+ 
+ 
+실행결과 : [ jsfiddle ]  
+ 
+? 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  </head>
+  <body>
+       <div>마우스를 올려보세요.</div>
+       <div id='result' style='position:absolute;'></div>
+       <script type='text/javascript'>
+              // 브라우서 호환 ( 크로스브라우징 ) 체크 하여 문서 전체에 mousemove 이벤트를 걸어줍니다.
+              if ( document.addEventListener ) {
+                  document.addEventListener("mousemove",resultFun,false);
+              } else if ( document.attachEvent ) {
+                  document.attachEvent("onmousemove",resultFun);
+              } else {
+                  document.onmousemove = resultFun;
+              }
+              //  문서에서 마우스가 움직일때(mousemove) 마다 resultFun() 함수가 실행됩니다.
+              //  x.clientX,Y 는 페이지에서 이벤트 발생한 X,Y 좌표를 가져옵니다.
+              function resultFun(x) {
+                  var xY = x.clientX +  " * "  + x.clientY ;
+                  var positionLeft = x.clientX;
+                  var positionTop = x.clientY;
+        // result  div 에 innerHTML 로 xY 변수를 적용 합니다.
+                  document.getElementById('result').innerHTML = xY;
+                  //  result  div 의 position 위치를  positionLeft, Top 변수 값으로 style 적용해줍니다.
+                  document.getElementById('result').style.left = positionLeft + "px";
+                  document.getElementById('result').style.top = positionTop + "px";
+              }
+       </script>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+onmousemove - 마우스가 움직일때 작동 합니다. ( Event 객체 이벤트 ) 
+clientX - 페이지에서의 X좌표를 확인합니다. ( Event 객체 )? 
+clientY - 페이지에서의 Y좌표를 확인합니다. ( Event 객체 )? 
+innerHTML  - 해당 엘리먼트의 HTML을 가져옵니다. ( Element 객체 프로퍼티 )
+getElementById  - 주어진 id 값을 가진 엘리먼트로 접근합니다. ( Document 객체 메소드 )

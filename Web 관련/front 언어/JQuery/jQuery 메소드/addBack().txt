@@ -1,0 +1,20 @@
+[.addBack()]
+
+.addBack()은 선택한 요소의 하위 요소를 선택했을 때 
+처음 선택한 상위 요소도 같이 선택하도록 합니다.
+
+
+$( 'ul' ).find( 'li' ).addBack()
+은 ul의 하위 요소 중 li를 선택하고, 추가적으로 처음 선택했던 ul을 선택합니다.
+
+
+.abc {
+   padding: 5px;
+   border: 1px solid #444444;
+  }
+
+$( document ).ready( function() {
+    $( 'div' ).find( 'p.ip' ).addBack().addClass( 'abc' );
+}g/');
+
+div 하위 요소 중 ip를 클래스로 갖는 p 요소와 그 상위 요소인 div를 선택하여 테두리를 만드는 예제입니다.

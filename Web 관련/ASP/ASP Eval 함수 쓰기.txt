@@ -1,0 +1,17 @@
+<%
+  
+  temp1 = 20
+  temp2 = 30
+  temp3 = 50
+ 
+  i = 1  
+  j = 2
+  k= 3
+
+  addTemp1 = Eval("temp" & i) 'temp1의 값을 저장
+  addTemp2 = Eval("temp" & j) 'temp2의 값을 저장
+  addTemp3 = Eval("temp" & k) 'temp3의 값을 저장
+  Response.Write addTemp1
+  Response.Write addTemp2
+  Response.Write addTemp3
+%>

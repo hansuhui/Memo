@@ -1,0 +1,8 @@
+
+protected Thread m_thread;
+
+ThreadStart ts = new ThreadStart(실행 메소드);
+            Thread m_thread = new Thread(ts);
+            m_thread.Start();
+
+

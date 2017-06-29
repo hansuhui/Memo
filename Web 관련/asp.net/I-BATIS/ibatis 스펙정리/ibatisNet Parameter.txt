@@ -1,0 +1,69 @@
+<parameterMap id="parameterMapIdentifier" 
+  [class="fullyQualifiedClassName, assembly|typeAlias"]
+  [extends="[sqlMapNamespace.]parameterMapId"]>
+  <parameter 
+    property ="propertyName" 
+    [column="columnName"]
+    [direction="Input|Output|InputOutput"]
+    [dbType="databaseType"] 
+    [type="propertyCLRType"]
+    [nullValue="nullValueReplacement"] 
+    [size="columnSize"] 
+    [precision="columnPrecision"] 
+    [scale="columnScale"]  
+    [typeHandler="fullyQualifiedClassName, assembly|typeAlias"]  
+  <parameter ... ... />
+  <parameter ... ... /> 
+</parameterMap>
+
+
+
+<parameterMap id="insert-product-param" class="Product">
+  <parameter property="description" />
+  <parameter property="id"/>
+</parameterMap>
+
+<statement id="insertProduct" parameterMap="insert-product-param">
+  insert into PRODUCT (PRD_DESCRIPTION, PRD_ID) values (?,?);
+</statement>
+
+
+
+<statement id="insertProduct" parameterClass="Product">
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION)
+  values (#id#, #description#)
+</statement>
+
+
+<statement id="insertProduct" parameterClass="Product">
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION)
+  values (#id:int#, #description:VarChar#)
+</statement>
+
+
+<statement id="insertProduct" parameterClass="Product">
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION)
+  values (#id:int:-999999#, #description:VarChar#)
+</statement>
+
+
+<update id="UpdateAccountViaInlineParameters" parameterClass="Account">
+ update Accounts set
+ Account_FirstName = #FirstName#,
+ Account_LastName = #LastName#,
+ Account_Email = #EmailAddress,type=string,dbType=Varchar,nullValue=no_email@provided.com#
+ where
+ Account_ID = #Id#
+</update>
+
+
+<statement id="getProduct" parameterClass="System.Int32">
+  select * from PRODUCT where PRD_ID = #value#
+</statement>
+
+
+<statement id="getProduct" parameterClass="System.Collections.IDictionary">
+  select * from PRODUCT
+  where PRD_CAT_ID = #catId#
+  and PRD_CODE = #code#
+</statement>

@@ -1,0 +1,42 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace Console1
+{
+    class Program
+    {
+
+   
+        static void Main(string[] args)
+        {
+            new Test().Write();
+        }
+        
+    }
+
+    class Test {
+        public Func<int> GetSum;
+        public int Write()
+        {
+            GetSum = () => {
+                Console.WriteLine("함수 진입");
+                return Enumerable.Range(0, 100).Sum();
+            };
+            Console.WriteLine(GetSum());
+            return GetSum();
+        }
+
+	 static float temp(int a, int b, int c)
+        {
+            return (a + b + c) * 0.1f;
+        }
+
+	public void Test(){
+	   Func<int, int, int, float> func3;
+	   func3 = new Func<int, int, int, float>(temp); //함수를 연결할 수 있음
+           Console.WriteLine("func{0} 반환값 : {1}", 3, func3(10, 10,10));
+        }
+    }
+
+}

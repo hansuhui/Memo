@@ -1,0 +1,12 @@
+선언부 위쪽에 선언해서 테이블 처럼
+
+테이블명 SaleDtlGroup 
+
+
+WITH SaleDtlGroup (SaleCode, SaleQty, SaleAmt, SaleAddType)
+as
+(
+	select SaleCode, count(*) as SaleQty, sum(dbo.uf_Jong2JongAmt(Jong)) as SaleAmt, dbo.uf_SaleAddTypes(SaleCode) as SaleAddType
+	from SaleDtl with (nolock) group by SaleCode
+)
+

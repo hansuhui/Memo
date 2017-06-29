@@ -1,0 +1,56 @@
+- DB 리스트 확인방법
+    SELECT name FROM sys.databases WHERE name NOT IN ('master', 'model', 'msdb', 'tempdb')
+?
+ 
+ [참고사항] DB 리스트 확인시 master, model, msdb, tempdb를 제외하는 이유
+    MSSQL은 사용자가 생성하지 않아도 자동으로 생성되어 있는 시스템 데이터베이스가 있는데 master, model, msdb, tempdb가 
+   시스템 데이터베이스입니다. 따라서 사용자가 생성한 DB만 확인하고 싶은 경우에는 위 4가지 테이블을 제외해주셔야 합니다.
+ 
+ 
+ - 테이블 리스트 확인방법 
+   SELECT name, object_id FROM sys.tables
+?
+ 
+ [참고사항] 테이블 리스트는 현재 접속된 DB에 생성한 테이블만 확인이 가능 
+   각 DB마다 sys.tables라는 뷰가 생성되어 있어 DB가 소유하고 있는 테이블 목록을 확인할 수 있습니다. 만약 다른 DB의 테이블을
+   확인하고 싶다면 [DB명].sys.tables로 테이블명을 고쳐서 조회하실 수 있습니다.
+ 
+ 
+ - 컬럼 리스트 확인방법
+   SELECT name FROM sys.columns WHERE object_id = '[테이블 object_id]'
+?
+ 
+ - 예제 1 
+   DB 리스트를 조회하시오. (사용자가 학생정보DB와 교직원정보DB를 생성해둔 것으로 가정)
+ 
+ 
+ - 예제 1 쿼리 
+   SELECT name FROM sys.databases WHERE name NOT IN ('master', 'model', 'msdb', 'tempdb')
+ 
+? 
+ - 예제 2
+    학생정보 DB에 성적 테이블을 생성하고 테이블 리스트를 조회하시오.
+ 
+ 
+ - 테이블 생성 
+   CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       점수 int NOT NULL
+   )
+?
+ 
+ - 예제 2 쿼리
+    SELECT name, object_id FROM sys.tables
+ 
+?
+
+ 
+ - 예제 3 
+   성적 테이블의 컬럼 리스트를 조회하시오.
+ 
+ 
+ - 예제 3 쿼리 
+   SELECT name FROM sys.columns WHERE object_id = '837578022'
+ 
+?

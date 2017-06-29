@@ -1,0 +1,8 @@
+declare @sql nvarchar(100) 
+set @sql = 'select ''Çæ ÀÌ°Å¿´¾î'''
+EXEC sp_executesql @sql
+
+
+
+ÇÙ½É!!
+''³»¿ë''

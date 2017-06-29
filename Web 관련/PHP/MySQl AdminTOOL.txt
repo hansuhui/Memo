@@ -1,0 +1,19 @@
+PHP3 를 이용한 MySQL DB / TABLE 정보 및 내용을 표시해 주는 관리도구
+
+
+MySQL AdminTOOL소스
+
+사용한 주요 함수는 아래 와 같습니다. 
+
+mysql_listdbs() : 사용가능한 DB 의 목록을 리턴합니다.
+
+mysql_list_tables($db): $db 에서 사용가능한 테이블의 목록을 리턴합니다. 
+
+mysql_field_type(): 필드 타입
+
+mysql_field_name(): 필드 이름
+
+mysql_field_len(): 필드 길이
+
+mysql_field_flags(): 필드 기타 속성(PK, NULL, ...) 
+

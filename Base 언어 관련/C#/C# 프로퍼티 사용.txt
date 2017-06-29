@@ -1,0 +1,80 @@
+http://mrw0119.tistory.com/15
+
+[C#의 프로퍼티]
+
+C#에서는 프로퍼티(Propery)라는 변수를 제공한다.
+
+
+class MyClass{
+  priate int num;
+  public int Number;
+  {
+    set {num = value;}
+    get {return num;}
+  }
+}
+
+
+static void Main(){
+    MyClass class = new MyClass();
+    class.Number = 10;
+    Console.WriteLine(class.Number);
+}
+
+(value라는 변수는 미리 예약된 변수로 멤버변수에 대입하는 값이 자동으로 들어간다.)
+
+C++에서 사용하단 set(), get() 함수를 뭐 나름 단순화시키긴 했다지만..
+
+뭐 그닥.. 다른건 없는것 같다.
+
+그래서인지 C# 3.0부터는 이를 더 단순화할 수 있는 자동구현(?) 프로퍼티를 제공한다.
+
+class MyClass{
+  priate int num {set; get;};
+}
+
+
+static void Main(){
+    MyClass class = new MyClass();
+    class.Number = 10;
+    Console.WriteLine(class.Number);
+}
+
+변수에 set; get; 만 넣어주면 알아서 set(), get() 함수를 자동 구현해준다.
+그래서 자동구현 프로퍼티!!
+
+게다가 set을 빼고  get만 넣어주면 아주 쉽게 멤버변수를 읽기전용으로
+사용할 수 있다.
+
+
+------------------------------------------------------------------------------
+
+[프로퍼티 변수 초기화]
+
+이뿐 아니라 객체 생성시에 손쉽게 프로퍼티 변수를 
+초기화할 수 있다는 편리함까지 제공한다.
+
+클래스 내에 프로퍼티 변수가 선언되어 있다면 
+생성자를 작성하지 않아도 객체 생성시에 초기화가 가능하며,
+또한 원하는 프로퍼티만 골라서 초기화를 해줄 수 있다. 
+
+- 예제 -
+
+class MyClass{
+  public int num1 {set; get;}
+  public int num2 {set; get;}
+  public string name {set; get;}
+  public int sum {get{return num1+num2;} // 읽기 전용
+}
+
+static void Main(){
+  //객체 생성시에 프로퍼티에 변수 추기화(매개변수는 ,로 구분)
+  MyClass class = new MyClass(num1=10, name= "프로퍼티");
+ 
+  class.num = 20;
+  Console.WriteLine(class.sum);
+}
+
+
+
+

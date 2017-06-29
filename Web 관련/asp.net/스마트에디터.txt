@@ -1,0 +1,30 @@
+스마트 에이터 적용시키기
+
+se2 : Content 폴더에 넣고
+
+se2 : script 폴더에 놓고 
+
+<script type="text/javascript">
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "strContent",
+        sSkinURI: "/Content/SE2/SmartEditor2Skin.html",
+        htParams: {
+            bUseToolbar: true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+            fOnBeforeUnload: function () {
+                //alert("아싸!");
+            }
+        }, //boolean
+        fOnAppLoad: function () {
+            //예제 코드
+            //oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+        },
+        fCreator: "createSEditor2"
+    });
+    function _onSubmit(elClicked) {
+        oEditors.getById["strContent"].exec("UPDATE_CONTENTS_FIELD", []);
+    }
+</script>
+
+onclick="javascript:_onSubmit(this)"

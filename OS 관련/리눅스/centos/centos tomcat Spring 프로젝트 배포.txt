@@ -1,0 +1,45 @@
+http://attackyourheart.tistory.com/50
+
+
+Spring 프로젝트 배포하기(tomcat 이용)
+
+[Spring 프로젝트 war 파일러 export하기]
+
+원도우즈 환경에서 eclipse로 개발했다는 가정하에 설명하겠습니다.
+
+1.배포할 spring 프로젝트를 우클릭하여 export를 선택한다.
+
+2.export 메뉴가 나오면 Web 카테고리 안의 WAR file를 선택하고 Next를 누른다.
+
+3.Destination에 war파일을 저장할 위치를 지정해준디/
+
+4.Export source files 와 Overwrite existing file 항목을 체크해준다.
+
+5.마지막으로 finish를 누르면 war파일이 생성된다.
+
+
+[Windows 환경에서 배포]
+
+{tomcat설치 경로}\webapps 폴더를 생성한 war 파일을 복사한다.
+
+
+커맨드 프롬프트를 열고 {tomcat 설치 경로}/bin 으로 들아가서 startup 명령을 실행하면 tomcat이 시작된다.
+
+tommcat을 시작하면 자동으로 프로젝ㅈ트 이름과 동일한 폴더가 생성되면서 war 파일로 묶여있던 패키지가 풀린다.
+
+{tomcat 설치 경로}\bin> startup
+
+웹브라우저에서 localhost:8080 이나 아이피주소:8080 해당 프로젝트에 접속하면 된다. 프로젝트명이 test인 경우
+http://localhost:8080/test 로 접속하면 spring 프로젝트에 접속된다.
+
+
+
+[Linux(Ubuntu) 환경에서 배포]
+
+마찬가지로 tomcat이 설치된 디렉토리의 webapps 디렉토리에 war파일을 복사하고 tomcat을 재시작 해주면 된다.
+
+tomcat을 재실행한다.
+
+Windows와 동일하게 tomcat을 시작하면 자동으로 프로젝트 이름과 동일한 폴더가 생성되면서 war 파일로 묶여있던 패키지가 풀린다.
+
+$ sudo service tomcat7 restart

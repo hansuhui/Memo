@@ -1,0 +1,40 @@
+function Pwcheck(user_pwd) {
+    // 동일문자, 연속문자 체크 시작
+    var SamePass_0 = 0; //동일문자 카운트
+    var SamePass_1 = 0; //연속성(+) 카운드
+    var SamePass_2 = 0; //연속성(-) 카운드
+
+    if (user_pwd.length > 0) {
+        for (var i = 0; i < user_pwd.length; i++) {
+            var chr_pass_0 = user_pwd.charAt(i);
+            var chr_pass_1 = user_pwd.charAt(i + 1);
+
+            //동일문자 카운트
+            if (chr_pass_0 == chr_pass_1) {
+                SamePass_0 = SamePass_0 + 1
+            }
+
+            var chr_pass_2 = user_pwd.charAt(i + 2);
+            //연속성(+) 카운드
+            if (chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == 1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == 1) {
+                SamePass_1 = SamePass_1 + 1
+            }
+
+            //연속성(-) 카운드
+            if (chr_pass_0.charCodeAt(0) - chr_pass_1.charCodeAt(0) == -1 && chr_pass_1.charCodeAt(0) - chr_pass_2.charCodeAt(0) == -1) {
+                SamePass_2 = SamePass_2 + 1
+            }
+        }
+        if (SamePass_0 > 1) {
+            alert("비밀번호에 동일 문자 혹은 숫자를 3번 이상 사용할 수 없습니다.");
+            $("#Addfrm").find("#PASSWORD").focus();
+            return false;
+        }
+        else if (SamePass_1 > 1 || SamePass_2 > 1) {
+            alert("비밀번호에 연속된 문자열(123 또는 321, abc, cba 등)을\n 3자 이상 사용 할 수 없습니다.");
+            $("#Addfrm").find("#PASSWORD").focus();
+            return false;
+        }
+    }
+
+}

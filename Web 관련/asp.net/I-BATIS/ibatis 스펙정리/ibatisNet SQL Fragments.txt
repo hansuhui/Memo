@@ -1,0 +1,162 @@
+[Reusing SQL Fragments (Before)]
+
+<select id="SelectItemCount" resultClass="int">
+SELECT COUNT(*) AS total
+FROM items
+WHERE parentid = 6
+</select>
+
+<select id="SelectItems" resultClass="Item">
+SELECT id, name
+FROM items
+WHERE parentid = 6
+</select>
+
+
+[Reusing SQL Fragments (After)]
+
+<sql id="selectItem_fragment">
+FROM items
+WHERE parentid = 6
+</sql>
+
+
+<select id="selectItemCount" resultClass="int">
+SELECT COUNT(*) AS total
+<include refid="selectItem_fragment"/>
+</select>
+
+
+<select id="selectItems" resultClass="Item">
+SELECT id, name
+<include refid="selectItem_fragment"/>
+</select>
+
+
+parameters can be used too :
+
+<sql id="selectItem_fragment">
+FROM items
+WHERE parentid = #value#
+</sql>
+
+<select id="selectItemCount" parameterClass="int" resultClass="int">
+SELECT COUNT(*) AS total
+<include refid="selectItem_fragment"/>
+</select>
+
+<select id="selectItems" parameterClass="int" resultClass="Item">
+SELECT id, name
+<include refid="selectItem_fragment"/>
+</select>
+
+
+
+[Using CDATA to "escape" SQL code]
+<statement id="SelectPersonsByAge" parameterClass="int" resultClass="Person">
+  <![CDATA[ 
+     SELECT * FROM PERSON WHERE AGE > #value# 
+  ]]>
+</statement>
+
+
+
+[<insert> statements using <selectKey> stanzas]
+
+
+<!?Oracle SEQUENCE Example using .NET 1.1 System.Data.OracleClient --> 
+<insert id="insertProduct-ORACLE" parameterClass="product"> 
+  <selectKey resultClass="int" type="pre" property="Id" > 
+     SELECT STOCKIDSEQUENCE.NEXTVAL AS VALUE FROM DUAL
+  </selectKey> 
+  insert into PRODUCT (PRD_ID,PRD_DESCRIPTION) values (#id#,#description#) 
+</insert>
+
+<!? Microsoft SQL Server IDENTITY Column Example --> 
+<insert id="insertProduct-MS-SQL" parameterClass="product"> 
+  insert into PRODUCT (PRD_DESCRIPTION)
+  values (#description#) 
+ <selectKey resultClass="int" type="post" property="id" > 
+   select @@IDENTITY as value
+ </selectKey>
+</insert>
+
+<!-- MySQL Example -->
+<insert id="insertProduct-MYSQL" parameterClass="product"> 
+  insert into PRODUCT (PRD_DESCRIPTION)
+  values (#description#) 
+ <selectKey resultClass="int" type="post" property="id" > 
+   select LAST_INSERT_ID() as value
+ </selectKey>
+</insert>
+
+
+[<generate> tag]
+
+
+
+[Creating the "usual suspects" with the <generate> tag]
+
+
+<parameterMaps>
+  <parameterMap id="insert-generate-params">
+    <parameter property="Name" column="Category_Name"/>
+    <parameter property="Guid" column="Category_Guid" dbType="UniqueIdentifier"/>    
+  </parameterMap>
+
+  <parameterMap id="update-generate-params" extends="insert-generate-params">
+    <parameter property="Id" column="Category_Id" />
+  </parameterMap>
+
+  <parameterMap id="delete-generate-params">
+    <parameter property="Id" column="Category_Id" />
+    <parameter property="Name" column="Category_Name"/>
+  </parameterMap>
+
+  <parameterMap id="select-generate-params">
+    <parameter property="Id" column="Category_Id" />
+    <parameter property="Name" column="Category_Name"/>
+    <parameter property="Guid" column="Category_Guid" dbType="UniqueIdentifier"/>
+  </parameterMap>
+
+</parameterMaps>
+
+<statements>
+
+  <update id="UpdateCategoryGenerate" parameterMap="update-generate-params">
+    <generate table="Categories" by="Category_Id"/>
+  </update>
+
+  <delete id="DeleteCategoryGenerate" parameterMap="delete-generate-params">
+    <generate table="Categories" by="Category_Id, Category_Name"/>
+  </delete>
+
+  <select id="SelectByPKCategoryGenerate" resultClass="Category" parameterClass="Category" 
+          parameterMap="select-generate-params">
+    <generate table="Categories" by="Category_Id"/> 
+  </select>
+
+  <select id="SelectAllCategoryGenerate" resultClass="Category" 
+          parameterMap="select-generate-params">
+    <generate table="Categories" /> 
+  </select>
+
+  <insert id="InsertCategoryGenerate" parameterMap="insert-generate-params">
+    <selectKey property="Id" type="post" resultClass="int">
+      select @@IDENTITY as value
+    </selectKey>
+    <generate table="Categories" />
+  </insert>
+
+</statements>
+
+
+[<generate> tag attributes]
+
+Attribute  / Description  / Required
+
+table   /  specifies the table name to use in SQL statement / yes
+by     /   specifies the columns to use in a WHERE cause / no
+
+
+

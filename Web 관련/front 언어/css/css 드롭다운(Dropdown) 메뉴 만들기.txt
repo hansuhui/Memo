@@ -1,0 +1,131 @@
+[드롭다운(Dropdown) 메뉴 만들기]
+
+
+홈페이지에 많은 메뉴를 정리해서 보여줄 때 자주 사용하는 것이 드롭다운(Dropdown) 메뉴입니다.
+드롭다운 메뉴는 자바스크립트를 이용하여 만들 수도 있고, 오로지 CSS를 이용하여 만들 수도 있습니다.
+이번 포스트에서는 CSS만을 이용하여 간단한 드롭다운 메뉴를 만들어보겠습니다.
+메뉴의 구조는 다음과 같습니다.
+
+<div class="dropdown">
+  <ul>
+    <li>
+      <a href="#">Lorem</a>
+    </li>
+    <li>
+      <a href="#">Ipsum</a>
+      <ul>
+        <li><a href="#">Consectetur</a></li>
+        <li><a href="#">Amet</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">Dolor</a>
+      <ul>
+        <li><a href="#">Adipiscing</a></li>
+        <li><a href="#">Elit</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+
+단계 메뉴를 가로로 배열되도록 만듭니다.
+
+.dropdown > ul > li {
+  display: inline-block;
+}
+
+position 속성으로 위치를 잡아줍니다.
+
+.dropdown > ul > li {
+  display: inline-block;
+  position: relative;
+}
+.dropdown > ul > li > ul {
+  position: absolute;
+}
+
+2단계 메뉴의 모양을 약간 바꿉니다.
+
+
+.dropdown > ul > li {
+  display: inline-block;
+  position: relative;
+}
+.dropdown > ul > li > ul {
+  position: absolute;
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+2단계 메뉴를 숨기고 1단계 메뉴에 마우스를 올렸을 때만 나오도록 만듭니다.
+
+.dropdown > ul > li {
+  display: inline-block;
+  position: relative;
+}
+.dropdown > ul > li > ul {
+  position: absolute;
+  list-style-type: none;
+  padding-left: 0px;
+  display: none;
+}
+.dropdown > ul > li:hover > ul {
+  display: block;
+}
+
+
+전체 코드는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips | Dropdown Menu</title>
+    <style>
+      .dropdown > ul > li {
+        display: inline-block;
+        position: relative;
+      }
+      .dropdown > ul > li > ul {
+        position: absolute;
+        list-style-type: none;
+        padding-left: 0px;
+        display: none;
+      }
+      .dropdown > ul > li:hover > ul {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown">
+      <ul>
+        <li>
+          <a href="#">Lorem</a>
+        </li>
+        <li>
+          <a href="#">Ipsum</a>
+          <ul>
+            <li><a href="#">Consectetur</a></li>
+            <li><a href="#">Amet</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Dolor</a>
+          <ul>
+            <li><a href="#">Adipiscing</a></li>
+            <li><a href="#">Elit</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+

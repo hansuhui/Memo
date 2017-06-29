@@ -1,0 +1,369 @@
+    public void insertProduct(string id, string pw, ProductOMModel regData, BasicSetModel basicSet, DeliverySetModel deliverySet,
+            List<ProdOMOptionModel> optionBasicList, List<ProdOMAddedModel> optionAddedList, List<DeliverySetModel> feeLevels)
+        {
+            if (!accountCheck(id, pw))
+            {
+                throw new Exception("로그인 실패");
+            }
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            string url = "http://sell.storefarm.naver.com/p/products/new";
+            httpRequest.POST(url, "");
+            string path = HttpContext.Current.Request.PhysicalApplicationPath;
+            string page = httpRequest.ResultText;
+            string rootPath = HttpContext.Current.Request.PhysicalApplicationPath;
+
+            url = "http://sell.storefarm.naver.com/p/upload/photos";
+            httpRequest.Referer = "http://sell.storefarm.naver.com/p/products/new";
+
+            LocationModel locationData = new ProductBO().selectOriginCode(regData.Origin_Code);
+            string originCode = "";
+            string originType = "";
+            if (locationData != null)
+            {
+                originCode = locationData.naverOriginCode.Substring(locationData.naverOriginCode.IndexOf(">") + 1, locationData.naverOriginCode.Length - locationData.naverOriginCode.IndexOf(">") - 1);
+
+                //00 국산, 02 수입산, 03 기타
+                if (locationData.OriginType == 1)
+                {
+                    originType = "00";
+                }
+                else if (locationData.OriginType == 2)
+                {
+                    originType = "02";
+                }
+                else if (locationData.OriginType == 3)
+                {
+                    originType = "03";
+                }
+            }
+            else
+            {
+                originType = "03";
+                originCode = "03";
+            }
+
+
+            string strExpireDateUse = "true";
+            string expireDate = "";
+            string taxType = "DUTYFREE";
+            string adultUse = "false";
+            if (regData.Expire_Date == null || regData.Expire_Date.Equals(""))
+            {
+                strExpireDateUse = "false";
+            }
+            else
+            {
+                expireDate = regData.Expire_Date.Replace("-", ".");
+            }
+
+            if (regData.IsTax)
+            {
+                taxType = "TAX";
+            }
+
+            if (regData.Adult_Used.Equals("1"))
+            {
+                adultUse = "true";
+            }
+
+            List<JsonImageParam> imgParam = new List<JsonImageParam>();
+
+            string[] images = { regData.ImagePath, regData.Add_Image1Path, regData.Add_Image2Path, regData.Add_Image3Path, regData.Add_Image4Path };
+
+            int index = 0;
+            foreach (string image in images)
+            {
+                if (image == null || image.Equals(""))
+                {
+                    continue;
+                }
+
+                string savedFileName = Path.Combine(image);
+                FileStream fs = File.Open(savedFileName, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                byte[] data = new byte[fs.Length];
+                fs.Read(data, 0, data.Length);
+                fs.Close();
+
+                Dictionary<string, object> postParameters = new Dictionary<string, object>();
+                postParameters.Add("files", new MVC_SHOPADMIN.Util.Common.SelloHttpRequest.FileParameter(data, "test.jpg", "image/pjpeg"));
+                postParameters.Add("saleType", "NEW");
+                postParameters.Add("category.id", "50003389");
+                postParameters.Add("layoutType", "BASIC");
+                postParameters.Add("name", "test");
+                postParameters.Add("certificationInfos[0].id.certificationCategoryId", "-1");
+                postParameters.Add("certificationInfos[0].certificationMark", "-1");
+                postParameters.Add("originAreaInfo.plural", "false");
+                postParameters.Add("originAreaInfo.originArea.code", "0001150");
+                postParameters.Add("originAreaInfo.type", "00");
+                postParameters.Add("_originAreaInfo.type", "00");
+                postParameters.Add("manufactureDateRadio", "false");
+                postParameters.Add("validDateRadio", "false");
+                postParameters.Add("taxType", "TAX");
+                postParameters.Add("minorPurchasable", "true");
+                postParameters.Add("editModeType", "HTMLSrc");
+                postParameters.Add("detailJsonAttachments", "[]");
+                postParameters.Add("char_preview", "짰쨘?녳뿈??");
+                postParameters.Add("se2_tbp3", "on");
+                postParameters.Add("mobileProductDetailPreviewType", "CROP");
+                postParameters.Add("rnotice2", "false");
+                postParameters.Add("purchaseReviewExposure", "true");
+                postParameters.Add("minishopRegularCustomerExclusive", "false");
+                postParameters.Add("knowledgeShoppingProductRegistration", "true");
+                postParameters.Add("galleryUsable", "false");
+                postParameters.Add("useSalePeriod", "false");
+                postParameters.Add("useMinPurchaseQuantityRestrict", "false");
+                postParameters.Add("useMaxPurchaseQuantityRestrict", "false");
+                postParameters.Add("optionUsable", "false");
+                postParameters.Add("supplementProductConfiguration.sortType", "CREATE");
+                postParameters.Add("supplementProductConfiguration.usable", "false");
+                postParameters.Add("useDeliveryInfo", "true");
+                postParameters.Add("deliveryInfo.deliveryType", "DELIVERY");
+                postParameters.Add("bundleAvailable", "true");
+                postParameters.Add("deliveryInfo.bundleGroup.id", "50549");
+                postParameters.Add("deliveryInfo.deliveryFee.type", "FREE");
+                postParameters.Add("deliveryFeeByAreaUpdate", "on");
+                postParameters.Add("deliveryInfo.claimDeliveryInfo.returnDeliveryCompanyPriority", "PRIMARY");
+                postParameters.Add("deliveryInfo.claimDeliveryInfo.shippingAddressId", "95938");
+                postParameters.Add("deliveryInfo.claimDeliveryInfo.returnAddressId", "95939");
+                postParameters.Add("deliveryInfo.installationFee", "false");
+                postParameters.Add("__sellerCommentContent", "0");
+                postParameters.Add("sellerDiscountYN", "false");
+                postParameters.Add("useMultiPurchaseDiscountYN", "false");
+                postParameters.Add("benefitMileageYN", "false");
+                postParameters.Add("benefitActivityYN", "false");
+                postParameters.Add("benefitInterestYN", "false");
+                postParameters.Add("useGift", "false");
+                postParameters.Add("callback", "about:blank");
+                postParameters.Add("callback_func", "tmpFrame_13635_func");
+                httpRequest.POST(url, "", postParameters);
+                string resultImgData = httpRequest.ResultText;
+                resultImgData = resultImgData.Substring(resultImgData.IndexOf("oParameter = ") + 13, resultImgData.Length - resultImgData.IndexOf("oParameter = ") - 13);
+                resultImgData = resultImgData.Substring(0, resultImgData.IndexOf("}") + 1);
+
+                ImgData imgData = js.Deserialize<ImgData>(resultImgData);
+                if (index == 0)
+                {
+                    imgParam.Add(new JsonImageParam("REPRESENTATIVE", 1, imgData.url));
+                    imgParam.Add(new JsonImageParam("SELECTION_LIST", 1, imgData.url));
+                    imgParam.Add(new JsonImageParam("SELECTION_IMAGE", 1, imgData.url));
+                    imgParam.Add(new JsonImageParam("SELECTION_VERTICAL", 1, imgData.url));
+                    imgParam.Add(new JsonImageParam("SELECTION_GALLERY", 1, imgData.url));
+                }
+                else
+                {
+                    imgParam.Add(new JsonImageParam("OPTIONAL", index, imgData.url));
+                }
+                index++;
+            }
+
+            string imageJsonData = js.Serialize(imgParam);
+            string representativeImage = regData.Image.Substring(regData.Image.LastIndexOf("/") + 1, regData.Image.Length - regData.Image.LastIndexOf("/") - 1);
+
+            StorefarmProductInfo prodInfo = new ProductBO().selectNaverProdInfo(regData.productInfoCode);
+
+            string optionJson = "";
+            string optionCombinationsJson = "";
+            string optionUsable = "true";
+            bool isFirst = true;
+            List<SingleNaverOption> singleOptionList = new List<SingleNaverOption>();
+            List<MixNaverOption> mixOptionList = new List<MixNaverOption>();
+
+            if (optionBasicList.Count == 0)
+            {
+                optionUsable = "false";
+            }
+            bool defaultValCheck = false;
+            foreach (ProdOMOptionModel option in optionBasicList)
+            {
+                if (option.optionType.Equals("single"))
+                {
+                    singleOptionList.Add(new SingleNaverOption(option.baseName, option.optionName, option.optionPrice));
+                }
+                else if (option.optionType.Equals("mix"))
+                {
+                    if (isFirst)
+                    {
+                        optionJson = "[{"
+                                      + "\"groupName\": \"" + option.optionName + "\","
+                                      + "\"id\": null,"
+                                      + "\"optionType\": \"COMBINATION\","
+                                      + "\"sortType\": \"CREATE\""
+                                      + "}]";
+                        isFirst = false;
+                    }
+                    if (option.optionPrice == 0)
+                    {
+                        defaultValCheck = true;
+                    }
+                    mixOptionList.Add(new MixNaverOption(option.subOptionName, option.optionPrice, option.quantity));
+                }
+            }
+            if (!defaultValCheck)
+            {
+                mixOptionList.Add(new MixNaverOption("기본상품", 0, 999));
+            }
+            if (singleOptionList.Count != 0)
+            {
+                optionJson = js.Serialize(singleOptionList);
+            }
+            if (mixOptionList.Count != 1)
+            {
+                optionCombinationsJson = js.Serialize(mixOptionList);
+            }
+
+            string sortType = "CREATE";
+            string supplementsJson = "";
+            string addedProdUse = "true";
+            if (optionAddedList.Count == 0)
+            {
+                //sortType = "";
+                addedProdUse = "false";
+            }
+            List<NaverAddedProd> addedList = new List<NaverAddedProd>();
+            foreach (ProdOMAddedModel addedProd in optionAddedList)
+            {
+                addedList.Add(new NaverAddedProd(addedProd.name, addedProd.prodPrice, addedProd.addedPrice, addedProd.manageCode, addedProd.quantity));
+            }
+            supplementsJson = js.Serialize(addedList);
+
+            string deliveryFeeType = "";
+
+            //deliveryInfo.claimDeliveryInfo.exchangeFee 교환
+            int exchangeFee = 5000;
+            //deliveryInfo.claimDeliveryInfo.returnFee 반품
+            int deliveryReturnFee = 5000;
+            //deliveryInfo.deliveryFee.baseFee 배송비
+            string deliveryBaseFee = "";
+
+            //deliveryInfo.deliveryFee.freeConditionalAmount      deliveryInfo.deliveryFee.payType
+            string freeConditionalAmount = "";
+            string deliveryFee = "";
+            switch (deliverySet.deliveryPolicy)
+            {
+                case "무료 배송비":
+                    deliveryFeeType = "FREE";
+                    break;
+                case "고정 배송비":
+                    deliveryFeeType = "PAID&deliveryInfo.deliveryFee.payType=COLLECT_OR_PREPAID";
+
+                    break;
+                case "조건부 무료 배송비":
+                    deliveryFeeType = "CONDITIONAL_FREE";
+                    freeConditionalAmount = "&deliveryInfo.deliveryFee.freeConditionalAmount=" + deliverySet.maxFeeTerms + "&deliveryInfo.deliveryFee.payType=COLLECT_OR_PREPAID";
+                    break;
+                case "수량별 차등 배송비":
+                    deliveryFeeType = "QUANTITY_PAID";
+                    for (int i = 0; i < feeLevels.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            deliverySet.freeAddedFee = feeLevels[i].fee;
+                            deliveryFee = "&deliveryInfo.deliveryFee.freeSectionLastQuantity=" + feeLevels[i].maxCount + "&deliveryInfo.deliveryFee.payType=COLLECT_OR_PREPAID";
+                        }
+                        else if (i == 1)
+                        {
+                            deliveryFee += "&deliveryInfo.deliveryFee.secondSectionLastQuantity=" + feeLevels[i].maxCount + "&deliveryInfo.deliveryFee.secondExtraFee=" + (feeLevels[i].fee - feeLevels[i - 1].fee);
+
+                        }
+                        else if (i == 2)
+                        {
+                            deliveryFee += "&deliveryInfo.deliveryFee.thirdExtraFee=" + feeLevels[i].fee;
+                        }
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            regData.Product_Info = HttpUtility.HtmlDecode(regData.Product_Info);
+
+            string shippingAddressId = page.Substring(page.IndexOf("deliveryInfo.claimDeliveryInfo.shippingAddressId"), page.Length - page.IndexOf("deliveryInfo.claimDeliveryInfo.shippingAddressId"));
+            shippingAddressId = shippingAddressId.Substring(shippingAddressId.IndexOf("deliveryInfo.claimDeliveryInfo.shippingAddressId"), shippingAddressId.Length - shippingAddressId.IndexOf("deliveryInfo.claimDeliveryInfo.shippingAddressId"));
+            shippingAddressId = shippingAddressId.Substring(shippingAddressId.IndexOf("value=") + 7, shippingAddressId.Length - shippingAddressId.IndexOf("value=") - 7);
+            shippingAddressId = shippingAddressId.Substring(0, shippingAddressId.IndexOf("\""));
+
+            string returnAddressId = page.Substring(page.IndexOf("deliveryInfo.claimDeliveryInfo.returnAddressId"), page.Length - page.IndexOf("deliveryInfo.claimDeliveryInfo.returnAddressId"));
+            returnAddressId = returnAddressId.Substring(returnAddressId.IndexOf("deliveryInfo.claimDeliveryInfo.returnAddressId"), returnAddressId.Length - returnAddressId.IndexOf("deliveryInfo.claimDeliveryInfo.returnAddressId"));
+            returnAddressId = returnAddressId.Substring(returnAddressId.IndexOf("value=") + 7, returnAddressId.Length - returnAddressId.IndexOf("value=") - 7);
+            returnAddressId = returnAddressId.Substring(0, returnAddressId.IndexOf("\""));
+            //optionsJson
+
+            string plural = "ture";
+            if (regData.chbOriginYN.Equals("N"))
+            {
+                plural = "false";
+            }
+
+            string param = "statusType=&saleType=NEW&category.id=" + regData.categorySF + "&layoutType=BASIC&pageTitle=&name=" + HttpUtility.UrlEncode(regData.Product_Name_SF) +
+                          "&publicityPhraseContent=" + HttpUtility.UrlEncode(regData.Publicize_Text) + "&sellerManagementCode=" + regData.Control_Code + "&sellerBarcode=" + regData.Bar_Code +
+                          "&sellerCustomCode1=&sellerCustomCode2=&modelInfo.manufacturerName=" + HttpUtility.UrlEncode(regData.Maker) + "&modelInfo.brandName=" + HttpUtility.UrlEncode(regData.Brand) +
+                          "&modelInfo.modelName=" + HttpUtility.UrlEncode(regData.Model_No) + "&modelInfo.modelId=&certificationInfosJson=%5B%5D&originAreaInfo.plural=" + plural + "&originAreaInfo.originArea.code=" + originCode +
+                          "&originAreaInfo.type=" + originType + "&_originAreaInfo.type=" + originType + "&originAreaInfo.importer=" + HttpUtility.UrlEncode(regData.Brand) + "&originAreaInfo.content=&manufactureDate=" + regData.Open_Date.Replace("-", ".") +
+                          "&validDate=" + expireDate + "&taxType=" + taxType + "&minorPurchasable=" + adultUse + "&imagesJson=" + HttpUtility.UrlEncode(imageJsonData) +
+                          "&representativeImage=" + representativeImage + "&files=&files=&files=&files=&files=&files=&files=&files=&files=&files=&files=&files=&files=&files=&files=&editModeType=HTMLSrc&detailJsonAttachments=%5B%5D&productDetailInfoContent=" + regData.Product_Info +
+                          "&char_preview=%C2%AE%C2%BA%E2%8A%86%E2%97%8F%E2%97%8B&se2_tbp=on&se2_tbp3=on&mobileProductDetailPreviewType=CROP&afterServiceTelephoneNumber=000-0000-0000&afterServiceGuideContent=" + regData.Cs_Info +
+                          "&purchaseReviewExposure=true&reviewUnExposeReason=&minishopRegularCustomerExclusive=false&knowledgeShoppingProductRegistration=true&productSummary.productSummaryType=" + prodInfo.paramValue +
+                          "&productSummary.productSummaryContent=" + HttpUtility.UrlEncode(prodInfo.jsonText) + "&useSalePeriod=false&salePrice=" + HttpUtility.UrlEncode(string.Format("{0:n0}", regData.Price)) +
+                          "&stockQuantity=" + regData.Quantity + "&optionUsable=" + optionUsable + "&deliveryInfo.deliveryFee.baseFee=" + HttpUtility.UrlEncode(string.Format("{0:n0}", deliverySet.freeAddedFee)) + "&supplementProductConfiguration.sortType=" + sortType +
+                          "&supplementProductConfiguration.usable=" + addedProdUse + "&useDeliveryInfo=true&deliveryInfo.deliveryType=DELIVERY" + deliveryBaseFee + deliveryFee +
+                          "&bundleAvailable=false&deliveryInfo.deliveryFee.type=" + deliveryFeeType + "&deliveryFeeByAreaUpdate=on&deliveryInfo.claimDeliveryInfo.returnDeliveryCompanyPriority=PRIMARY" +
+                          "&deliveryInfo.claimDeliveryInfo.returnFee=" + HttpUtility.UrlEncode(string.Format("{0:n0}", deliverySet.returnFee)) + "&deliveryInfo.claimDeliveryInfo.exchangeFee=" + HttpUtility.UrlEncode(string.Format("{0:n0}", deliverySet.exchangeFee)) + "&deliveryInfo.claimDeliveryInfo.shippingAddressId=" + shippingAddressId + "&deliveryInfo.claimDeliveryInfo.returnAddressId=" + returnAddressId +
+                          "&deliveryInfo.differentialFee=&deliveryInfo.installationFee=false&sellerDiscountYN=false&useMultiPurchaseDiscountYN=false";
+            /*날려보삼*/
+            //"benefitActivityYN=true&benefitActivity.purchaseReviewPaymentCount=1&benefitActivity.premiumPaymentCount=1&benefitActivity.useReqularCustomerPaymentCount=on&benefitActivity.reqularCustomerPaymentCount=1&benefitActivity.useDate=on&benefitActivity.startDate=2015.06.11&benefitActivity.endDate=2015.06.12&benefitInterestYN=true&benefitInterest.value=3&benefitInterest.useDate=on&benefitInterest.startDate=2015.06.11&benefitInterest.endDate=2015.06.12&useGift=true&gift=%EC%82%AC%EC%9D%80%ED%92%88&_customMade=on&_publicityPhraseContent.useDate=on&_deliveryInfo.saveTemplate=on&_deliveryInfo.useVisit=on&_deliveryInfo.useQuickService=on&_sellerDiscount.mobileUseDate=on&windowRegistration=false&windowItemId=&windowItemJson=";
+            //detailJsonAttachments=[]&productDetailInfoContent=상품상세정보&char_preview=®º⊆●○&se2_tbp=on&se2_tbp3=on&mobileProductDetailPreviewType=CROP&rnotice2=false&noticeJsonAttachments=&afterServiceTelephoneNumber=000-0000-0000&afterServiceGuideContent=A/S안내&purchaseReviewExposure=true&reviewUnExposeReason=&minishopRegularCustomerExclusive=false&knowledgeShoppingProductRegistration=true&galleryUsable=false&productSummary.productSummaryType=DIET_FOOD&productSummary.productSummaryContent={"advertisingCertificationType":"상품상세 참조","amount":"상품상세 참조","cautionAndSideEffect":"상품상세 참조","compensationProcedure":"1","customerServicePhoneNumber":"상품상세 참조","expirationDate":"","expirationDateText":"상품상세 참조","foodType":"상품상세 참조","geneticallyModified":"false","importDeclarationCheck":"false","ingredients":"상품상세 참조","location":"상품상세 참조","noRefundReason":"1","nonMedicinalUsesMessage":"상품상세 참조","nutritionFacts":"상품상세 참조","packDate":"","packDateText":"상품상세 참조","producer":"상품상세 참조","productSummaryType":"DIET_FOOD","qualityAssuranceStandard":"1","specification":"상품상세 참조","troubleShootingContents":"1","weight":"상품상세 참조"}&useSalePeriod=true&saleStartDate=2015.06.11 00&saleEndDate=2015.06.25 23&salePrice=100,000,000&stockQuantity=1&useMinPurchaseQuantityRestrict=false&useMaxPurchaseQuantityRestrict=false&_maxPurchaseQuantityInputCheck=&optionsJson=[{"groupName":"첫번째옵션","id":null,"optionType":"COMBINATION","sortType":"CREATE"},{"groupName":"두번째옵션","id":null,"optionType":"COMBINATION","sortType":"CREATE"},{"groupName":"직접입력형 옵션","id":null,"optionType":"CUSTOM","sortType":"CREATE","usable":"true"}]&optionCombinationsJson=[{"id":null,"optionName1":"첫번째옵션","optionName2":"두번째옵션","price":0,"sellerManagerCode":"1111","stockQuantity":1,"usable":true}]&optionUsable=true&supplementProductConfiguration.sortType=CREATE&supplementsJson=[{"groupName":"추가상품명","id":null,"name":"추가상품값","price":"1000","sellerManagementCode":"1111","stockQuantity":"1","usable":true}]&supplementProductConfiguration.usable=true&useDeliveryInfo=true&deliveryInfo.templateName=&deliveryInfo.deliveryType=DELIVERY&deliveryInfo.quickServiceArea=&deliveryInfo.visitAddressId=&bundleAvailable=true&deliveryInfo.bundleGroup.id=29031&deliveryInfo.deliveryFee.type=FREE&deliveryFeeByAreaUpdate=on&deliveryInfo.claimDeliveryInfo.returnDeliveryCompanyPriority=PRIMARY&deliveryInfo.claimDeliveryInfo.returnFee=5000&deliveryInfo.claimDeliveryInfo.exchangeFee=5000&deliveryInfo.claimDeliveryInfo.shippingAddressId=64813&deliveryInfo.claimDeliveryInfo.returnAddressId=64814&deliveryInfo.differentialFee=&deliveryInfo.installationFee=false&__sellerCommentContent=0&_sellerCommentContent=&sellerDiscountYN=true&sellerDiscount.targetAll=on&sellerDiscount.value=1000&sellerDiscount.valueUnitType=WON&sellerDiscount.useDate=on&sellerDiscount.startDate=2015.06.11 00:00&sellerDiscount.endDate=2015.06.12 23:59&useMultiPurchaseDiscountYN=true&multiPurchaseDiscount.orderValue=1000&multiPurchaseDiscount.orderUnitType=COUNT&multiPurchaseDiscount.value=1000&multiPurchaseDiscount.valueUnitType=WON&multiPurchaseDiscount.useDate=on&multiPurchaseDiscount.startDate=2015.06.11&multiPurchaseDiscount.endDate=2015.06.12&benefitMileageYN=true&benefitMileage.value=10&benefitMileage.valueUnitType=WON&benefitMileage.useDate=on&benefitMileage.startDate=2015.06.11&benefitMileage.endDate=2015.06.12&benefitActivityYN=true&benefitActivity.purchaseReviewPaymentCount=1&benefitActivity.premiumPaymentCount=1&benefitActivity.useReqularCustomerPaymentCount=on&benefitActivity.reqularCustomerPaymentCount=1&benefitActivity.useDate=on&benefitActivity.startDate=2015.06.11&benefitActivity.endDate=2015.06.12&benefitInterestYN=true&benefitInterest.value=3&benefitInterest.useDate=on&benefitInterest.startDate=2015.06.11&benefitInterest.endDate=2015.06.12&useGift=true&gift=사은품&_customMade=on&_publicityPhraseContent.useDate=on&_deliveryInfo.saveTemplate=on&_deliveryInfo.useVisit=on&_deliveryInfo.useQuickService=on&_sellerDiscount.mobileUseDate=on&windowRegistration=false&windowItemId=&windowItemJson=
+
+            //2015-10-10 추가 사항
+            param += "&categoryName=&feeAreaUseYN=true&deliveryInfo.deliveryFeeByArea.areaType=AREA_3&deliveryInfo.deliveryFeeByArea.area2extraFee={0}";
+            param += "&deliveryInfo.deliveryFeeByArea.area3extraFee={1}";
+            param += "&minPurchaseQuantity=&maxPurchaseQuantityPerOrder=&maxPurchaseQuantityPerId=&metaDescription=&display=true&knowledgeShoppingProductRegistrationCheck=on";
+            param += "&epEnuriProductRegistration=false&epDanawaProductRegistration=false&benefitInterestYN=false";
+            param += "&gift=&_deliveryInfo.useVisit=on&_deliveryInfo.useQuickService=on&_deliveryFeeByAreaUpdate=on&_customMade=on&_publicityPhraseContent.useDate=on";
+            param += "&_benefitMileageYN=on&_benefitReviewPointYN=on&windowRegistration=false&windowItemId=&windowItemJson=";
+
+            //{0} : 제주 지역 배송비 금액 폼으로 url Decoding , {1} 도서 산간 지역
+
+
+            param = string.Format(param, HttpUtility.UrlEncode(string.Format("{0:n0}", deliverySet.jejuAddedFee)), HttpUtility.UrlEncode(string.Format("{0:n0}", deliverySet.mountainousFee)));
+
+            url = "http://sell.storefarm.naver.com/p/products/add";
+            httpRequest.POST(url, param);
+            string result = httpRequest.ResultText;
+            StoreFarmProdResult registResult = null;
+
+            try
+            {
+                registResult = js.Deserialize<StoreFarmProdResult>(result);
+            }
+            catch
+            {
+
+            }
+            if (registResult != null && registResult.bSuccess)
+            {
+                regData.marketProductCode = registResult.htReturnValue.productId.ToString();
+                new ProductBO().updateMarketProductCode(regData);
+            }
+            else
+            {
+                if (registResult == null)
+                {
+                    result = result.Substring(result.IndexOf("message"), result.LastIndexOf("\"") - result.IndexOf("message"));
+                    result = result.Substring(result.LastIndexOf("\"") + 1, result.Length - result.LastIndexOf("\"") - 1);
+                    regData.errorText = result;
+                }
+                else
+                {
+                    result = "";
+                    foreach (InvalidItemList invalidItem in registResult.htReturnValue.invalidItemList)
+                    {
+                        result += invalidItem.message + "&&";
+                    }
+                    result = result.Substring(0, result.Length - 2);
+                    regData.errorText = result;
+                }
+                new ProductBO().updateErrorText(regData);
+            }
+        }

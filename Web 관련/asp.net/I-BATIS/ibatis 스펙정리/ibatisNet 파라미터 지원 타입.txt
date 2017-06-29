@@ -1,0 +1,69 @@
+CLR Type  |   Object/Map Property Mapping   |   Result Class/Parameter Class**  |   Type Alias**
+
+System.ArrayList  |    Yes    |    Yes   |    list
+
+System.Boolent    |    Yes    |    Yes   |    Boolean, bool
+
+System.Byte       |    Yes    |    Yes   |    Byte, byte
+
+System.Char       |    Yes    |    Yes   |    Char , char
+
+System.DateTime   |   Yes    |    Yes   |    dateTime , data
+
+
+System.Decimal	Yes	Yes	Decimal, decimal
+
+System.Double	Yes	Yes	Double, double
+
+System.Guid	Yes	Yes	guid
+
+System.Hashtable	Yes	Yes	map, hashmap, hashtable
+
+System.Int16	Yes	Yes	Int16, short, Short
+
+System.Int32	Yes	Yes	Int32, int, Int, integer, Integer
+
+System.Int64	Yes	Yes	Int64, long, Long
+
+System.SByte	Yes	Yes	SByte, sbyte
+
+System.Single	Yes	Yes	Float, float, Single, single
+
+System.String	Yes	Yes	String, string
+
+System.TimeSpan	Yes	Yes	N/A
+
+System.UInt16	Yes	Yes	Short, short
+
+System.UInt32	Yes	Yes	Uint, uint
+
+System.UInt64	Yes	Yes	Ulong, ulong
+
+Nullable<bool>	Yes	Yes	bool?
+
+Nullable<byte>	Yes	Yes	byte?
+
+Nullable<char>	Yes	Yes	char?
+
+Nullable<DateTime>	Yes	Yes	DateTime?
+
+Nullable<decimal>	Yes	Yes	decimal?
+
+Nullable<double>	Yes	Yes	double?
+
+Nullable<Int16>	Yes	Yes	Int16?
+
+Nullable<Int32>	Yes	Yes	Int32?
+
+Nullable<Int64>	Yes	Yes	Int64?
+
+Nullable<SByte>	Yes	Yes	SByte?
+
+Nullable<Single>	Yes	Yes	Single?
+
+Nullable<UInt16>	Yes	Yes	UInt16?
+
+Nullable<UInt32>	Yes	Yes	UInt32?
+
+Nullable<UInt64>	Yes	Yes	UInt64?
+

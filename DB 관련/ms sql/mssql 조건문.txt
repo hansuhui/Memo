@@ -1,0 +1,8 @@
+and isNull(a.IsSend, '') != '1' and b.GiftState = '20' and a.SaleState in ('0', '1', '2', '3')
+
+부정시 != , <>
+
+
+1이 아닌것만 가져오기
+
+where '1' not in ('')

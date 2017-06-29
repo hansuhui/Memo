@@ -1,0 +1,42 @@
+자바스크립트 키보드를 누르면 누른 키보드 유니코드 확인 하기
+ 
+ 
+실행결과 : [ jsfiddle ] 
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />   
+  </head>
+       <script type='text/javascript'>
+            // 문서 안에 커서를 두고 입력시 누른 키보드의 유니코드가 출력 됩니다.
+            function xyEvent(evt){
+                alert( evt.keyCode );
+            }
+             // document(문서)에 onkeydown 이벤트를 적용 합니다.
+            function clickEvent() {
+                // 브라우저 호환(크로스브라우징)을 위해 메소드 제공 여부를 체크 합니다. 
+                if ( document.addEventListener ) {
+                   document.addEventListener("keydown",xyEvent,false);
+                } else {
+                   document.attachEvent("onkeydown",xyEvent);
+                }
+            } 
+            window.onload = clickEvent();
+       </script>
+ 
+       <div>
+            <input type='text' />
+       </div>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+onkeydown  -  키보드를 눌렀을때 발생하는 이벤트 입니다. ( Event 객체 )

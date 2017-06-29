@@ -1,0 +1,11 @@
+자바스크립트 새로고침 종류
+location.reload();     // 새로고침
+top.document.프레임이름.location.reload();     // 프레임 새로고침
+top.document.location.reload();     // 프레임 전체 새로고침
+opener.location.reload();     // 부모창 새로 고침
+
+자바로 자동새로고침
+<SCRIPT language="JavaScript">
+   setTimeout("history.go(0);", 10);
+</SCRIPT>
+[출처] javascript 자바스크립트 새로고침|작성자 노력쟁이 학제

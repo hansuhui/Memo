@@ -1,0 +1,12 @@
+https://www.w3schools.com/graphics/canvas_images.asp
+
+[Canvas Images]
+
+
+
+window.onload = function() {
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var img = document.getElementById("scream");
+    ctx.drawImage(img, 10, 10);
+};

@@ -1,0 +1,36 @@
+	public DbCommand AddInParameter(string cmdType, DbCommand cmd)
+		{
+			if (cmdType == "List")
+			{
+				db.AddInParameter(cmd, "@Ban_Site_ID", DbType.String, "%" + Z.Auth.Identity.SiteID + ";%");
+				db.AddInParameter(cmd, "@Closing_Date", DbType.String, DateTime.Now.ToString("yyyy-MM-dd"));
+				db.AddInParameter(cmd, "@CurrentDate", DbType.String, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                db.AddInParameter(cmd, "@Site", DbType.String, base.Site);
+				db.AddInParameter(cmd, "@Provider", DbType.String, base.Provider);
+				db.AddInParameter(cmd, "@Category", DbType.String, !string.IsNullOrEmpty(base.Category) ? base.Category.Replace("000", "") + "%" : "");
+				db.AddInParameter(cmd, "@Brand", DbType.String, base.Brand);
+				db.AddInParameter(cmd, "@Maker", DbType.String, base.Maker);
+				db.AddInParameter(cmd, "@PriceMin", DbType.Int32, base.PriceMin);
+				db.AddInParameter(cmd, "@PriceMax", DbType.Int32, base.PriceMax);
+
+				db.AddInParameter(cmd, "@SearchKeywordExt1", DbType.String, "%" + base.KeywordExt1 + "%");
+				db.AddInParameter(cmd, "@SearchKeywordExt2", DbType.String, "%" + base.KeywordExt2 + "%");
+				db.AddInParameter(cmd, "@SearchKeywordExt3", DbType.String, "%" + base.KeywordExt3 + "%");
+				db.AddInParameter(cmd, "@SearchKeyword", DbType.String, "%" + base.SearchKeyword + "%");
+				if (base.IsResultIn)
+					db.AddInParameter(cmd, "@SearchKeyword_2", DbType.String, "%" + base.SearchKeyword_2 + "%");
+			}
+			else if (cmdType == "CreateBrand" || cmdType == "CreateMaker")
+			{
+				db.AddInParameter(cmd, "@Site", DbType.String, base.Site);
+				db.AddInParameter(cmd, "@Category", DbType.String, !string.IsNullOrEmpty(base.Category) ? base.Category.Replace("000", "") + "%" : "");
+				db.AddInParameter(cmd, "@Brand", DbType.String, base.Brand);
+				db.AddInParameter(cmd, "@Maker", DbType.String, base.Maker);
+				db.AddInParameter(cmd, "@PriceMin", DbType.Int32, base.PriceMin);
+				db.AddInParameter(cmd, "@PriceMax", DbType.Int32, base.PriceMax);
+				db.AddInParameter(cmd, "@SearchKeyword", DbType.String, "%" + base.SearchKeyword + "%");
+				if (base.IsResultIn)
+					db.AddInParameter(cmd, "@SearchKeyword_2", DbType.String, "%" + base.SearchKeyword_2 + "%");
+			}
+			return cmd;
+		}			

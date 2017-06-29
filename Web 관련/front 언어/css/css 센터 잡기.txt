@@ -1,0 +1,4 @@
+만약에 position:absolute로 되어 있으면 margin:0 auto가 안먹는데
+
+ left:0; right:0;  margin-left:auto;  margin-right:auto;
+

@@ -1,0 +1,160 @@
+https://www.studydev.com/development/postgresql-trigger-%ED%8F%AC%EC%8A%A4%ED%8A%B8%EA%B7%B8%EB%A0%88%EC%8A%A4-%ED%8A%B8%EB%A6%AC%EA%B1%B0/
+
+[DB에서 언제 쓸까?]
+
+데이터베이스에서 어떤 조건에 의해서(WHEN) 실행하기 전(BEFORE)이나, 
+완료된 후(AFTER) 자동으로 지정한 함수(FUNCTION)를 실행하도록 지정할 수 있다.
+
+
+[사용 순서]
+
+1.자동 수행되어야 하는 함수를 미리 정의해야 한다. (인자는 없고 리턴 자료형은 trigger임)
+
+2.트리거 기능을 추가하여 함수를 연결한다. 로우 단위 또는 명령 단위로 수행할 수 있다.
+
+3.실행 순서에 따라 선처리(BEFORE), 후처리(AFTER)로 구분한다. 선처리의 경우 
+  데이터가 중간에 변경될 수 있으므로 중의해야 한다.
+
+4.트리거가 다중으로 있을 경우 트리거의 이름순으로 실행된다.
+ 
+[주의 사항]
+
+1.트리거가 또 다른 트리거를 발생시킬 수 있다. 이것은 프로그래머의 재량이다. 조심해야 한다.
+
+
+[예제 실습]
+
+1.테이블 만들기
+2. 트리거 함수 만들기
+3. 트리거 만들기
+
+[테이블 만들기]
+
+CREATE TABLE emp (
+    empname           text NOT NULL,
+    salary            integer
+);
+
+
+CREATE TABLE emp_audit(
+    operation         char(1)   NOT NULL,
+    stamp             timestamp NOT NULL,
+    userid            text      NOT NULL,
+    empname           text      NOT NULL,
+    salary integer
+);
+
+
+
+[트리거 함수 만들기]
+
+CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
+    BEGIN
+        --
+        -- Create a row in emp_audit to reflect the operation performed on emp,
+        -- make use of the special variable TG_OP to work out the operation.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO emp_audit SELECT 'D', now(), user, OLD.*;
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO emp_audit SELECT 'U', now(), user, NEW.*;
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO emp_audit SELECT 'I', now(), user, NEW.*;
+            RETURN NEW;
+        END IF;
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
+    END;
+$emp_audit$ LANGUAGE plpgsql;
+
+
+[트리거 만들기]
+
+CREATE TRIGGER emp_audit
+AFTER INSERT OR UPDATE OR DELETE ON emp
+    FOR EACH ROW EXECUTE PROCEDURE process_emp_audit();
+
+
+====================================================================================
+
+
+http://wwwi.tistory.com/348
+
+- 우선 테스트용 테이블 작성 
+
+CREATE TABLE datalog(
+    logtime timestamp PRIMARY KEY,
+    data varchar,
+    content varchar
+);
+
+
+* 테이블 지우기
+DROP TABLE datalog;
+
+
+- 펑션(Function) 함수 예제
+    이 함수가 실행되면 지정 테이블의 레코드가 10개를 넘으면 가장 오래된 것부터 지운다.
+
+CREATE FUNCTION data_fun() RETURNS trigger AS $data_fun$
+    DECLARE
+	rowcount integer;
+        delcount integer;
+        maxcount integer;
+    BEGIN
+        maxcount := 10;
+        SELECT count(*) logtime into rowcount  FROM datalog;
+        delcount := rowcount - maxcount + 1;
+
+        IF delcount > 0 THEN
+	    DELETE FROM datalog WHERE logtime IN (SELECT logtime FROM datalog ORDER BY logtime LIMIT delcount);
+        END IF;
+
+	RETURN NEW;
+    END;
+$data_fun$ LANGUAGE plpgsql;
+
+* 펑션 지우기
+DROP FUNCTION data_fun();
+
+- 트리거(Trigger) 함수 예제
+    지정 Table에서 추가나 변경이 이루어질 때 지정 펑션이 실행된다.
+
+CREATE TRIGGER data_trg BEFORE INSERT OR UPDATE ON datalog
+    FOR EACH ROW EXECUTE PROCEDURE data_fun();
+
+* 트리거 지우기
+DROP TRIGGER data_trg ON datalog;
+
+
+- 테스트용 데이터
+
+insert into datalog(logtime, data) values('2015-01-01 12:12:01', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:02', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:03', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:04', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:05', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:06', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:07', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:08', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:12:09', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:01', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:02', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:03', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:04', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:05', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:06', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:07', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:08', 'aa');
+insert into datalog(logtime, data) values('2015-01-01 12:13:09', 'aa');
+
+위의 데이터를 입력하면 로그는 10개 행만 테이블에 저장된다.
+데이터를 추가하기 전에 트리거의 연결된 펑션이 실행되어
+테이블의 행이 10개를 넘어가면 가장 옛날 데이터를 삭제한다.
+
+
+
+
+
+

@@ -1,0 +1,145 @@
+[max-width로 반응형 웹디자인을 위한 이미지 스타일링 하기]
+
+반응형 웹디자인은 웹브라우저의 가로폭에 따라 레이아웃이 변하고, 
+그에 따라 각 요소의 가로폭도 변합니다.
+
+텍스트는 일반적으로 바뀐 폭에 맞추어 줄바꿈이 되지만, 
+이미지는 줄바꿈이라는 게 없기 때문에 문제가 생깁니다.
+
+어떤 문제가 발생하는지 살펴보고 해결책을 찾아보겠습니다.
+
+
+- 이미지 크기를 정하지 않은 경우 -
+
+이미지의 크기를 정하지 않으면 부모 요소보다 큰 이미지는 부모 요소를 벗어나서 나타납니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips</title>
+    <style>
+      div {
+        width: 400px;
+        border: 2px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p><img src="lego-300x200.png"></p>
+      <p><img src="lego-500x333.png"></p>
+    </div>
+  </body>
+</html>
+
+
+이를 해결하는 방법은 max-width 속성을 부여하는 것입니다.
+
+
+img {
+  max-width: 100%;
+}
+
+
+최대 크기를 부모 요소의 크기로 제한하는 것입니다. 가로 세로 비율에 맞게 크기가 줄어듭니다.
+
+
+- 이미지 크기를 attribute로 설정한 경우 -
+
+이미지 크기가 attribute로 설정되어 있으면 max-width 속성을 추가했을 때 
+가로폭은 줄어들지만 높이는 줄어들지 않습니다. 그래서 원본과 가로 세로 비율이 맞지 않는 문제가 발생합니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips</title>
+    <style>
+      div {
+        width: 400px;
+        border: 2px solid red;
+      }
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p><img src="lego-300x200.png" width="300" height="200"></p>
+      <p><img src="lego-500x333.png" width="500" height="333"></p>
+    </div>
+  </body>
+</html>
+
+
+이를 해결하는 방법은 height 속성값을 auto로 지정해주는 것입니다. 원본 비율에 맞게 높이가 조정됩니다.
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+하지만 height: auto;를 추가해도 IE8에서는 여전히 문제가 발생합니다. 
+해결하는 방법은 width: inherit;를 추가하는 것입니다.
+
+img {
+  width: inherit;
+  max-width: 100%;
+  height: auto;
+}
+
+
+- 이미지 크기를 inline style로 정한 경우 -
+
+좋은 방법은 아니지만, 이미지 크기를 inline style로 정하는 경우가 있습니다. 
+예를 들어 다음처럼 크기를 정하는 것이죠.
+
+
+<img src="lego-300x200.png" style="width: 300px; height: 200px;">
+
+
+위에서 제시한 방법을 사용해도 가로폭은 조정되나 높이가 변하지 않아 비율이 맞지 않게 됩니다. 
+이런 경우 스크립트로 style 속성을 제거하면 됩니다.
+
+다음은 jQuery로 style 속성을 제거한 예입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips</title>
+    <style>
+      div {
+        width: 400px;
+        border: 2px solid red;
+      }
+      img {
+        width: inherit;
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.11.0.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'img' ).removeAttr( 'style' );
+      } );
+    </script>
+  </head>
+  <body>
+    <div>
+      <p><img src="lego-300x200.png" style="width: 300px; height: 200px;"></p>
+      <p><img src="lego-500x333.png" style="width: 500px; height: 300px;"></p>
+    </div>
+  </body>
+</html>
+
+
+
+
+
+

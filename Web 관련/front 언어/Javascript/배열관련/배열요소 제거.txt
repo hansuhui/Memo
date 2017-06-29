@@ -1,0 +1,10 @@
+
+var random_text = new Array();
+
+        Array.prototype.removeElement = function (index) {
+            this.splice(index, 1);
+            return this;
+        };
+
+random_text.removeElement(random_number);
+

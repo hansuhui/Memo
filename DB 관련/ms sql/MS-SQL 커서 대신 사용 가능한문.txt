@@ -1,0 +1,27 @@
+커서보다는 임시테이블이 임시테이블보다는 테이블 변수를 사용하는 것이 성능에 보탬이 됩니다.
+
+
+decalre @tmptable table
+(
+	nid in indentity(1,1) not null
+,	title varhcar(80) not null
+)
+insert @tmptable(title)
+select title from titles --커서문에서 for select에 해당
+
+declare @i int,@maxno int, @title varchar(80)
+
+select @i = 1,@maxno = max(nid) from @tmptable
+
+while @i <= @maxno
+begin
+	select @title = title from @tmptable where = @i
+	-- fetch into에 해당
+	print @title	
+	set @i=@i+1
+end
+
+
+CTRL + K로 확인하면 테이블 변수로 사용할 경우 실제 테이블에 잠금을 전혀 걸지 않는 것을 알 수 있습니다.(중요)
+그와 반대로 커서를 사용할 경우 프로시저 시작부터 끝까지 지속적으로 사용 부분을 계속해서 잠그고 있어서 
+다른 작업들이 대기해야 되는 문제가 생깁니다.

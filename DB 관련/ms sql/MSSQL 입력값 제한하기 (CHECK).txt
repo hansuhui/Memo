@@ -1,0 +1,30 @@
+- CHECK 란?
+?   CHECK 란 값을 입력하였을 때 해당 값이 조건에 맞는지 확인하여 입력을 하도록 하거나 거부하는 역활을 하는 제약조건입니다.  
+
+ 
+ - MSSQL 테이블 생성시 CHECK 조건 추가방법
+   CREATE TABLE [테이블명] (
+      [컬럼명] [데이터형식] [제약조건],
+      CONSTRAINT [CHECK명] CHECK ([조건절])
+   )
+
+? 
+ - MSSQL 기존 테이블에 CHECK 조건 추가방법
+?   ALTER TABLE [테이블명] ADD CONSTRAINT [CHECK명] CHECK ([조건절])
+
+? 
+
+ - MSSQL 기존 테이블에 CHECK 조건 삭제방법
+?   ALTER TABLE [테이블명] DROP [CHECK명]
+
+ 
+---------------------------예제 ---------------------------
+CONSTRAINT CK_성적_점수 CHECK (점수 > 90)
+
+ALTER TABLE dbo.성적 DROP CK_성적_점수
+ALTER TABLE dbo.성적 ADD CONSTRAINT CK_성적_점수 CHECK (점수 > 80)
+
+
+[참고사항] 테이블 제약조건 확인방법
+ SP_HELPCONSTRAINT [테이블명]
+ 

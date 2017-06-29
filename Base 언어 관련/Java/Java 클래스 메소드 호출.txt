@@ -1,0 +1,4 @@
+subjectVO.getClass().getMethod("메소드명").invoke(subjectVO)
+
+
+객체.getClass().getMethod("메소드명").invoke(객체)

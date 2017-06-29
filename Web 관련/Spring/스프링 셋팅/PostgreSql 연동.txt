@@ -1,0 +1,48 @@
+http://blog.daum.net/_blog/BlogTypeView.do?blogid=0Tjdj&articleno=25&categoryId=2&regdt=20120727094210
+
+1. JDBC 드라이버 받기 (postgresql-8.4-703.jdbc4.jar)
+
+https://jdbc.postgresql.org/download.html
+
+
+2. JDBC Connection 접속 소스
+
+/**
+ * JDBC Connection String Examples
+ *
+ * jdbc:postgresql:database_name 
+ * jdbc:postgresql://host/database_name 
+ * jdbc:postgresql://host:port/database_name 
+ */
+
+import java.sql.*;
+
+public class PgsqlJdbcTest {
+
+  public static void main(String[] args) throws Exception {
+    
+    String url = "jdbc:postgresql:db_study";  
+    String usr = "scott";  
+    String pwd = "tiger";
+
+    Class.forName("org.postgresql.Driver");
+    
+    // -- 1
+    Connection conn = DriverManager.getConnection(url, usr, pwd);
+    System.out.println(conn);
+    conn.close();
+    
+    // -- 2
+    url = "jdbc:postgresql://localhost/db_study";
+    conn = DriverManager.getConnection(url, usr, pwd);
+    System.out.println(conn);
+    conn.close();
+
+    
+    // -- 3
+    url = "jdbc:postgresql://localhost:5432/db_study";
+    conn = DriverManager.getConnection(url, usr, pwd);
+    System.out.println(conn);
+    conn.close();
+  }
+}

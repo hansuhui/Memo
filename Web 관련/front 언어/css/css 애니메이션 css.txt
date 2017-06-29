@@ -1,0 +1,3 @@
+https://gonehybrid.com/how-to-animate-your-ionic-app-with-animate-css-and-nganimate/
+
+https://daneden.github.io/animate.css/

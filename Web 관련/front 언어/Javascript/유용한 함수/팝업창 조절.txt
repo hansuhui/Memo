@@ -1,0 +1,27 @@
+
+                function open_win_noresizable(url, name) {
+                    var oWin = window.open(url, name,"scrollbars=no, status=no, resizable=no, width=330, height=150");
+
+                }
+                open_win_noresizable("/CScenter/pwcheck/" + val + "","");
+            }
+
+
+
+
+
+
+
+<script language="javascript">
+function winPopup() {
+ var sUrl = "1.html";    // 안에 들어갈 페이지
+ var sName = "test";
+ var sPosition = ",left=100,top=100";
+ oPopup = window.open(sUrl,sName,"width=800,height=800,toolbar=no,status=yes,location=no,scrollbars=no,menubar=no,resizable=no"+sPosition);
+
+
+fullscreen
+
+ oPopup.focus();
+}
+</script>

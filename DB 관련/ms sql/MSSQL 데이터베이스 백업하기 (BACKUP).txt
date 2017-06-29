@@ -1,0 +1,36 @@
+- 백업방법
+  BACKUP DATABASE [백업할 DB명] TO DISK = '[백업할 위치 및 백업 파일명]'
+?
+ 
+
+?
+ 
+ - 테이블 생성
+   CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       점수 int NOT NULL
+   )
+?
+ 
+ - 데이터 입력 
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (1, '홍길동', 90)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (2, '일지매', 95)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (3, '임꺽정', 85)
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.성적
+ 
+? - 예제
+    학생정보 DB를 C드라이브에 학생정보.bak라는 이름으로 백업하시오. (성적테이블이 포함된 DB가 학생정보 DB인것으로 가정)
+ 
+ 
+ - 예제 쿼리
+   BACKUP DATABASE 학생정보 TO DISK = 'C:\학생정보.bak'
+?
+ 
+메세지
+ 파일 1에서 데이터베이스 '학생정보', 파일 '학생정보'에 대해 176개의 페이지를 처리했습니다 .
+ 파일 1에서 데이터베이스 '학생정보', 파일 '학생정보_log'에 대해 5개의 페이지를 처리했습니다 .
+ BACKUP DATABASE이(가) 181개의 페이지를 0.409초 동안 처리했습니다(3.457MB/초).

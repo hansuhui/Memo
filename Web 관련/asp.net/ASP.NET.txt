@@ -1,0 +1,36 @@
+AJAX의 javascript에서 한글 깨지는 현상 방지
+
+AJAX의 javascript에서 한글이 깨지는 현상을 고민하다가, 예전에 IIS 5.0에서 XMLHttpRequest 객체를 
+이용하여 비동기식 XML 통신을 구현했을 때 역시 한글처리 때문에 고민을 했었던 기억이 될살아 났다.
+
+그 때 XMLHttpRequest 객체를 이용하여 통신할 때 한글 처리를 위해서는 
+"<?xml version="1.0" encoding="euc-kr" ?>" 태그는 필수 항목이었으며, 
+또한, ASP 페이지 내에서도 "Response.charSet = "euc-kr" 같이 charSet을 
+설정해 줘야 했었다.
+               
+
+AJAX (Asynchronous Javascript And Xml)의 단어에서도 알 수 있듯이 클라이언트와 서버간 통신을 위해서
+javascript와 XMLHttpRequest를 사용할 수 밖에 없다.
+그러므로,  AJAX 를 사용할 때도 charSet을 설정해 줘야 한글 문제를 처리할 수 있다.
+
+[해결방법]
+1. Web.config의 <system.web> 태그 안에 charSet을 정의한다.
+   <system.web>    
+         .......
+         <globalization requestEncoding="euc-kr" responseEncoding="euc-kr"/>
+         .......
+  </system.web>
+
+2. aspx 페이지에 charset 정의
+   <meta http-equiv="Content-Type" content="text/html; charset=euc-kr;" />
+
+3. ScriptManager에 Web.config에서 설정한 charset 사용을 허용한다.
+    <asp:ScriptManager id="ScriptManager1" runat="server" 
+              EnableScriptGlobalization="True" 
+              EnableScriptLocalization="True">
+             <Scripts>
+                    <asp:ScriptReference Path="../js/common.js" />
+              </Scripts>
+    </asp:ScriptManager>
+
+이렇게 하면 ScriptManager내에 있는 javascript의 한글 처리에 문제가 해결된다.

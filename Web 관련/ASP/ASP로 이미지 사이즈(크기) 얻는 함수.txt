@@ -1,0 +1,16 @@
+asp로 이미지 사이즈(크기) 얻는 함수
+'==================================================
+' 이미지 크기 얻는 함수 GetImageSize(물리적경로)
+'==================================================
+Function GetImageSize(Virtual_Image_Path)
+    Dim objPic
+    dim retVal(2)
+    Set objPic = LoadPicture(Virtual_Image_Path)
+    imgWidth = CLng(CDbl(objPic.Width) * 24 / 635) 
+    imgHeight = CLng(CDbl(objPic.Height) * 24 / 635)
+    Set objPic = Nothing
+    
+    retVal(0) = imgWidth
+    retVal(1) = imgHeight
+    GetImageSize=retVal
+End Function

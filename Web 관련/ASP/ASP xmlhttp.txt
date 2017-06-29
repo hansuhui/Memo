@@ -1,0 +1,10 @@
+<%
+    url = "http://naver.com"
+   
+    set xh=createobject("msxml2.xmlhttp")
+    xh.open "get", url, false
+    xh.send
+   
+    response.write xh.responseText
+    '보내느쪽에서 뭘로보내는지에 따라 response를 다르게 써야함
+%>

@@ -1,0 +1,38 @@
+
+
+JSP 페이지에 대한 정보를 입력
+JSP가 생성할 문서의 타입, 사용할 클래스, 버퍼 여부, 세션 여부
+JSP 디렉티브의 작성 예
+<%@ page contentType="text/html; charset=euc-kr" %>
+<%@ page import="java.util.Date" %>
+주요 속성
+contentType : JSP가 생성할 문서의 타입을 지정
+import : JSP 페이지에서 사용할 자바 클래스를 지정
+session : JSP 페이지가 세션을 사용할 지의 여부를 지정
+info : JSP 페이지에 대한 설명을 입력한다.
+errorPage : 에러가 발생할 때 보여 줄 페이지를 지정
+isErrorPage : 에러 페이지인지의 여부를 지정
+
+
+[page 디렉티브: import 속성]
+
+JSP 페이지에서 사용할 클래스(인터페이스) 지정
+import 속성의 사용 예
+
+<%@ page import = "java.util.Calendar" %>
+<%@ page import = "java.util.Calendar, java.util.Date" %>
+<%@ page import = "java.util.*" %>
+
+import 한 클래스는 단순 클래스 이름으로 사용 가능
+
+<%@ page contentType = "text/html; charset=euc-kr" %>
+<%@ page import = "java.util.Date" %>
+<html>
+<head><title>Calendar 클래스 사용</title></head>
+<body>
+<%
+    Date date = new Date();
+    java.util.Calendar cal = java.util.Calendar.getInstance();
+%>
+
+

@@ -1,0 +1,10 @@
+ORM
+
+Object Relational Mapping
+
+-데이터베이스 연계처리를 위하여 기존의 SQL에 의존하는 것이 아니라, 직접 테이블의 컬럼을 
+클래스에 매핑하거 xml 형태의 sql를 실행하여 처리를 수행하는 Persistence Layer를 담당하는 framework개발모델
+
+
+등장배경
+OOP(Object Oriented Programming)에 있어서 관계형 데이터베이스와의 연계성을 분명히 하자는 의도

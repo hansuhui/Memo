@@ -1,0 +1,3 @@
+Server.UrlEncode(Request.Params["Keyword"])
+
+Server.UrlDecode(Request.Params["Keyword"])

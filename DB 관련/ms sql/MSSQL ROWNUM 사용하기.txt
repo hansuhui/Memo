@@ -1,0 +1,49 @@
+- MSSQL ROWNUM 사용하기 / ?레코드 순위정하기 방법
+ 
+?   1. SELECT ROW_NUMBER() OVER(ORDER BY [컬럼명]) AS [별칭] FROM [테이블명]?
+?   2. SELECT RANK() OVER(ORDER BY [컬럼명]) AS [별칭] FROM [테이블명]?
+?   3. SELECT DENSE_RANK() OVER(ORDER BY [컬럼명]) AS [별칭] FROM [테이블명]
+?
+ 
+[참고사항] ROW_NUMBER, RANK, DENSE_RANK의 차이점
+?   ROW_NUMBER - 중복순위가 발생하여도 레코드 순서를 하나씩 표시
+?   RANK? - 중복순위에 대해 정확하게 표시하고 발생된 중복순위값 만큼 다음 번 순위가 변동
+?   DENSE_RANK - 중복순위에 대해 정확하게 표기하나 다음 순위에 변동이 없음
+?
+ 
+ - 테이블 생성
+   CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       점수 int NOT NULL
+   )
+?
+ 
+ - 데이터 입력
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (1, '홍길동', 90)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (2, '일지매', 95)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (3, '임꺽정', 85)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (4, '이순신', 100)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (5, '강감찬', 80)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (6, '김유신', 90)
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.성적
+ 
+? 
+ - ROW_NUMBER를 이용한 순위 처리
+   SELECT ROW_NUMBER() OVER(ORDER BY 점수 DESC) AS 순위, 일련번호, 이름, 점수 FROM dbo.성적
+ 
+ 
+ 
+ - RANK를 이용한 순위 처리
+   SELECT RANK() OVER(ORDER BY 점수 DESC) AS 순위, 일련번호, 이름, 점수 FROM dbo.성적
+ 
+
+ 
+ - DENSE_RANK를 이용한 순위 처리
+   SELECT DENSE_RANK() OVER(ORDER BY 점수 DESC) AS 순위, 일련번호, 이름, 점수 FROM dbo.성적
+ 
+ 
+[출처] MSSQL ROWNUM 사용하기 / 레코드 순위정하기 (ROW_NUMBER, RANK, DENSE_RANK)|작성자 창공

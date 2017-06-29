@@ -1,0 +1,37 @@
+[형 변환]
+
+chr(value)	정수를 문자로 변환
+
+complex(real [,imag])	복소수를 만듦
+
+dict(sequence)	주어진 (키, 값) 튜플의 순서로부터 사전을 만듦
+
+eval(string)	문자열을 평가하여 수학적 계산에 유용한 개체를 반환. 
+주의: 이 함수는 올바로 사용하지 않을 경우 보안 위험을 초래할 수 있으므로 매우 조심하여야 함
+
+float(value)	숫자를 부동소수점수로 변환
+
+frozenset(set)	집합을 동결집합으로 변환
+
+hex(value)	정수로부터 16진수를 나타내는 문자열로 변환
+
+int(value [, base])	정수로 변환하며 base 문자열이 주어진 경우에는 사용함
+
+list(sequence)	주어진 순서를 목록으로 변환
+
+long(value [, base])	long(긴 정수)형으로 변환하며 base 문자열이 주어진 경우에는 사용함
+
+oct(value)	정수로부터 8진수를 나타내는 문자열로 변환
+
+ord(value)	문자를 가리키는 정수값으로 변환
+
+repr(value)	개체를 표현 문자열로 변환. 표현식을 역따옴표로 둘러싼 것과 같음(`x + y`). 개체에
+		대하여 출력가능하며 평가 가능한 문자열을 반환
+
+set(sequence)	sequence를 집합으로 변환
+
+str(value)	개체를 문자열로 변환. value에 대하여 출력가능한 문자열을 반환 하나, 평가할 수는 없음
+
+tuple(sequence)	주어진 sequence를 튜플로 변환
+
+unichr(value)	정수를 유니코드 문자로 변환

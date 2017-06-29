@@ -1,0 +1,13 @@
+http://mintnlatte.tistory.com/256
+
+
+계정 추가
+useradd 사용할 아이디
+
+
+암호 설정
+passwd 만든 아아디 
+
+vi /etc/passwd 
+
+계정의 해당 두번째에 0을 설정하면 관리자 권한 

@@ -1,0 +1,891 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:st1="urn:schemas-microsoft-com:office:smarttags"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=ks_c_5601-1987">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 11">
+<meta name=Originator content="Microsoft Word 11">
+<link rel=File-List
+href="PHP-Pear%20Package%20Install%20and%20Test.files/filelist.xml">
+<link rel=Edit-Time-Data
+href="PHP-Pear%20Package%20Install%20and%20Test.files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>I</title>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="place"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="date"/>
+<o:SmartTagType namespaceuri="urn:schemas-microsoft-com:office:smarttags"
+ name="time"/>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>남중구</o:Author>
+  <o:LastAuthor>남중구</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:Created>2004-11-25T08:06:00Z</o:Created>
+  <o:LastSaved>2004-11-25T08:14:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>299</o:Words>
+  <o:Characters>1707</o:Characters>
+  <o:Company>finfra</o:Company>
+  <o:Lines>14</o:Lines>
+  <o:Paragraphs>4</o:Paragraphs>
+  <o:CharactersWithSpaces>2002</o:CharactersWithSpaces>
+  <o:Version>11.6360</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:Compatibility>
+   <w:SpaceForUL/>
+   <w:BalanceSingleByteDoubleByteWidth/>
+   <w:DoNotLeaveBackslashAlone/>
+   <w:ULTrailSpace/>
+   <w:DoNotExpandShiftReturn/>
+   <w:AdjustLineHeightInTable/>
+   <w:SelectEntireFieldWithStartOrEnd/>
+   <w:UseWord2002TableStyleRules/>
+   <w:UseFELayout/>
+  </w:Compatibility>
+  <w:DoNotOptimizeForBrowser/>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]--><!--[if !mso]><object
+ classid="clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D" id=ieooui></object>
+<style>
+st1\:*{behavior:url(#ieooui) }
+</style>
+<![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+	{font-family:바탕;
+	panose-1:2 3 6 0 0 1 1 1 1 1;
+	mso-font-alt:Batang;
+	mso-font-charset:129;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:돋움;
+	panose-1:2 11 6 0 0 1 1 1 1 1;
+	mso-font-alt:Dotum;
+	mso-font-charset:129;
+	mso-generic-font-family:modern;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:굴림;
+	panose-1:2 11 6 0 0 1 1 1 1 1;
+	mso-font-alt:Gulim;
+	mso-font-charset:129;
+	mso-generic-font-family:modern;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:Century;
+	panose-1:2 4 6 4 5 5 5 2 3 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+@font-face
+	{font-family:Castellar;
+	panose-1:2 10 4 2 6 4 6 1 3 1;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:3 0 0 0 1 0;}
+@font-face
+	{font-family:"Calisto MT";
+	panose-1:2 4 6 3 5 5 5 3 3 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:3 0 0 0 1 0;}
+@font-face
+	{font-family:굴림체;
+	panose-1:2 11 6 9 0 1 1 1 1 1;
+	mso-font-charset:129;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:"\@굴림";
+	panose-1:2 11 6 0 0 1 1 1 1 1;
+	mso-font-charset:129;
+	mso-generic-font-family:modern;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:"\@바탕";
+	panose-1:2 3 6 0 0 1 1 1 1 1;
+	mso-font-charset:129;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:"\@굴림체";
+	panose-1:2 11 6 9 0 1 1 1 1 1;
+	mso-font-charset:129;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:"\@돋움";
+	panose-1:2 11 6 0 0 1 1 1 1 1;
+	mso-font-charset:129;
+	mso-generic-font-family:modern;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	mso-pagination:none;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:10.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;}
+h1
+	{mso-style-update:auto;
+	mso-style-parent:"목차 1";
+	mso-style-next:표준;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-18.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-list:l0 level1 lfo2;
+	tab-stops:list 18.0pt 36.0pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:18.0pt;
+	mso-bidi-font-size:14.0pt;
+	font-family:Castellar;
+	mso-fareast-font-family:돋움;
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;
+	font-weight:bold;
+	mso-bidi-font-weight:normal;}
+h2
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	mso-list:l0 level2 lfo2;
+	tab-stops:list 18.0pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:16.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Calisto MT";
+	mso-fareast-font-family:돋움;
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;
+	font-weight:normal;}
+h3
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:9.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-list:l0 level3 lfo2;
+	tab-stops:list 27.0pt 63.8pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:돋움;
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;
+	font-weight:normal;}
+h4
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:27.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	mso-list:l0 level4 lfo2;
+	tab-stops:36.0pt list 81.8pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+h5
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:5;
+	mso-list:l0 level5 lfo2;
+	tab-stops:list 45.0pt 99.2pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:10.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:돋움;
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;
+	font-weight:normal;}
+h6
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:54.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:6;
+	mso-list:l0 level6 lfo2;
+	tab-stops:list 63.0pt 120.45pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;
+	font-weight:normal;
+	mso-bidi-font-weight:bold;}
+p.MsoHeading7, li.MsoHeading7, div.MsoHeading7
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:63.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:7;
+	mso-list:l0 level7 lfo2;
+	tab-stops:list 81.0pt 5.0cm;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:9.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;}
+p.MsoHeading8, li.MsoHeading8, div.MsoHeading8
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:81.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:8;
+	mso-list:l0 level8 lfo2;
+	tab-stops:list 90.0pt 163.0pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:8.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;}
+p.MsoHeading9, li.MsoHeading9, div.MsoHeading9
+	{mso-style-update:auto;
+	mso-style-next:표준;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:90.0pt;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:-9.0pt;
+	mso-pagination:none;
+	page-break-after:avoid;
+	mso-outline-level:9;
+	mso-list:l0 level9 lfo2;
+	tab-stops:99.0pt list 184.25pt;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:8.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{mso-style-update:auto;
+	mso-style-noshow:yes;
+	mso-style-next:표준;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	mso-pagination:none;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:10.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:바탕;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;}
+a:link, span.MsoHyperlink
+	{color:#000077;
+	mso-text-animation:none;
+	font-style:italic;
+	text-decoration:none;
+	text-underline:none;
+	text-decoration:none;
+	text-line-through:none;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{mso-style-noshow:yes;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	mso-pagination:none;
+	background:navy;
+	text-autospace:none;
+	word-break:break-hangul;
+	font-size:10.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:돋움;
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:1.0pt;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:굴림;
+	mso-bidi-font-family:굴림;}
+code
+	{mso-ansi-font-size:12.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:굴림체;
+	mso-ascii-font-family:굴림체;
+	mso-fareast-font-family:굴림체;
+	mso-hansi-font-family:굴림체;
+	mso-bidi-font-family:굴림체;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+ /* Page Definitions */
+ @page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:99.25pt 3.0cm 3.0cm 3.0cm;
+	mso-header-margin:42.55pt;
+	mso-footer-margin:49.6pt;
+	mso-paper-source:0;
+	layout-grid:18.0pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:1286038500;
+	mso-list-template-ids:831662104;}
+@list l0:level1
+	{mso-level-number-format:roman-upper;
+	mso-level-style-link:"제목 1";
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	margin-left:21.25pt;
+	text-indent:-21.25pt;
+	mso-ansi-font-size:18.0pt;
+	font-family:Century;
+	mso-fareast-font-family:돋움;}
+@list l0:level2
+	{mso-level-style-link:"제목 2";
+	mso-level-tab-stop:-1.15pt;
+	mso-level-number-position:left;
+	margin-left:-1.15pt;
+	text-indent:-21.55pt;
+	mso-ansi-font-size:16.0pt;
+	font-family:돋움;
+	mso-hansi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;}
+@list l0:level3
+	{mso-level-number-format:ganada;
+	mso-level-style-link:"제목 3";
+	mso-level-tab-stop:63.8pt;
+	mso-level-number-position:left;
+	margin-left:63.8pt;
+	text-indent:-21.25pt;}
+@list l0:level4
+	{mso-level-style-link:"제목 4";
+	mso-level-text:"%4\) ";
+	mso-level-tab-stop:81.8pt;
+	mso-level-number-position:left;
+	margin-left:77.95pt;
+	text-indent:-14.15pt;}
+@list l0:level5
+	{mso-level-number-format:ganada;
+	mso-level-style-link:"제목 5";
+	mso-level-text:"%5\)";
+	mso-level-tab-stop:99.2pt;
+	mso-level-number-position:left;
+	margin-left:99.2pt;
+	text-indent:-21.25pt;}
+@list l0:level6
+	{mso-level-style-link:"제목 6";
+	mso-level-text:"\(%6\)";
+	mso-level-tab-stop:120.45pt;
+	mso-level-number-position:left;
+	margin-left:120.45pt;
+	text-indent:-21.25pt;}
+@list l0:level7
+	{mso-level-number-format:ganada;
+	mso-level-style-link:"제목 7";
+	mso-level-text:"\(%7\)";
+	mso-level-tab-stop:5.0cm;
+	mso-level-number-position:left;
+	margin-left:5.0cm;
+	text-indent:-21.3pt;}
+@list l0:level8
+	{mso-level-number-format:decimal-enclosed-circle;
+	mso-level-style-link:"제목 8";
+	mso-level-text:%8;
+	mso-level-tab-stop:163.0pt;
+	mso-level-number-position:left;
+	margin-left:163.0pt;
+	text-indent:-21.25pt;}
+@list l0:level9
+	{mso-level-number-format:bullet;
+	mso-level-style-link:"제목 9";
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:184.25pt;
+	mso-level-number-position:left;
+	margin-left:184.25pt;
+	text-indent:-21.25pt;
+	font-family:Wingdings;
+	color:windowtext;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"표준 표";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+	mso-para-margin:0cm;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-ansi-language:#0400;
+	mso-fareast-language:#0400;
+	mso-bidi-language:#0400;}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=KO link="#000077" vlink=purple style='tab-interval:40.0pt'>
+
+<div class=Section1 style='layout-grid:18.0pt'>
+
+<div align=center>
+
+<table class=MsoNormalTable border=0 cellpadding=0 width="98%"
+ style='width:98.0%;mso-cellspacing:1.5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <div align=center>
+  <table class=MsoNormalTable border=0 cellpadding=0 width="100%"
+   style='width:100.0%;mso-cellspacing:1.5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+   <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes;
+    height:37.5pt'>
+    <td style='background:white;padding:.75pt .75pt .75pt .75pt;height:37.5pt'>
+    <p class=MsoNormal align=left style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+    auto;text-align:left;line-height:150%;mso-pagination:widow-orphan;
+    text-autospace:ideograph-other;word-break:keep-all'><b><span lang=EN-US
+    style='font-size:18.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+    굴림;color:black;mso-font-kerning:0pt'>PHP-Pear Package Install and Test.</span></b><span
+    lang=EN-US style='font-size:18.0pt;line-height:150%;font-family:굴림;
+    mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'><o:p></o:p></span></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes;height:.75pt'>
+  <td style='padding:.75pt .75pt .75pt .75pt;height:.75pt'>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:1.0pt;mso-bidi-font-size:9.0pt;line-height:150%;
+  font-family:굴림;mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal align=left style='text-align:left;line-height:150%;
+mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+굴림;color:black;display:none;mso-hide:all;mso-font-kerning:0pt'><o:p>&nbsp;</o:p></span></p>
+
+<div align=center>
+
+<table class=MsoNormalTable border=0 cellpadding=0 width="97%"
+ style='width:97.0%;mso-cellspacing:1.5pt;mso-padding-alt:1.5pt 1.5pt 1.5pt 1.5pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal align=right style='text-align:right;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'><o:p>&nbsp;</o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><st1:place
+  w:st="on"><span lang=EN-US style='font-size:9.0pt;line-height:150%;
+   font-family:굴림;mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'>I.</span></st1:place><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'> </span><span style='font-size:9.0pt;
+  line-height:150%;font-family:굴림;mso-bidi-font-family:굴림;color:black;
+  mso-font-kerning:0pt'>개요<span lang=EN-US>.<br>
+  Pear</span>은 <span class=SpellE>닷넷과</span> 달리 모든 <span class=SpellE>플레임</span>
+  <span class=SpellE>웩네의</span> 클래스 <span class=SpellE>드을</span> 포함 하고 있지 아니하다 따라서
+  필요에 의해서 다운 받아 설치 하여야 한다<span lang=EN-US>.<br>
+  </span><span class=SpellE>윈도우즈</span> 환경에서의 설치 및 테스트임<span lang=EN-US>.<br>
+  II. </span>설치 절차<span lang=EN-US><br>
+  1. <a href="http://pear.php.net/packages.php" target="_blank"><i><span
+  style='mso-bidi-font-size:12.0pt;line-height:150%'>http://pear.php.net/packages.php</span></i></a>
+  </span>에 접속 해서 필요한 <span class=SpellE>페키지를</span> 찾아서 다운 받는다<span lang=EN-US>.<br>
+  <br>
+  2. </span>피어가 설치된 폴더의 루트에 압축된 <span class=SpellE>페키지를</span> 가져다 놓는다<span
+  lang=EN-US>.<br>
+  <br>
+  3. </span><span class=SpellE>컨멘드</span> 모드에서 해당 폴더로 이동한다<span lang=EN-US>.<br>
+  &nbsp;&nbsp; ex) </span>시작<span lang=EN-US>-&gt;</span>실행<span lang=EN-US>-&gt;<span
+  class=SpellE>cmd</span> /k <span class=SpellE>cd</span>
+  F:\Inetpub\_program\pear<br>
+  4. &quot;<span class=SpellE>pear.bat</span> install+</span><span
+  class=SpellE>페키지</span> 파일명<span lang=EN-US> &quot;</span>을 실행 시킨다<span
+  lang=EN-US>.<br>
+  &nbsp;&nbsp; ex) <o:p></o:p></span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;line-height:120%;
+  mso-pagination:widow-orphan;background:#CCCCCC;text-autospace:ideograph-other;
+  word-break:keep-all'><span lang=EN-US style='font-size:12.0pt;line-height:
+  120%;font-family:굴림체;mso-bidi-font-family:굴림체;color:black;mso-font-kerning:
+  0pt'><br>
+  F:\Inetpub\_program\pear&gt;dir <br>
+  F </span><span style='font-size:12.0pt;line-height:120%;font-family:굴림체;
+  mso-bidi-font-family:굴림체;color:black;mso-font-kerning:0pt'>드라이브의 볼륨<span
+  lang=EN-US>: Main <br>
+  </span>볼륨 일련 번호<span lang=EN-US>: D85D-2928 <br>
+  <br>
+  F:\Inetpub\_program\pear </span>디렉터리<span lang=EN-US> <br>
+  <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-<span
+   class=GramE>25</span></st1:date><span class=GramE>&nbsp;&nbsp;<st1:time
+  Minute="22" Hour="16" o:ls="trans" w:st="on">04:22</st1:time>p</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DIR&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.
+  <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-25</st1:date><span
+  class=GramE>&nbsp;&nbsp;<st1:time Minute="22" Hour="16" o:ls="trans" w:st="on">04:22</st1:time>p</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DIR&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..
+  <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-<span
+   class=GramE>25</span></st1:date><span class=GramE>&nbsp;&nbsp;<st1:time
+  Minute="0" Hour="15" o:ls="trans" w:st="on">03:00</st1:time>p</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;13,237
+  HTML_Form-1[1].1.0.tgz <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-25</st1:date>&nbsp;&nbsp;<st1:time
+  Minute="23" Hour="16" o:ls="trans" w:st="on">04:23</st1:time>p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;DIR&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pear
+  <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-25</st1:date>&nbsp;&nbsp;<st1:time
+  Minute="18" Hour="16" o:ls="trans" w:st="on">04:18</st1:time>p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2,879
+  <span class=SpellE>pear.bat</span> <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-25</st1:date>&nbsp;&nbsp;<st1:time
+  Minute="18" Hour="16" o:ls="trans" w:st="on">04:18</st1:time>p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  381 pear.ini <br>
+<st1:date Day="25" Month="11" Year="2004" o:ls="trans" w:st="on">2004-11-25</st1:date>&nbsp;&nbsp;<st1:time
+  Minute="18" Hour="16" o:ls="trans" w:st="on">04:18</st1:time>p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;455
+  <span class=SpellE>PEAR_ENV.reg</span> <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4</span>개
+  파일<span lang=EN-US>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16,952
+  </span>바이트<span lang=EN-US> <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3
+  </span>디렉터리<span lang=EN-US>&nbsp;&nbsp;19,653,120,000 </span>바이트 남음<span
+  lang=EN-US> <br>
+  <br>
+  F:\Inetpub\_program\pear&gt;pear.bat install HTML_Form-1[1].1.0.tgz <br>
+  <span class=SpellE>HTML_Form</span> already installed <br>
+  <br>
+  F:\Inetpub\_program\pear&gt; </span></span><span lang=EN-US style='font-size:
+  9.0pt;line-height:120%;font-family:굴림;mso-bidi-font-family:굴림;color:black;
+  mso-font-kerning:0pt'><o:p></o:p></span></p>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'><br>
+  <br>
+  III. </span><span style='font-size:9.0pt;line-height:150%;font-family:굴림;
+  mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'>테스트<span
+  lang=EN-US><br>
+  1. </span>파일이 생성 되었는지 확인한다<span lang=EN-US>.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; <o:p></o:p></span></span></p>
+  <div align=center>
+  <table class=MsoNormalTable border=0 cellpadding=0 style='mso-cellspacing:
+   1.5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+   <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+    <td style='padding:.75pt .75pt .75pt .75pt'>
+    <p class=MsoNormal align=center style='text-align:center;line-height:150%;
+    mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+    lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;
+    mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'><!--[if gte vml 1]><v:shapetype
+     id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
+     path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
+     <v:stroke joinstyle="miter"/>
+     <v:formulas>
+      <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+      <v:f eqn="sum @0 1 0"/>
+      <v:f eqn="sum 0 0 @1"/>
+      <v:f eqn="prod @2 1 2"/>
+      <v:f eqn="prod @3 21600 pixelWidth"/>
+      <v:f eqn="prod @3 21600 pixelHeight"/>
+      <v:f eqn="sum @0 0 1"/>
+      <v:f eqn="prod @6 1 2"/>
+      <v:f eqn="prod @7 21600 pixelWidth"/>
+      <v:f eqn="sum @8 21600 0"/>
+      <v:f eqn="prod @7 21600 pixelHeight"/>
+      <v:f eqn="sum @10 21600 0"/>
+     </v:formulas>
+     <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+     <o:lock v:ext="edit" aspectratio="t"/>
+    </v:shapetype><v:shape id="_x0000_i1025" type="#_x0000_t75" alt="" style='width:472.5pt;
+     height:286.5pt'>
+     <v:imagedata src="PHP-Pear%20Package%20Install%20and%20Test.files/image001.gif"
+      o:href="http://j.finfra.com/blog/attach/1125/041125165859362012/186340.gif"/>
+    </v:shape><![endif]--><![if !vml]><img border=0 width=630 height=382
+    src="PHP-Pear%20Package%20Install%20and%20Test.files/image001.gif" v:shapes="_x0000_i1025"><![endif]><o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+    <td style='padding:.75pt .75pt .75pt .75pt'>
+    <p class=MsoNormal align=center style='text-align:center;line-height:150%;
+    mso-pagination:widow-orphan;text-autospace:ideograph-other'><span
+    lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;
+    mso-bidi-font-family:굴림;color:#300099;mso-font-kerning:0pt'><o:p>&nbsp;</o:p></span></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'><br>
+  2. </span><span class=SpellE><span style='font-size:9.0pt;line-height:150%;
+  font-family:굴림;mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'>셈플</span></span><span
+  style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'> 코드를<span lang=EN-US> <span
+  class=SpellE>php</span></span>가 설치된 서버에 올려서 테스트 한다<span lang=EN-US>.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp; <o:p></o:p></span></span></p>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;background:#F0F0F0;text-autospace:ideograph-other;
+  word-break:keep-all'><span lang=EN-US style='font-size:9.0pt;line-height:
+  150%;font-family:굴림;mso-bidi-font-family:굴림;color:black;mso-font-kerning:
+  0pt'>&lt;?<span class=SpellE>php</span><br>
+  <span class=SpellE>require_once</span> &quot;HTML/<span class=SpellE>Form.php</span>&quot;;<br>
+  <br>
+  $form = new <span class=SpellE>HTML_Form</span>($_SERVER['PHP_SELF']);<br>
+  <br>
+  $form-&gt;<span class=SpellE>addText</span>(&quot;name&quot;, &quot;What's
+  your name?&quot;);<br>
+  $form-&gt;<span class=SpellE>addText</span>(&quot;email&quot;, &quot;What's
+  your email address?&quot;);<br>
+  $form-&gt;<span class=SpellE>addPassword</span>(&quot;password&quot;,
+  &quot;Please enter the desired password&quot;);<br>
+  $form-&gt;<span class=SpellE>addPlaintext</span>(&quot;Tip&quot;, &quot;Your
+  password should be hard to guess&quot;);<br>
+  $form-&gt;<span class=SpellE>addSubmit</span>(&quot;submit&quot;,
+  &quot;Submit&quot;);<br>
+  <br>
+  $form-&gt;display();<br>
+  <br>
+  ?&gt;<o:p></o:p></span></p>
+  <p class=MsoNormal align=left style='text-align:left;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'><br>
+  3. </span><span style='font-size:9.0pt;line-height:150%;font-family:굴림;
+  mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'>완료<span lang=EN-US><br>
+  &nbsp;&nbsp; <o:p></o:p></span></span></p>
+  <div align=center>
+  <table class=MsoNormalTable border=0 cellpadding=0 style='mso-cellspacing:
+   1.5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+   <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+    <td style='padding:.75pt .75pt .75pt .75pt'>
+    <p class=MsoNormal align=center style='text-align:center;line-height:150%;
+    mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+    lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;
+    mso-bidi-font-family:굴림;color:black;mso-font-kerning:0pt'><!--[if gte vml 1]><v:shape
+     id="_x0000_i1026" type="#_x0000_t75" alt="" style='width:495.75pt;
+     height:206.25pt'>
+     <v:imagedata src="PHP-Pear%20Package%20Install%20and%20Test.files/image002.gif"
+      o:href="http://j.finfra.com/blog/attach/1125/041125165859362012/640658.gif"/>
+    </v:shape><![endif]--><![if !vml]><img border=0 width=661 height=275
+    src="PHP-Pear%20Package%20Install%20and%20Test.files/image002.gif" v:shapes="_x0000_i1026"><![endif]><o:p></o:p></span></p>
+    </td>
+   </tr>
+   <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+    <td style='padding:.75pt .75pt .75pt .75pt'>
+    <p class=MsoNormal align=center style='text-align:center;line-height:150%;
+    mso-pagination:widow-orphan;text-autospace:ideograph-other'><span
+    lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;
+    mso-bidi-font-family:굴림;color:#300099;mso-font-kerning:0pt'><o:p>&nbsp;</o:p></span></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  <p class=MsoNormal align=left style='margin-bottom:12.0pt;text-align:left;
+  line-height:150%;mso-pagination:widow-orphan;text-autospace:ideograph-other;
+  word-break:keep-all'><span lang=EN-US style='font-size:9.0pt;line-height:
+  150%;font-family:굴림;mso-bidi-font-family:굴림;color:black;mso-font-kerning:
+  0pt'><br style='mso-special-character:line-break'>
+  <![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+  <![endif]><o:p></o:p></span></p>
+  <p class=MsoNormal align=center style='text-align:center;line-height:150%;
+  mso-pagination:widow-orphan;text-autospace:ideograph-other;word-break:keep-all'><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%'>written by <span
+  class=SpellE>NaHyunJae</span>(<a href="http://j.finfra.com" target="_blank"><i>http://j.finfra.com</i></a>)
+  <br>
+  copyright <span class=SpellE>NaHyunJae</span>(<a href="http://j.finfra.com"
+  target="_blank"><i>http://j.finfra.com</i></a>) All Rights Reserved</span><span
+  lang=EN-US style='font-size:9.0pt;line-height:150%;font-family:굴림;mso-bidi-font-family:
+  굴림;color:black;mso-font-kerning:0pt'><o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal><span lang=EN-US><o:p>&nbsp;</o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

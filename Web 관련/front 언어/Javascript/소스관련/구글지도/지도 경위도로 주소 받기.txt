@@ -1,0 +1,41 @@
+구글 api를 사용한다
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+
+    function LocationCheck(Seq,Lat, Lng) {
+            var latLng = new google.maps.LatLng(Lat, Lng);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'latLng': latLng }, function (results, status) {
+
+
+                if (status == google.maps.GeocoderStatus.OK) {
+
+                    /*
+                    
+                    좌표를 주소로 변환 시키는 geocoder를 실행합니다.
+                    
+                    만약 성공적으로 변환이 되었다면, status라는 상태변수가 참이 되어 아래의 코드들이 실행됩니다.
+                    
+                    */
+
+                    if (results[1]) {
+
+                        alert(results[3].formatted_address)
+                        forAddress.innerHTML = results[3].formatted_address;
+
+                        //만약 반환된 결과값이 비어있지 않으면 innerHTML을 이용해 결과값을 출력합니다.
+
+                    }
+
+                } else {
+
+                    alert("Geocoder failed due to: " + status);
+
+                    //만약 geocoder가 실패시 알림창을 출력합니다.
+
+                }
+
+                console.log(results); console.log(status);
+            })
+        }

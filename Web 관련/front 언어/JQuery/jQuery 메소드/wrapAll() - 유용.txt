@@ -1,0 +1,118 @@
+[.wrapAll()]
+
+.wrapAll()은 선택한 요소 모두를 새로운 태그로 둘러싸게 합니다
+
+.wrapAll( wrappingElement )
+
+
+- 예제 -
+
+.wrap()은 선택한 요소에 각각 적용됩니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .wrapAll()</title>
+    <style>
+      div {
+        color: red;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'p' ).wrap( '<div></div>' );
+      } );
+    </script>
+  </head>
+  <body>
+    <p>Lorem ipsum dolor.</p>
+    <h3>Lorem ipsum dolor.</h3>
+    <p>Lorem ipsum dolor.</p>
+  </body>
+</html>
+
+위 예제는 p 요소에 각각 적용되어 본문을 다음과 같이 만듭니다.
+
+<div>
+  <p>Lorem ipsum dolor.</p>
+</div>
+<h3>Lorem ipsum dolor.</h3>
+<div>
+  <p>Lorem ipsum dolor.</p>
+</div>
+
+.wrapAll()은 선택한 요소를 모아서 하나의 태그로 둘러쌉니다.
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .wrapAll()</title>
+    <style>
+      div {
+        color: red;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'p' ).wrapAll( '<div></div>' );
+      } );
+    </script>
+  </head>
+  <body>
+    <p>Lorem ipsum dolor.</p>
+    <h3>Lorem ipsum dolor.</h3>
+    <p>Lorem ipsum dolor.</p>
+  </body>
+</html>
+
+위 예제는 p 요소를 모아서 하나의 태그로 둘러쌉니다.
+
+<div>
+  <p>Lorem ipsum dolor.</p>
+  <p>Lorem ipsum dolor.</p>
+</div>
+<h3>Lorem ipsum dolor.</h3>
+
+
+- 예제 2 -
+
+.wrapAll()은 하위 요소 모두를 새로운 태그로 감쌀 때 유용하게 사용할 수 있습니다.
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .wrapAll()</title>
+    <style>
+      .red {
+        color: red;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( '.wa' ).contents().wrapAll( '<div class="red"></div>' );
+      } );
+    </script>
+  </head>
+  <body>
+    <div class="wa">
+      <h3>Lorem ipsum dolor.</h3>
+      <p>Lorem ipsum dolor.</p>
+      <p>Lorem ipsum dolor.</p>
+    </div>
+  </body>
+</html>
+
+위 예제는 div.wa 안의 모든 요소를 div.red로 감쌉니다.
+
+<div class="wa">
+  <div class="red">
+    <h3>Lorem ipsum dolor.</h3>
+    <p>Lorem ipsum dolor.</p>
+    <p>Lorem ipsum dolor.</p>
+  </div>
+</div>

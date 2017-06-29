@@ -1,0 +1,9 @@
+onkeypress="ChkEnter();
+
+<input name="upw" type="password" id="upw" onkeypress="ChkEnter();" />
+
+        function ChkEnter() {
+            if (event.keyCode == 13) {
+                check();
+            }
+        }

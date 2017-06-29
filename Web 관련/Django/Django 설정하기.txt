@@ -1,0 +1,75 @@
+가상환경 설치
+
+sudo yum -y install python-virtualenvwrapper
+
+export WORKON_HOME=~/.virtualenvs
+source /usr/bin/virtualenvwrapper.sh
+
+mkvirtualenv mv
+
+
+
+pip install django
+pip install gunicorn
+pip install psycopg2
+
+
+[settings.py]
+
+
+먼저 디버그 모드를 해제해야합니다. 를 찾아 DEBUG = True라인 변경 True에 False. 그런 다음, ALLOWED_HOSTS어떤 값 을 설정 했는지 확인하십시오 .
+
+ALLOWED_HOSTS = ['*']
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dbname',
+        'USER': 'dbuser',
+        'PASSWORD': 'password you set',
+        'HOST': 'localhost',
+        'PORT': ''
+    }
+}
+
+STATIC_ROOT = '/opt/project/static/'
+
+파일을 종료하고 정적 루트 디렉토리를 작성하십시오.
+
+mkdir -p /opt/project/static
+
+
+이제 데이터베이스를 마이그레이션하고 수퍼 유저를 생성하며 모든 정적 파일을 수집하십시오.
+
+cd /opt/project/project
+../bin/python manage.py makemigrations
+../bin/python manage.py migrate
+../bin/python manage.py createsuperuser
+../bin/python manage.py collectstatic
+
+
+Gunicorn 구성
+
+Gunicorn은 우리가 사용할 WSGI 서버입니다. 데비안 8에는 systemd가 포함되어 있으므로 systemd를 이용하여 서버를 시작하고 중지합니다.
+
+파일 /etc/systemd/system/django.service을 만들고 다음 내용을 추가하십시오.
+
+
+[Unit]
+Description=Django with Gunicorn
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/JSGlobal/Django/JsMember
+ExecStart=/bin/gunicorn --workers 3 --bind 0.0.0.0:80 JsMember.wsgi
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+저장하고 끝 저장은 esc 누르고 :wq
+

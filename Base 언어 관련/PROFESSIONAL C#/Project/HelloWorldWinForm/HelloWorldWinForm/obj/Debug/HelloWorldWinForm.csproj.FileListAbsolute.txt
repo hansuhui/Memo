@@ -1,0 +1,4 @@
+D:\H\PROFESSIONAL C#\Project\HelloWorldWinForm\HelloWorldWinForm\bin\Debug\HelloWorldWinForm.exe.config
+D:\H\PROFESSIONAL C#\Project\HelloWorldWinForm\HelloWorldWinForm\obj\Debug\HelloWorldWinForm.csprojResolveAssemblyReference.cache
+D:\H\PROFESSIONAL C#\Project\HelloWorldWinForm\HelloWorldWinForm\obj\Debug\HelloWorldWinForm.Properties.Resources.resources
+D:\H\PROFESSIONAL C#\Project\HelloWorldWinForm\HelloWorldWinForm\obj\Debug\HelloWorldWinForm.csproj.GenerateResource.Cache

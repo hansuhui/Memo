@@ -1,0 +1,19 @@
+http://addio3305.tistory.com/44
+
+이클립스에서 STS를 설치하고, Spring 프로젝트를 생성하고 나서
+
+src/main/resources 폴더에 새로운 폴더를 추가하면, 당연히 폴더 아이콘으로 보여야하는데,
+패키지로 보이는 경우가 있습니다.
+
+사실 이건 정상적인 상황으로 실제 프로젝트에는 문자게 없지만, 좀 찜찜하고 눈에 
+거슬리기도 합니다. 이럴때는 다음과 같이 설정하시면 됩니다.
+
+1.프로젝트 우클릭 -> Properties
+
+2. Java Build Path -> Source 선택
+
+3. 하단에 있는 /src/main/resources의 Excluded를 선택하고 Edit
+
+4.Exclusion patterns의 Add를 선택하고 ** 를 입력
+
+

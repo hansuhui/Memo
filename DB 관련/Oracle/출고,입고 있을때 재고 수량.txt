@@ -1,0 +1,14 @@
+with v_total as 
+(
+select sum(case when a.ORderState = '1' then a.QTY else -qty end) as qty, a.ORDERCODE
+from GIFTORDERDTL a , GIFTORDERMST b where a.MAKETYPE = '1' and a.ORDERCODE = b.ORDERCODE group by a.ORDERCODE
+)  
+select a.ORDERCODE,a.ORDERSTATE,a.ORDERDATE,B.MAKETYPE,C.CONAME as  PROCBUSICODE,d.coName as REQDEPTCODE,b.QTY
+, ( select sum(qty) from v_total e where a.ORDERCODE >= e.ORDERCODE ) as total  
+from GIFTORDERMST a join GIFTORDERDTL b on (a.ORDERCODE = b.ORDERCODE)
+join CodeDetail c on (a.PROCBUSICODE = c.coCode and c.coGroup = '1')
+join CodeDetail d on (a.REQDEPTCODE = d.coCode and d.coGroup = '2')
+
+
+Æ÷ÀÎÆ®
+, ( select sum(qty) from v_total e where a.ORDERCODE >= e.ORDERCODE ) as total  

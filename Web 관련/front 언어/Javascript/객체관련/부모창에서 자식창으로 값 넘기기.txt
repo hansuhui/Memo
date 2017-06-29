@@ -1,0 +1,76 @@
+부모창(자식창 열기)
+var winObject = null;
+            var settings = 'toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,width=200,height=170,left=700,top=300';
+            winObject = window.open("Duplicate.aspx", "Duplicate", settings);
+ 
+자식창
+자식창form이름 popDuplicate
+ function Tome() {
+            부모창의 값을 자식창에서 받기
+            document.popDuplicate.txtDuplicate.value = opener.document.all.txtMemberID.value;
+ }
+ 
+ function submitToParent() {
+            self.close();
+            자식창의 값을 부모창으로
+            opener.document.all.txtMemberID.value = document.popDuplicate.txtDuplicate.value;
+            opener.document.all.txtMemberIDDuplicate.value =                                                 
+            document.popDuplicate.txtDuplicate.value;
+}
+ 
+ 
+<body onload="javascript:Tome();" > -> 페이지 로드되고 부모창에 값을 자식창으로 
+    <form id="popDuplicate" runat="server">    
+        <input id="txtDuplicate" type="text" name="txtDuplicate"/>        
+        <input id="btnOK"  type="button" value="확인" /><br />
+        <label id="lblMemberID"></label>
+        <br />
+        <label id="lblUse"></label> <input id="btnDuplicate"  type="button" value="확인" />           
+    
+    </form>
+</body>
+
+
+
+
+새창과 부모창간에 데이터를 넘기기 위해서는 우선 부모창에서 새창으로 접근하는 법, 새창에서 부모창으로 접근하는 방법을 아셔야 겠죠?
+
+부모창에서 새창을 접근(제어)하기 위해서는 단순히 window.open 해서는 안되고
+
+winObj = window.open 과 같이 윈도우를 새로 하나 만들면서 그 연결고리를 변수에 가지고 있어야 합니다.
+
+그러면 winObj.document.XXXX 이런식으로 새창의 오브젝트들을 다룰 수 있습니다.
+
+반대로 새창에서 부모창은 접근하기위해서는 opener 라는 객체를 사용하면 됩니다.
+
+새창이라면 항상 opener 객체를 가지게 되며 이것이 지정하는 것은 부모창입니다. 따라서 opener.document.XXX 하면 부모창의 오브젝트들을 다룰 수 있는 것입니다.
+
+다음의 소스를 이용해서 test1.htm, test2.htm 을 작성하시고 test1.htm 을 익스플로러로 열어보시기 바랍니다.
+
+test1.htm ------------------------------------------------------------
+<script>
+var winObject = null;
+
+function popupWindow(){
+var settings ='toolbar=0,directories=0,status=no,menubar=0,scrollbars=auto,resizable=no,height=200,width=200,left=0,top=0';
+winObject = window.open("test2.htm", "test2", settings);
+}
+
+function submitToWindow(){
+winObject.document.all.text2.value = document.all.text1.value;
+}
+</script>
+<input type=text name="text1">
+<input type=button value="새창띄우기" onClick="popupWindow();">
+<input type=button value="팝업창으로전송" onClick="submitToWindow();">
+
+test2.htm -----------------------------------------------------------------
+<script>
+function submitToParent(){
+opener.document.all.text1.value = document.all.text2.value;
+}
+</script>
+<input type=text name=text2>
+<input type=button value="부모창으로 전송" onClick="submitToParent()">
+[출처] 자바스크립트로 부모창에서 자식창에 값넘기기|작성자 애플파이
+

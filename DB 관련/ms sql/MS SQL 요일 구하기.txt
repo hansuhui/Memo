@@ -1,0 +1,2 @@
+--夸老 1何磐 老夸老 ~ 7 配夸老
+select cast(datepart(weekday,'2016-05-07')as varchar(2));

@@ -1,0 +1,52 @@
+
+http://www.w3schools.com/sql/func_date_format.asp
+
+DATE_FORMAT(b.RegDate,'%Y.%m.%d' )
+
+Format	Description
+%a	Abbreviated weekday name
+%b	Abbreviated month name
+%c	Month, numeric
+%D	Day of month with English suffix
+%d	Day of month, numeric (00-31)
+%e	Day of month, numeric (0-31)
+%f	Microseconds
+%H	Hour (00-23)
+%h	Hour (01-12)
+%I	Hour (01-12)
+%i	Minutes, numeric (00-59)
+%j	Day of year (001-366)
+%k	Hour (0-23)
+%l	Hour (1-12)
+%M	Month name
+%m	Month, numeric (00-12)
+%p	AM or PM
+%r	Time, 12-hour (hh:mm:ss AM or PM)
+%S	Seconds (00-59)
+%s	Seconds (00-59)
+%T	Time, 24-hour (hh:mm:ss)
+%U	Week (00-53) where Sunday is the first day of week
+%u	Week (00-53) where Monday is the first day of week
+%V	Week (01-53) where Sunday is the first day of week, used with %X
+%v	Week (01-53) where Monday is the first day of week, used with %x
+%W	Weekday name
+%w	Day of the week (0=Sunday, 6=Saturday)
+%X	Year of the week where Sunday is the first day of week, four digits, used with %V
+%x	Year of the week where Monday is the first day of week, four digits, used with %v
+%Y	Year, four digits
+%y	Year, two digits
+
+Example
+
+The following script uses the DATE_FORMAT() function to display different formats. We will use the NOW() function to get the current date/time:
+
+DATE_FORMAT(NOW(),'%b %d %Y %h:%i %p')
+DATE_FORMAT(NOW(),'%m-%d-%Y')
+DATE_FORMAT(NOW(),'%d %b %y')
+DATE_FORMAT(NOW(),'%d %b %Y %T:%f')
+The result would look something like this:
+
+Nov 04 2008 11:45 PM
+11-04-2008
+04 Nov 08
+04 Nov 2008 11:45:34:243

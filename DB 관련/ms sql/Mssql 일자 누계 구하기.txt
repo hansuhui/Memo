@@ -1,0 +1,65 @@
+				select
+				 a.SaleDate, sum(b.TotalQty) as TotalQty 
+				from 
+				(select 
+				a.SaleDate
+				,isnull(count(a.GiftNo),0)  as TotalQty 
+				from GiftMst a with (nolock)
+				Group by a.SaleDate
+				)a
+				left outer join 
+				(select 
+				a.SaleDate
+				,isnull(count(a.GiftNo),0)  as TotalQty 
+				from GiftMst a with (nolock)
+				Group by a.SaleDate) b on (b.SaleDate <= a.SaleDate)
+				group by a.SaleDate
+
+
+
+select x.일자, sum(y.매상) as 누계매상 
+from tbl x left outer join tbl y on y.일자<=x.일자 
+group by x.일자 
+
+
+
+
+
+with RetnGroup (retnDate, saleCnt,retnCnt,saleAmt,retnAmt)
+as
+(
+
+	select 
+		retnDate
+		, sum(case when retnType = '2' then cnt else 0 end) as saleCnt
+		, sum(case when retnType = '1' then cnt else 0 end) as retnCnt
+		, sum(case when retnType = '2' then Amt else 0 end) as saleAmt
+		, sum(case when retnType = '1' then Amt else 0 end) as retnAmt
+	from (
+		select ReturnDate as retnDate, count(*) as cnt, case when RemainAmt=0 then sum(Jong*1000) else sum(RemainAmt) end as Amt  , '1' as retnType from GiftMst where GiftState = '30' group by ReturnDate,RemainAmt
+		union all
+		select DisuseDate as retnDate, count(*) as cnt , sum(RemainAmt) as Amt  ,'1' as retnType from GiftMst where GiftState = '99' group by DisuseDate
+		union all
+		select SaleDate as retnDate, count(*) as cnt , sum(a.Jong*1000) as Amt  , '2' as retnType from GiftMst a group by SaleDate
+	) a
+	group by retnDate
+)
+
+
+select distinct
+a.RegDate
+,  (select sum(saleCnt) from RetnGroup where a.RegDate >= retnDate) as saleCnt	
+,  (select sum(retnCnt) from RetnGroup where a.RegDate >= retnDate) as retnCnt
+,  (select sum(saleCnt) - sum(retnCnt) from RetnGroup where a.RegDate >= retnDate) as TotalCnt
+,  (select sum(saleAmt) from RetnGroup where a.RegDate >= retnDate) as saleAmt	
+,  (select sum(retnAmt) from RetnGroup where a.RegDate >= retnDate) as retnAmt
+,  (select sum(saleAmt) - sum(retnAmt) from RetnGroup where a.RegDate >= retnDate) as TotalAmt
+from 
+(
+select a.ReturnDate as RegDate from GiftMst a where GiftState = '30' group by a.ReturnDate
+ union all
+select a.SaleDate as RegDate from GiftMst a group by a.SaleDate  
+union all
+select a.DisuseDate as RegDate from GiftMst a where GiftState = '99' group by a.DisuseDate  
+)a
+order by a.RegDate

@@ -1,0 +1,11 @@
+참조 http://blog.naver.com/rla8860/220356912129
+
+
+
+단방향 암호화라 복호화 불가
+암호화 값 사이의 비교 가능
+지원 알고리즘
+
+insert into  hashbytes('sha1',convert(nvarchar(4000),'11'))
+
+select hashbytes('sha1',convert(nvarchar(4000),'11'))

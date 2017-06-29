@@ -1,0 +1,6 @@
+PrintWriter out = response.getWriter();
+
+		out.println("<script>");
+		out.println("this.parent.$('#divPopup').dialog('close');");
+		out.println("this.parent.document.location.reload();");
+		out.println("</script>");

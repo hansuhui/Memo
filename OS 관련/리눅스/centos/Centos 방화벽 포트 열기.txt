@@ -1,0 +1,146 @@
+https://www.conory.com/note_linux/42477
+
+
+Centos 7부터 기본 방화벽 시스템이 변경되었습니다. 이전에는 iptables 를 사용했었는데..
+Centos7에서는 firewalld 라는 방화벽 시스템이 기본으로 탑재되었습니다.
+
+그렇다고 iptables이 완전히 없어진 것은 아닙니다. firewalld은 그저 iptables을 기반으로해서 동작하고 있는 것 뿐입니다.
+firewalld이 iptables을 의존 패키지로 두고 있는 것을 보면 알 수 있습니다. 다만 iptables-service를 조작이 쉬운
+firewalld로 바꾼것입니다.
+
+centos 7 부터는 iptables-service를 더 이상 사용하지않지만, iptables-service를 계속 사용할 수도 있습니다.
+리눅스를 계속 사용해온 사용자라면 당연히 익숙했던 iptables-service의 향후 지원도 불확실하고, 어쩌면 익숙해지면 firewalld 더 
+편할 수도 있습니다.
+
+이런저런 이유로 기본 firewalld 사용을 권장하고 , 그 사용방법에 대해 알아보겠습니다.
+
+
+1.방화벽 살펴보기
+
+방화벽에서는 zone(영역)이라는 것이 존재합니다. 개방된 네트워크와 연결되어있다면 public zone(공개영역)에 있는 룰이 적용되고,
+개인 네트워크에 있다면 다른 zone의 룰의 적용할 수 있습니다. 이처럼 네트워크 형태에 따라 적용하는 룰을 다르게 할 수 있습니다.
+
+
+우리는 서버 용도로 리눅스를 사용하기때문에 개방된 네트워크 public zone만 필요합니다. 또한 방화벽에는 public zone이 
+기본 zone으로 설정되어있습니다. 이는 방화벽 설정파일에서 변경가능합니다.
+
+* public zone의 설정파일
+ /etc/firewalld/zones/public.xml
+
+* 방화벽 재로드 
+
+firewall-cmd-reload
+
+
+설정파일은 xml 형식으로 되어있으며, firewall-cmd --permanent --zone=public 명령으로 추가했던 룰들이 
+저장되어 있습니다. zone의 설정파일을 변경할 경우 방화벽 재로드를 해야 반영이 됩니다.
+
+또한 firewall-cmd --permanent 옵션이 들어간다면 반영은 되지않고, 해당 zone의 설정파일에서 룰 추가/수정만 이루어집니다.
+따라서 --permanent 옵션을 넣었다면 방화벽 재로드를 해야합니다.
+
+참고로 설정파일에 추가된 룰은 영구반영됩니다. 만약 --permanent 옵션을 넣지않으면, 일시적으로 즉시 반영됨을 의미합니다.
+(재부팅할 경우 zone의 설정파일에 추가되지 않은 룰은 전부 삭제됩니다.)
+
+
+
+2.포트
+
+
+포트를 방화벽에 추가하면 해당 포트는 허용됩니다.
+
+*포트추가 
+
+firewall-cmd --permanent --zone=public --add-port=포트
+예) firewall-cmd --permanent --zone=public --add-port=80/tcp
+
+firewall-cmd --reload
+
+
+*포트 제거
+
+firewall-cmd --permanent --zone=public --remove-port=포트
+예) firewall-cmd --permanent --zone=public --remove-port=80/tcp
+
+firewall-cmd --reload
+
+
+3.서비스
+
+서비스에서 사용하는 룰을 적용하려면 아래와 같이 서비스를 추가하면 됩니다.
+단, 해당 서비스 xml 룰 파일이 /url/lib/firewalld/services 에 있어야 사용할 수 있습니다.
+
+*서비스 추가
+
+firewall-cmd --permanent --zone=public --add-service=서비스
+예) firewall-cmd --permanent --zone=public --add-service=http
+
+# firewall-cmd --reload
+
+
+* 서비스 제거
+firewall-cmd --permanent --zone=public --remove-service=서비스
+예) firewall-cmd --permanent --zone=public --remove-service=http
+
+ firewall-cmd --reload
+
+
+그리고 /usr/lib/firewalld/services 디렉토리에 있는 서비스 파일들을 
+수정하려면 /etc/firewalld/services에 복사후 수정해야 합니다. 
+(/etc/firewalld/services에 있는 서비스 파일들이 우선 적용되기에 관리상 편리합니다..)
+
+
+
+4.임의의 룰 (Rich rule)
+
+포트,서빗 룰 이외에 원하는 룰을 임의로 적용할 수 있습니다. 예를 들면 ip차단 같은..
+
+
+* 룰 추가
+# firewall-cmd --permanent --zone=public --add-rich-rule="임의의 룰"
+예) firewall-cmd --permanent --zone=public --add-rich-rule="rule family=ipv4 source address=192.168.0.4/24 service name=http accept"
+
+# firewall-cmd --reload
+
+* 룰 제거
+# firewall-cmd --permanent --zone=public --remove-rich-rule="임의의 룰"
+예) firewall-cmd --permanent --zone=public --remove-rich-rule="rule family=ipv4 source address=192.168.0.4/24 service name=http accept"
+
+# firewall-cmd --reload
+
+
+
+* 응용예시 - http(80번 포트) 서비스에서 특정 ip 차단
+웹서버를 운영하다보면 특정ip(스팸같은)를 차단시키고 싶을 때가 있습니다. 그럴경우 아래와 같이 임의의 룰을 활용하면 됩니다.
+
+차단시)
+# firewall-cmd --permanent --zone=public --add-rich-rule="rule family=ipv4 source address=차단ip service name=http reject"
+
+차단해제시)
+# firewall-cmd --permanent --zone=public --remove-rich-rule="rule family=ipv4 source address=차단ip service name=http reject"
+
+# firewall-cmd --reload
+
+위 명령을 실행하면 즉시 , 영구적으로 해당 ip를 웹사이트에 접속하지못하게 차단시킬 수 있습니다. 
+이 방법은 웹서버 자체에서 ip를 차단시키는 것보다 효과적입니다.
+
+
+
+5. 방화벽 기타 명령어
+방화벽에서 유용 명령어들입니다
+
+* 허용한 포트 목록
+# firewall-cmd --list-ports
+
+* 방화벽 상태 확인
+# firewall-cmd --state
+
+* 활성화된 zone 목록
+# firewall-cmd --get-active-zones
+
+* 현재 존재하는 서비스 목록
+# firewall-cmd --get-service
+
+* public zone에 있는 서비스 목록
+# firewall-cmd --zone=public --list-services
+
+

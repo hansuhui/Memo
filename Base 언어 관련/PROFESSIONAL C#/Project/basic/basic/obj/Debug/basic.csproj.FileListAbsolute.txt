@@ -1,0 +1,6 @@
+D:\H\PROFESSIONAL C#\Project\basic\basic\bin\Debug\basic.exe.config
+D:\H\PROFESSIONAL C#\Project\basic\basic\obj\Debug\basic.csprojResolveAssemblyReference.cache
+D:\H\PROFESSIONAL C#\Project\basic\basic\bin\Debug\basic.exe
+D:\H\PROFESSIONAL C#\Project\basic\basic\bin\Debug\basic.pdb
+D:\H\PROFESSIONAL C#\Project\basic\basic\obj\Debug\basic.exe
+D:\H\PROFESSIONAL C#\Project\basic\basic\obj\Debug\basic.pdb

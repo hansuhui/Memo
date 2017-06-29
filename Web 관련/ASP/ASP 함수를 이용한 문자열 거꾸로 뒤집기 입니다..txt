@@ -1,0 +1,10 @@
+strReverse 함수를 이용한 문자열 거꾸로 뒤집기 입니다.
+
+<html>
+<body>
+<%
+strString = "안녕하세요!"
+response.write(strReverse(strString))
+%>
+</body>
+</html>

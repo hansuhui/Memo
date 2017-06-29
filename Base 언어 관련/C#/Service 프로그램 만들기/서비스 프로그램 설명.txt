@@ -1,0 +1,18 @@
+서비스 프로젝트를 만든다!!
+
+각각 메소드가 생기는데
+
+OnStart 서비스 시작시 실행
+OnStop 서비스 중지시  실행
+
+
+이벤트에 로그 남기는것
+System.Diagnostics.EventLog.WriteEntry("BizTalkSend", "서비스 시작");
+
+실행 하면서 쓰래드를 돌린다
+
+protected Thread m_thread;
+
+ThreadStart ts = new ThreadStart(this.ServiceMain);
+            Thread m_thread = new Thread(ts);
+            m_thread.Start();

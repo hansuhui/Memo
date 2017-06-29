@@ -1,0 +1,37 @@
+
+[선언]
+
+int[] array = new int[5];
+string[] stringArray = new string[6];
+
+
+[배열 초기화]
+
+선언 시 배열을 초기화 할 수 있으며, 이런 경우 차수는 초기화 목록의 요소 수로 지정되므로 별도로 지정할 필요가 없습니다.
+예를 들면 다음과 같습니다.
+
+
+int[] array1 = new int[] { 1, 3, 5, 7, 9 };
+
+같은 방법으로 문자열 배열을 초기화할 수 있습니다. 다음은 각 배열 요소를 요일 이름으로 초기화한 문자열 배열 선언의 예입니다.
+
+
+string[] weekDays = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+
+선언 시 배열을 초기화할 경우 다음과 같은 바로 가기를 사용할 수 있습니다.
+
+int[] array2 = { 1, 3, 5, 7, 9 };
+string[] weekDays2 = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+
+배열 변수를 초기화하지 않고 선언할 수 있지만 이러한 변수에 배열을 할당하려면 new 연산자를 사용해야 합니다. 
+예를 들면 다음과 같습니다.
+
+int[] array3;
+array3 = new int[] { 1, 3, 5, 7, 9 };   // OK
+//array3 = {1, 3, 5, 7, 9};   // Error
+
+
+[값 형식 및 참조 형식 배열]
+SomeType[] array4 = new SomeType[10];

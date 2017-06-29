@@ -1,0 +1,9 @@
+C:\Windows\Microsoft.NET\Framework 폴더에서 
+설치된 버전 폴더에
+
+
+InstallUtil.exe에 서비스 프로그램을 넣거나
+
+cmd 실행후 폴더에 찾아가서  InstallUtil 폴더경로/파일 
+ 
+삭제시엔 InstallUtil 폴더경로/파일 -u

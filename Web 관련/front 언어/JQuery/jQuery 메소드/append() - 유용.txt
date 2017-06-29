@@ -1,0 +1,39 @@
+[.append()]
+
+.append()는 선택한 요소에 컨텐트(Content)를 추가합니다.
+
+<p>Lorem Ipsum Dolor</p>
+$( 'p' ).append( ' 123' );
+<p>Lorem Ipsum Dolor 123</p>
+
+
+[.appendTo()]
+
+.appendTo()는 요소 앞에 선택한 요소를 배치합니다.
+
+$( 'p' ).appendTo( '.ab' );
+는 p 요소 앞에 ab 클래스 값을 가진 요소를 배치합니다.
+
+
+- 예제 -
+
+h1 요소 뒤에 있는 p 요소를 h1 요소 앞으로 이동시키는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .appendTo()</title>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'h1' ).appendTo( 'p' );
+      } );
+    </script>
+  </head>
+  <body>
+    <h1>Lorem Ipsum Dolor</h1>
+    <p>Consectetur adipiscing elit.</p>
+  </body>
+</html>

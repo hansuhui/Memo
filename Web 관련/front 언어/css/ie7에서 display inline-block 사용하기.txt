@@ -1,0 +1,2 @@
+div {display:inline-block; zoom:1; *display:inline;}
+[출처] ie7에서 display inline-block 사용하기|작성자 은마군

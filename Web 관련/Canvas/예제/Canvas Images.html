@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+ <img id="scream" src="pic_the_scream.jpg"/>
+   <canvas id="myCanvas" 
+	style="border:1px solid #000000;">
+	</canvas>
+
+  <script>
+window.onload = function() {
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var img = document.getElementById("scream");
+    ctx.drawImage(img, 10, 10);
+};
+  </script>
+ </body>
+</html>

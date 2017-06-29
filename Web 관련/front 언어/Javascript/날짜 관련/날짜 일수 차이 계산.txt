@@ -1,0 +1,25 @@
+var EXPDATE1 = f.EXPDATE1.value.split("-");
+var EXPDATE2 = f.EXPDATE2.value.split("-");
+
+var dateObj1 = new Date(EXPDATE1[0], Number(EXPDATE1[1]) - 1, EXPDATE1[2]);
+var dateObj2 = new Date(EXPDATE2[0], Number(EXPDATE2[1]) - 1, EXPDATE2[2]);
+
+var betweenDay = (dateObj2.getTime() - dateObj1.getTime()) / 1000 / 60 / 60 / 24;
+
+
+
+$("#EXPDATEDay").val(betweenDay);
+
+
+<script type="text/javascript">  
+var today = new Date();  
+var dateString = "2012-04-25";  
+  
+var dateArray = dateString.split("-");  
+  
+var dateObj = new Date(dateArray[0], Number(dateArray[1])-1, dateArray[2]);  
+  
+var betweenDay = (today.getTime() - dateObj.getTime())/1000/60/60/24;  
+  
+alert(betweenDay);  
+</script>  

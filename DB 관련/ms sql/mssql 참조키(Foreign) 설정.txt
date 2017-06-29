@@ -1,0 +1,44 @@
+참조키 Foreing Key 설정법
+
+
+[CONSTRAINT constraint_name]
+    [FOREIGN KEY] [(column[,...n])]
+    REFERENCES ref_table [(ref_column[,...n])]
+    [ON DELETE { CASCADE | NO ACTION } ]
+    [ON UPDATE { CASCADE | NO ACTION } ]
+
+constraint_name : 제약조건의 이름으로 데이타베이스 내에서 유일해야 합니다.
+ref_table : 참조되는 테이블 이름입니다.
+ref_column : 참조되는 컬럼또는 컬럼들입니다.
+
+NO ACTION : 참조되는 테이블의 행이 삭제 또는 수정되었을 경우 SQLServer에서는 오류 메시지를 띄우고, 해당 작업은
+                      롤백(RollBack)됩니다.
+CASCADE : 참조되는 테이블의 행이 삭제 또는 수정되었을 경우 이를 참조하는 테이블에서 자동으로 변경되도록 설정
+                   하는 옵션입니다. 옵션을 지정하지 않으면 디폴트는 NO ACTION 입니다.
+
+
+
+-----------------------------------------
+
+CREATE TABLE Customer
+(
+   cus_id VARCHAR(12) NOT NULL PRIMARY KEY,
+   cus_name VARCHAR(20) NOT NULL,
+   cus_tel VARCHAR(14) NOT NULL,
+   cus_zip VARCHAR(6) NOT NULL,
+   cus_addr VARCHAR(50) NOT NULL,
+   cus_idate DATETIME NOT NULL
+);
+--참조하는 테이블
+CREATE TABLE Customer_Order
+(
+   order_num INT NOT NULL PRIMARY KEY,
+   order_name VARCHAR(50) NOT NULL,
+   order_idate DATETIME NOT NULL,
+   cus_id VARCHAR(12) NOT NULL,
+   constraint FK_cusid_customer FOREIGN KEY ( cus_id ) REFERENCES Customer ( cus_id )
+);
+
+
+ALTER TABLE Customer_Order
+ADD CONSTRAINT FK_custid_customer FOREIGN KEY ( cus_id ) REFERENCES Customer ( cus_id )

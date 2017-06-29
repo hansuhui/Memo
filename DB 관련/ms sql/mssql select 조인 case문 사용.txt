@@ -1,0 +1,18 @@
+select 
+a.StmDate
+,a.StmCode
+,d.coName as ShopGubun
+,b.ShopName
+,a.Memo
+,Count(e.idx) as Qty
+,Sum(e.UseAmt) as UseAmt
+, isnull(a.FeeRate,0) as FeeRate
+,sum(isNull(case when e.RetnType = '20' then 1 else 0 end, 0)) as CancelQty
+,sum(isNull(case when e.RetnType = '20' then e.Jong*1000 else 0 end, 0)) as CancelAmt
+from SettlementDay a with (nolock)
+join Shops b with(nolock) on (a.ShopCode = b.ShopCode)
+join RetnRelSettlement c with (nolock) on (a.StmCode = c.StmCode)
+left outer join CodeDetail d with (nolock) on (b.ShopGubun= d.coCode and d.coGroup = '13')
+join Retnmst e with (nolock) on (c.idx = e.idx and a.ShopCode = e.ShopCode)
+
+Group by a.StmDate,a.StmCode,d.coName,b.ShopName,a.Memo,a.FeeRate

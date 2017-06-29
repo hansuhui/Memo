@@ -1,0 +1,44 @@
+Type1 
+<c:foreach var="v" items="${list}" varStatus="status">
+${v}의 사용
+</c:forEach>
+ 
+Type2 : 자바의 for문과 같은 효과를 낼수있다.
+<c:foreach var="v" begin="1" end="10" step="2">
+${v}의 사용 
+</c:forEach>
+ 
+ => 콜렉션이나 Map의 각 항목을 처리할 때 사용
+ 
+ 
+varStatus 속성은 루프정보를 담는 LoopTagStatus객체를 저장할 변수명을 지정.
+ 
+ Property
+Getter 
+Description 
+ current
+getCurrent() 
+현재 아이템 
+ index
+getIndex() 
+0부터의 순서 
+ count
+getCount() 
+1부터의 순서 
+ first
+isFirst() 
+현재 루프가 처음이면 true반환 
+ last
+isLast() 
+현재 루프가 마지막이면 true반환 
+ begin
+getBegin() 
+시작속성 (시작값)
+ end
+getEnd() 
+끝 속성 (마지막 값) 
+ step
+getStep() 
+현재 스텝 속성 (' step' > 0? )
+ 
+[출처] [jsp] jstl 중 루프태그(foreach)의 상태 보기 (varStatus)|작성자 자바킹

@@ -1,0 +1,27 @@
+
+참조 사이트  http://legacy.datatables.net/index
+
+
+==================================================
+<link href="/css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+
+
+
+<script src="/js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+<script src="/js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+
+
+해당 테이블에 !!!
+
+ $('#example2').dataTable({
+                "bPaginate": false,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bSort": false,
+                "bInfo": false,
+                "bAutoWidth": true,
+                "sScrollY": "300px",
+                "sScrollX": "100%",
+                "sScrollXInner": "150%",
+                "fixedColumns": true
+            });

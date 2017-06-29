@@ -1,0 +1,98 @@
+[Masonry - 벽돌 쌓기 모양으로 요소를 배열해주는 라이브러리]
+
+Masonry는 벽돌 쌓기 모양으로 요소를 배열해주는 자비스크립트 라이브러리입니다.
+Masonry를 이용하면 이미지를 배열하거나 썸네일이 있는 글목록을 예쁘게 나타낼 수 있습니다.
+또한 웹브라우저의 가로폭이 변하면 그에 맞게 배열이 바뀌어 반응형웹에서도 사용하기 좋습니다.
+
+스크립트를 수정할 것이라면 masonry.pkgd.js를, 
+그대로 사용할 것이라면 masonry.pkgd.min.js를 다운로드 받습니다.
+
+- 사용법 -
+
+다운로드 받은 파일을 서버에 업로드하고, HTML 문서에서 불러옵니다.
+
+<script src="masonry.pkgd.min.js"></script>
+
+Masonry 배열을 할 요소를 적당한 이름의 id를 부여한 요소로 둘러싸고, 
+배열할 요소에 적당한 이름의 class를 부여합니다.
+
+<div id="container">
+  <div class="item">Lorem</div>
+  <div class="item">Ipsum</div>
+  ...
+  <div class="item">Lorem</div>
+</div>
+
+
+배열할 요소의 가로폭을 정하고, float 속성을 부여합니다.
+
+.item {
+  width: 100px;
+  float: left;
+}
+
+
+문서가 끝나는 곳에 스크립트 실행을 위한 코드를 넣습니다.
+
+<script>
+  var container = document.querySelector( '#container' );
+  var msnry = new Masonry( container, {
+    // options
+    columnWidth: 100,
+    itemSelector: '.item',
+  } );
+</script>
+
+
+- 예제 -
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>Masonry</title>
+    <style>
+      .item {
+        width: 100px;
+        height: 100px;
+        float: left;
+        margin: 5px;
+        background-color: #2195c9;
+      }
+    </style>
+    <script src="masonry.pkgd.min.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="item">Lorem</div>
+      <div class="item">Ipsum</div>
+      <div class="item">Dolor</div>
+      <div class="item">Lorem</div>
+      <div class="item">Ipsum</div>
+      <div class="item">Dolor</div>
+      <div class="item">Lorem</div>
+      <div class="item">Ipsum</div>
+      <div class="item">Dolor</div>
+      <div class="item">Lorem</div>
+      <div class="item">Ipsum</div>
+      <div class="item">Dolor</div>
+    </div>
+    <script>
+      var container = document.querySelector( '#container' );
+      var msnry = new Masonry( container, {
+        // options
+        columnWidth: 110,
+        itemSelector: '.item',
+      } );
+    </script>
+  </body>
+</html>
+
+벼열할 요소의 가로폭이 100px, 양쪽 여백의 합이 10px이므로, 
+옵션의 columnWidth 값을 110으로 설정하였습니다.
+
+웹브라우저 가로폭을 변경하면 그에 맞게 배열도 변합니다.
+
+
+
+

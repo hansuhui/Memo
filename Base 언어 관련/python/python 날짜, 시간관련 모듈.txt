@@ -1,0 +1,100 @@
+https://godoftyping.wordpress.com/2015/04/19/python-%EB%82%A0%EC%A7%9C-%EC%8B%9C%EA%B0%84%EA%B4%80%EB%A0%A8-%EB%AA%A8%EB%93%88/
+
+==========================================================================================
+
+import datetime
+ 
+now = datetime.datetime.now()
+print(now)          # 2015-04-19 12:11:32.669083
+ 
+nowDate = now.strftime('%Y-%m-%d')
+print(nowDate)      # 2015-04-19
+ 
+nowTime = now.strftime('%H:%M:%S')
+print(nowTime)      # 12:11:32
+ 
+nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+print(nowDatetime)  # 2015-04-19 12:11:32
+
+
+
+==========================================================================================
+
+import datetime
+ 
+myDatetimeStr = '2015-04-15 12:23:38'
+myDatetime = datetime.datetime.strptime(myDatetimeStr, '%Y-%m-%d %H:%M:%S')
+print(type(myDatetime)) # [class 'datetime.datetime']
+print(myDatetime)       # 2015-04-15 12:23:38
+
+
+
+==========================================================================================
+
+import datetime
+ 
+myDatetime = datetime.datetime.strptime('2015-04-15 12:23:38', '%Y-%m-%d %H:%M:%S')
+print(myDatetime)   # 2015-04-15 12:23:38
+ 
+yourDatetime = myDatetime.replace(day=16)
+print(myDatetime)   # 2015-04-15 12:23:38
+print(yourDatetime) # 2015-04-16 12:23:38
+
+==========================================================================================
+
+
+import datetime
+ 
+d = datetime.date(2015, 4, 15)
+t = datetime.time(12, 23, 38)
+ 
+dt = datetime.datetime.combine(d, t)
+print(dt) # 2015-04-15 12:23:38
+
+
+==========================================================================================
+
+
+import datetime
+ 
+now = datetime.datetime.now()
+nowTuple = now.timetuple()
+print(nowTuple)         # time.struct_time(tm_year=2015, tm_mon=4, tm_mday=19, tm_hour=13, tm_min=21, tm_sec=40, tm_wday=6, tm_yday=109, tm_isdst=-1)
+print(nowTuple.tm_year) # 2015
+
+==========================================================================================
+
+
+import datetime
+ 
+now = datetime.datetime.now()
+print(now)      # 2015-04-19 12:40:00.320686
+ 
+tomorrow = now + datetime.timedelta(days=1)
+print(tomorrow) # 2015-04-20 12:40:00.320686
+
+
+timedelta에 들어갈 수 있는 인자값은 아래와 같다.
+? 1주 : datetime.timedelta(weeks=1)
+? 1일 : datetime.timedelta(days=1)
+? 1시간 : datetime.timedelta(hours=1)
+? 1분 : datetime.timedelta(minutes=1)
+? 1초 : datetime.timedelta(seconds=1)
+? 1밀리초 : datetime.timedelta(milliseconds=1)
+? 1마이크로초 : datetime.timedelta(microseconds=1)
+
+timedelta로 5시간 30분을 표현하면 datetime.timedelta(hours=5, minutes=30)이라고 하면 된다. 이것을 초(second) 단위로 변경하려면 total_seconds 메서드를 호출하면 초단위로 쉽게 변경할 수 있다.
+
+datetime에서 datetime을 빼면 timedelta 값을 얻을 수 있다.
+
+==========================================================================================
+
+
+import datetime
+ 
+oneDatetime = datetime.datetime.strptime('2015-04-15 00:00:00', '%Y-%m-%d %H:%M:%S')
+twoDatetime = datetime.datetime.strptime('2015-04-16 00:00:10', '%Y-%m-%d %H:%M:%S')
+result = twoDatetime - oneDatetime
+print(result)         # 1 day, 0:00:10
+print(result.days)    # 1
+print(result.seconds) # 10

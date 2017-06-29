@@ -1,0 +1,67 @@
+
+
+[숫자 자료형]
+
+타입이름 / 의미
+
+TINYINT / 아주 작은 정수
+
+SMALLINT / 작은 정수
+
+MEDIUMUNT / 중간 크기의 정수
+
+INT / 표준 정수
+
+BIGING / 큰 정수
+
+DECIMAL / 고정소수점 수
+
+FLOAT / 단정도 부동소수점 수
+
+DOUBLE / 배정도 부동소수점 수
+
+BIT / 비트 필드
+
+
+[문자열 자료형]
+
+타입이름 / 의미
+
+CHAR / 고정 길의의 이진이 아닌(문자) 문자열
+
+VARCHAR / 가변 길이의 이진이 아닌 문자열
+
+BINARY / 고정 길이의 이진 문자열
+
+VARBINARY / 가변 길이의 이진 문자열
+
+TINYBLOB / 아주 작은 BLOB (binary large object)
+
+BLOB / 작은 BLOB 
+
+MEDIUBLOB / 중간 크기의 BLOB
+
+LONGBLOB / 큰 BLOB
+
+TINYTEXT / 이진이 아닌 아주 작은 문자열
+
+TEXT / 이진이 아닌 작은 문자열
+
+MEDUIMTEXT / 이진이 아닌 중간 크기의 문자열
+
+LONGTEXT / 이진이 아닌 큰 문자열
+
+EUMN / 열거형. 각 칼럼 값에 열거형 멤버를 하나씩 할당한다.
+
+SET / 집합형. 각 칼럼 값에 멤버를 할당하지 않거나 하나 이상을 할당한다.
+
+
+[시간적인 자료형]
+
+DATE / 'CCYY-MM-DD' 형식의 날짜 값
+
+TIME / 'hh:mm:ss' 형식의 시간 값
+
+DATETIME /'CCYY-MM-DD hh:mm:ss' 형식의 날짜 값
+
+YEAR / CCYY 또는 YY 형식의 연도 값

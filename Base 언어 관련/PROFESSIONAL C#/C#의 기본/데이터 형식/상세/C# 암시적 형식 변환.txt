@@ -1,0 +1,44 @@
+[암시적 형식 변환(Implicit Type Conversion)]
+
+데이터 형식 끼리의 변환은 값이 변하지 않는다는 보장이 있으면 자동으로 이루어질 수 있다.
+예를 들면 short나 int 값은 아무런 문제없이 long 변수에 대입될 수 있다는 이야기이다. 
+그리고 부호없는 변수의 값이 부호가 있는 변수의 한계값을 넘지 않았다면 부호가 없는 변수를
+부호가 있는 변수에 할당해 줄 수 있다. 그리고 정수 형식에서 부동 소숫점 숫자 형식으로의
+변환도 가능하다.
+
+이것을 보면 왜 위의 코드가 컴파일에 실패했는지 알 수 있다. int에서 byte로 형식 변환하면
+잠정적으로 3바이트의 데이터를 잃어버릴수 있다. 즉 프로그래머는 자신이 하고자 하는 변환을
+명확히 명시해 주어야 하며, 그렇지 않으면 컴파일러는 오류를 발생시킨다.
+만약 결과를 byte가 아니라 long 변수에 저장했다면 아무런 문자가 없었을 것이다.
+
+왜냐하면 long이 int보다 더 많은 수의 바이트를 저장할 수 있어서 데이터를 잃어버릴 염려가
+없기 때문이다. 이러한 상황이라면 컴파일러는 사용자가 굳이 데이터 형식 변환을 명시해
+놓지 않아도 알아서 형식 변환을 해준다.
+
+다음 표는 C#에서 가능한 암시적인 형식 변환의 경우를 보여준다.
+
+-- 암시적 형식 변환 표
+From  /  to
+sbyte / short, int , long , float , double , decimal
+byte  / short , ushort , int , uint, long , ulong , float , double , decimal
+short  / int , long, double , decimal
+ushort / int , uint , long , ulong , float , double , decomal
+int    / long , float , double , decomal
+uint   / long , ulong , float , double , decimal
+long , ulong / float , double , decimal
+float / double
+char / ushort, int , uint , long , ulong , float , double , decimal
+
+
+작은 정수 형식 변수에서 큰 정수 형식 변수로 혹은 부호가 없는 정수 형식을 동일한 크기를 가진
+부호가 있는 정수 형식으로 암시적인 형식 변환을 할 수 있다는 것을 알 수 있다.
+그 이외의 암시적인 형식 변환은 불가능하다. 그래서 uint와 int는 포함할 수 있는 수의 범위가 서로
+달라서 형식 변환을 했을때 데이터를 잃어버릴 수 있으므로 서로 암시적으로 형식 변환될 수 없다.
+하지만 uint가 포함할 수 있는 수의 범위가 long이 포함할 수 있는 수의 범위 안에 포함되므로 
+uint는 long으로 형식 변환 될 수 있다. 그리고 정수 형식과 부동 소수점 숫자 형식 사이에 형식 변환을
+할 수 있다. 뿐만 아니라 long/ulong을 다시 float로 형식 변환할 수 있고, long/ulong을 double로
+형식 변환할 수 있다. 뿐만 아니라 long/ulong을 다시 float로 형식 변환할 수 있다.
+long/ulong 형식의 변수를 float로 형식 변환하면 4바이트의 데이터를 잃어버린다고 생각할 수도 있지만
+형식 변환되어 얻어지는 float의 값은 double로 형식 변환했을 때보다 소수점 아래의 값은 덜 정확할지
+모르지만 값의 크기는 변하지 않는다. float에서 double로 형식 변환하는 것은 부호가 있는
+정수 형식의 경우와 똑같은 규칙을 따른다.

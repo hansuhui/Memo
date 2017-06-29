@@ -1,0 +1,121 @@
+컨트롤 + 스페이스  : 자동완성
+
+
+alt + shift + 위 ,양옆 화살표  : 단어선택
+
+ctrl + w : 현제 페이지 닫기
+
+Ctrl + shift + w : 모든 페이지 닫기
+
+ctrl + D : 줄 삭제
+
+ctrl + 3 : 검색이동
+
+ctrl + Q : 최근 수정한 위치로 이동
+
+ctrl + z : 실행 취소
+
+ctrl + y : 실행 복귀
+
+ctrl + 1 : Quick Fix 
+
+Ctrl + E " 뷰 화면의 탭에 열린 페이지 이동
+
+Ctrl + L : 라인 이동
+
+Ctrl + I : 자동 들여쓰기
+
+Ctrl + K : 원하는 문자열 블럭후 누르면 같은 문자열 찾는기
+Ctrl + shift +K : 역순으로 
+
+Ctrl + J : Incremental find 이클립스 하단 상태 표시줄에 Incremental find 라고 표시되어 한 글자자씩 누를 때 마다 코드내의 일치하는 문자열로 이동, 다시 Ctrl + J 를 누르면 그 문자열과 일치 하는 부분을 위/아래 방향키로 탐색이 가능
+
+
+Ctrl + M : 전체화면 모드
+
+Ctrl + O : 현재 보고 있는 페이지의 아웃라인
+
+Ctrl + /: 한줄 주석
+
+Ctrl + F6: 바로전 탭으로 이동
+
+Ctrl + PageUp , Ctrl + PageDown : Edit 창 좌우 이동 (Edit 창이 여러 개 띄워져 있을 경우 Edit 창간의 이동)
+
+Ctrl + F7: View간 화면 전환
+
+Ctrl + F8: Prespective 간 화면 전환
+
+Ctrl + PageUp(PageDown): 탭 화면 전환
+
+Ctrl + Alt + 위 아래 방향 : 한줄 복사
+
+Ctrl + shift + E : 탭에 열려있는 에디터 파일로 이동
+
+Ctrl + shift + L : 단축키 보기
+
+Ctrl + Shift + Down : 클래스 내에서 다음 멤버로 이동
+
+ctrl + Shift +/  :  블럭 주석
+
+ctrl + Shift + .  :  태그 끝 찾기
+
+
+Ctrl + Shift + T : 클래스 찾기
+
+ctrl + Shift + c :  한줄 주석 / 해제
+
+ctrl + Shift + 위,아래 방향키 :  메소트 이동
+
+
+ctrl + shift + o : 임포트 자동정리
+
+alt + shift + r : 변수 및 메수드 변경 일괄
+
+alt + 위,아래 방향키 : 줄이동
+
+ctrl + alt + r : 서버 재시작
+
+Alt + Shift + UP : 커서를 기준으로 토큰단위 블럭지정
+
+Alt + Shift + DOWN : 커서를 기준으로 토큰단위 블럭해제
+
+ctrl + Shift + B : 브레이크 포인터 설정/해제
+
+Alt + Shift + 방향키 : 블록 선택하기
+
+
+
+
+F11 : 디버깅 시작
+
+Shift + Alt + S,R : Getter,setter 자동생성
+
+sysout 치고 ctrl + Spacebar 누르면 System.out.println(); 생성
+
+try 치고 ctrl + Spacebar 누르면 블럭 생성
+
+for 치고 ctrl + Spacebar 누르면  블럭 생성
+
+F4 : 상속 구조 클래스 보기 (메서드 등)
+
+F2 : 에러의 원인에 대한 힌트
+
+F3 : Reference하는 클래스의 자바파일로 이동
+
+F4 : 해당 클래스의 Hierarchy
+
+F12 :  Editor로 포커스
+
+F11 : 디버깅 시작
+
+F8 : 디버깅 계속
+
+F6 : 한줄씩 실행
+
+F5 : 한줄씩 실행하면서 함수로 진입
+
+
+
+
+
+

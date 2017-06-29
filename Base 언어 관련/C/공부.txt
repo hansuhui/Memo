@@ -1,0 +1,4 @@
+https://brunch.co.kr/magazine/sinclair
+
+
+C의 자료형과 변수 제일 왼쪽 꺼부터 보기

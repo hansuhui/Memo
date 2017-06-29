@@ -1,0 +1,36 @@
+
+
+
+jQuery("#tblList1 tbody tr").find('td:eq(0)')
+
+$("#tblList1 tbody tr").find('td:eq(0)')
+
+해당테이블에 tbody부분에 tr에서 찾다 td:eq(0) 첫번째 td를
+
+
+
+
+
+			var list = $("#tblList1 tbody tr")
+			var MOVECODE = "";
+			var MOVESET = new Array();
+			
+			if ('@i' != "0") {
+
+				var s = 0;
+				for (var i = 0; i < list.length; i++) {
+					if (list[i].children[2].children[1].value == MOVECODE) {
+						MOVESET.push(MOVECODE);
+						
+					}
+					MOVECODE = list[i].children[2].children[1].value;
+				}
+				MOVESET = removeArrayDuplicate(MOVESET)
+
+				for (var i = 0; i < MOVESET.length; i++) {
+					//$("." + MOVESET[i] + "").attr("rowspan", $("." + MOVESET[i] + "").length);
+					$(".M140700073").attr("rowspan", "2");
+
+				}
+				
+			}

@@ -1,0 +1,76 @@
+function SetSearchDate(month) {
+
+	var sdate = "";
+	var edate = "";
+
+	if (month == 'today') {
+		sdate = gGetToday("-");
+		edate = sdate;
+	}
+	else if (month == "1w") {
+		edate = gGetToday("-");
+		sdate = getCalculatedDate(0, 0, -7, "-");
+	}
+	else if (month == "15d") {
+		edate = gGetToday("-");
+		sdate = getCalculatedDate(0, 0, -15, "-");
+	}
+	else if (month != "") {
+		edate = gGetToday("-");
+		sdate = getCalculatedDate(0, -month, 0, "-");
+	}
+
+	$("#s_date1").val(sdate);
+	$("#s_date2").val(edate);
+
+}
+
+
+function getCalculatedDate(iYear, iMonth, iDay, seperator) {
+	//현재 날짜 객체를 얻어옴.
+	var gdCurDate = new Date();
+	//현재 날짜에 날짜 게산.
+	gdCurDate.setYear(gdCurDate.getFullYear() + iYear);
+	gdCurDate.setMonth(gdCurDate.getMonth() + iMonth);
+	gdCurDate.setDate(gdCurDate.getDate() + iDay);
+
+	//실제 사용할 연, 월, 일 변수 받기.
+	var giYear = gdCurDate.getFullYear();
+	var giMonth = gdCurDate.getMonth() + 1;
+	var giDay = gdCurDate.getDate();
+	//월, 일의 자릿수를 2자리로 맞춘다.
+	giMonth = "0" + giMonth;
+	giMonth = giMonth.substring(giMonth.length - 2, giMonth.length);
+	giDay = "0" + giDay;
+	giDay = giDay.substring(giDay.length - 2, giDay.length);
+	//display 형태 맞추기.
+	return giYear + seperator + giMonth + seperator + giDay;
+}
+
+
+/***************************************************************************
+ * gGetToday(delim)
+ * : 현재 날짜를 지정된 구분자로 구분표시하여 반환한다.
+ *
+ * 파라미터 :
+ *   delim - 년,월,일을 구분하여 표시되는 구분자
+ *
+ * 반환값 :
+ *   현재 날짜(년,월,일)
+ ***************************************************************************/
+function gGetToday(delim) {
+	var today = new Date();             // 현재 날짜의 Date객체를 생성한다.
+	var day = today.getDate();          // 현재 '일'을 반환받는다.
+	var month = today.getMonth() + 1;   // 현재 '월'을 반환받는다.
+	var year = today.getFullYear();     // 현재 '년'을 반환받는다.
+	var strToday;
+	// '월'과 '일'을 2자리 숫자로 표현한다.
+	if ((month / 10) < 1) month = "0" + month;
+	if ((day / 10) < 1) day = "0" + day;
+
+	// 년,월,일로 이루어진 문자열로 변환한다.
+	if (delim == null) delim = "-";
+	strToday = year + delim + month + delim + day;
+
+	return strToday;
+}

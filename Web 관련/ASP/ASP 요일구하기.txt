@@ -1,0 +1,23 @@
+http://87nyunseng.tistory.com/entry/asp-%EC%9A%94%EC%9D%BC%EA%B5%AC%ED%95%98%EA%B8%B0
+
+
+<%
+ weekDate = weekDay(날짜입력~)
+ select case weekDate
+ case "1" weekDate = "일요일"
+ case "2" weekDate = "월요일"
+ case "3" weekDate = "화요일"
+ case "4" weekDate = "수요일"
+ case "5" weekDate = "목요일"
+ case "6" weekDate = "금요일"
+ case "7" weekDate = "토요일"
+ end select
+ 
+ if weekDate = "토요일" then
+  ondate = "<span style='color:blue;'>" & ondate & "</span>"
+ end if
+ 
+ if weekDate = "일요일" then
+  ondate = "<span style='color:red;'>" & ondate & "</span>"
+ end if
+%>

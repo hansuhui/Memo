@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+  	<canvas id="myCanvas" width="200" height="100"
+	style="border:1px solid #000000;">
+	</canvas>
+
+		<canvas id="myCanvas2" width="200" height="100"
+	style="border:1px solid #000000;">
+	</canvas>
+
+  <script>
+
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+
+// Create gradient
+var grd=ctx.createLinearGradient(0,0,200,0);
+grd.addColorStop(0,"red");
+grd.addColorStop(1,"white");
+
+// Fill with gradient
+ctx.fillStyle=grd;
+ctx.fillRect(10,10,150,80);
+
+
+
+var c2=document.getElementById("myCanvas2");
+var ctx=c2.getContext("2d");
+
+// Create gradient
+var grd=ctx.createRadialGradient(75,50,5,90,60,100);
+grd.addColorStop(0,"red");
+grd.addColorStop(1,"white");
+
+// Fill with gradient
+ctx.fillStyle = grd;
+ctx.fillRect(10,10,150,80);
+
+
+
+  </script>
+ </body>
+</html>

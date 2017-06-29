@@ -1,0 +1,4 @@
+
+replicate('원하는문자', 원하는 길이 -len(변수))+ cast(@v_currentNo as varchar)
+
+replicate('0', 3 -len(@v_currentNo))+ cast(@v_currentNo as varchar)

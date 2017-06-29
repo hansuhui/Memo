@@ -1,0 +1,88 @@
+
+http://www.wah.or.kr
+KWCAG를 정의하는 한국정보화진흥원에서 운영하는 웹 접근성 연구소 홈페이지
+
+[마크업 검사]
+
+(영문)
+https://validator.w3.org
+(한글) - HTML 명세서에 업데이트시 반영시간이 필요함
+https://validator.kldp.org/
+
+
+[CSS지원 브라우저 검사]
+
+http:/www.caniuse.com
+
+
+[CSS3 뷰어]
+
+http://www.css3maker.com/
+
+
+[Gradient 커스텀]
+
+http://www.colorzilla.com/
+
+[Easing에 대한 모든 정보]
+
+(jQuery-UI)
+http://www.jqueryui.com/
+http://jqueryui.com/easing/
+
+(jQuery Easing Pluing)
+http://gsgd.co.uk/sandbox/jquery/easing
+
+[CSS3에서 기본으로 지원하는 Easing]
+
+linear / 처음부터 끝까지 같은 속도를 유지
+
+ease / 처음과 끝보다 중간이 조금 빠름
+
+ease-in / 처음에 천천히 시작함
+
+ease-out / 마지막에 천천히 끝남
+
+ease-in-out / 처음과 마지막에 천천히 움직임
+
+
+
+(css에서 사용하는 Easing)
+
+http://easings.net/ko
+
+
+(easing 확인하며 만드는 사이트)
+
+
+http://cubic-bezier.com/#1,0,.96,.15
+
+
+[멀티디바이스를 위한 툴]
+
+
+http://troy.labs.daum.net/
+
+
+[브라우저 디텍팅]
+
+크로스 브라우징 관련해서 이슈를 잡는것?!
+
+http://browserhacks.com/
+
+
+[CSS 마우스 커서]
+
+
+좌측 설명글에 올리면 커서가 변함
+
+http://quirksmode.org/css/user-interface/cursor.html
+
+
+[CSS 젠가든]
+
+http://www.csszengarden.com/217/
+
+
+
+

@@ -1,0 +1,21 @@
+\platforms\android\res 폴더에
+
+해당 아이콘을 추가한다.
+
+      icon:"아이콘 명을 입력한다."
+
+push 
+'android': {
+        'icon':"ic_stat_android"
+        ,'iconColor': '#343434'
+      }
+
+
+ LocalNotifications.schedule({
+      id: 3,
+      text: 'Large and small icons',
+      data: { testData: "ABC" },
+      icon:"ic_stat_android"
+      smallIcon: 'res://drawable-hdpi/icon.png',
+      at: newDate
+    });

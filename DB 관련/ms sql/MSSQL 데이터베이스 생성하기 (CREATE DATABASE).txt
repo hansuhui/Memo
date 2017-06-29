@@ -1,0 +1,60 @@
+ - MSSQL 데이터베이스 생성방법
+ 
+   CREATE DATABASE [데이터베이스명] ON (
+      NAME = '[mdf명]',
+      FILENAME = '[mdf파일 경로 및 파일명]',
+      SIZE = [mdf파일 처음크기],
+      MAXSIZE = [mdf파일 최대크기],
+      FILEGROWTH = [mdf파일 증가크기]
+   )
+   LOG ON (
+      NAME = '[ldf명]',
+      FILENAME = '[ldf파일 경로 및 파일명]',
+      SIZE = [ldf파일 처음크기],
+      MAXSIZE = [ldf파일 최대크기],
+      FILEGROWTH = [ldf파일 증가크기]
+   )
+?
+ 
+ [참고사항] 데이터베이스 생성시 일반적인 설정
+   데이터베이스를 생성하게되면 데이터베이스명, mdf명, mdf파일 경로 및 파일명, mdf파일 처음크기, mdf파일 최대크기,
+   mdf파일 증가크기, ldf명, ldf파일 경로 및 파일명, ldf파일 처음크기, ldf파일 최대크기, ldf파일 증가크기까지 입력해야할
+   사항이 굉장히 많기 때문에 어렵게 느껴질 수 있습니다.
+   때문에 쉽게 데이터베이스를 생성하실 수 있도록 일반적으로 입력하는 설정에 대해 아래에 준비해두었습니다.
+ 
+ 
+항목 / 내용 /  예제
+ 데이터베이스명 /  생성하고자 하는 데이터베이스명 /  교직원정보
+ mdf명 /  데이터베이스명과 동일하게 설정 /  교직원정보
+ mdf파일 경로 및 파일명 /  기본 설치장소 + mdf명.mdf /  C:\ㆍㆍㆍ\교직원정보.mdf
+ mdf파일 처음크기 /  MB단위로 설정 /  3MB 
+ mdf파일 최대크기 /  MB단위 혹은 'UNLIMITED'로 설정 /  UNLIMITED
+ mdf파일 증가크기 /  MB단위 혹은 %로 설정 /  1MB
+ ldf명 /  데이터베이스명_log로 설정 /  교직원정보_log
+ ldf파일 경로 및 파일명 /  기본 설치장소 + ldf명.ldf /  C:\ㆍㆍㆍ\교직원정보_log.ldf
+ ldf파일 처음크기 /  MB단위로 설정 /  3MB
+ ldf파일 최대크기 /  MB단위 혹은 'UNLIMITED'로 설정 /  UNLIMITED
+ ldf파일 증가크기 /  MB단위 혹은 %로 설정 /  10%
+ 
+ - 예제를 기준으로 구성한 데이터베이스 생성문 
+ 
+   CREATE DATABASE 교직원정보 ON (
+      NAME = '교직원정보',
+      FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\교직원정보.mdf',
+      SIZE = 3MB,
+      MAXSIZE = 'UNLIMITED',
+      FILEGROWTH = 1MB
+   )
+   LOG ON (
+      NAME = '교직원정보_log',
+      FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\교직원정보_log.ldf',
+      SIZE = 1MB,
+      MAXSIZE = 'UNLIMITED',
+      FILEGROWTH = 10%
+   )
+?
+ 
+ - 데이터베이스 생성 확인 
+ 
+   SELECT name FROM sys.databases WHERE name = '교직원정보'
+[출처] MSSQL 데이터베이스 생성하기 (CREATE DATABASE)|작성자 창공

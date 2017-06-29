@@ -1,0 +1,27 @@
+	function fn_Save() {
+			var $f = $("#frm");
+			var isSearch = true;
+
+			// 유효성 검사 목록 확인
+			$f.find(":input").each(function () {
+				$el = $(this);
+				if ($el.attr("validate") == "true") {
+
+					if ($el.val() == "") {
+						alert($el.parent().prev().text() + "을(를) 입력하세요.");
+						$el.focus();
+
+						isSearch = false;
+						return false;
+					}
+
+				}
+			});
+			if (isSearch) {
+				//$f.attr("action", "/Gift/DisuseRegSave");
+
+				$f.submit();
+			}
+
+			return isSearch;
+		}

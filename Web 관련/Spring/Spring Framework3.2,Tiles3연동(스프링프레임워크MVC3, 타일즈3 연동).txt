@@ -1,0 +1,451 @@
+http://www.oraclejavanew.kr/bbs/board.php?bo_table=LecSpring&wr_id=306
+
+
+자바의 스윙과 같은 전통적인 GUI 도구들은 프레임이나 원도우에서 컨텐츠들이 어떻게 
+보여져야 하는지에 대한 레이아웃 관리자를 제공 하는 반면 자바웹에서는 그러한 것을 제공하지 않기에
+템플릿 중심의 아키텍쳐를 표현을 위해 사용합니다.
+
+템플릿이란?
+
+페이지의 레이아웃을 기술하기 위한 JSP 페이지 이다. 템플릿은 컨텐츠에 대한 표기 없이 애플리케이션의
+페이지가 어떻게 보일 건지에 대해 정의하는 역할을 하고 필요한 부분은 실행 시 
+자바 프로그램(스프링프레임워크)에 의해 동적으로 채워지게 되는 것이다.
+
+즉 컨텐츠들(템플릿에 구현 되지 않는 부분)은 실행 될 때 템플릿 페이지에 동적으로 삽입되며 여러 웹 페이지에서
+동일한 템플릿을 사용하게 되는 것이다.
+
+타일즈 는 컨텐츠를 레이아웃으로부터 분리하는 템플릿 메커니즘을 제공하는데 이미 설명 한 것과 같이
+레이아웃(템플릿)을 작성하고 실행 시에 레이아웃에 동적으로 컨텐츠를 삽입하는 것이 가능하다.
+
+주요 기능은 다음과 같다.
+
+- 템플릿 기능
+
+- 동적 페이지의 구조와 로등
+
+- 스크린 definitions
+
+- 국제화 지원
+
+- 타일과 레이아웃 재사용을 위한 지원
+
+
+타일이란? 
+
+타일은 웹페이지 안에 있는 지역을 위미한다. 하나의 웹 페이지는 한 영역 또는 
+여러 개의 영역으로 나뉘어 집니다. 즉 JSP 페이지는 일반적으로 여러 영역의 타일로 만들어 지게 된다.
+
+
+<?xml:namespace prefix = v />
+
+이번 예제는 Spring Framwork3.2에서 Tiles를 연동하여 Layout에 컨텐츠를 채우는 간단한 예제이다.
+본 예제에서 레이아웃을 담당하는 것은 Layout.jsp 이며 동적으로 뷰가 만들어져 채워지는 것은 home.jsp 이다.
+
+지금까지 대부분 예제에서 뷰리졸버는 넘어보는 뷰이름을 해석해서 접두어, 접미어를 붙여 뷰이름을 해석했는데
+이번 예제에서 뷰리졸버가 되는 것은 TilesViewResolver 이다
+
+1. Spring MVC 프로젝트를 하나 만들자
+
+
+================================================================
+   
+
+2. Spring MVC 템플릿으로 제공되는 컨트롤러와 뷰를 그대로 이용하면서  타일즈를 위한 .jsp 파일만
+   몇 개 만들기로 하자. 먼저 pom.xml 이다. 타일즈를 위한 부분만 확인 하자. Tiles3.0.1 을 이용하였고
+   이를 위해 Spring Framework 버전도 3,2이상을 사용하였다. 나머지는 Spring MVC 템플릿 그대로 이다.
+
+
+[pom.xml]
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+       <modelVersion>4.0.0</modelVersion>
+       <groupId>a.b</groupId>
+       <artifactId>springtiles</artifactId>
+       <name>springtiles</name>
+       <packaging>war</packaging>
+       <version>1.0.0-BUILD-SNAPSHOT</version>
+       <properties>
+             <java-version>1.6</java-version>
+             <org.springframework-version>3.2.3.RELEASE</org.springframework-version>
+             <org.aspectj-version>1.6.10</org.aspectj-version>
+             <org.slf4j-version>1.6.6</org.slf4j-version>
+             <tiles.version>3.0.1</tiles.version>
+       </properties>
+       <dependencies>
+             <!-- Spring -->
+             <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                    <version>${org.springframework-version}</version>
+                    <exclusions>
+                           <!-- Exclude Commons Logging in favor of SLF4j -->
+                           <exclusion>
+                                 <groupId>commons-logging</groupId>
+                                 <artifactId>commons-logging</artifactId>
+                           </exclusion>
+                    </exclusions>
+             </dependency>
+ 
+             <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-tx</artifactId>
+                    <version>${org.springframework-version}</version>
+             </dependency>
+ 
+             <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-webmvc</artifactId>
+                    <version>${org.springframework-version}</version>
+             </dependency>
+            
+             <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                    <version>${org.springframework-version}</version>
+             </dependency>
+ 
+             <!-- tiles -->
+             <dependency>
+                    <groupId>org.apache.tiles</groupId>
+                    <artifactId>tiles-core</artifactId>
+                    <version>${tiles.version}</version>
+             </dependency>
+             <dependency>
+                    <groupId>org.apache.tiles</groupId>
+                    <artifactId>tiles-jsp</artifactId>
+                    <version>${tiles.version}</version>
+             </dependency>
+ 
+ 
+             <!-- AspectJ -->
+             <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjrt</artifactId>
+                    <version>${org.aspectj-version}</version>
+             </dependency>
+ 
+             <!-- Logging -->
+             <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                    <version>${org.slf4j-version}</version>
+             </dependency>
+             <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                    <version>${org.slf4j-version}</version>
+                    <scope>runtime</scope>
+             </dependency>
+             <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <version>${org.slf4j-version}</version>
+                    <scope>runtime</scope>
+             </dependency>
+             <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                    <version>1.2.15</version>
+                    <exclusions>
+                           <exclusion>
+                                 <groupId>javax.mail</groupId>
+                                 <artifactId>mail</artifactId>
+                           </exclusion>
+                           <exclusion>
+                                 <groupId>javax.jms</groupId>
+                                 <artifactId>jms</artifactId>
+                           </exclusion>
+                           <exclusion>
+                                 <groupId>com.sun.jdmk</groupId>
+                                 <artifactId>jmxtools</artifactId>
+                           </exclusion>
+                           <exclusion>
+                                 <groupId>com.sun.jmx</groupId>
+                                 <artifactId>jmxri</artifactId>
+                           </exclusion>
+                    </exclusions>
+                    <scope>runtime</scope>
+             </dependency>
+ 
+             <!-- @Inject -->
+             <dependency>
+                    <groupId>javax.inject</groupId>
+                    <artifactId>javax.inject</artifactId>
+                    <version>1</version>
+             </dependency>
+ 
+             <!-- Servlet -->
+             <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                    <version>2.5</version>
+                    <scope>provided</scope>
+             </dependency>
+             <dependency>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                    <version>2.1</version>
+                    <scope>provided</scope>
+             </dependency>
+             <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>1.2</version>
+             </dependency>
+ 
+             <!-- Test -->
+             <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <version>4.7</version>
+                    <scope>test</scope>
+             </dependency>
+       </dependencies>
+       <build>
+             <plugins>
+                    <plugin>
+                           <artifactId>maven-eclipse-plugin</artifactId>
+                           <version>2.9</version>
+                           <configuration>
+                                 <additionalProjectnatures>
+                                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                                 </additionalProjectnatures>
+                                 <additionalBuildcommands>
+                                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                                 </additionalBuildcommands>
+                                 <downloadSources>true</downloadSources>
+                                 <downloadJavadocs>true</downloadJavadocs>
+                           </configuration>
+                    </plugin>
+                    <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-compiler-plugin</artifactId>
+                           <version>2.5.1</version>
+                           <configuration>
+                                 <source>1.6</source>
+                                 <target>1.6</target>
+                                 <compilerArgument>-Xlint:all</compilerArgument>
+                                 <showWarnings>true</showWarnings>
+                                 <showDeprecation>true</showDeprecation>
+                           </configuration>
+                    </plugin>
+                    <plugin>
+                           <groupId>org.codehaus.mojo</groupId>
+                           <artifactId>exec-maven-plugin</artifactId>
+                           <version>1.2.1</version>
+                           <configuration>
+                                 <mainClass>org.test.int1.Main</mainClass>
+                           </configuration>
+                    </plugin>
+             </plugins>
+       </build>
+</project>
+================================================================
+
+
+3. 컨트롤러이다.
+
+
+
+ 
+ 
+package a.b.springtiles;
+ 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+ 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+ 
+/**
+ * Handles requests for the application home page.
+ */
+@Controller
+public class OnjController {
+          
+           private static final Logger logger = LoggerFactory.getLogger(OnjController.class);
+ 
+           @RequestMapping(value = "/hello", method = RequestMethod.GET)
+           public String hello(Locale locale, Model model) {
+                     logger.info("Welcome home! The client locale is {}.", locale);
+                    
+                     Date date = new Date();
+                     DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+                    
+                     String formattedDate = dateFormat.format(date);
+                    
+                     model.addAttribute("serverTime", formattedDate );  
+                     return "hello";
+           }
+          
+}
+
+
+================================================================
+
+4.web.xml
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ 
+       <!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+       <context-param>
+             <param-name>contextConfigLocation</param-name>
+             <param-value>/WEB-INF/spring/root-context.xml</param-value>
+       </context-param>
+      
+       <!-- Creates the Spring Container shared by all Servlets and Filters -->
+       <listener>
+             <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+       </listener>
+ 
+       <!-- Processes application requests -->
+       <servlet>
+             <servlet-name>appServlet</servlet-name>
+             <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+             <init-param>
+                    <param-name>contextConfigLocation</param-name>
+                    <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+             </init-param>
+             <load-on-startup>1</load-on-startup>
+       </servlet>
+            
+       <servlet-mapping>
+             <servlet-name>appServlet</servlet-name>
+             <url-pattern>*.html</url-pattern>
+       </servlet-mapping>
+ 
+</web-app>
+
+
+================================================================
+ 
+5.servlet-context.xml
+ 
+<?xml version="1.0" encoding="UTF-8"?> 
+ <beans xmlns="http://www.springframework.org/schema/beans" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:p="http://www.springframework.org/schema/p" 
+      xmlns:context="http://www.springframework.org/schema/context" 
+      xmlns:mvc="http://www.springframework.org/schema/mvc" 
+      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"> 
+     
+      <context:component-scan base-package="a.b.springtiles" /> 
+      <context:annotation-config /> 
+      <mvc:annotation-driven /> 
+     
+      <!-- 아래 타일즈를 위한  TilesViewResolver, TilesConfigurer는 스프링3.2 이상에서만...-->
+      <bean id="tilesviewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" /> 
+      <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"> 
+           <property name="definitions"> 
+                <list> 
+                     <value>/WEB-INF/tiles/tiles.xml</value> 
+                </list> 
+           </property> 
+      </bean> 
+ </beans> 
+
+
+================================================================
+
+
+6.root-context.xml
+ 
+별 내용없다.
+ 
+<?xml version="1.0" encoding="UTF-8"?> 
+ <beans xmlns="http://www.springframework.org/schema/beans" 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:p="http://www.springframework.org/schema/p" 
+      xmlns:context="http://www.springframework.org/schema/context" 
+      xmlns:mvc="http://www.springframework.org/schema/mvc" 
+      xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+      http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"> 
+     
+ </beans> 
+
+
+================================================================
+
+
+ 
+7.WEB-INF/tiles/tiles.xml
+ 
+ 
+<!DOCTYPE tiles-definitions PUBLIC 
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+<tiles-definitions>   
+ 
+<definition name="tilesbase"  
+    template="/views/layout.jsp">   
+    <put-attribute name="title" value="" />        
+    <put-attribute name="header" value="/views/header.jsp" />   
+    <put-attribute name="menu" value="/views/menu.jsp" />      
+    <put-attribute name="body" value="" />       
+    <put-attribute name="footer" value="/views/footer.jsp" />   
+</definition>      
+ 
+ <!-- 컨트롤러에서 리턴해 주는 뷰이름,본예제는 hello  -->
+<definition name="hello" extends="tilesbase">    
+    <put-attribute name="title" value="OracleJava Community, MVC HelloWorld by Tiles" />     
+    <put-attribute name="body" value="/views/home.jsp" />    
+</definition>  
+ 
+</tiles-definitions>
+
+
+================================================================
+
+8.레이아웃(템플릿) 역할을 하는 webapps/views/layout.jsp
+
+
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>
+<tiles:insertAttribute name="title" ignore="true" />
+</title>
+</head>
+<body>
+<table border="1" align="center">
+       <tr>
+             <td height="30" colspan="2"><tiles:insertAttribute name="header" />
+             </td>
+       </tr>
+       <tr>
+             <td height="200"><tiles:insertAttribute name="menu" /></td>
+             <td width="300"><tiles:insertAttribute name="body" /></td>
+       </tr>
+       <tr>
+             <td height="20" colspan="2"><tiles:insertAttribute name="footer" />
+             </td>
+       </tr>
+</table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

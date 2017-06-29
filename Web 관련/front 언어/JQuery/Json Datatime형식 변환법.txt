@@ -1,0 +1,14 @@
+ data[i].B_WRITE_TIME = new Date(+data[i].B_WRITE_TIME.replace(/\/Date\((\d+)\)\//, '$1'));
+                            data[i].B_WRITE_TIME = data[i].B_WRITE_TIME.toLocaleString();
+                            data[i].B_WRITE_TIME = data[i].B_WRITE_TIME.replace("³â ", "-");
+                            data[i].B_WRITE_TIME = data[i].B_WRITE_TIME.replace("¿ù ", "-");
+                            data[i].B_WRITE_TIME = data[i].B_WRITE_TIME.replace("ÀÏ", "-");
+
+                            var date = data[i].B_WRITE_TIME.split('-');
+
+                            if (date[1].length == 3) {
+                                date[1] = "0" + date[1];
+                            }
+                            if (date[2].length == 3) {
+                                date[2] = "0" + date[2];
+                            }

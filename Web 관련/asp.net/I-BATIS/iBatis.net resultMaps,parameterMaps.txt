@@ -1,0 +1,60 @@
+
+----- 리스트 7. SQL 맵핑 파일 -----------------------------
+<?xml version="1.0" encoding="utf-8"?>
+ 
+<sqlMap
+namespace="iBatisSample"
+xmlns="http://ibatis.apache.org/mapping"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+ 
+// 쿼리 결과를 반환할 엔티티 객체의 별칭을 선언한다.
+  <alias>
+    <typeAlias alias="customers" type="iBatisSample.Models.Customers" />
+  </alias>
+ 
+  // 필요할 경우 엔티티 객체의 각 프로퍼티와 테이블의 컬럼을 맵핑한다.
+  <resultMaps>
+    <resultMap id="customersResultMap" class="customers">
+      <result column="CustomerID" property="CustomerID"/>
+      <result column="CompanyName" property="CompanyName"/>
+      <result column="ContactName" property="ContactName"/>
+      <result column="ContactTitle" property="ContactTitle"/>
+    </resultMap>   
+  </resultMaps>
+ 
+  // 필요할 경우 쿼리의 파라미터로 사용될 객체와 테이블의 컬럼명을 맵핑한다.
+  <parameterMaps>
+    <parameterMap id="customersParameterMap" class="customers">
+      <parameter column="CustomerID" property="CustomerID"/>
+      <parameter column="CompanyName" property="CompanyName"/>
+      <parameter column="ContactName" property="ContactName"/>
+      <parameter column="ContactTitle" property="ContactTitle"/>
+    </parameterMap>
+  </parameterMaps>
+ 
+  // <statements> 엘리먼트 내부에 쿼리문을 기재한다.
+  <statements>
+    <select id="SelectCustomers" resultMap="customersResultMap" >
+      select top 5 * from customers
+    </select>
+ 
+    <insert id="InsertCustomers" parameterMap="customersParameterMap" >
+      insert into customers(CustomerID, CompanyName, ContactName, ContactTitle)
+      values (#CustomerID#, #CompanyName#, #ContactName#, #ContactTitle#)
+    </insert>
+ 
+    <update id="UpdateCustomers" parameterMap="customersParameterMap">
+      update customers set
+CompanyName=#CompanyName#,
+ContactName=#ContactName#,
+ContactTitle=#ContactTitle#
+      where CustomerID = #CustomerID#
+    </update>
+ 
+    <delete id="DeleteCustomers" parameterMap="customersParameterMap">
+      delete from customers where CustomerID = #CustomerID#
+    </delete>
+  </statements>
+ 
+</sqlMap>
+--------------------------------------------------------

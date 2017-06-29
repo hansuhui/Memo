@@ -1,0 +1,710 @@
+http://mherman.org/blog/2015/02/12/postgresql-and-nodejs/#.WM5ejFWLSM8
+
+
+[Project Setup]
+
+Start by installing the Express generator:
+
+npm install -g express-generator@4.13.4
+
+Then create a new project and install the dependencies:
+
+express 프로젝트명
+cd 프로젝트명 && npm install
+
+
+add Supervisor to watch for code changes:
+
+npm install supervisor@0.11.0 -g
+
+Update the start script in the package.json file:
+
+"scripts" : {
+    "start" : "supervisor ./bin/www"
+},
+
+
+Run the app:
+npm start
+
+Then navigate to http://localhost:3000/ in your browser. You should see the 
+"Welcome to Express" text.
+
+
+
+[Postgres Setup]
+
+Need to setup Postgres? On a Mac? Check out Postgres.app.
+
+With your Postgres server up and running on port 5432, making a database connection 
+is easy with the pg library:
+
+npm install pg@6.1.0 --save
+
+Now let's set up a simple table creation script:
+
+
+const pg = require('pg');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo';
+
+const client = new pg.Client(connectionString);
+client.connect();
+const query = client.query(
+  'CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
+query.on('end', () => { client.end(); });
+
+Save this as database.js in a new folder celled"models".
+
+Here we create a new instance of client to interract whit database and then establish
+communication with in via the connect() metond. We then run a SQL query via the 
+query() method. Finally, communuication is closed via the end() method. be sure to check
+out the documention for more info.
+
+Make sure you have a database called "todo" created, and then run the script to set up the
+table and subsequent fields:
+
+node models/database.js
+
+뭐 대충 실횅하고 테이블이 생성되었는지 확인해보라는 거임
+
+
+[Server-Side:Routes]
+
+Let's keep it simple by adding all endpoints to the index.js file withn the "routes" folder.
+Make sure to update the imports:
+
+const express = require('express');
+const router = express.Router();
+const pg = require('pg');
+const path = require('path');
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo';
+
+Now,let's add each endpoint
+
+Function / URL / Action
+
+CREATE / [/api/v1/todos] / Create a single todo
+READ   / [/api/v1/todos] / Get all todos
+UPDATE / [/api/v1/todos/:todo_id] / Update a single todo
+DELETE / [/api/v1/todos/:todo_id] / Delete a single todo
+
+Follow alone with the inline comments below for an explanation of what's happening Also,
+be sure to check out the pg documenation to lern about connection pooling. How does that
+differ from pg.client?
+
+[CREATE]
+
+
+router.post('/api/v1/todos', (req, res, next) => {
+  const results = [];
+  // Grab data from http request
+  const data = {text: req.body.text, complete: false};
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Insert Data
+    client.query('INSERT INTO items(text, complete) values($1, $2)',
+    [data.text, data.complete]);
+    // SQL Query > Select Data
+    const query = client.query('SELECT * FROM items ORDER BY id ASC');
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+});
+
+Test this out via Curl in a new termnal window:
+
+curl --data "text=test&complete=false" http://1270.0.0.1:3000/api/vi/todos
+
+
+[Read]
+router.get('/api/v1/todos', (req, res, next) => {
+  const results = [];
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('SELECT * FROM items ORDER BY id ASC;');
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+});
+
+
+Add a few more rows of data via Crul, and then test the endpoint out in your browser at
+http://localhost:3000/api/v1/todos. You should see an array of JSON objects:
+
+[
+  {
+    id: 1,
+    text: "test",
+    complete: false
+  },
+  {
+    id: 2,
+    text: "test2",
+    complete: false
+  },
+  {
+    id: 3,
+    text: "test3",
+    complete: false
+  }
+]
+
+
+[Update]
+
+
+router.put('/api/v1/todos/:todo_id', (req, res, next) => {
+  const results = [];
+  // Grab data from the URL parameters
+  const id = req.params.todo_id;
+  // Grab data from http request
+  const data = {text: req.body.text, complete: req.body.complete};
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Update Data
+    client.query('UPDATE items SET text=($1), complete=($2) WHERE id=($3)',
+    [data.text, data.complete, id]);
+    // SQL Query > Select Data
+    const query = client.query("SELECT * FROM items ORDER BY id ASC");
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', function() {
+      done();
+      return res.json(results);
+    });
+  });
+});
+
+
+Again , test via Curl:
+
+$ curl -X PUT --data "text=test&complete=true" http://127.0.0.1:3000/api/v1/todos/1
+
+
+Navigate to http://localhost:3000/api/v1/todos to make sure the data has been updated correctly.
+
+
+[
+  {
+    id: 1,
+    text: "test",
+    complete: true
+  },
+  {
+    id: 2,
+    text: "test2",
+    complete: false
+  },
+  {
+    id: 3,
+    text: "test3",
+    complete: false
+  }
+]
+
+
+[Delete]
+
+
+router.delete('/api/v1/todos/:todo_id', (req, res, next) => {
+  const results = [];
+  // Grab data from the URL parameters
+  const id = req.params.todo_id;
+  // Get a Postgres client from the connection pool
+  pg.connect(connectionString, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Delete Data
+    client.query('DELETE FROM items WHERE id=($1)', [id]);
+    // SQL Query > Select Data
+    var query = client.query('SELECT * FROM items ORDER BY id ASC');
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+});
+
+
+Final Curl test:
+
+curl -X DELETE http://127.0.0.1:3000/api/v1/todos/3
+
+and you should now hava:
+
+  {
+    id: 1,
+    text: "test",
+    complete: true
+  },
+  {
+    id: 2,
+    text: "test2",
+    complete: false
+  }
+]
+
+
+[Refactoring]
+
+Bofore we jump to the client-side to add Anhular, be aware that our code should be
+refactored to address a few issues, We'll handle this later on in this tutorial, but this is an
+excellent opporttunity to refactor the code on your own.Good luck!
+
+[Client-Side: Angular]
+
+Let's dive right in too Angular.
+
+Keep in mind that this is not meant to be an exhaustive tutorial. If you're new to Angular 
+I suggest following my "AngularJS by Example" tutorial - Building a Bitcoin Investment Calculator.
+
+
+[Module]
+
+Create a file called app.js in the "publicjavascripts" folder. This file will house out Augular 
+module and controller:
+
+
+angular.module('nodeTodo', [])
+.controller('mainController', ($scope, $http) => {
+  $scope.formData = {};
+  $scope.todoData = {};
+  // Get all todos
+  $http.get('/api/v1/todos')
+  .success((data) => {
+    $scope.todoData = data;
+    console.log(data);
+  })
+  .error((error) => {
+    console.log('Error: ' + error);
+  });
+});
+
+Here we define out module as well as the controller. Within the controller we are using the
+$http service to make anAJAX request to the '/api/v1/todos' endpoint and then updating the scope
+accodingly.
+
+what else is going on?
+
+well,we'ar injecting the $scope and $http service. Also , we're defining and updating 
+$scope to banlde binding.
+
+
+[update Main Route]
+
+Let's update the main route in index.ks within the "routes" folder:
+
+router.get('/', (req, res, next) => {
+  res.sendFile('index.html');
+});
+
+
+So When the user hits the main endpoint, we send the index.html file . This file will contain our HTML
+and Angular templates.
+
+Make sure to add the following dependdency as well:
+
+const path = require("path");
+
+
+
+[View]
+
+
+Now,let's add our basic Angular view within index.html:
+
+
+<!DOCTYPE html>
+<html ng-app="nodeTodo">
+  <head>
+    <title>Todo App - with Node + Express + Angular + PostgreSQL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body ng-controller="mainController">
+    <div class="container">
+      <ul ng-repeat="todo in todoData">
+        <li>{{ todo.text }}</li>
+      </ul>
+    </div>
+    <script src="//code.jquery.com/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+    <script src="javascripts/app.js"></script>
+  </body>
+</html>
+
+Add this to the "public" folder.
+
+This should all be staightforward. We bootstap Anular - ng-app="nodeTodo", define the
+scope of the controller - ng-controller="mainController" - and then use ng=repeat to loop
+through the todoData object, adding each individual todo to the page.
+
+
+
+[Module (round two)]
+
+Next, let's update the module to handle the create add delete functions:
+
+
+// Create a new todo
+$scope.createTodo = () => {
+  $http.post('/api/v1/todos', $scope.formData)
+  .success((data) => {
+    $scope.formData = {};
+    $scope.todoData = data;
+    console.log(data);
+  })
+  .error((error) => {
+    console.log('Error: ' + error);
+  });
+};
+// Delete a todo
+$scope.deleteTodo = (todoID) => {
+  $http.delete('/api/v1/todos/' + todoID)
+  .success((data) => {
+    $scope.todoData = data;
+    console.log(data);
+  })
+  .error((data) => {
+    console.log('Error: ' + data);
+  });
+};
+
+Now,let's update our view...
+
+
+[View (round two)]
+
+Simply update the list item like so: 
+<li><input type="checkbox" ng-click="deleteTodo(todo.id)">&nbsp;{{ todo.text }}</li>
+
+
+This uses the ng-click diretive to call the deleteTodo() function that takes a unique id
+associted with each todo as an argument.
+
+Test this out. Make sure that when you lick a check box the todo is removed.
+
+
+[View (round three)]
+
+To bandle the creation fo a new todo, we neeed, we need to add an HTML form:
+
+<div class="container">
+  <form>
+    <div class="form-group">
+      <input type="text" class="form-control input-lg" placeholder="Add a todo..." ng-model="formData.text">
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg" ng-click="createTodo()">Add Todo</button>
+  </form>
+  <ul ng-repeat="todo in todoData">
+    <li><input type="checkbox" ng-click="deleteTodo(todo.id)">&nbsp;{{ todo.text }}</li>
+  </ul>
+</div>
+
+Agin,we use ng-click to call the createTodo() function the controller. Test this out!
+
+
+[View (round four)]
+
+with the main functionality done, let's update the front-end to make it look a bit more
+presendtable.
+
+HTML:
+
+<!DOCTYPE html>
+<html ng-app="nodeTodo">
+  <head>
+    <title>Todo App - with Node + Express + Angular + PostgreSQL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/stylesheets/style.css" media="screen">
+  </head>
+  <body ng-controller="mainController">
+    <div class="container">
+      <div class="header">
+        <h1>Todo App</h1>
+        <hr>
+        <h1 class="lead">Node + Express + Angular + PostgreSQL</h1>
+      </div>
+      <div class="todo-form">
+        <form>
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="Enter text..." ng-model="formData.text">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="createTodo()">Add Todo</button>
+        </form>
+      </div>
+      <br>
+      <div class="todo-list">
+        <ul ng-repeat="todo in todoData">
+          <li><h3><input class="lead" type="checkbox" ng-click="deleteTodo(todo.id)">&nbsp;{{ todo.text }}</h3></li><hr>
+        </ul>
+      </div>
+    </div>
+    <script src="//code.jquery.com/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+    <script src="javascripts/app.js"></script>
+  </body>
+</html>
+
+
+CSS: 
+
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.container {
+  max-width: 400px;
+  background-color: #eeeeee;
+  border: 1px solid black;
+}
+
+.header {
+  text-align: center;
+}
+
+
+How's that? Not up to par? Continue working no it on your end.
+
+
+[Refactoring (for real)]
+
+Now that we added the front-end functionality, let's update the app structure and refactor parts 
+of the code.
+
+
+- Structure - 
+
+Since our application is logically split between the client and server. let's do the same for our
+project structure. So, make the following changes to your folder structuer:
+
+├── app.js
+├── bin
+│   └── www
+├── client
+│   ├── javascripts
+│   │   └── app.js
+│   ├── stylesheets
+│   │   └── style.css
+│   └── views
+│       └── index.html
+├── package.json
+└── server
+    ├── models
+    │   └── database.js
+    └── routes
+           └── index.js
+
+Now we need to make a few updates to the code:
+
+server/routes/index.js:
+
+router.get('/', (req, res, next) => {
+  res.sendFile(path.join(
+    __dirname, '..', '..', 'client', 'views', 'index.html'));
+});
+
+
+
+[app.js]
+
+
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+const routes = require('./server/routes/index');
+// var users = require('./routes/users');
+
+const app = express();
+
+// view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'html');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'client')));
+
+app.use('/', routes);
+// app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.json({
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+    error: {}
+  });
+});
+
+
+module.exports = app;
+
+
+[Utility Function]
+
+Did you notice in our routes that we are reusing much of the same code in each of the
+CRUD functions:
+
+
+pg.connect(connectionString, (err, client, done) => {
+  // Handle connection errors
+  if(err) {
+    done();
+    console.log(err);
+    return res.status(500).json({success: false, data: err});
+  }
+  // SQL Query > Select Data
+  const query = client.query('SELECT * FROM items ORDER BY id ASC;');
+  // Stream results back one row at a time
+  query.on('row', (row) => {
+    results.push(row);
+  });
+  // After all data is returned, close connection and return results
+  query.on('end', () => {
+    done();
+    return res.json(results);
+  });
+});
+
+
+We should abstract that out into a utilty function so we're not duplicationg code. Do this on
+your own, and then post a link to your code in the comments for review.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

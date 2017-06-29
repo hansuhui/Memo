@@ -1,0 +1,159 @@
+ms sql 기본 쿼리문
+
+생성문
+
+create table 테이블명
+(
+변수명 데이터형 속성
+
+)
+
+아는 속성 : primary key, not null , default()- 기본값설정 [default getdate()]
+
+
+insert into문
+
+insert into 테이블명 (칼럼)
+values(값)
+
+
+데이터 수정[update]
+
+update 데이블명 set 칼럼= 값
+
+테이블 삭제
+drop table 테이블명
+
+조건 검색 정렬
+
+select 칼럼명 where '값', 칼럼명 as '값' from 테이블명 등등
+as는 그 칼럼을 가상으로 만들어서 값을 가지는것
+
+데이터 삭제
+delete 테이블 where 칼럼
+
+
+=====예제
+
+select count(칼럼) as 별칭 from ex
+
+select count(distinct 칼럼) as '별칭' from 테이블 -- 상품 갯수 확인(중복 제거 distinct)
+
+select * from 테이블 where 칼럼=(select 칼럼 from 테이블 where 다른칼럼='조건')
+
+select sum(칼럼) as '별칭' from 테이블 -- 상품수
+
+select 칼럼 조건 as '칼럼 조건' , sum(칼럼) as '칼럼' from ex group by 칼럼having sum(칼럼) >=600
+
+select count(name) as '이름', year(ibsail) as'년도' from ex  group by year(ibsail)
+[네임 칼럼 선택 별명은 이름, 날짜의 년도만 선택해서 년도 ex테이블에서 불러옴  년도를 그룹으로 만든다] 
+
+group by 묵어서 보여줌
+sun() 합계
+distinct 중복제거
+avg() 평균값
+count 조건의 맞는 수를 나타냄
+order by 
+desc 내림차순
+like 값 , like'문자%' 검색문
+convert(char,getdate(),1) 변환하는거
+
+
+테이터형
+
+◆ Integers
+
+ 
+
+ bigint : sql2000부터 생긴 데이터 형으로
+
+       -2^63 (-9223372036854775808) 부터
+
+       2^63-1 (9223372036854775807) 까지의 정수를 지정 가능 합니다.
+
+ int : -2^31 (-2,147,483,648) 부터
+
+       2^31 - 1 (2,147,483,647)까지의 정수를 지정 가능 합니다.
+
+ smallint : 2^15 (-32,768) 부터  2^15 - 1 (32,767)까지의 정수를 지정 가능 합니다.
+
+ tinyint : 0 부터 255 까지의 정수를 지정 가능 합니다.
+
+ 
+
+
+ ◆ bit
+
+ 
+
+ bit : 1 또는 0  이라는 데이터를 저장 가능하며 참, 거짓에 사용 됩니다.
+
+ 
+
+
+ ◆ decimal and numeric
+
+ 
+
+ decimal : -10^38 -1  10^38 -1 까지의 수에 대해
+
+        정밀도와 크기를 사용자에 의해 지정 가능 합니다.
+
+ numeric : decimal 형과 같습니다.
+
+ 
+
+
+ ◆ money and smallmoney
+
+ 
+
+ money : 돈과 관계되는 데이터 타입으로  -2^63 (-922,337,203,685,477.5808) 부터
+        2^63 - 1 (+922,337,203,685,477.5807)까지의 수치를 사용가능 하며
+        1000단위 컴마를 사용 가능 합니다.
+        천조 까지의 데이터를 처리 가능합니다.
+
+ smallmoney : -214,748.3648 부터 +214,748.3647 까지 사용 가능하며
+        1000단위 컴마 지정이 가능 합니다.
+
+ 
+
+
+ ◆ Approximate Numerics
+
+ 
+
+ float : 부동(정확하지 않은) 소수 데이터 형으로
+        -1.79E + 308 부터  1.79E + 308 까지의 데이터 사용이 가능 합니다.
+
+ real : -3.40E + 38 부터 3.40E + 38 까지의 부동 소수 데이터 형입니다.
+
+ 
+
+
+ ◆ datetime and smalldatetime
+
+ 
+
+ datetime : 1월  1일, 1753년, 부터 12월 31일, 9999년, 까지의 데이터를
+        1000분의 일초 단위로 지정 가능 합니다.
+
+ smalldatetime : 1월 1일, 1900년, through 6월 6일, 2079년, 까지
+        1분 단위 정확도로 지정 가능 합니다.
+
+ 
+
+
+ ◆ Character Strings
+
+ 
+
+ char : 8,000바이트(문자)까지 지정 가능한 유니코드가 아닌
+        고정길이 데이터 형입니다.
+
+ varchar : 8,000바이트 까지 지정 가능한 유니코드가 아닌
+        가변길이 데이터 형입니다.
+
+ text : 2^31 - 1 (2,147,483,647) 유니코드가 아닌
+        가변길이 데이터형으로 2기가 까지 지정 가능 합니다.
+

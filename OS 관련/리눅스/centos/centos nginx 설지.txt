@@ -1,0 +1,24 @@
+https://blog.bypass.kr/134
+
+
+[설치 링크]
+wget http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+[패키지 설치]
+
+yum localinstall [rpm_file_name] 을 입력해준다.
+yum localinstall nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+rpm package 가 설치되었으면
+
+yum install -y nginx
+
+를 입력해서 nginx를 설치해준다.
+
+
+[상태 확인]
+
+systemctl start nginx   // nginx 시작
+systemctl enable nginx  // 부팅시 자동실행
+systemctl status nginx  // 상태 확인
+systemctl stop nginx    // nginx 중지

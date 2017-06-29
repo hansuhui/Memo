@@ -1,0 +1,52 @@
+ASP] IsEmpy() 함수와 IsNull() 함수의 차이
+
+IsEmpy() 함수는 변수의 값이 초기화 되었는지를 체크하여 초기화 되지 않은 경우에는 true 를 리턴합니다.
+아래의 짧은 소스를 살펴보시기 바랍니다.
+<%
+Dim Uid
+If IsEmpty(session("Uid")) Then
+response.write "session('Uid')는 골이 비었습니다."
+End If
+response.write "<br>"
+If IsEmpty(Uid) Then
+response.write "Uid도 골이 비었습니다."
+End If
+%>
+위의 소스의 실행결과는 session("Uid") 그리고 변수 Uid도 초기화 되지 않았기 때문에 
+IsEmpty 함수 둘다 true를 리턴하게 됩니다. 당연히 "session('Uid')는 골이 비었습니다." 
+"Uid도 골이 비었습니다." 라는 두줄의 메시지가 출력될 것입니다.
+
+그렇다면 공백또는 NULL 값을 대입해 보면 어떻게 될까요? IsEmpty 
+함수는 공백또는 NULL 값으로 초기 되는 것이기 때문에 true를 리턴하지 않습니다. 
+위소스 Uid 의 변수의 값을 다음과 같이 초기화 시켜보시기 바랍니다. Uid = ""
+Uid는 골이 비었다는 메시지는 출력되지 않습니다. 이번에는 Uid = NULL 과 같이 대입해 보시기 바랍니다.
+이번에도 Uid는 골이 비었다는 메시지는 출력되지 않습니다.
+
+데이터가 Null인지를 체크하기 위해서는 IsNull 함수를 사용해야 합니다.
+위의 소스를 아래와 같이 수정해 보았습니다.
+<%
+Dim Uid
+session("Uid") = NULL
+Uid = NULL
+If IsEmpty(session("Uid")) Then
+response.write "session('Uid')는 골이 비었습니다." & "<br>" 
+End If
+
+If IsEmpty(Uid) Then
+response.write "Uid도 골이 비었습니다." & "<br>"
+End If
+If IsNull(session("Uid")) Then
+response.write "session('Uid')는 NULL이 되었습니다." & "<br>"
+End If
+If IsNull(Uid) Then
+response.write "Uid도 NULL이 되었습니다" & "<br>"
+End If
+%>
+
+session("Uid")와 변수 Uid에 NULL 값이 대입되었기 때문에 IsNull 함수가 true를 리턴해서 
+"session('Uid')는 NULL이 되었습니다." "Uid도 NULL이 되었습니다" 두줄이 출력 되었을 것입니다.
+ IsNull 함수는 변수에 NULL 값이 대입되었을때 뿐만아니라 식자체의 반환값이 NULL일때도 true를 리턴합니다.
+
+※ IsEmpty : 변수의 값이 초기화 되었는지를 체크합니다.
+
+※ IsNull : 데이타가 Null 인지를 체크합니다.

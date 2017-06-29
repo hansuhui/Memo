@@ -1,0 +1,16 @@
+function popup(Code){
+
+	var url = "/wineryMemoView"+"?Code="+Code+"";
+
+	var name = "popup";
+	
+	  var Dwidth = parseInt(document.body.scrollWidth);
+      var Dheight = parseInt(document.body.scrollHeight);
+      
+      var windowX = (screen.width - 400) / 2;
+      var windowY = (screen.height - 600) / 2;
+	
+	var s = window.open(url,name,"width=400,height=600,toolbar=no,status=no,location=no,scrollbars=yes,menubar=no,resizable=no" );
+      s.moveTo(windowX, windowY);
+	
+}

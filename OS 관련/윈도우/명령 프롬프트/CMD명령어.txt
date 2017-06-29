@@ -1,0 +1,133 @@
+[유틸리티 실행]
+
+CALC 계산기
+CHARMAP 문자표
+CLEANMGR 디스크정리
+CLICONFG SQL 서버 클라이언트 네트워크 유틸
+EXPLORER 탐색기
+MAGNIFY 돋보기
+MRT 악성 소프트웨어 제거 도구
+MSCONFIG 시스템 구성
+MSINFO32 시스템 정보
+MSPAINT 그림판
+MSTSC 원격 데스크톱 연결
+NOTEPAD 메모장
+OSK 화상키보드
+REGEDIT 레지스트리 편집기
+SIGVERIF 장치드라이버 디지털 서명 검사
+TASKMGR 작업 관리자
+WRITE 워드패드
+
+[제어판]
+
+APPIWIZ.CPL 프로그램 추가 및 제거
+CONTROL 제어판
+CONTROL DESKTOP 개인 설정
+CONTROL FOLDERS 폴더 옵션
+CONTROL FONTS 글꼴
+CONTROL KEYBOARD 키보드 등록정보
+CONTROL PRINTERS 장치 및 프린터
+CONTROL STICPL.CPL 스캐너 및 카메라
+CONTROL USERPASSWORDS 사용자계정
+DESK.CPL 화면 해상도
+FIREWILL.CPL 방화벽
+INETCPL.CPL 인터넷 등록정보
+INTL.CPL 국가 및 언어
+MAIN.CPL 마우스 등록정보
+MMSYS.CPL 사운드 및 오디오 장치 등록정보
+POWERCFG.CPL 전원옵션
+SNDVOL 볼륨 믹서
+SYSDM.CPL 시스템 속성
+TIMEDATE.CPL 날짜 및 시간 등록정보
+UTILMAN 접근성 센터
+WINVER 원도우 정보
+WSCUI.CPL 관리센터
+
+
+[서비스]
+
+COMPMGMT 컴퓨터 관리
+CONTROL ADMINTOOLS 관리 도구
+CONTROL SCHEDTASKS 작업 스케줄러
+DCOMCNFG 구성 요소 서비스
+DISKMGMT 디스크 관리 (GUI)
+EVENTVWR 이벤트 뷰어 
+FSMGMT 공유 폴더
+GPEDIT 로컬 그룹 정책 편집기
+LUSERMGR 로컬 사용자 및 그룹
+PERFMON 성능 모니터
+RSOP 정책 결과 집합
+SECPOL 로컬 보안 설정
+SERTMGR 인증서
+SERVICES.MSC 서비스
+SYSKEY 원도우 계정 데이터베이스 보안
+VERIFIER 드라이버 확인 프로그램 관리자
+
+[도스명령어]
+
+ATTRIB 파일 특정 보기 및 변경
+CALL 외부 프로그램 호출(내부에서 처리)
+CD 현재 디렉터리나 드라이브 이름을 보여주거나 변경
+CHKDSK 디스크 검사
+CLS 화면 지우기
+COLOR 콘솔의 문자색과 배경색 설정
+COMP 둘 이상의 파일 비교
+CONVERT FAT 볼륨을 NTFS로 변환
+COPY 파일 복사
+DEFRAG 디스크 조각모음
+DIR 현재 위치 디렉토리의 파일과 하위 디렉터리 목록 나열
+DISKCOMP 두 플로피 디스크 비교
+DISKCOPY 플로피 디스크 복사
+DISKPART 디스크 관리
+DOSKEY 명령줄 편집 , 호출 , 매크로 작성(단축키)
+FC 둘 이상의 파일 집합을 비교
+FINGER 핑거서비스를 실행하는 지정된 시스템 사용자에 대한 정보 표시
+FORMAT 디스크 포멧
+HELP 명령어 도움말 모음집
+IPCONFIG  TCP/IP에 바인딩 된 각 어뎁터에 대한 IP주소 확인
+LABEL 디스크 볼륨 레이블 수정
+NBTSTAT NBT를 사용하여 프로토콜 통계와 현재 TCP/IP 연결 확인
+NETSTAT 프로토콜 통계와 현재 TCP/IP 네트워크 연결을 표시
+NSLOOKUP 호스트 및 DNS 서버 주소 검색
+PATHPING ping과 tracert 기능에 네트워크 트래픽 테스트가 추가된 명령
+PING 목적지 호스트가 현재 네트워크 상에 존재하는지 확인
+RECOVER 불량 디스크의 읽을 수 있는 정보 복구
+REGSVR32 동적 연결 라이브러리 (DLL) 및 ActiveX 를 레지스트리에 등록
+REN 이름변경
+ROUTE 네트워크 라우팅 테이블을 설정
+SC 서비스 관리 제어 관리자 및 서비스와의 통신에 사용되는 명령
+SET 환경변수를 보여주거나 설정 및 삭제
+SFC 시스템 파일 무결성 검사 및 복구
+SHUTDOWN 시스템 종료 및 옵션
+START 외부프로그램 호출(외부에서 처리)
+TRACERT 목적지까지 도달하는데 거치게 되는 루트(게이트웨이)경로 추적
+TYPE 텍스트 파일의 내용 확인
+VER 원도우 버전 확인
+VERIFY 파일이 디스크에 올바르게 쓰였는지 검정
+VOL 드라이브 볼륨 레이블 및 일련번호 확인
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

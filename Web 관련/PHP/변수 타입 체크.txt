@@ -1,0 +1,4 @@
+
+기본적으로 integer, double, string type이 있으며  이외에 array와 object type이 있다.
+
+gettype(), is_long(), is_double(), is_string(), is_array(), is_object()

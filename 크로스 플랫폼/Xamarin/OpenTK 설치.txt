@@ -1,0 +1,34 @@
+http://analog-green.tistory.com/483
+
+필요한 파일  
+
+OpenTk.dll / C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\6.0\OnenTk.dll
+
+
+다른 버전을 쓸 경우
+ES 11
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoTouch\1.0\OpenTk.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoTouch\1.0\OpenTk-1.0.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\2.3\OpenTk.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\2.3\OpenTk-1.0.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Xamarin.IOS\1.0\OpenTK-1.0dll
+
+
+ES20
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoTouch\1.0\OpenTk.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoTouch\1.0\OpenTk-1.0.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\2.3\OpenTk.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\2.3\OpenTk-1.0.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Xamarin.IOS\1.0\OpenTK-1.0dll
+
+
+ES30
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoTouch\1.0\OpenTk.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoTouch\1.0\OpenTk-1.0.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\4.2\OpenTk.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\4.2\OpenTk-1.0.dll
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Xamarin.IOS\1.0\OpenTK-1.0dll
+
+등의 참조연결을 개체 브라우저에서 확인해봐야합니다.
+
+

@@ -1,0 +1,72 @@
+Reserved Characters in HTML
+
+
+
+
+Character
+
+Entity Number
+
+Entity Name
+
+Description
+
+" &#34; &quot; quotation mark 
+' &#39; &apos; (does not work in IE) apostrophe  
+& &#38; &amp; ampersand 
+< &#60; &lt; less-than 
+> &#62; &gt; greater-than 
+
+
+
+
+
+
+
+
+ISO 8859-1 Symbols
+
+
+
+Character
+
+Entity Number
+
+Entity Name
+
+Description
+
+  &#160; &nbsp; non-breaking space 
+╳ &#161; &iexcl; inverted exclamation mark 
+﹌ &#162; &cent; cent 
+﹟ &#163; &pound; pound 
+５ &#164; &curren; currency 
+﹠ &#165; &yen; yen 
+| &#166; &brvbar; broken vertical bar 
+＝ &#167; &sect; section 
+“ &#168; &uml; spacing diaeresis 
+使 &#169; &copy; copyright 
+見 &#170; &ordf; feminine ordinal indicator 
+∫ &#171; &laquo; angle quotation mark (left) 
+／ &#172; &not; negation 
+ &#173; &shy; soft hyphen 
+Ｙ &#174; &reg; registered trademark 
+? &#175; &macr; spacing macron 
+﹉ &#176; &deg; degree 
+▽ &#177; &plusmn; plus-or-minus  
+昌 &#178; &sup2; superscript 2 
+昆 &#179; &sup3; superscript 3 
+╞ &#180; &acute; spacing acute 
+伊 &#181; &micro; micro 
+Ｄ &#182; &para; paragraph 
+﹞ &#183; &middot; middle dot 
+╱ &#184; &cedil; spacing cedilla 
+易 &#185; &sup1; superscript 1 
+足 &#186; &ordm; masculine ordinal indicator 
+∮ &#187; &raquo; angle quotation mark (right) 
+卹 &#188; &frac14; fraction 1/4 
+卦 &#189; &frac12; fraction 1/2 
+取 &#190; &frac34; fraction 3/4 
+０ &#191; &iquest; inverted question mark 
+▼ &#215; &times; multiplication 
+㊣ &#247; &divide; division 

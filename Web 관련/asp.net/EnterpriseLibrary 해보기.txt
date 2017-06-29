@@ -1,0 +1,202 @@
+
+---------------------------------------------------------------------------------------
+EnterpriseLibrary
+[webconfig]
+<configSections>
+<section name="dataConfiguration" type="Microsoft.Practices.EnterpriseLibrary.Data.Configuration.DatabaseSettings,Microsoft.Practices.EnterpriseLibrary.Data" 
+requirePermission="true" />
+</configSections>
+
+<dataConfiguration defaultDatabase="DefaultConnection" />
+
+<connectionStrings>
+<add name="DefaultConnection" connectionString="server=211.233.58.54;uid=innobile;Password=dlshqkdlf;database=innobile;" providerName="System.Data.SqlClient" />
+</connectionStrings>
+
+
+[models에 클래스]
+using System;
+
+using Microsoft.Practices.EnterpriseLibrary.Common;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+
+namespace InnobileProject.Models
+{
+	public class DatabaseUtil
+	{
+		private Database db;
+
+		public DatabaseUtil()
+		{
+			DatabaseFactory.SetDatabaseProviderFactory(new DatabaseProviderFactory(new SystemConfigurationSource(true).GetSection), false);
+
+
+			try
+			{
+				db = DatabaseFactory.CreateDatabase();
+			}
+			catch (Exception)
+			{
+				DatabaseFactory.ClearDatabaseProviderFactory();
+				throw;
+			}
+		}
+
+		public Database _db
+		{
+			get { return db; }
+		}
+	}
+}
+
+
+
+
+
+
+[클래스 메소드]
+
+ string sql = "select btIDX , bmIDX , strName , strPwd , strTitle , strEmail , strCel , strContent , strContent , n4Cnt , strIP , strUID , regDate ,isPopupView from boardMaster where bmIDX = {0}";
+            sql = string.Format(sql, id);
+            using (IDataReader reader = _db.ExecuteReader(_db.GetSqlStringCommand(sql)))
+            {
+            boardMaster b = new boardMaster();
+                    
+                while (reader.Read()){
+				
+                    b.btIDX = Convert.ToInt32(reader["btidx"]);
+                    b.bmIDX = Convert.ToInt32(reader["bmidx"]);
+                    b.strName = reader["strName"].ToString();
+                    b.strPwd = reader["strPwd"].ToString();
+                    b.strEmail = reader["strEmail"].ToString();
+                    b.strUID = reader["strUid"].ToString();
+                    b.strTitle = reader["strtitle"].ToString();
+                    b.n4Thread = Convert.ToInt32(reader["n4Thread"]);
+                    b.regDate = Convert.ToDateTime(reader["regdate"]);
+                    b.boardType.btName = reader["btName"].ToString();
+                    b.n4Cnt = Convert.ToInt32(reader["n4Cnt"]);
+                    b.strCel = reader["strCel"].ToString();
+                    b.strContent = reader["strContent"].ToString();
+                    b.strIP = reader["strIP"].ToString();
+
+                    if (reader["isPopupView"] != DBNull.Value)
+                        b.isPopupView = Convert.ToBoolean(reader["isPopupView"]);
+                    else
+                        b.isPopupView = false;
+                            }
+                      return b;
+                }
+            }
+
+
+
+
+	public List<BoardDefaultList> GetDefaultList(BoardSearch boardSearch)
+		{
+			prevPage = (boardSearch.pageSize * (boardSearch.page - 1)) + 1;
+			nextPage = boardSearch.pageSize * boardSearch.page;
+			string sQuery = GetSearchQuery(boardSearch);
+
+			string sql = string.Empty;
+			sql += " select ";
+            sql += " 	a.btidx, a.bmidx, a.strName,a.strPwd,a.strEmail, a.strUid, a.strtitle, a.n4Thread , a.regdate, a.btName, a.n4Cnt  ";
+            sql += " , isPopupView ,a.strCel,a.strContent,a.strIP,a.updDate ";
+			sql += " from  ";
+			sql += " ( ";
+			sql += " 	select top " + nextPage + "  ";
+            sql += " 		 b.btidx, b.bmIDX, b.strName,b.strPwd,b.strEmail, b.strUid, b.strTitle, b.n4Thread, b.n4Cnt ";
+            sql += "	,	b.isPopupView , convert(varchar(10), b.regDate, 120) as regDate , a.btName ,b.strCel, b.strContent,b.strIP,b.updDate";
+			sql += " 	,	row_number() over(order by n4Group desc, n4Order, n4Thread) as r ";
+			sql += " 	from boardType a, boardmaster b where a.btidx = b.btidx {0} ";
+			sql += " ) a where r between " + prevPage + " and " + nextPage + " ";
+			sql = string.Format(sql, sQuery);
+
+			List<BoardDefaultList> list = new List<BoardDefaultList>();
+
+			using (IDataReader reader = _db.ExecuteReader(_db.GetSqlStringCommand(sql)))
+			{
+				while (reader.Read())
+				{
+					BoardDefaultList b = new BoardDefaultList();
+					b.boardType = new boardType();
+
+					b.btIDX = Convert.ToInt32(reader["btidx"]);
+					b.bmIDX = Convert.ToInt32(reader["bmidx"]);
+					b.strName = reader["strName"].ToString();
+                    b.strPwd = reader["strPwd"].ToString();
+                    b.strEmail = reader["strEmail"].ToString();
+					b.strUID = reader["strUid"].ToString();
+					b.strTitle = reader["strtitle"].ToString();
+					b.n4Thread = Convert.ToInt32(reader["n4Thread"]);
+					b.regDate = Convert.ToDateTime(reader["regdate"]);
+					b.boardType.btName = reader["btName"].ToString();
+					b.n4Cnt = Convert.ToInt32(reader["n4Cnt"]);
+                    b.strCel = reader["strCel"].ToString();
+                    b.strContent = reader["strContent"].ToString();
+                    b.strIP = reader["strIP"].ToString();
+
+					if (reader["isPopupView"] != DBNull.Value)
+						b.isPopupView = Convert.ToBoolean(reader["isPopupView"]);
+					else
+						b.isPopupView = false;
+
+					list.Add(b);
+				}
+			}
+
+
+
+
+
+
+		public int UpdateBoard(boardMaster bm)
+		{
+			string isListView = "1";
+			string isSecurity = "0";
+
+			if (bm.isListView != null)
+			{
+				if ((bool)bm.isListView)
+					isListView = "1";
+				else
+					isListView = "0";
+			}
+
+
+			if (bm.isSecurity != null)
+			{
+				if ((bool)bm.isSecurity)
+					isSecurity = "1";
+				else
+					isSecurity = "0";
+			}
+
+			string sql = string.Empty;
+			sql += " update boardMaster set ";
+			sql += " 	btIdx = {0} ";
+			sql += " ,	strName = '{1}' ";
+			sql += " ,	strTitle = '{2}' ";
+			sql += " ,	strEmail = '{3}' ";
+			sql += " ,	strContent = '{4}' ";
+			sql += " ,  istitleview = '{5}' ";
+			sql += " ,  ispopupview = '{6}' ";
+			sql += " ,  strUid = '" + bm.strUID  + "' ";
+			sql += " ,	isHtml = '" + bm.isHtml + "' ";
+			sql += " ,	strPwd = '"+ bm.strPwd +"' ";
+			sql += " ,	isListView = "+ isListView +" ";
+			sql += " ,	ctgCode = '"+ bm.ctgCode +"' ";
+			sql += " ,	isSecurity = " + isSecurity + " ";
+			sql += " where bmIdx = "+ string.Format("{0}", bm.bmIDX);
+			sql = string.Format(sql, bm.btIDX, bm.strName, bm.strTitle, bm.strEmail, bm.strContent, bm.isTitleView, bm.isPopupView);
+
+			try
+			{
+				return _db.ExecuteNonQuery(_db.GetSqlStringCommand(sql));
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+		}

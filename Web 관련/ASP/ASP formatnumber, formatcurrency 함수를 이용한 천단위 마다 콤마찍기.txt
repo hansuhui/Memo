@@ -1,0 +1,16 @@
+[ASP formatnumber, formatcurrency 함수를 이용한 천단위 마다 콤마찍기]
+
+Formatnumber, Formatcurrency 함수를 이용한 천단위 콤마찍기 짧막한 예제입니다. 
+
+<%
+
+Dim moneyValue
+moneyValue = "100000"
+If IsNumeric(moneyValue) then "moneyValue의 값이 숫자인지 아닌지 IsNumeric 함수를 이용해서 체크합니다
+response.write(formatnumber( moneyValue, 0 )) "0은 소숫점 자리수의 의미, Default가 2라서 소수점 자리를 
+response.Write "<br><br>" ----------------------"나타내고 싶지 않으면 0을 써주세요
+end if
+If IsNumeric(moneyValue) then 
+response.Write(formatcurrency( moneyValue, 0 )) "0은 소숫점 자리수의 의미, Default가 0이라서 생략가능 
+end if
+%>

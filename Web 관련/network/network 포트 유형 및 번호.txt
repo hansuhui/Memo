@@ -1,0 +1,57 @@
+Networt 포트 유형 및 번호
+
+#네트워크 포트 유형
+
+잘 알려진 포트   (Well-known Ports)
+
+특정 권한을 가지고 있는 서비스들을 위해서 포트번호 0~1023번까지는 예약되어 있다
+
+
+등록된 포트  (Registered Ports)
+
+포트번호는 1024~49151 번까지 사용한다. 1024 포트는 TCP와 UDP를 위해서 예약되어 있어 다른 용도로 사용할수 없다.
+등록된 포트의 리스트는 [http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.txt] 확인가능
+
+동적 포트 (Dynamic Ports)
+
+잠깐 사용되는 동적포트는 IP통신을 위한 트랜스포트 계층 프로토콜이다. TCP/IP 스택 소프트웨어는 IANA에서 
+제안한 범위(49152~65535) 내에서 자동적으로 포트 번호를 할당한다. 동적 포트들은 일반적으로 TCP,UDP 또는 SCTP에 의해 사용된다.
+
+
+
+
+#네트워크 포트 번호와 서비스
+
+서비스				TCP		UDP
+
+FTP    	    		20(FTP데이터전송)   	X
+FTP    	    		21(FTP제어)   		X
+
+SSH,SFTP,SCP		22			X
+
+Telnet			23			X
+
+SMTP(메일 보내는 프로토콜)/25			X
+
+TACACS+			49			X
+
+DNS			53			53
+
+BOOTP,DHCP		X			67,68
+
+HTTP			80			X
+
+POP3(메일받는 포로토콜:단방향)/110		X
+
+NETBIOS		139(Session service)		137(Name service)
+NETBIOS		139(Session service)		138(Datagram service)
+
+IMAP(메일받는 포로토콜:양방향)/143		X
+
+SNMP			X			162,162
+
+HTTPS			443			X
+
+SQL서버들의 기본포트	1433			X
+
+http://blog.naver.com/puriha/220195534297

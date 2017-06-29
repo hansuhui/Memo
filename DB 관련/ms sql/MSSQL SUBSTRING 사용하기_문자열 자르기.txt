@@ -1,0 +1,40 @@
+ - SUBSTRING 이란? 
+   SUBSTRING 은 문자열을 받아서 일정한 영역만큼 잘라낸 후 리턴하는 함수입니다.
+?
+ 
+ - MSSQL SUBSTRING 사용방법 
+   SUBSTRING([컬럼명], [시작위치], [길이])
+?
+ 
+ - 테이블 생성 
+   CREATE TABLE dbo.전화번호부 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       연락처 varchar(13) NOT NULL
+   )
+?
+ 
+ - 데이터 입력 
+   INSERT INTO dbo.전화번호부 (일련번호, 이름, 연락처) VALUES (1, '홍길동', '010-1234-1111')
+   INSERT INTO dbo.전화번호부 (일련번호, 이름, 연락처) VALUES (2, '일지매', '010-3456-2222')
+   INSERT INTO dbo.전화번호부 (일련번호, 이름, 연락처) VALUES (3, '임꺽정', '010-5678-3333')
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.전화번호부
+
+ - 예제 1 
+   전화번호부를 조회하되 연락처의 앞 3자리만 표시하시오.
+ 
+ 
+ - 예제 1 쿼리 
+   SELECT 일련번호, 이름, SUBSTRING(연락처, 1, 3) AS 연락처 FROM dbo.전화번호부
+?
+? - 예제 2
+    전화번호부를 조회하되 연락처의 가운데 4자리는 마스킹(*로 표시)하시오.
+ 
+ 
+ - 예제 2 쿼리
+   SELECT 일련번호, 이름, SUBSTRING(연락처, 1, 4) + '****' + SUBSTRING(연락처, 9, 5) AS 연락처 FROM dbo.전화번호부
+??
+  

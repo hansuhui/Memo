@@ -1,0 +1,27 @@
+새로 추가된 속성
+() 적용태그
+media : (a,area) 링크할 미디어를 지정
+
+hreflang : (area) 링크하는 대상의 언어를 지정
+
+rel : (area) area가 표함된 문서와 area가 링크하는 대상 간의 관계를 지정
+
+target : (base) href 속성에서 지정한 링크의 target을 지정
+
+value : (li) 첫번째 항목의 값을 지정합니다. 이 태그 안에 있는 li 태그에서만 사용가능
+
+charset : (meta) 문자 인코딩을 선언
+
+autofocus : (input/hidden 제외 select, textarea , button) 입력 필드에 포커스를 줍니다.
+
+placeholder (input , textarea) 입력필드에 힌트 내용을 표시합니다. 입력을 하기 위해 필드 내부를 클릭하면 힌트는 사라집니다.
+
+required :(input/hidden-image-submit같은 버튼 제외 , textarea) 필수 입력 필드 설정
+
+autocomplete : (input) 자동 완성 기능을 켜거나 끕니다.
+
+min, max : (input) 숫자나 범위를 지정할 때 값의 최소값이나 최대값을 지정합니다.
+
+multiple : (input) 값을 여러게 허용합니다.
+
+pattern  : (input) 조건을 사용한 일반식을

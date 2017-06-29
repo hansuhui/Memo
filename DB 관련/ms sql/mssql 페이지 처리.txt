@@ -1,0 +1,15 @@
+조건절에 페이징 추가 
+
+
+,		@prevPage			int
+,		@nextPage			int	
+
+
+
+	select * from
+	(
+select top (@nextPage)
+ROW_NUMBER() over (order by a.RegDate desc) as RowNumber
+ 쿼리 문
+where 문
+) a where RowNumber between @prevPage and @nextPage			

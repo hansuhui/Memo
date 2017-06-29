@@ -1,0 +1,27 @@
+[ASP에서 Redim() 함수를 이용한 동적배열 사용]
+
+ASP에서 Redim()함수를 이용한 동적배열 처리의 짧은 예제입니다. 
+Redim()함수는 배열의 크기를 조정할때 쓰며 기존의 배열에 저장된 값은 보존되지 않습니다. 
+기존 값을 보존하기 위해서는 Redim()함수와 Preserve라는 파라미터가 함께 사용되어야 합니다.
+아래 예제는 100개의 동적배열을 잡고 값을 할당합니다.
+
+<HTML>
+<HEAD>
+<TITLE>New Document</TITLE>
+</HEAD>
+<BODY>
+<%
+Dim nArray()
+nCount = 100 "동적배열의 크기"
+For i = 0 To nCount 
+ReDim Preserve nArray(i) "ReDim()함수와 Preserve 파라미터를 사용
+nArray(i) = i "배열에 값을 할당
+Next
+"배열에 할당된 값을 확인합니다.
+For i = 0 To Ubound(nArray)
+Response.Write "(" & i & ")의 값: " & nArray(i) & "<br>"
+Next
+
+%>
+</BODY>
+</HTML>

@@ -1,0 +1,72 @@
+ public void Injection()
+        {
+
+            string[] List;
+            string Split = ";,/*,*/,@@,@,char,nchar,varchar,nvarchar,alter,begin,cast,create,cursor,declare,delete,drop,end,exec,execute,fetch,insert,kill,open,select,sys,sysobjects,syscolumns,table,update,<script,</script>,'";
+            List = Split.Split(',');
+
+            foreach (var Params in Request.Params) {
+                string item = Params.ToString();
+                string Val = Request.Params[item];
+                if (item == "__RequestVerificationToken") { continue; }
+                else if (item == "ALL_HTTP") { break; }
+                foreach (var Check in List) {
+                    //if (System.Text.RegularExpressions.Regex.IsMatch(Val, Check, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    if (Val.IndexOf(Check) != -1)
+                    {
+                        string msg = Check.Replace("'", "따옴표").Replace("</script>", "script");
+                        string script = string.Empty;
+                        script += "<script>";
+                        script += "	alert('사용 할수 없는 문자가 있습니다.[{0}]'); ";
+                        script += " history.go(-1);";
+                        script += "</script>";
+                        script = string.Format(script, msg);
+                        Response.Clear();
+                        Response.Write(script);
+                        Response.End();
+                        Exception e = new Exception("Injection");
+                        throw e;
+                    }
+                }
+            
+            }
+
+        }
+
+
+
+
+
+      public void AjaxInjection()
+        {
+
+            string[] List;
+            string Split = ";,/*,*/,@@,@,char,nchar,varchar,nvarchar,alter,begin,cast,create,cursor,declare,delete,drop,end,exec,execute,fetch,insert,kill,open,select,sys,sysobjects,syscolumns,table,update,<script,</script>,'";
+            List = Split.Split(',');
+
+            foreach (var Params in Request.Params)
+            {
+                string item = Params.ToString();
+                string Val = Request.Params[item];
+                if (item == "__RequestVerificationToken") { continue; }
+                else if (item == "ALL_HTTP") { break; }
+                foreach (var Check in List)
+                {
+                    //if (System.Text.RegularExpressions.Regex.IsMatch(Val, Check, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    if (Val.IndexOf(Check) != -1)
+                    {
+                        string msg = Check.Replace("'", "따옴표").Replace("</script>", "script");
+                        string script = string.Empty;
+                        script += "	alert('사용 할수 없는 문자가 있습니다.[{0}]'); ";
+                        script = string.Format(script, msg);
+                        Response.Clear();
+                        Response.Write(script);
+                        Response.End();
+                        Exception e = new Exception("Injection");
+                        throw e;
+                    }
+                }
+
+            }
+
+        }

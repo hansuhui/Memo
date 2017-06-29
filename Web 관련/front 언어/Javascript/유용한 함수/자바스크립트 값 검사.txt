@@ -1,0 +1,16 @@
+function submitValCheck(val) {
+    var check = true;
+    if (typeof val == "string") {
+        if (val == "undefined") { check = false; }
+        else if (val.trim() == "") { check = false; }
+        else if (val == null) { check = false; }
+    }
+    else if (typeof val == "number") {
+        if (val == 0) { check = false; }
+        else if (isNaN(val)) { check = false; }
+        else if (val == Infinity) { check = false; }
+        else if (val == -Infinity) { check = false; }
+    }
+    else { check = false; }
+    return check;
+}

@@ -1,0 +1,25 @@
+
+asp.net mvc에서 HTTP 오류 403.14 - Forbidden  Windows IIS/TCP / 웹서버  
+http://blog.naver.com/webman21/220407577485
+
+
+
+ASP.NET 4 was not registered in IIS. Had to run the following command in the command line/run
+
+32bit (x86) Windows
+
+
+%windir%\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe -ir
+
+64bit (x64) Windows
+
+
+%windir%\Microsoft.NET\Framework64\v4.0.30319\aspnet_regiis.exe -ir
+
+Note from David Murdoch's comment: 
+
+
+That the .net version has changed since this Answer was posted. Check which version of the framework is in the %windir%\Microsoft.NET\Framework64 directory and change the command accordingly before running (it is currently v4.0.30319) 
+
+[출처] asp.net mvc에서 HTTP 오류 403.14 - Forbidden|작성자 혀누파
+

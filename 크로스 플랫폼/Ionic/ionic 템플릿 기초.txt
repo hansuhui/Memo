@@ -1,0 +1,292 @@
+템플릿 문법과 연관이 있는 것
+Interplolation, Safe Navigation Operator, Templage Expression, Template Statement
+, Template Reference, Built-in Directives
+
+템플릿에서 혼히 사용되는 것
+Property Binding, Event Binding, One-way Binding, Two-way Binding, @Input, @Output 등
+
+
+1. Interpolation 은 이중 중괄호 {{ 와 }} 사이에 수식을 표현하고 계산을 한 다음 그 결과를 화면에 표시
+클래스에 
+myName: string = "JSGlobal";
+라고 추가하고 템플릿 html파일에서
+{{ myName }} 을 써주면 그대로 화면에 표시가 된다.
+
+표현식에는 주료 클래스 변수 또는 메소드가 사용된다.
+Interpolation은 Template Expression중 하나임
+
+==========================================================================================
+
+2. Safe Navigation Operator
+'?.' 의 표현식 > null 이나 undefined 속성을 처리하기 위해 사용함(아이오닉에서는 앱이 죽어버림)
+객체?.변수 이렇게 사용해야 한다.
+그냥 변수인 경우에는 {{ 변수 }} 이렇게해도 에러가 나지 않는다.
+객체인 경우에는 크리티컬 에러가 발생하여 앱이 아예 죽어버린다.
+
+==========================================================================================
+
+3. Template Expression
+Templage Expression은 Interpolation 또는 Property Binding으로 사용이 가능하다.
+자바스크립트와 유사하지만 사용할 수 없는 것이 있음
+(=, +=, -=, ++, --, new, Chining(;와 ,를 혼용한 것), |, & 등을 사용할 수 없음)
+그리고 해당 component context 내에서만 사용이 가능하다.
+> 글로벌 영역에 있는 곳에서는 사용이 불가능 하다. console.log()나 Math.max()와 같은 곳
+
+{{ var1 }} 혹은 property binding으로 간단하게만 사용하도록 한다.
+
+==========================================================================================
+
+4. Template Statement
+element, component, directive의 이벤트에 반응하는 것
+쌍따옴표("") 안에 표현식을 표현한다. ex) " var1 "
+
+변수 = "값"
+[속성] = "Template Expression"
+<div [속성] = "Template Expression"> --> property binding(속성에 template expression을 지정)
+
+(이벤트) = "표현식(Template Statement)"
+<div (이벤트) = "Template Statement"> --> event binding
+
+Template Statement에 쓸 수 없는것(new, ++, --, +=, -=, |, &)
+
+그러나 Template Expression과 달리 컴마(,)와 콜론(;)을 통한 chining가 가능하다.
+<div *ngIf="active"> --> active의 값이 참인 경우 보여준다.
+
+==========================================================================================
+
+디렉티브(ngIf, ngFor, ngSwitch) - Dom에서 할 수 없는 것들을 할 수 있게 만들어주는 역할
+5. ngIf - 화면에 내용을 감추거나 보여주고자 할 때 사용
+<div *ngIf = " show ">
+	Hello World!
+</div>
+라는 화면이 있는 경우 ts파일에서
+show:boolean = true;
+라고 변수를 선언해 주게 되면 보여지게 된다.
+
+==========================================================================================
+
+6. ngFor - 화면에 여러번 반복적으로 표현하는 방법
+ts파일에 배열변수 생성
+MyPets = [
+    {
+      kind : 'Cat',
+      name : 'Flash',
+      color : 'white'
+    },
+    {
+      kind : 'Dog',
+      name : 'Happy',
+      color : 'brown'
+    }
+  ]
+  
+html파일에 반복문 생성 - 인덱스 i 는 0부터 시작
+  <div *ngFor = "let pet of MyPets; let i = index">
+    나의 {{ i + 1 }} 번째 애완동물 <br/>
+    <b>종류</b> : {{ pet.kind }}<br/>
+    <b>이름</b> : {{ pet.name }}<br/>
+    <b>색깔</b> : {{ pet.color }}<br/>
+  </div>
+  
+
+  
+  * 주의 객체변수는 iterable을 할 수 없다. 즉, 아래와 같이 선언된 변수는 불가능하다.
+  MyPets = {
+    flash : {
+      kind : 'Cat',
+      color : 'white'
+    },
+    Happy : {
+      kind : 'Dog',
+      color : 'brown'
+    }
+  };
+  
+ >> 이러한 객체변수를 ngFor로 사용하기 위해서는 키값들을 따로 빼주어서 배열에 넣어주어 사용한다.
+ get pets(){
+	return Object.keys(this.MyPets);
+ }
+ 
+ html 소스
+   <div *ngFor = "let name of pets; let i = index">
+    나의 {{ i + 1 }} 번째 애완동물 <br/>
+    <b>종류</b> : {{ MyPets[name]['kind'] }}<br/>
+    <b>색깔</b> : {{ MyPets[name]['color'] }}<br/>
+  </div>
+  
+==========================================================================================
+
+7. Property Binding - dom속성에 클래스속성을 바인딩 하는겅 <div [Dom속성]="클래스속성">
+ts 파일에
+urlFall:string="http://static.naver.net/weather/images/w_icon/w_t01.gif";
+라고 선언하고 html파일에
+<img [src] = "urlFall">
+라고 사용하면 이미지가 출력 됨
+
+위처럼 사용한 경우 ts파일에서 속성이 변경된 경우 그대로 적용 됨. 예를들어
+constructor(public navCtrl: NavController) {
+    setTimeout(() =>
+      this.urlFall = "https://ssl.pstatic.net/static/weather/images/w_icon/w_l4.gif"
+      , 3000);
+  }
+  
+ 와 같이 ts파일에서 3초 후 다른이미지로 변경되도록 속성을 바꾸더라도 html파일 수정없이 그대로 적용이 가능하다.
+ 
+ 
+ 만약에 
+   urlFall:string="http://static.naver.net/weather/images/w_icon/w_t01.gif";
+  urlImages:Array<string>=[
+    "http://static.naver.net/weather/images/w_icon/w_t01.gif",
+    "https://ssl.pstatic.net/static/weather/images/w_icon/w_l4.gif"
+  ];
+
+  constructor(public navCtrl: NavController) {
+    let index = 0;
+    setInterval(() => {
+      index = index == 0? 1 : 0;
+      this.urlFall = this.urlImages[index];
+    }, 1000);
+  }
+  
+  이렇게 변경한다면 1초마다 이미지가 바뀐다.
+이미지 뿐 아니라 버튼이나 a href등 여러곳에 사용이 가능하다.
+
+==========================================================================================
+
+8. 이벤트 바인딩
+html에 아래와 같이 선언하고 ts파일에 onClickHello() 함수를 만들면 해당 함수가 실행됨
+<button ion-button (click)="onClickHello()">Hello</button>
+
+만약 ts파일에 배열을 선언하고(messages:Array<string> = [];)
+아래와같이 html을 수정하면 입력하면 바로아래 글씨가 찍힘
+  <ion-list>
+    <ion-item>
+      <ion-input #message (keyup.enter)="messages.push(message.value); message.value=''"></ion-input>
+    </ion-item>
+    <ion-item *ngFor="let msg of messages.reverse()">
+      {{ msg }}
+    </ion-item>
+  </ion-list>
+  
+==========================================================================================
+  
+9. One way Binding과 Two way Binding
+One way Binding은 위에서 쭉 보여줬던 단방향 바인딩임.
+Two way Binding은 양방향 바인딩을 말한다. 즉, 데이터를 양쪽으로 교환한다.
+
+ts파일에
+    setInterval(() => {
+      console.log(this.abc);
+    }, 1000);
+	
+이라고 해주고 html파일에
+  <input [(ngModel)] = "abc"/><br/>
+
+라고 해주면 1초마다 입력받은 값을 로그에 찍어준다.
+
+
+html을 
+<input [(ngModel)] = "abc"/><br/>
+  {{ abc }}<br/>
+
+이렇게 해준다면 입력된 값을 실시간으로 찍어준다.
+
+==========================================================================================
+
+10. 템플릿 레퍼런스 변수(매우 중요하므로 마스터해야 할 스킬이다!!)
+html에서 #변수명으로 변수를 사용 가능하다.
+
+html에 
+  <input #phone (keyup)="call = phone.value"/>
+  {{call}}<br/>
+  
+이렇게 해주면 입력받은 값을 바로 표시해준다.
+위 소스에서 input 태그에서 #phone라는 선언으로 phone라는 변수명으로 사용하게 되고
+phone.value를 다시 call에 담은 것이다.
+즉, phone라는 변수에 input값을 담고 다시 call이라는 변수에 담은것을 바로 뿌려주는 것이다.
+
+==========================================================================================
+
+11. ViewChild - 앞으로 만들어진 컴포넌트 항목을 미리 선언하고 사용하는것
+예제가 안됨. 템플릿이 생선된 후에는 @ViewChild가 필요 없음.
+
+==========================================================================================
+
+12. 디렉티브 - Dom이나 html태그에 새로운 기능을 부여할 때 사용한다.
+*ngIf 처럼 html태그에서 숨기거나 보여줄수 없는 값을 처리해주는 기능을 디렉티브라고 한다.
+
+이를테면 html을 아래와 같이 하고
+  <h1 highlight>
+    왕초보 www.ionickorea.com
+  </h1>
+ 
+highlight라는 클래스(ts파일)를 새로 만들어 정의해 주는게 가능하다.
+보통 src의 components 폴더를 만들어 ts 파일을 추가해 준다.
+
+그리고 app.module.ts 파일에 import를 해주고(import { Highlight } from '../components/highlight';)
+declarations에만 추가해주면 된다.
+
+그리고나서 highlight.ts 파일을
+import {Directive, ElementRef, Renderer} from '@angular/core';
+
+@Directive({
+  'selector' : '[highlight]'
+})
+export class Highlight{
+  constructor(el:ElementRef, renderer:Renderer){
+    renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'blue');
+  }
+}
+
+위와 같이 수정해주면 왕초보 www.ionickorea.com 글씨 배경이 파란색으로 변경된다.
+
+@Directive({
+  'selector' : '[highlight]'
+})
+export class Highlight{
+  constructor(el:ElementRef){
+    el.nativeElement.style.color = "orange";
+    el.nativeElement.style.backgroundColor = "blue";
+  }
+}
+
+이런식으로 직접 처리도 가능하다.
+
+만약 위처럼 선언해주고 <p highlight> 라고 써준다면 위에 선언한 highlight 속성이 적용된다.
+
+==========================================================================================
+
+13. 자식 컴포넌트 - 자식 컴포넌트는 일반 컴포넌트와 매우 비슷하다.
+자식컴포넌트의 selector를 부모 컴포넌트에 사용하면 자식컴포넌트 템플릿이 부모 컴포넌트 템플릿에 표시 됨.
+
+components 폴더에 child-cat.ts와 child-cat.html 파일을 생성한다.
+
+ts파일은 아래와 같이 만들고
+import {Component} from '@angular/core';
+
+@Component({
+    selector:'child-cat',
+    templateUrl:'child-cat.html'
+})
+export class ChildCat{
+    no:number = 0;
+    onClickNo(){
+        this.no++;
+    }
+}
+
+html파일은
+<h2 (click)="onClickNo();">
+    No of Child Chat: {{no}}
+</h2>
+
+이렇게 만들어줌.
+
+그리고 app.module.ts 파일에 import하고 declarations에 추가해준 뒤
+
+home.html 파일에
+<child-cat></child-cat>
+이렇게 추가해주고 실행하면
+
+home.html 화면에서 자식클래스의 'No of Child Chat: {{no}}' 가 보여지게 되고
+클릭이벤트에서 this.no++ 에 의해서 클릭할때마다 숫자가 하나씩 올라가게 된다.

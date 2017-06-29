@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="EF4._14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ibatis.apache.org/mapping">
+  <alias>
+    <typeAlias alias="notice"  type="hanyoung.Models.NoticeModel" />
+  </alias>
+  <statements>
+    <!--공지사항 등록 -->
+    <!--<insert id="insertNotice" parameterClass="notice">
+      INSERT INTO
+      Notice(
+      Site_ID,
+      Notice_Type,
+      IsImportance,
+      IsPopup,
+      IsUser,
+      IsProvider,
+      IsDealer,
+      IsManager,
+      IsAdmin,
+      Position,
+      User_ID,
+      Subject,
+      Contents,
+      View_Count,
+      State
+      )
+      VALUES(
+      # Site_ID #,
+      # Notice_Type #,
+      # IsImportance #,
+      # IsPopup #,
+      # IsUser #,
+      # IsProvider #,
+      # IsDealer #,
+      # IsManager #,
+      # IsAdmin #,
+      # Position #,
+      # User_ID #,
+      # Subject #,
+      # Contents #,
+      # View_Count #
+      )
+    </insert>-->
+
+    <!--공지사항(Notice) 목록조회 -->
+    <select id="selectNoticeList" resultClass="notice">
+      SELECT
+     *
+      FROM
+      Notice
+      WHERE
+      Site_ID
+      = 'HANYOUNG'
+      ORDER BY
+      REGDATE DESC
+    </select>
+
+    <!--공지사항(BoardPost) 목록조회 -->
+    <select id="selectNoticeList2" resultClass="hanyoung.Models.BoardPostModel">
+      SELECT
+      *
+      FROM
+      Board_Post
+      WHERE
+      Board_ID
+      = #Board_ID#
+      ORDER BY
+      REGDATE DESC
+    </select>
+
+    <select id="selectNotice" resultClass="notice">
+      SELECT
+        *
+      FROM
+        Notice
+      WHERE
+        Seq=#Seq#
+    </select>
+  
+
+    <!--공지사항수정-->
+    <!--<update id="updateNotice" parameterClass="notice">
+      UPDATE
+      Notice
+      SET
+      Site_ID = #Site_ID#, 
+      Notice_Type= #Notice_Type #,
+      IsImportance = #IsImportance#, 
+      IsPopup = #IsPopup,
+      IsUser = #IsUser#, 
+      IsProvider = #IsProvider, 
+      IsDealer = #IsDealer#,
+      IsManager = #IsManager, 
+      IsAdmin = #IsAdmin#,
+      Position = #Position#, 
+      User_ID = #User_ID#, 
+      Subject = #Subject#, 
+      Contents = #Contents#, 
+      View_Count = #View_Count#,
+      State = #State#
+      where
+      Seq=#Seq#
+    </update>-->
+
+    <delete id="deleteNotice" parameterClass="int">
+      DELETE
+        *
+      FROM
+        Notice
+      Where
+        Seq
+        = #Seq#
+    </delete>
+  </statements>
+</sqlMap>

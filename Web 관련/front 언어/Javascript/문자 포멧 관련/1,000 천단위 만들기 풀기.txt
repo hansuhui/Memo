@@ -1,0 +1,17 @@
+function commify(n) {
+ var reg = /(^[+-]?\d+)(\d{3})/;   
+ n += '';                         
+  while (reg.test(n))
+  n = n.replace(reg, '$1' + ',' + '$2');
+ return n;
+}
+
+function currency_to_number(currency) { 
+  var num = currency;
+ if( num == "" || num == null) {
+  return 0;
+ }
+  re = /^\$|,/g; 
+  num = num.replace(re, "");
+ return num;
+}

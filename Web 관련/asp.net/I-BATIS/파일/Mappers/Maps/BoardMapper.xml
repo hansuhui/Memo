@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="EF4._14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ibatis.apache.org/mapping">
+  <alias>
+    <typeAlias alias="boardPost"  type="hanyoung.Models.BoardPostModel" />
+    <typeAlias alias="boardConfig"  type="hanyoung.Models.BoardConfigModel" />
+    <typeAlias alias="boardFile"  type="hanyoung.Models.BoardFileModel" />
+  </alias>
+  <statements>
+
+    <!--매뉴얼 목록조회 -->
+    <select id="boardList" resultClass="boardPost">
+      <!--SELECT
+      *
+      FROM
+      Board_Post AS P
+      INNER JOIN
+      Board_Config AS C
+      ON
+      P. Board_ID = C.Board_ID
+      WHERE
+      P.Site_ID = 'HANYOUNG'
+      AND
+      C.Board_Name = #Board_NAME#-->
+      SELECT
+      *
+      FROM
+      Board_Post
+      WHERE
+      Site_ID = 'HANYOUNG'
+      AND
+      Board_ID = #Board_ID#
+    </select>
+
+    <select id="selectBoard" resultClass="boardPost">
+      SELECT
+      *
+      FROM
+      Board_Post
+      WHERE
+      Seq=#Seq#
+    </select>
+    
+    <!-- seq 조회하여 file 가져오기-->
+    <select id="selectFileName" resultClass="boardPost">
+      SELECT
+        *
+       FROM
+        Board_Post AS P
+       INNER JOIN
+        Board_File AS F
+       ON
+         P.Seq = F.Post_Seq
+        WHERE
+          P.Seq = #Seq#;
+    </select>
+  </statements>
+</sqlMap>

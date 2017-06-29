@@ -1,0 +1,48 @@
+자바스크립트 현재 주소(URL),쿼리스트링 가져오기
+ 
+ 
+실행결과 :  [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+      <script type="text/javascript">
+        // 현재 페이지 주소(URL)을 가져올 함수 생성
+        function pageUrl() { 
+          var sHref = location.href;
+          document.getElementById('aDiv').innerHTML = sHref;
+        }
+        // 현재 페이지 주소(URL)에서 쿼리스트링을 가져올 함수 생성
+        function pageQuery() {
+          // window 객체의 location.search 속성으로 쿼리스트링 가져오기
+          var sQuery = location.search;
+            // 쿼리스트링이 있는지 조건문으로 체크
+            if ( sQuery ) {
+              document.getElementById('aDiv').innerHTML = sQuery;
+            } else {
+              document.getElementById('aDiv').innerHTML = '현재 페이지 URL에 쿼리정보가 없습니다.';
+            }
+         }
+      </script>
+  </head>
+  <body>
+    <div>
+      <input type='button' value='주소확인' onclick='pageUrl()' />
+      <input type='button' value='쿼리정보' onclick='pageQuery()' />
+    </div>
+    <div id='aDiv' style='margin-top:10px;'>
+    </div>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+?location.href?  - 현재 페이지 URL 을 가져옵니다.. ( location 객체 프로퍼티 )
+?location.search?  -  현재 페이지 URL 쿼리정보를 가져옵니다. ( location 객체 프로퍼티 )
+ 

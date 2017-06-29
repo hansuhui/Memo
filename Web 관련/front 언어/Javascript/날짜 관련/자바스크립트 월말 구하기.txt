@@ -1,0 +1,11 @@
+	function lastDay(y,m){
+			var lastdate=new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31); //각 달의 마지막 날짜
+			var text=""
+			year=y;
+			if((0==year%4&&0!=year%100)||0==year%400){ //year를 가지고 윤년인지 검사.
+				lastdate[1]=29; /*윤년인 경우 2월의 마지막 날짜를 29로 입력*/
+			}
+			month=m;
+			day = lastdate[month-1];
+			return day;
+		}

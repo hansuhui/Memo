@@ -1,0 +1,208 @@
+2.4.1Options
+finished in 0.269s
+128 specs, 0 failures
+pattern과 match 학습
+'안녕하세요'.match(/안녕/).toString() 을 실행시키면 '안녕'이 추출되어야 한다.
+'안녕하세요'.match(/^안녕/).toString() 을 실행시키면 '안녕'이 추출되어야 한다.
+'안녕하세요'.match(/^안녕/)이 배열을 반환함을 Array.isArray메소드로 확인할 수 있다.
+'sports'.match(/spt/)을 평가하면 null이 반환된다. (js에서 null은 값이라는 것을 명심)
+파라메터에 패턴 할당하기
+파라메터에 /sp/라고 할당한 regex는 'sp'를 출력한다.
+파라메터에 /sp/라고 할당한 regex는 exec메소드를 사용할 경우에도 'sp'를 출력한다.
+플래그 사용하기
+i플래그
+'SPORTS'.match(/s/i).toString() 을 실행하면 대문자 'S'를 출력한다
+g플래그
+'sports'.match(/s/g).toString() 을 실행하면 문자열 's,s'를 출력한다
+/s/g.exec('sports').toString() 를 실행하면 g플래그를 사용하더라도 문자열 's'를 출력한다
+m플래그
+를 대상으로 value.match(/^Multi/) 을 실행하면 매치할 수 없다
+를 대상으로 value.match(/^Multi/m) 을 실행하면 처음의 'Multi' 만 반환한다
+를 대상으로 value.match(/^Multi/gm) 을 실행하면 'Multi,Multi' 가 반환된다
+대체기능 사용하기
+'12_34_56'.match(/23|34|56/).toString() 를 평가하면 12_34_56 기준으로 가장 앞에 있는 패턴 1개가 매치된다.
+'12_34_56'.match(/56|34|23/).toString() 를 평가하면 12_34_56 기준으로 가장 앞에 있는 패턴 1개가 매치된다.
+dot 사용하기
+'sports'.match(/.s/).toString() 를 평가하면 s앞에 임의의 문자1개가 추가된 문자열 ts가 매치된다.
+'sports'.match(/s./).toString() 를 평가하면 s뒤에 임의의 문자1개가 추가된 문자열 sp가 매치된다.
+'sop,sap,sac,sp'.match(/s.p/g).toString() 를 평가하면 s와 p사이에 임의의 문자1개가 추가된 문자열 'sop,sap'가 매치된다.
+공백문자 매치하기
+탭 문자인 '\u0009'.match(/\t/)를 매치하면 1개가 매치된다
+줄 분리자인 '\u000A'.match(/\n/)를 매치하면 1개가 매치된다
+연습문제
+'ABCDE ABCXE'.match(/BC|DE/g).toString()이 평가되면 'BC,DE,BC'가 반환된다.
+매치 위치 학습
+^ 처음부터 매치하기
+'12_34_12'.match(/^12/).toString()이 평가되면 '12'가 반환된다.
+'12_34_12'.match(/^12/)이 평가되면 null이 반환된다.
+'12 34 12'.match(/^12/m).toString()이 평가되면 '12'가 반환된다.
+$ 끝에 매치하기
+'12_34_56'.match(/56$/).toString()이 평가되면 '56'가 반환된다.
+'12_34_56'.match(/34$/)이 평가되면 null이 반환된다.
+B 63개 문자에 매치하기
+영문자(52개), 숫자(10개), 언더바(1개)에 매치되는 기능
+B에 매치된 문자는 반환하지 않는다!<주의>
+'A12A 12B 12A'.match(/12B/g).toString() 이 평가되면 '12,12,12'가 반환된다.
+'A12 B12 12'.match(/12B/g) 이 평가되면 null이 반환된다.
+'A12 12 C12'.match(/B12/g).toString() 이 평가되면 12,12가 반환된다.
+ 63개 이외의 문자에 매치하기
+영문자(52개), 숫자(10개), 언더바(1개)이외의 문자에 매치되는 기능
+는 '아무것도 없음'도 매치하므로 주의할것!!
+'A12 12B 12C'.match(/12/g).toString() 이 평가되면 '12'가 반환된다.
+'A12 12B 12'.match(/12/g).toString() 이 평가되면 '12,12'가 반환된다.
+String Object내의 정규식 메소드 활용
+Search 메소드
+'12_34'.search(/12|34/) 이 평가되면 0이 반환된다.
+'12_34'.search(/12|34/g) 가 평가되면 0이 반환된다.
+'00_12_34'.search(/34|12/) 이 평가되면 3이 반환된다.
+split 메소드=>
+'12_34_56'.split('_').toString() 이 평가되면 12,34,56이 반환된다.
+'12_34_56'.split('_').toString() 이 평가되면 12,34,56이 반환된다.
+매치가 없으면 본디 문자열을 []로 반환함=>
+'12_34_56'.split('S').toString() 이 평가되면 12_34_56이 반환된다.
+()안에 구분자를 넣으면 구분자를 반환한다.=>
+'12A34A56'.split(/(A)/).toString() 이 평가되면 12,A,34,A,56이 반환된다.
+두번째 인수로 숫자를 넣으면 반환된 배열의 갯수를 제한한다=>
+'12_34_56'.split('_',2).toString() 이 평가되면 56이 반환된다.
+exec 메소드=>
+/s/g.exec('sports') 이 평가되어도 1개만 매치된다.
+수량자 학습
+욕심많은 매치
+가능한 최대로 매치
+'AAAC AAC'.match(/A+/).toString()이 평가되면 'AAA'가 반환된다.
+'AAAC AAC'.match(/A+/g).toString()이 평가되면 'AAA,AA'가 반환된다.
+====> 모든 문자를 매치하려면? <====
+'AAAC AAC'.match(/.+/).toString()이 평가되면 'AAAC AAC'가 반환된다.
+연습문제 : check함수 작성
+check("1234")는 true를 리턴한다
+check("1234AA")는 false를 리턴한다
+check("AA1234")는 false를 리턴한다
+check("")는 false를 리턴한다
+욕심많은 매치: * =>
+AB로 중단되는 문자열을 매치하라
+12C와 일치하던 일치하지 않던 매치하라
+연습문제 =>
+AAAC'.match(/A*/).toString() 이 평가되면 AAA가 리턴된다
+'AABAAAC'.match(/A*/).toString() 이 평가되면 AA가 리턴된다
+'12AB_12EFG'.match(/12C*/g).toString() 이 평가되면 12,12가 리턴된다
+욕심많은 매치: ? =>
+없어도 좋지만 하나만 매치
+'123AAA'.match(/123S?/).toString() 이 평가되면 123가 리턴된다
+'123SSSK'.match(/123S?K/).toString() 이 평가되면 null이 리턴된다
+'123SSSK'.match(/123S*K/).toString() 이 평가되면 123S이 리턴된다
+* 이나 ?이 등장하면 * 이나 ? 을 기준으로 뒤에서부터 매치한다고 생각하고 정규식을 작성할것(실 구현은 약간 다르지만) =>
+'123ABCD'.match(/.?AB/).toString() 이 평가되면 3AB가 리턴된다
+매치범위 지정
+{<숫자>} => 안에 들어온 숫자만큼 매치
+'AAA'.match(/A{2}/).toString() 이 평가되면 AA가 리턴된다
+'AAA'.match(/A{4}/) 이 평가되면 null이 리턴된다
+'AAAKK'.match(/A{2}K/).toString() 이 평가되면 'AAK'가 리턴된다
+{<숫자>,} => 안에 들어온 숫자보다 많은 갯수를 매치
+'AAAA'.match(/A{2,}/).toString() 이 평가되면 'AAAA'가 리턴된다
+'AAAA'.match(/A{5,}/) 가 평가되면 null이 리턴된다
+{<숫자>,<숫자>} => 안에 들어온 범위 안에 수렴되는만큼 매치
+'AAAAA'.match(/A{2,4}/).toString() 이 평가되면 'AAAA'가 리턴된다
+'AAA'.match(/A{2,4}/).toString() 이 평가되면 'AAA'가 리턴된다
+최소 매치 갯수가 0일 때에는 무조건 매치 성공!!
+'CCC'.match(/A{0,2}/) 이 평가되면 ''이 리턴된다
+욕심없는 매치 =>
++? => 왼쪽에서 오른쪽으로 최대한 적게 한번만 매치
+'AAAAAC'.match(/AA+?/).toString() 이 평가되면 'AA'가 리턴된다
+'AAAAAC'.match(/AA+/).toString() 이 평가되면 'AAAAA'가 리턴된다
+*? => 왼쪽에서 오른쪽으로 최대한 적게 매치 =>
+*? 왼쪽에 매치되는 문자가 있더라도 1개는 무시한다 =>
+'ABCABC'.match(/ABC*?/).toString() 이 평가되면 'AB'가 리턴된다
+'ABCABC'.match(/ABZ*?/).toString() 이 평가되면 'AB'가 리턴된다
+'AAAAA'.match(/A*?/).toString() 이 평가되면 ''가 리턴된다
+[중요]'AAAKK'.match(/A*?K/).toString() 이 평가되면 'AAAK'가 리턴된다
+{<숫자>,<숫자>}? => 숫자범위 무시 =>
+'AAAAA'.match(/A{1,}/).toString() 이 평가되면 'AAAAA'가 리턴된다
+'AAAAA'.match(/A{1,}?/).toString() 이 평가되면 최소 1개인 'A'가 리턴된다
+'AAAAA'.match(/A{1,5}?/).toString() 이 평가되면 최소 1개인 'A'가 리턴된다
+문자집합 학습
+'ABCDE'.match(/[ABK]/).toString()이 평가되면 'A'가 반환된다.
+'ABCDE'.match(/[]/)이 평가되면 null이 반환된다.
+'ABCDE'.match(/[BAC]/).toString()이 평가되면 'A'가 반환된다.
+'정규표현식'.match(/[표정]/g).toString()이 평가되면 '정,표'가 반환된다.
+[]안의 값들은 문자가 된다.예를 들어 [1+]는 1이후의 모든글자가 아니라 1 혹은 + 라는 뜻
+'111'.match(/[1+]/).toString()이 평가되면 '1'가 반환된다.
+'?12'.match(/[.?1]/).toString()이 평가되면 '?'가 반환된다.
+\b : 백스페이스
+유니코드 문자 \u0008 는 \b에 매치된다.
+[<최소수>-<최대수>] : 최소~최대 구간 사이에 속한 값을 매치한다. 최소,최대 구간이 바뀌면 에러 발생
+[]는 1개 문자이기 때문에 결과 또한 문자 1개, 매치된 결과 중에서 가장 앞의 문자가 리턴된다.
+'54321'.match(/[0-5]/).toString()이 평가되면 '54321'가 반환된다.
+'CDBD'.match(/[A-E]/g).toString()이 평가되면 'C,D,B,D'가 반환된다.
+[-<최대수>]는 ~최대수 라는 범위를 의미하는 것이 아니라, -문자 1개 최대수 문자 1개. 각각 별개 문자로 인식한다.
+'73-21'.match(/[-3]/).toString()이 평가되면 '3'가 반환된다.
+'721'.match(/[-3]/)이 평가되면 null 반환된다.
+'7321'.match(/[3-]/).toString()이 평가되면 '3'가 반환된다.
+연습문제 : 값 전체가 영문 대소문자이면 true를, 아니면 false를 리턴하는 check함수를 작성하라 =>
+check('ABCD') 의 평가 결과는 true이다
+check('abcd') 의 평가 결과는 true이다
+check('ABcd') 의 평가 결과는 true이다
+check('123') 의 평가 결과는 false이다
+check('12AB') 의 평가 결과는 false이다
+check('AB12') 의 평가 결과는 false이다
+연습문제 : 값 전체가 영문 대소문자,숫자이면 true를, 아니면 false를 리턴하는 check함수를 작성하라 =>
+check('AB12') 의 평가 결과는 true이다
+[^] : 제외 => []안에 작성하지 않은 문자에 매치한다.
+'ABCD'.match(/[^A]/).toString()이 평가되면 B가 리턴된다
+범위를 나타내는 하이픈이 들어가면 or조건이 된다
+'15257'.match(/[^1-4]/g).toString()이 평가되면 5,5,7가 리턴된다
+범위를 나타내는 하이픈이 들어가지 않으면 and조건이 된다.
+'ABCDE'.match(/[^ABD]/).toString()이 평가되면 C가 리턴된다
+'정규표현식'.match(/[^정표]/g).toString()이 평가되면 규,현,식가 리턴된다
+연습문제 : 값 전체가 영문 대소문자이며 @,%,-가 들어갔을 경우 true를, 아니면 false를 리턴하는 check함수를 작성하라 =>
+check('ABCD@%-') 의 평가 결과는 true이다
+check('abcd@') 의 평가 결과는 true이다
+check('ABcd@') 의 평가 결과는 true이다
+check('123@') 의 평가 결과는 false이다
+check('12@AB') 의 평가 결과는 false이다
+check('A@B12') 의 평가 결과는 false이다
+연습문제 : 0~9,-의 입력만 허용하는 함수를 작성하라 =>
+accValid('123@') 의 평가 결과는 false이다
+accValid('12-') 의 평가 결과는 true이다
+accValid('12345-67890') 의 평가 결과는 true이다
+-만 배제하는 함수를 작성하라 =>
+removeHypne('123-------------123123-----').toString() 의 평가 결과는 '123123123'이다
+removeHypne('12-') 의 평가 결과는 true이다
+removeHypne('12345-67890').toString() 의 평가 결과는 true이다
+문자열 전체가 a인지 확인하는 함수를 작성하라 =>
+itsAllA('12-') 의 평가 결과는 false이다
+itsAllA('aaaaaaaaaaa') 의 평가 결과는 true이다
+정규식 실전학습
+HTML 마크업 속에서 innerText만 추출하는 함수를 작성하라
+<script src='spec/regexSpec.js'>sss</script> 의 평가 결과는 sss이다
+이스케이프 클래스
+\ => 패턴문자의 문자화
+'^ABC'.match(/^A/)이 평가되면 null이 반환된다. -> 첫 문자가 ^이므로 매치 실패
+'B^AC'.match(/^A/)이 평가되면 null이 반환된다. -> ^A가 문자열이 되므로 ^A가 매치
+'\AB'.match(/\A/)이 평가되면 ->\A를 문자로 인식하므로 \A가 리턴
+\d => 숫자만 매치
+'A123'.match(/d/)이 평가되면 1이 반환된다. -> 문자 1개만 매치되기 때문
+'A123'.match(/d+$/g)이 평가되면 123이 반환된다. -> +가 일종의 커서 역활을 해서 연속 매치를 실시하기 때문
+\S => 보이는 문자만 매치
+'	a'.match(/S/)이 평가되면 a이 반환된다. -> 보이는 문자 1개만 매치되기 때문
+\w => 63개 문자만 매치
+'%_aA1'.match(/w/g)이 평가되면 _,a,A,1이 반환된다.
+\W => 63개 이외의 문자만 매치
+'%_aA1'.match(/W/g)이 평가되면 %이 반환된다.
+그룹화 ==>
+() ==> 캡쳐하고, 그 값을 () 밖의 패턴에 매치한다. 결과적으로 2번 평가되는 것
+'abc'.match(/(a)/).toString()이 평가되면 'a,a'가 된다.
+'abc'.match(/((a))/).toString()이 평가되면 'a,a,a'가 된다.
+'ABCDEF'.match(/AB(C|P)(D|Q)EF/).toString()이 평가되면 'ABCDEF,C,D'가 된다.
+undefined 설정 메커니즘
+<이게 제일 어려운듯> 'baseball'.match(/((ball)|(base))/).toString()이 평가되면 'base,base,undefined,base'가 된다.
+template함수 유사 구현
+<div>{aaa}</div> 를 template 함수로 렌더링하면 <div>hello</div>가 된다.
+캡쳐 값 참조
+'ABCDEF_CD'.match(/AB(C|K)(D|X)EF_/)가 평가되면 ABCDEF_,C,D 가 리턴된다
+'ABCDEF_CD'.match(/AB(C|K)(D|X)EF_/)가 평가되면 ABCDEF_CD,AC,D 가 리턴된다
+'ABCDEF_CD'.match(/AB(C|K)(D|X)EF_/)가 평가되면 RegExp.$1에 C가 할당된다.
+연습문제 =>
+숫자 값 세자리마다 콤마를 삽입하는 insertComma함수를 작성하라
+insertComma(123456)가 평가되면 123,456 이 된다
+4자 앞에 ##을 삽입하는 함수를 작성하라
+insertSpSp(123456123456123456)가 평가되면 '12##3456##1234##5612##3456' 이 된다

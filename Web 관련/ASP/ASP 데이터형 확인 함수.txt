@@ -1,0 +1,192 @@
+
+
+<%
+
+'*** isArray : 변수가 배열인지 아닌지 확인
+
+'*** 배열이면 True 배열이 아니면 False 값을 반환한다.
+
+
+
+
+Dim asp_Array(2)
+
+	
+
+	asp_Array(0) = "red"
+
+	asp_Array(1) = "blue"
+
+	asp_Array(2) = "yellow"
+
+
+
+
+	chk_Array = IsArray(asp_Array)
+
+
+
+
+	response.write chk_Array & "<hr />"
+
+
+
+
+
+
+
+ '*** IsDate : 문자열을 날짜형식으로 변환 될 수 있는지 확인
+
+'*** 날짜형식으로 변환이 가능하면 True 아니면 False 값을 반환한다.
+
+
+
+
+Dim str_Date : str_Date = "2011-08-02"
+
+
+
+
+	chk_Date = IsDate(str_Date)
+
+
+
+
+	response.write chk_Date & "<hr />" 
+
+
+
+
+
+
+
+ '*** IsEmpty : 변수가 초기화 되었는지 여부를 확인
+
+
+
+
+Dim str_Var1, str_Var2, str_Var3
+
+
+
+
+	'변수만 선언하면 IsEmpty 값은 True
+
+	response.write IsEmpty(str_Var1) & "<br />"
+
+
+
+
+	'공백으로 처리하면 IsEmpty 값은 False
+
+	str_Var2 = ""	
+
+	response.write IsEmpty(str_Var2) & "<br />"
+
+
+
+
+	'null 값을 주면 IsEmpty 값은 False
+
+	str_Var3 = Null 
+
+	response.write IsEmpty(str_Var3) & "<hr />"
+
+
+
+
+
+
+
+ '*** IsNull : Null 값인지 아닌지 여부를 확인
+
+
+
+
+Dim str_Var4, str_Var5, str_Var6
+
+
+
+
+	'변수만 선언하면 IsNull 값은 False
+
+	response.write IsNull(str_Var4) & "<br />"
+
+
+
+
+	'공백으로 처리하면 IsNull 값은 False
+
+	str_Var5 = ""
+
+	response.write IsNull(str_Var5) & "<br />"
+
+
+
+
+	'null 값은 주면 IsNull 값은 True
+
+	str_Var6 = Null 
+
+	response.write IsNull(str_Var6) & "<hr />"	
+
+
+
+
+
+
+
+ '*** IsNumeric : 숫자로 평가들 수 있는지 여부를 확인
+
+
+
+
+Dim str_Var7 : str_Var7 = "테스트"
+
+Dim str_Var8 : str_Var8 = "13579"
+
+
+
+
+	response.write IsNumeric(str_Var7) & "<br />"
+
+	response.write IsNumeric(str_Var8) & "<hr />"
+
+
+
+
+
+
+
+ '*** IsObject : 표현식이 유효한 객체인지 아닌지 확인
+
+
+
+
+
+
+
+'*** TypeName : 변수 유형을 알려주는 문자열을 리턴
+
+
+
+
+Dim str_Type1 : str_Type1 = "테스트"
+
+Dim str_Type2 : str_Type2 = "13579"
+
+Dim str_Type3 : str_Type3 = 13579
+
+
+
+
+	response.write TypeName(str_Type1) & "<br />" 'String
+
+	response.write TypeName(str_Type2) & "<br />" 'String
+
+	response.write TypeName(str_Type3) & "<hr />" 'Integer
+
+
+
+
+%>

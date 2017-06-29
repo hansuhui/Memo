@@ -1,0 +1,58 @@
+select a.btidx, a.bmidx, a.strName, a.strUid, a.strtitle, a.n4Thread , a.regdate, a.btName, a.n4Cnt , isPopupView from( select top 숫자 b.btidx, b.bmIDX, b.strName, b.strUid, b.strTitle, b.n4Thread, b.n4Cnt
+,b.isPopupView , convert(varchar(10), b.regDate, 120) as regDate , a.btName , row_number() over(order by n4Group desc, n4Order, n4Thread) as r from boardType a, boardmaster b where a.btidx = b.btidx {0} )
+ a where r between " + prevPage + " and " + nextPage + " ";
+
+
+
+select a.btidx, a.bmidx, a.strName,a.strPwd,a.strEmail, a.strUid, a.strtitle, a.n4Thread , a.regdate, a.btName, a.n4Cnt , isPopupView ,a.strCel,a.strContent,a.strIP,a.updDate
+from( select top 10 b.btidx, b.bmIDX, b.strName,b.strPwd,b.strEmail, b.strUid, b.strTitle, b.n4Thread, b.n4Cnt
+,b.isPopupView , convert(varchar(10), b.regDate, 120) as regDate , a.btName ,b.strCel, b.strContent,b.strIP,b.updDate,row_number() over(order by n4Group desc, n4Order, n4Thread) as r from boardType a, boardmaster b where a.btidx = b.btidx)
+ a where r between 1 and 10
+
+
+
+btIDX bmlDX n4Group n4Thread n4Order strName strPwd strTitle strEmail strCel strContent n4Cnt strIP strUID regDate updDate
+
+
+select convert(datetime, '2014-01-20 00:00:00', 120), convert(datetime, '2014-01-20 23:59:59', 120)
+
+
+  글번호 이름 제목 이멜 
+
+
+btIDX
+1: 공지사항
+
+3: 묻고답하기
+
+
+select  from Product a join GiftDesign b on( a.DesignCode=b.DesignCode) join SaleDtl s on(s.Pcode = a.Pcode) where a.Pcode = '10000003'
+
+
+글목록을 뽑아서 글페이징 만들고
+해당 글로 이동시키고
+
+===========================================================================================================
+
+
+select a.btidx, a.bmidx, a.strName,a.strPwd,a.strEmail, a.strUid, a.strtitle, a.n4Thread , a.regdate, a.btName, a.n4Cnt , isPopupView ,a.strCel,a.strContent,a.strIP,a.updDate
+from( select top 10 b.btidx, b.bmIDX, b.strName,b.strPwd,b.strEmail, b.strUid, b.strTitle, b.n4Thread, b.n4Cnt
+,b.isPopupView , convert(varchar(10), b.regDate, 120) as regDate , a.btName ,b.strCel, b.strContent,b.strIP,b.updDate,row_number() over(order by n4Group desc, n4Order, n4Thread) as r from boardType a, boardmaster b where a.btidx = b.btidx)
+ a where r between 1 and 10 and 
+
+
+
+
+
+  select  b.btidx, b.bmIDX, b.strName,b.strPwd,b.strEmail, b.strUid, b.strTitle, b.n4Thread, b.n4Cnt
+,b.isPopupView , convert(varchar(10), b.regDate, 120) as regDate , a.btName ,b.strCel, b.strContent,b.strIP,b.updDate
+,row_number() over(order by n4Group desc, n4Order, n4Thread) as r 
+from boardType a, boardmaster b 
+where a.btidx = b.btidx and regDate >= 시작일자 and regDate <= 끝일자
+
+and regdate between 시작일자 and 끝일자
+
+오늘 일주일 15일 한달 두달 전체
+
+if(regdate >1 && regdate<10)
+select convert(datetime, '2014-01-20 00:00:00', 120), convert(datetime, '2014-01-20 23:59:59', 120)

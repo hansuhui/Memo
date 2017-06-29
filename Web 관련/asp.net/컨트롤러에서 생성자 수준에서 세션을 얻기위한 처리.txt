@@ -1,0 +1,23 @@
+    // 컨트롤러에서 생성자 수준에서 세션을 얻기위한 처리
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+
+            string CODE = (string)Session["MemberCODE"];
+
+            if (string.IsNullOrEmpty(CODE))
+            {
+                WebUtil.JsAlertGoPage("로그인이 필요합니다.", "/M/Account/Login");
+            }
+
+            frontEntity infor = new frontModel().MemberCardInfor(GetUserCode);
+
+            if (infor == null)
+            {
+                WebUtil.JsAlerthistoryback("카드 등록이 필요합니다.", -1);
+            }
+
+
+            ViewBag.CUR_POINT = memberModel.MemberCurPoint(GetUserCodeByContext(requestContext));
+
+        }

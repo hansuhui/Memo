@@ -1,0 +1,83 @@
+ - UNION 문이란?
+   두개 이상의 쿼리 결과를 하나의 테이블로 합쳐서 표시하는데 이용됩니다.
+?
+ 
+ - MSSQL UNION 사용방법
+   [쿼리문1] UNION [쿼리문2]
+?
+ 
+ - UNION 특징
+   쿼리문1과 쿼리문2의 컬럼수는 동일해야 한다.
+   쿼리문1과 쿼리문2의 컬럼타입은 같거나 서로 변환가능한 값이어야 한다.
+   UNION으로 합쳐진 테이블은 중복값이 사라진다.
+?
+ 
+ - A반출석부 테이블 생성
+   CREATE TABLE dbo.A반출석부 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL
+   )
+?
+ 
+ - 데이터 입력
+ 
+   INSERT INTO dbo.A반출석부 (일련번호, 이름) VALUES (1, '홍길동')
+   INSERT INTO dbo.A반출석부 (일련번호, 이름) VALUES (2, '일지매')
+   INSERT INTO dbo.A반출석부 (일련번호, 이름) VALUES (3, '임꺽정')
+ 
+ 
+ - 테이블 입력 결과 확인?
+ 
+   SELECT * FROM dbo.A반출석부
+
+ - B반출석부 테이블 생성
+ 
+   CREATE TABLE dbo.B반출석부 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL
+   )
+?
+ 
+ - 데이터 입력
+ 
+   INSERT INTO dbo.B반출석부 (일련번호, 이름) VALUES (1, '이순신')
+   INSERT INTO dbo.B반출석부 (일련번호, 이름) VALUES (2, '강감찬')
+   INSERT INTO dbo.B반출석부 (일련번호, 이름) VALUES (3, '임꺽정')
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.B반출석부
+ 
+
+
+ - 예제 1
+   A반출석부와 B반출석부를 유니온하여 표시하시오.
+ 
+ 
+ - 예제 1 쿼리
+ 
+   SELECT 일련번호, 이름 FROM  dbo.A반출석부
+   UNION
+   SELECT 일련번호, 이름 FROM  dbo.B반출석부
+ 
+ 
+ [참고사항] 예제 1의 결과레코드가 5개인 이유 
+   ?UNION 은 중복값을 1회만 표시하기 때문에 그렇습니다. A반 출석부의 (3, 임꺽정) 레코드와 B반 출석부의 (3, 임꺽정) 레코드가 중복
+   되면서 1개의 레코드만 표시되었고 이로 인해 최종결과가 6개의 레코드가 아닌 5개의 레코드가 된것입니다.
+ 
+ 
+ - 예제 2 
+   A반출석부와 B반출석부를 유니온하는데 반소속을 알 수 있도록 처리하시오.
+ 
+ 
+ - 예제 2 쿼리 
+   SELECT 'A반' AS 반정보, 일련번호, 이름 FROM  dbo.A반출석부
+   UNION
+   SELECT 'B반' AS 반정보, 일련번호, 이름 FROM  dbo.B반출석부
+ 
+ 
+ [참고사항] UNION ALL
+ 
+   ?UNION ALL 은 UNION처럼 두개 이상의 쿼리 결과를 하나로 합쳐서 표시하지만 UNION과는 다르게 중복값을 모두 표시하는 특징이
+   있습니다.
+  

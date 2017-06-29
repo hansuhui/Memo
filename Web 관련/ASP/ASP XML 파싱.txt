@@ -1,0 +1,116 @@
+%
+Dim targetURL, xmlHttp, oStream, sText, xmlDOM, RootNode, dr, dr_Child
+Dim Channel, Title, MediaCode, Brand, Corp, Runtime, Id, Result, beginTime, endTime
+ 
+ 
+    'XML 위치
+    targetURL = "http://www.tvcf.co.kr/1mwmanagement/etc/xmlpars/ss/1.xml" 
+ 
+    'XML 가져오기 (XMLHTTP 버전확인 해야함)
+    Set xmlHttp = Server.CreateObject("Microsoft.XMLHTTP")
+    xmlHttp.Open "GET", targetURL, False
+    xmlHttp.Send
+ 
+    'XML 변환 (euc-kr or utf-8)
+    Set oStream = CreateObject("ADODB.Stream")
+    oStream.Open
+    oStream.Position = 0
+    oStream.Type = 1
+    oStream.Write xmlHttp.ResponseBody
+    oStream.Position = 0
+    oStream.Type = 2
+    oStream.Charset = "euc-kr"
+    sText = oStream.ReadText
+    oStream.Close
+ 
+    'XML 파싱 (MSXML.DOMDOCUMENT 버전확인 해야함)
+    Set xmlDOM = server.CreateObject("MSXML.DOMDOCUMENT")
+    xmlDOM.async = False
+    xmlDOM.LoadXML sText
+ 
+    ' <root>
+        ' <data_record>
+            ' <Channel><![CDATA[EBS]]></Channel>
+            ' <Title><![CDATA[베지밀 토들러-콩유아식 편]]></Title>
+            ' <MediaCode><![CDATA[A000153669]]></MediaCode>
+            ' <Brand><![CDATA[베지밀]]></Brand>
+            ' <Corp><![CDATA[NULL]]></Corp>
+            ' <Runtime><![CDATA[15.148]]></Runtime>
+            ' <Id><![CDATA[2204]]></Id>
+            ' <Result><![CDATA[Matched]]></Result>
+            ' <beginTime>20121102070310.433000</beginTime>
+            ' <endTime>20121102070325.581000</endTime>
+        ' </data_record>
+        ' <data_record>
+            ' <Channel><![CDATA[EBS]]></Channel>
+            ' <Title><![CDATA[제 26회 서울국제유아교육전-우리아이 똑똑하게 편]]></Title>
+            ' <MediaCode><![CDATA[A000135428]]></MediaCode>
+            ' <Brand><![CDATA[서울국제유아교육전]]></Brand>
+            ' <Corp><![CDATA[세계전람]]></Corp>
+            ' <Runtime><![CDATA[19.986]]></Runtime>
+            ' <Id><![CDATA[508]]></Id>
+            ' <Result><![CDATA[Matched]]></Result>
+            ' <beginTime>20121102074500.849000</beginTime>
+            ' <endTime>20121102074519.1835000</endTime>
+        ' </data_record>
+    ' </root>
+ 
+    '작업시작
+    RootNode = "/root"  '최상위 노드 입력
+    Set rootNode = xmlDOM.selectNodes(RootNode)
+    Set dr = rootNode(0).childNodes
+ 
+    '한덩이씩 포문
+    For i = 0 To dr.length-1    
+        Set dr_Child = dr(i).childNodes
+       
+        '한덩이 안의 노드 갯수만큼 포문
+        '노드가 있는것만 값을 넣어서 나중에 Insert할때 넣는다
+        For j = 0 to dr_Child.length-1
+            IF dr_Child(j).nodeName = "Channel"     Then Channel    = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "Title"       Then Title      = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "MediaCode"   Then MediaCode  = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "Brand"       Then Brand      = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "Corp"        Then Corp       = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "Runtime"     Then Runtime    = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "Id"          Then Id         = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "Result"      Then Result     = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "beginTime"   Then beginTime  = dr_Child(j).text End IF
+            IF dr_Child(j).nodeName = "endTime"     Then endTime    = dr_Child(j).text End IF
+        Next
+       
+        IF isnull(Channel)      Then Channel    = "" End IF
+        IF isnull(Title)        Then Title      = "" End IF
+        IF isnull(MediaCode)    Then MediaCode  = "" End IF
+        IF isnull(Brand)        Then Brand      = "" End IF
+        IF isnull(Corp)         Then Corp       = "" End IF
+        IF isnull(Runtime)      Then Runtime    = "" End IF
+        IF isnull(Id)           Then Id         = "" End IF
+        IF isnull(Result)       Then Result     = "" End IF
+        IF isnull(beginTime)    Then beginTime  = "" End IF
+        IF isnull(endTime)      Then endTime    = "" End IF
+       
+        sQuery = ""
+        sQuery = sQuery & "Insert into TVCF_TMP.dbo.SamSungNewCF_TM(Channel,Title,MediaCode,Brand,Corp,Runtime,Id,Result,beginTime,endTime) "
+        sQuery = sQuery & "Values('"&Channel&"','"&Title&"','"&MediaCode&"','"&Brand&"','"&Corp&"','"&Runtime&"','"&Id&"','"&Result&"','"&beginTime&"','"&endTime&"')"
+        ' response.write squery & "<BR>"
+        oCn.Execute(sQuery)
+       
+        Channel     = ""
+        Title       = ""
+        MediaCode   = ""
+        Brand       = ""
+        Corp        = ""
+        Runtime     = ""
+        Id          = ""
+        Result      = ""
+        beginTime   = ""
+        endTime     = ""
+    Next
+ 
+    Set dr = Nothing
+    Set rootNode = Nothing
+ 
+    Set xmlDOM = Nothing
+%>
+ 

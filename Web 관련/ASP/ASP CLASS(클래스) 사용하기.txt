@@ -1,0 +1,166 @@
+[ASP 에서 CLASS(클래스) 사용하기]
+
+
+ASP에는 아쉽게도 상속이 되질 않는다. ASP.NET에 가면 지원이 된다.
+하지만 오리지날 ASP에는 지원되지 않는다.
+
+
+ASP 클래스의 시작
+
+CLASS 클래스명
+
+END CLASS
+
+
+일단 시작은 저렇게 시작하고 마친다. 보통의 SUB 나 FUNCTION이랑 비슷하다.
+
+그리고 클래스의 시작과 마침에 자공으로 실행되는 함수를 넣어야 하는데 아래봐 같다.
+
+
+Private Sub Class_Initialize()
+... 클래스 생성될떄 자동으로 실행
+END SUB
+
+
+Private Sub Class_Terminate()
+...클래스 닫힐때 자동으로실행
+END SUB
+
+
+위는 보통 디비를 항상 열고 닫기 떄문에 두 함수에 DB를 열고 닫는것을 넣어두면 편하다.
+물론 .. 디비접속과 아무관련이 없는 클래스의 경우 넣을 필요는 없다.
+
+여튼 여기까지를 한번에 묶으면..
+
+
+CLASS 디비명
+
+	private thisDbCon
+
+	private Sub Class_Initialize()
+	   '디비접속
+	   Set thisDbCon = Server.CreateObject("ADOODB.Connection")
+	   StrDBConnect = "Provider=ORAOLEDB.ORACLE;Password=비번;User ID=아이디;Data Source=주소;Persist Security Info=True;"
+	   thisDbCon.Open StrDBConnect
+
+	END SUB
+
+
+	private Sub Class_Terminate()
+	   '디비 끊기
+	   thisDbCon.Close
+	   thisDbCon.Noting
+	END SUB
+END CLASS
+
+
+이게 기본 세트라고 할수 있다. 이 이후에는 클래스에 함수들을하나씩 추가시키면 된다.
+그러면 아름다운 클래스가 만들어지게 되겠다.
+
+그러면 만들어 놓은 클래스를 다른 페이지에서 불러서 사용하는 방법을 보겠다.
+
+먼저 저 클래스 CLASS.TEST.ASP 라는 이름으로 저장한다.
+이름에 CLASS가 들어가는건 특별한이유가 있는게 아니고그냥다른 파일들과
+구분하기 위한것이니 이름은 원하는데로 해도생관없다.
+
+<!-- #include virtual="CLASS.TEST.ASP"-->
+
+먼저 페이지 상단에 위와같이 클래스를 인클루드 시킨다.
+
+
+SET CLASSTEST = NEW CLASSTEST
+
+
+그런 다음 위와 같이 클래스를 생성한다.
+클래스의 좋은 좀은 함수와 달리 클래스를 생성하면 같은 함수들이 독립적으로 작동된다는 것이다.
+
+SET CLASSTEST1 = NEW CLASSTEST
+SET CLASSTEST2 = NEW CLASSTEST
+SET CLASSTEST3 = NEW CLASSTEST
+
+
+이렇게 생성해서 사용해도 클래스안의 같은 이름의 변수나 함수들이 독립적으로 행동할수 있다는 것이다.
+그리고 그냥 인클루드로 함수들을 나열해서 인클루드 할때보다 정리가 쉽고 다른 사이트에 적용하기도 좋다.
+
+
+생성된 클래스의 함수를 실행해 보겠다.
+
+CLASS TEST
+   private Sub Class_Initialize()
+   END SUB
+   private Sub Class_Terminate()
+   END SUB
+
+   PUBLIC FUNCTION GETSUM(NUMARR)
+     DIM I,RESULT
+     FOR I=0 TO UBOUND(NUMARR)
+        RESULT = RESULT+ NUMARR(i)
+     NEXT
+      GETSUM = RESULT
+  END FUNCTION
+END CLASS
+
+
+SET T = NEW TEST
+
+DIM NUMBERS(4)
+NUMBERS(0)= 10
+NUMBERS(1)= 20
+NUMBERS(2)= 100
+NUMBERS(3)= 200
+RESPONSE.WRITE T.GETSUM(NUMBERS)
+
+
+
+머 이렇게 배열변수를 바로 넘겨서 사용할수도 있다.
+
+PUBLIC & PRIVATE
+
+PUBLIC 과 PRIVATE 는 다 알다시피 광역이나 지역이냐 이다.
+클래스 안에 쓰이는 변수들이나 함수앞에 PUBLIC을 붙이면 클래스 밖에서도 사용 가능하다. 
+위의 함수 GETSUM 도 앞에 PUBLIC 이 붙어 있기 때문에 클래스 밖에서 실행이 가능한 것이다.
+
+반대로 PRIVATE가 붙으면 클래스 내부에서만 실행된다. 외부에서 불러낼려치면
+호출오류가 발생할 것이다. 이건변수들도 마찬가지이다.
+
+추가팁 딕셔너리 주고 받기
+
+PHP 에서는 배열 자체가 딕셔너리같은거라 주고 받기 편했는데
+ASP에서 이 방법을찾는데 꽤나 고생했다. 혹시나 같은 고생하는 분이 있을까 해서 적어 본다.
+
+이걸 클래스와 연결해서 보면
+
+CLASS DICTEST
+
+   PUBLIC FUNCTION GETDIC()
+      Set D = CreateObject("Scripting.Dictionary")
+      D.add "BANANA","100"
+      D.ADD "DDALGI", "200"
+      D.ADD "SO", "300"
+
+      Set GETDIC = D
+
+   END FUNCTION
+END CLASS
+
+
+'사용하기
+
+Set DICTEST = NEW DICTEST
+SET DATA = DICTEST.GETDIC
+
+RESPONSE.WRITE DATA("BANANA")
+
+
+보낸때나 받을때나 SET를 붙여주는게 포.인.트
+
+
+
+
+
+
+
+
+
+	   
+	   

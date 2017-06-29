@@ -1,0 +1,14 @@
+@OutputCache 디렉티브를 사용한 페이지 성능 향상 
+
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="CategoryList.ascx.cs" Inherits="Shopping.CategoryList" TargetSchema="http://schemas.microsoft.com/intellisense/ie3-2nav3-0"%>
+<%@ OutputCache Duration="3600" VaryByParam="Selection" %>
+<asp:DataList id="MyList" runat="server" cellpadding="3" cellspacing="0" width="145" SelectedItemStyle-BackColor="dimgray" EnableViewState="false">
+
+<ItemTemplate>
+<asp:HyperLink id="HyperLink1" Text="<%# DataBinder.Eval(Container.DataItem, "CategoryName") %>" NavigateUrl="<%# "ProductsList.aspx?CategoryID=" + DataBinder.Eval(Container.DataItem, "CategoryID") + "&Selection=" + Container.ItemIndex %>" runat="server" />
+</ItemTemplate>
+     
+<SelectedItemTemplate>
+<asp:HyperLink id="HyperLink2" Text="<%# DataBinder.Eval(Container.DataItem, "CategoryName") %>" NavigateUrl="<%# "ProductsList.aspx?CategoryID=" + DataBinder.Eval(Container.DataItem, "CategoryID") + "&Selection=" + Container.ItemIndex %>" runat="server" />
+ </SelectedItemTemplate>
+</asp:DataList>

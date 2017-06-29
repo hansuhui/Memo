@@ -1,0 +1,6 @@
+DIM intLoop
+intLoop = 1
+DO WHILE intLoop <= 10000
+    Response.write intLoop & "<BR>"
+    intLoop = intLoop + 1
+LOOP

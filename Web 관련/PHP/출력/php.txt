@@ -1,0 +1,279 @@
+
+php 문법 시작
+
+<? 소스  ?> 
+
+
+출력
+echo "(문자열)"; 
+
+변수 선언
+$변수 
+
+
+[한글이 깨질때 케릭터셋 지정]
+header("Content-Type:text/html;charset=utf-8");
+
+
+변수가 숫자형일때 더하기 
+그대로 연산하면 된다.
+
+
+
+서버에서 넘어온 정보받기
+[GET]
+$_GET[name명]
+
+[POST]
+$_POST[name명]
+
+
+제어문
+
+[if문]
+if(조건){
+ 코드
+}
+else if (조건){
+
+}
+
+
+출처
+http://www.phpschool.com/
+
+
+1. Variable (변수) 
+- 변수는 $로 시작한다. 
+- 변수는 별도로 선언하는 부분이 없으며 (type을 미리 지정하지 않으며) 
+  변수 type은 변수가 사용된 context에 따라 결정된다.
+- 변수의 type으로는 기본적으로 integer, double, string type이 있으며
+   이외에 array와 object type이 있다.
+   변수 type은 gettype(), is_long(), is_double(), is_string(), is_array(), is_object() 
+   등의 함수로 알아낼 수 있다.
+
+- type casting은 C에서와 같은 형식으로 이루어진다. 
+  (int) (integer) (real) (double) (float) (string) (array) (object) 등의 casting operator가 있다.
+
+
+- string conversion : 문자열이 숫자로 변환될 때에 문자열이 '.'
+  , 'e', 'E'를 포함하고 있으면 double로 그렇지 않으면 integer로 변환이 된다. 
+
+- variable variable : 변수의 값이 변수의 이름이 되는 것을 말한다. 
+  예를들어 $a = "hello" 일때 $$a = "world"라고 정의하면 $hello = "world"로 정의되는 것이다.
+
+- scope : user-defined function에서는 local function scope가 적용된다. 
+  즉 function 안에서 정의된 변수는 function안에서만 의미가 있다. 
+  주의할 점은 외부에서 정의된 변수도 user-defined function안에서는 의미가 없다는 것이다.
+  외부에서 정의된 변수를 사용하려면 함수 안에서 global $externalVar; 
+  형식으로 정의를 하고 사용하거나 $GLOBALS["externalVar"] 형식으로 직접 변수를 사용하여야 한다.
+
+- static variable : local function scope를 가지지만 scope를 벗어나더라도 값이 유지되는 변수를 말한다.
+
+[Array]
+
+- array는 $array[] 형식으로 사용된다. 
+
+- scalar array : 첨자가 숫자로 주어지는 배열이다. 예를 들면 $array[0] = 1;
+
+- associative array : 첨자가 숫자가 아니라 문자열로 주어지는 배열이다. 예를 들면 $array["first"] = 1;
+
+- 그냥 $array[]에 값을 지정하면 array에 값이 하나 추가된다. 
+  $array[] = 1; $array[] = 2; 는 $array[0] = 1; $array[1] = 2;와 같은 의미를 지닌다
+
+- array() 함수를 통하여 array를 만들수도 있고, 
+  count() 함수로 element의 갯수를 얻을수도 있다. 
+  next(), prev() 함수나 each() 함수를 통하여 element들을 참조할 수도 있다.
+
+
+[External Variables (외부변수)]
+
+
+- HTML form (GET/POST) : form으로 전달된 값은 form에서 name field로 지정한 이름의 변수로 지정이 된다. 
+  form에서 type = "image"인 경우에는 마우스로 클릭한 위치가 name_x, name_y 형태로 추가로 전달된다.
+
+
+- HTTP Cookie : browser로 cookie를 전달하려면 SetCookie(name, value, timeout) 함수를 이용한다. 
+                client로부터 전달되는 cookie는 PHP 변수로 변환이 된다.
+
+
+- Environment Variable : 환경변수 또한 PHP 변수처럼 사용할 수 있다. 환경변수는 getenv()라는 함수를 이용해 			 얻을 수 있으며 putenv() 함수로 환경변수를 지정할 수도 있다.
+
+
+
+<2. Class>
+
+- class keyword를 사용하여 class를 정의하며 instance 생성은 new operator를 이용한다. 
+
+- class의 상속은 extends keyword를 사용한다.
+
+- constructor 정의는 class와 같은 이름을 갖는 상수를 정의함으로써 이루어진다. 
+  constructor는 default parameter를 가질 수 있다
+
+===========================================
+
+예)
+
+ class testClass { 
+        var $value; 
+        function testClass($defValue = "test") { $value = $defValue; } 
+        function doSet($setValue) { $value = $setvalue; } 
+        function doPrint() { echo $value; } 
+    } 
+    class testLineClass extends testClass { 
+        function doPrintLine() { echo("$valuen"); } 
+    } 
+
+    $test = new testClassLine; 
+    $test->doSet("hello"); 
+    $test->doPrint(); 
+    $test->doPrintLine(); 
+
+===========================================
+
+
+[3. Expression]
+
+- expression이란 값으로 환산되는 것을 말한다
+
+- assignment는 expression이므로 $a = $b = 5; 같은 문장을 쓸 수 있다.
+
+- pre and post increment / decrement : $a++, ++$a, $a--, --$a
+
+- comparison operator는 boolean 값을 갖는 expression이다.
+
+- operator와 assignment의 결합 : $a += 3; $b = ++$a; $c = double(--$b); $d = $c += 10;
+
+- boolean : 숫자에서 0은 false, 0이 아닌값은 true이다. 
+  문자열에서 ""와 "0"은 false, 나머지는 true이다. array에서는 element가 하나도 없으면 false, 하나라도 있으면 true이다.
+
+
+===========================================
+
+[4. Statement]
+- if 문 : 
+
+    if (expression) { 
+        do anything 1; 
+    } 
+    elseif (expression) { 
+        do anything 2; 
+    } 
+    else 
+        do anything 3; 
+
+    또는 
+
+    if (expression) : 
+        do anything 1; 
+    elseif (expression) : 
+        do anything 2; 
+    else : 
+        do anything 3; 
+    endif; 
+
+
+- while 문 : 
+
+    while (expression) 
+        do anything; 
+
+    또는 
+
+    while (expression) : 
+        do anything; 
+    endwhile; 
+
+- do...while 문 : 
+
+    do { 
+        do anything; 
+    } while (expression); 
+
+- for 문 : 
+
+    for (expr1; expr2; expr3) 
+        do anything; 
+
+- switch 문 : 
+
+    switch (expression) { 
+    case ... : 
+        do anything; 
+        break; 
+    default : 
+        do anything; 
+    } 
+
+- loop에서 break를 이용한 제어가 가능하다. 
+
+
+===========================================
+
+[5. Function (함수)]
+
+- 함수는 function 이라는 keyword를 가지고 정의가 되며 별도로 return type은 지정하지 않는다. 
+
+- function의 기본형은 다음과 같다. 
+
+    function funcName($arg1, $arg2, $arg3, ..., $argn) { 
+        do anything; 
+        return $retval; 
+    } 
+- return value는 list와 object를 포함하여 어떤 type이든 될 수 있다. 예를 들어 array를 return하려면 return array(0, 1, 2); 
+
+- argument는 default로 pass by value이다. pass by reference로 하려면 argument definition에서 
+  변수명 앞에 &를 붙여주면 된다 (function funcName(&$arg1)). 
+   function이 pass by value로 정의가 되었더라도 함수를 부를때 argument에 &를 붙여서 넘기면 pass by reference가 된다 
+   (call : doFunc(&$var)). 
+
+- default parameter : C++에서 사용하는 방식으로 default parameter를 정의할 수 있다 : function funcName($var = 1) { } 
+
+===========================================
+
+[6. Operator]
+
+- operator들은 C언어에서의 operator와 비슷하며 다음과 같은 operator들이 있다. <br>
+
+- arithmetic operator : +, -, *, /, % 
+
+- string operator : . (concatenation) 
+
+- assignment operator : = 
+
+- bitwise operator : &, |, ~ 
+
+- logical operator : and (&&), or (||), xor, ! 
+
+- comparison operator : ==, !=, <, >, <=, >= 
+
+===========================================
+
+
+[7. 그밖에]
+- require : #include와 똑같은 의미로 사용된다. 
+
+- include : include 문장을 만날때마다 지정한 파일을 포함한다. 
+
+- require는 #include 처럼 무조건 파일을 포함시키지만 include는 
+  loop나 if 문 등에서 사용할 수 있으며 필요한 경우에만 파일을 포함하도록 할 수 있다. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

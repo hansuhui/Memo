@@ -1,0 +1,67 @@
+자바스크립트 텍스트박스(textarea) 포커스 인/아웃 박스 제어 - 애니메이션 효과 예제
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  </head>
+  <body>
+     <div>
+         <!-- onfocus 일 경우 start 함수 실행 -->
+         <!-- onblur 일 경우 back 함수 실행 -->
+         <textarea id='box' style='width:300px; height:70px;'  onfocus='start();' Onblur="back();"></textarea>
+     </div>
+     <script type='text/javascript'>
+         // 0.5 마다 action() 함수 반복 실행
+         function start() {
+             startId = setInterval("action()",0.5);
+         }
+          // 0.5 마다 backAction() 함수 반복 실행
+         function back() {
+             startId2 = setInterval("backAction()",0.5);
+         }
+          // 텍스트 박스 넓이,높이 기본값 셋팅
+         var i = 300;
+         var ii = 70;
+    
+         function action() {    
+             if ( i <= 400 && ii <= 200 ) {
+                  // 넓이, 높이가 400*200 되기 전까지 3씩 증가시켜 넓이,높이 적용
+                 i+=3;
+                 ii+=3;
+                 document.getElementById('box').style.width=i + "px";
+                 document.getElementById('box').style.height=ii + "px";
+             } else {
+                  // 넓이, 높이가 300*200 되면 clearInterval 함수로 setInterval 반복실행 종료
+                 clearInterval(startId);     
+             }
+          }
+    
+         function backAction() {    
+              if ( i > 300 && ii > 70 ) {
+                  // 넓이, 높이가 300*70 되기 전까지 3씩 감소시켜 넓이,높이 적용
+                  i-=3;
+                  ii-=3;
+                  document.getElementById('box').style.width=i + "px";
+                  document.getElementById('box').style.height=ii + "px";
+              } else {
+                   // 넓이, 높이가 300*70 되면 clearInterval 함수로 setInterval 반복실행 종료
+                  clearInterval(startId2); 
+              }
+          }
+     </script>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+???
+setInterval - 특정함수를 정해진 시간 마다 반복 적으로 실행 시킴 ( window 객체 메소드 )
+clearInterval - setInterval  반복 실행을 정지 시킴 ( window 객체 메소드 )
+ 

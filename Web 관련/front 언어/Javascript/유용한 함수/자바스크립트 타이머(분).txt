@@ -1,0 +1,20 @@
+<div style="display:inline" id="DTimer"></div>
+
+  var counter = 300;
+    function fTimer() {
+        var obj = document.getElementById("DTimer");
+        var m, s;
+        if (counter >= 0) {
+            m = parseInt(counter / 60);
+            s = counter % 60;
+            if (m < 10) { m = "0" + m; }
+            if (s < 10) { s = "0" + s; }
+
+            obj.innerHTML = m + " : " + s;
+            counter--;
+            setTimeout(fTimer, 1000);
+        }
+
+    }
+
+fTimer();

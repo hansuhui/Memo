@@ -1,0 +1,377 @@
+http://qkrgns208.tistory.com/76
+
+
+
+- 수학 관련 함수
+
+1. Abs 함수 : 인자로 전달된 값에 대한 절대값을 리턴하는 함수
+   ex> Abs(number)
+
+2. Atn 함수 : 인자로 전달된 숫자의 아크 탄젠트 값을 리턴
+   ex> Atn(number)
+
+3. Cos 함수 : 인자로 전달된 숫자의 코사인 값을 리턴
+   ex> Cos(number)
+
+4. Sgn 함수 : 지정된 표현식의 부호를 리턴
+   ex> Sng(number)
+
+5. Sin 함수 : 지정된 표현식의 사인 값을 리턴
+   ex> Sin(number)
+
+6. Sqr 함수 : 지정된 표현식의 제곱근을 리턴
+   ex> Sqr(number)
+         Dim num
+         num = 4
+         response.write Sqr(num)
+   결과> 2
+
+7. Tan 함수 : 지정된 값의 탄젠트 값을 리턴
+   ex> Tan(number)
+
+- 변환 함수
+
+1. CBool 함수 : 인자로 전달된 값을 Boolean 형으로 변환. 값이 Boolean으로 인식될 수
+                      없으면 런타임 오류가 발생
+   ex> CBool(expression)
+         Dim isBool, siNotBool
+         isBool = 1: isNotBool = 0
+         response.write CBool(isBool)
+         response.write CBool(isBool)
+   결과> True
+            False
+
+2. CByte 함수 : 인자로 전달된 값을 Byte 형식으로 변환
+   ex> CByte(expression)
+
+3. CCur 함수 : 인자로 전달된 값을 Currency 형식으로 변환
+   ex> CCur(expression)
+
+4. CDate 함수 : 인자로 전달된 값을 DateTime 형식으로 변환합니다.
+   ex> CDate(expression)
+         Dim date
+         date = "2008-01-01"
+         response.write CDate(date)
+   결과> 2008-01-01
+
+5. CDbl 함수 : 인자로 전달된 값을 Double 형으로 변환
+   ex> CDbl(expression)
+
+6. CInt 함수 : 인자로 전달된 값을 Integer형으로 변환
+   ex> CInt(expression)
+
+7. CLng 함수 : 인자로 전달된 값을 Long형으로 변환
+   ex> CLng(expression)
+
+8. CSng 함수 : 인자로 전달된 값을 Single 형으로 변환
+   ex> CSng(expression)
+
+9. Cstr 함수 : 인자로 전달된 값을 String 형으로 변환
+   ex> Cstr(expression)
+
+10. Fix 함수 : 지정된 숫자보다 작은 정수 중 가장 큰 정수를 리턴
+   ex> Fix(number)
+
+11. Int 함수 : 지정된 숫자보다 크거나 작은 정수 중 가장 작은 값이나 큰 값을 리턴
+   ex> Int(number)
+
+12. Hex 함수 : 인자로 전달된 값을 16진수로 변환
+   ex> Hex(number)
+
+13. Oct 함수 : 인자로 전달된 값을 8진수로 변환
+   ex> Oct(number)
+
+- 문자열 함수
+
+1. Asc 함수 : 지정된 문자에 해당하는 ASCII 코드를 리턴
+   ex> Asc(string)
+
+2. Chr 함수 : 지정된 숫자에 해당하는 ASCII 문자를 리턴
+   ex> Chr(charcode)
+
+3. Filter 함수 : 지정된 문자열 배열에서 지정된 필터가 적용되는 배열의 일부 원소를 리턴
+   ex> Filter(inputStrings, Value[, Include [, Compare]])
+         Dim myArray, myNewArray
+         myArray(0) = "박찬호"
+         myArray(1) = "유재석"
+         myArray(2) = "강호동"
+         myNewArray = Filter(myArray, "호")
+         response.write myNewArray(0)
+         response.write myNewArray(1)
+   결과> 박찬호
+            강호동
+
+4. InStr 함수 : 지정된 문자열에서 특정 문자열이 나타나는 위치를 문자열의 처음부터 검색
+   ex> InStr([start, ] string1, string2, [ compare])
+         Dim str
+         str = "Microsoft Active Server Pages"
+         response.write InStr(str, "e")
+   결과> 16
+
+5. InStrRev 함수 : 지정된 문자열에서 특정 문자열이 나타나는 위치를 문자열의 
+                         마지막부터 검색
+   ex> InStrRev([start, ] string1, string2, [ compare])
+         Dim str
+         str = "Microsoft Active Server Pages"
+         response.write InstrRev(str, "a")
+   결과> 26
+
+6. Join 함수 : 지정된 문자열 배열을 하나의 문자열로 결합
+   ex> Join(list [, delimiter])
+         Dim strArray(3)
+         strArray(0) = "Microsoft"
+         strArray(1) = "Active"
+         strArray(2) = "Server"
+         strArray(3) = "Pages"
+         response.write Join(strArray, " ")
+   결과> Microsoft Active Server Pages
+
+7. LCase 함수 : 지정된 문자열을 모두 소문자로 변환하여 리턴
+   ex> LCase(string)
+
+8. Left 함수 : 문자열의 왼쪽으로부터 지정된 개수만큼의 문자열을 리턴
+   ex> Left(string, length)
+
+9. Len 함수 : 지정된 문자열의 길이를 리턴
+   ex> Len(string)
+
+10. LTrim 함수 : 지정된 문자열에서 문자열 왼쪽의 공백을 제거
+   ex> LTrim(string)
+
+11. Mid 함수 : 지정된 문자열에서 특정 위치의 문자열을 리턴
+   ex> Mid(string, start [, length])
+         Dim str
+         str = "Microsoft Active Server Pages"
+         response.write Mid(str, 5, 10)
+   결과> soft Activ
+
+12. Replace 함수 : 지정된 문자열에서 특정 문자열을 변환
+   ex> Replace(expression, find, replacewith [,start [,count [, compare]]])
+         Dim str
+         str = "Microsoft Active Server Pages"
+         response.write Replace(str, e, E)
+   결과> Microsoft ActivE SErvEr PagEs
+
+13. Right 함수 : 지정된 문자열에서 오른쪽으로부터 지정된 길이만큼의 문자열을 리턴
+   ex> Right(String, length)
+
+14. RTrim 함수 : 지정된 문자열의 우측에 나타나는 공백을 제거
+   ex> RTrim(string)
+
+15. Space 함수 : 지정된 개수만큼의 공백을 리턴
+   ex> Space(number)
+         Dim str, str2
+         str = "Microsoft"
+         str2 = "Active Server Pages"
+         response.write str & Space(5) & str2
+   결과> Microsoft     Active Server Pages
+
+16. Split 함수 : 지정된 문자열을 문자열 배열로 나눔
+   ex> Split(expression [, delimiter [, count [, compare]]])
+         Dim str, strArray
+         str = "Microsoft Active Server Pages"
+         strArray = Split(str, " ")
+         response.write strArray(2)
+   결과> Server
+
+17. Strcomp 함수 : 지정된 두 문자열을 비교. 두 문자열이 같으면 0, 첫번째 문자열이 작으면
+                           -1, 두번째 문자열이 작으면 1을 리턴
+   ex> StrComp(string1, string2 [, compare])
+         Dim str, str2
+         str = "Microsoft"
+         str2 = "microsoft"
+         response.write StrComp(str, str2)
+   결과> -1
+
+18. String 함수 : 지정된 개수 만큼의 문자열을 반복하여 리턴
+   ex> String(number, character)
+         response.write String(10, "*")
+   결과> **********
+
+19. StrReverse 함수 : 지정된 문자열을 뒤집어서 출력
+   ex> StrReverse(string)
+
+20. Trim 함수 : 지정된 문자열의 좌우측 공백을 모두 제거
+   ex> Trim(string)
+
+21. UCase 함수 : 지정된 문자열을 모두 대문자로 변환
+   ex> UCase(string)
+
+- 날짜 및 시간 함수
+
+1. Date 함수 : 현재 시스템의 날짜를 리턴
+   ex> Date
+
+2. DateAdd 함수 : 지정된 날짜에 지정된 간격의 시간을 더한 날짜를 리턴
+   ex> DateAdd(interval, number, date)
+         yyyy     : 년
+         q         : 분기
+         m         : 월
+         y          : 일(1년 기준)
+         d          : 일
+         w         : 요일
+         ww       : 주(일년 기준)
+         h          : 시
+         n          : 분
+         s          : 초
+         
+         Dim myDate
+         myDate = "2008-01-01"
+         response.write DateAdd("d", 5, myDate)
+
+3. DateDiff 함수 : 두 날짜 사이의 간격을 리턴
+   ex> DateDiff(interval, date1, date2 [, firstDayOfWeek [, firstWeekOfYear]])
+         Dim date1, date2
+         date1 = "2008-01-01"
+         date2 = "2008-01-03"
+         response.write DateDiff("d", date1, date2)
+         response.write DateDiff("d", date1, date2)
+   결과> 2, -2
+
+4. DatePart 함수 : 지정된 날짜에서 지정된 부분을 리턴
+   ex> DatePart(interval, date [, firstDayOfWeek [, firstWeekOfYear]])
+         Dim myDate
+         myDate = "2008-01-15"
+         response.write DatePart("d", myDate)
+   결과> 15
+
+5. DateSerial 함수 : 지정된 년, 월, 일을 이용하여 DateTime 형을 리턴
+   ex> DateSerial(year, month, day)
+         response.write DateSerial("2008", "1", "1")
+   결과> 2008-01-01
+
+6. DateValue 함수 : 지정된 날짜 및 시간 중 날짜 부분을 리턴
+   ex> DateValue(date)
+
+7. Day 함수 : 날짜 및 시간 데이터에서 일을 리턴
+   ex> Day(date)
+
+8. Hour 함수 : 날짜 및 시간 데이터에서 시간을 리턴
+   ex> Hour(date)
+
+9. Minute 함수 : 지정된 날짜 및 시간 데이터에서 분을 리턴
+   ex> Minute(time)
+
+10. Month 함수 : 지정된 날짜에서 월을 리턴
+   ex> Month(date)
+
+11. MonthName 함수 : 지정된 숫자에 해당하는 월의 이름을 가져옵니다.
+   ex> MonthName(month [, abbreviate])
+         response.wrkte MonthName(1, False)
+
+12. Now 함수 : 시스템의 현재 날짜 및 시간 데이터를 리턴
+   ex> Now
+
+13. Time 함수 : 시스템의 현재 시간을 리턴
+   ex> Time
+
+14. Timer 함수 : 자정부터 현재 시간까지의 시간 간격을 초 단위로 리턴
+   ex> Timer
+
+15. TimeSerial 함수 : 지정된 숫자를 이용하여 시간 데이터를 생성
+   ex> TimeSerial(hour, minute, second)
+
+16. TimeValue 함수 : 지정된 표현식을 시간 데이터로 변환
+   ex> TimeValue(time)
+
+17. WeekDay 함수 : 지정된 날짜의 요일을 숫자로 출력합니다.
+   ex> WeekDay(date [, firstdayofweek])
+         Dim date1
+         date1 = "2008-01-01"
+         response.write WeekDay(date1)
+   결과> 3
+
+18. WeekdayName 함수 : 지정된 WeekDay 값이 표현하는 요일의 이름을 가져옴
+   ex> Weekdayname(weekday, abbreviate, firstdayofweek)
+
+19. Year 함수 : 지정된 날짜에서 년을 리턴
+   ex> Year(date)
+
+- 형식 지정 함수
+
+1. FormatCurrency 함수 : Currency 하위 데이터 형의 출력에 대한 형식을 지정
+   ex> Dim num1
+         num1 = 123456
+         response.write FormatCurrency(num1)
+   결과 > \123,456
+
+2. FormateDateTime 함수 : 날짜 및 시간 데이터의 출력 형식을 결정하는 함수
+   ex> FormatDateTime(Date [, NamedFormat])
+
+3. FormatNumber 함수 : 숫자형 데이터의 출력 형식을 결정
+   ex> Dim num1
+         num1 = 123456
+         response.write FormatNumber(num1)
+   결과> 123,456,00
+
+4. FormatPercent 함수 : 지정된 표현식을 100으로 나눈 퍼센트 형식으로 출력
+   ex> Dim num1
+         num1 = 0.9
+         response.write FormatPercent(num1)
+   결과> 90.00%
+
+- 기타 함수
+
+1. Array 함수 : 괄호에 전달된 인자의 수만큼의 크기를 가지며 각 인자의 값을 각 원소의
+                     값으로 하는 배열을 리턴하는 함수
+   ex> Array(arguments)
+         Dim myArray
+         myArray = Array(1,2,3)
+         response.write myArray(0)
+         response.write myArray(1)
+         response.write myArray(2)
+   결과> 1 2 3
+
+2. Eval 함수 : 전달된 문자열을 VBScript 표현식으로 간주하고 실행한 결과를 리턴
+   ex> Eval(expression)
+         Dim num1
+         num1 = 10
+         Eval num1 = num1 + 2
+         response.write num1
+   결과> 12
+
+3. IsArray 함수 : 지정된 변수가 배열인지 아닌지를 검사
+   ex> IsArray(varname)
+         Dim numArray(3)
+         response.write isArray(numArray)
+   결과> True
+
+4. IsDate 함수 : 전달된 표현식이 날짜 데이터인지 아닌지 검사
+   ex> IsDate(expression)
+         Dim num1
+         num1 = 10
+         response.write IsDate(num1)
+   결과> False
+
+5. IsEmpty 함수 : 전달된 표현식의 초기화 여부를 검사하는 함수
+   ex> IsEmpty(expression)
+         Dim num1
+         response.write IsEmpty(num1)
+   결과> True
+
+6. IsNull 함수 : 전달된 표현식이 Null 표현인지 아닌지 검사
+   ex> IsNull(expression)
+
+7. IsNumeric 함수 : 전달된 표현식이 숫자인지 아닌지를 검사
+   ex> IsNumeric(expression)
+
+8. IsObject 함수 : 전달된 표현식이 객체인지 아닌지 검사
+   ex> IsObject(expression)
+
+9. LBound 함수 : 지정된 배열 변수의 첫번재 원소 인텍스를 리턴
+   ex> Dim strArray(3)
+         strArray(0) = "Microsoft"
+         strArray(1) = "Active"
+         strArray(2) = "Server"
+         strArray(3) = "Pages"
+         response.write LBound(strArray)
+   결과> 0
+
+10 . UBound 함수 : 지정된 배열 변수의 마지막 원소 인텍스를 리턴
+   ex> Dim strArray(3)
+         strArray(0) = "Microsoft"
+         strArray(1) = "Active"
+         strArray(2) = "Server"
+         strArray(3) = "Pages"
+         response.write UBound(strArray)
+   결과> 3

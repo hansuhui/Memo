@@ -1,0 +1,29 @@
+#region 파일다운로드
+		public ActionResult DownLoad(string fname = "", string path = "")
+		{
+			string selectedItemName = string.Empty;
+
+			if (!string.IsNullOrEmpty(fname))
+			{
+				fname = Server.UrlDecode(fname);
+
+				if (!string.IsNullOrEmpty(path))
+				{
+					selectedItemName = Server.MapPath("/") + path + fname;
+				}
+				else
+				{
+					selectedItemName = fname;
+				}
+
+				Response.ClearHeaders();
+				Response.AddHeader("Content-Type", "application/unknown");
+				Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(Path.GetFileName(fname)).Replace("+", "%20"));
+				Response.ContentType = "multipart/form-data";
+				Response.WriteFile(selectedItemName);
+				Response.End();
+			}
+
+			return View();
+		}
+		#endregion

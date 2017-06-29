@@ -1,0 +1,23 @@
+yum -y install vsftpd 
+systemctl restart vsftpd
+systemctl enable vsftpd 
+vi /etc/vsftpd/vsftpd.conf
+vi /etc/vsftpd/chroot_list
+
+service vsftpd start 
+
+
+
+
+에러시
+
+[cannot change directory:/home/poixgks]
+
+setsebool allow_ftpd_full_access on
+service vsftpd restart
+
+
+[vsftpd: refusing to run with writable root inside chroot()]
+
+권한 주는 주석 풀고 
+파일 만들어서 해당 계정을 추가한다

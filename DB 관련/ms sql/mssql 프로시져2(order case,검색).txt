@@ -1,0 +1,46 @@
+select 
+	ROW_NUMBER() over (order by a.regdate desc) as RowNumber
+,	a.ShopCode
+,	a.ShopName
+,	a.RegDate
+,	a.OwnerName
+,	a.Manager
+,	a.OwnerCellNo
+,	a.FeeRate
+,	a.StmDate1
+,	case a.Corporate when '1' then '법인' when '2' then '일반' else '간이' end as Corporate
+,	case a.IsUse when 1 then '사용' when 0 then '해지' end as IsUse
+,	b.coName as SaleTypeName
+,	c.coName as StmTypeName
+,	d.coName as AreaName
+,	e.coName as PayTypeName
+,	f.coName as ShopGubun
+from Shops a with (nolock)
+left outer join CodeDetail b with (nolock) on (a.SaleType = b.coCode and b.coGroup = 41)
+left outer join CodeDetail c with (nolock) on (a.StmType = c.coCode and c.coGroup = 1053)
+left outer join CodeDetail d with (nolock) on (a.AreaType = d.coCode and d.coGroup = 9)
+left outer join CodeDetail e with (nolock) on (a.PayType = e.coCode and e.coGroup = 1054)
+left outer join CodeDetail f with (nolock) on (a.ShopGubun = f.coCode and f.coGroup = 13)
+where a.RegDate between @Sdate and @Edate
+	and a.ShopCode like @ShopCode
+	and a.ShopName like @ShopName
+	and (case when @ShopGubun = '' then '' else a.ShopGubun end) = @ShopGubun
+	and (case when @Isuse = '' then '' else a.IsUse end) = (case @Isuse when 'f' then 0 when 't' then 1 else '' end)
+	and (case when @SaleType = '' then '' else a.SaleType end) = @SaleType
+	and (case when @PayType = '' then '' else a.PayType end) = @PayType
+	and (case when @StmType = '' then '' else a.StmType end) = @StmType
+order by 
+	case when @Sort1 = 'regDate' and @Sort2 = 'desc' then convert(varchar(50), a.RegDate, 120) end desc,
+	case when @Sort1 = 'regDate' and @Sort2 = 'asc' then convert(varchar(50), a.RegDate, 120) end asc,
+
+	case when @Sort1 = 'busiType' and @Sort2 = 'desc' then convert(varchar(50), a.BtypeCode, 120) end desc,
+	case when @Sort1 = 'busiType' and @Sort2 = 'asc' then convert(varchar(50), a.BtypeCode, 120) end asc,
+
+	case when @Sort1 = 'area' and @Sort2 = 'desc' then convert(varchar(50), d.coName, 120) end desc,
+	case when @Sort1 = 'area' and @Sort2 = 'asc' then convert(varchar(50), d.coName, 120) end asc,
+
+	case when @Sort1 = 'shopName' and @Sort2 = 'desc' then convert(varchar(50), a.ShopName, 120) end desc,
+	case when @Sort1 = 'shopName' and @Sort2 = 'asc' then convert(varchar(50), a.ShopName, 120) end asc,
+
+	case when @Sort1 = 'shopCode' and @Sort2 = 'desc' then convert(varchar(50), a.ShopCode, 120) end desc,
+	case when @Sort1 = 'shopCode' and @Sort2 = 'asc' then convert(varchar(50), a.ShopCode, 120) end asc

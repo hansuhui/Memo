@@ -1,0 +1,9 @@
+ 
+ - 뷰(VIEW) 란?
+   뷰는 쿼리의 결과를 가상의 테이블로 만드는 것을 말합니다. 
+
+
+ - MSSQL 뷰 생성방법
+   CREATE VIEW [뷰명] AS
+   SELECT [컬럼명] FROM [테이블명] WHERE [조건절]
+?

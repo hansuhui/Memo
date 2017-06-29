@@ -1,0 +1,62 @@
+
+netsh firewall show portopening
+
+netsh firewall show portopening
+
+
+도메인 프로필에 대한 포트 구성:
+포트   프로토콜 모드    트래픽 방향     이름
+-------------------------------------------------------------------
+7500   TCP       사용      인바운드                  도토리댓글
+12292  TCP       사용 안 함  인바운드                  Workflow Manager Tools 1.
+0 for Visual Studio 2012 - Test Service Host
+
+표준 프로필에 대한 포트 구성:
+포트   프로토콜 모드    트래픽 방향     이름
+-------------------------------------------------------------------
+7500   TCP       사용      인바운드                  도토리댓글
+12292  TCP       사용 안 함  인바운드                  Workflow Manager Tools 1.
+0 for Visual Studio 2012 - Test Service Host
+
+중요: 명령을 실행했습니다.
+그러나 "netsh firewall" 명령은 더 이상 사용되지 않습니다.
+"netsh advfirewall firewall" 명령을 대신 사용하십시오.
+"netsh firewall" 명령 대신 "netsh advfirewall firewall" 명령을
+사용하는 데 대한 자세한 내용은
+KB 문서 947709(http://go.microsoft.com/fwlink/?linkid=121488)를 참조하십시오.
+
+
+
+C:\Users\poixgks>netsh advfirewall show portopening
+다음 명령을 찾을 수 없습니다. advfirewall show portopening
+
+C:\Users\poixgks>netsh advfirewall firewall show portopening
+다음 명령을 찾을 수 없습니다. advfirewall firewall show portopening
+
+C:\Users\poixgks>netsh advfirewall show portopening
+다음 명령을 찾을 수 없습니다. advfirewall show portopening
+
+C:\Users\poixgks>netsh firewall show portopening
+
+도메인 프로필에 대한 포트 구성:
+포트   프로토콜 모드    트래픽 방향     이름
+-------------------------------------------------------------------
+7500   TCP       사용      인바운드                  도토리댓글
+12292  TCP       사용 안 함  인바운드                  Workflow Manager Tools 1.
+0 for Visual Studio 2012 - Test Service Host
+
+표준 프로필에 대한 포트 구성:
+포트   프로토콜 모드    트래픽 방향     이름
+-------------------------------------------------------------------
+7500   TCP       사용      인바운드                  도토리댓글
+12292  TCP       사용 안 함  인바운드                  Workflow Manager Tools 1.
+0 for Visual Studio 2012 - Test Service Host
+
+중요: 명령을 실행했습니다.
+그러나 "netsh firewall" 명령은 더 이상 사용되지 않습니다.
+"netsh advfirewall firewall" 명령을 대신 사용하십시오.
+"netsh firewall" 명령 대신 "netsh advfirewall firewall" 명령을
+사용하는 데 대한 자세한 내용은
+KB 문서 947709(http://go.microsoft.com/fwlink/?linkid=121488)를 참조하십시오.
+
+

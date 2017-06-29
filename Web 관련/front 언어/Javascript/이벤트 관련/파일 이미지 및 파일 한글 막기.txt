@@ -1,0 +1,21 @@
+  function imagecheck(input) {
+            var str = input.value;
+            // 숫자,영문이 포함되어 있는지 체크 합니다.
+            var regExp = /[A-Za-z0-9]/;
+            // 체크 하기위해 test 메소드 사용 ( 숫자,영문이 포함되어 있으면 true 반환 )
+            if (regExp.test(str)) {
+                
+            } else {
+                alert("한글파일은 업로드가 불가능 합니다.");
+                input.value = "";
+                return false;
+            }
+
+            str = str.slice(str.indexOf(".") + 1).toLowerCase();
+
+            if (str != "jpg" && str != "png" && str != "gif" && str != "bmp") {
+                alert("이미지 파일(jpg,png,gif,bmp)만 등록 가능합니다.");
+                input.value = "";
+                return false;
+            }
+        }

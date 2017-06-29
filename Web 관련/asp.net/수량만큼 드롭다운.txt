@@ -1,0 +1,13 @@
+		// 발송하기 위한 수량 dropdownd 생성
+		function getSendDropdown(qty) {
+			var html = "";
+
+			for (var i = 1; i <= qty; i++) {
+				html += "<option value='" + i + "'>" + i + "</option>";
+			}
+
+			html = "<select id='' name='qty'><option value=''>선택</option>" + html + "</selelct>";
+
+			document.write(html);
+		}
+	</script>

@@ -1,0 +1,14 @@
+1.소유자를 dbo로 바꿀 때는 다음의 저장 프로시저를 사용하면 됩니다.
+
+sp_changeobjectowner [dbo.테이블].guest
+sp_changeobjectowner [guest.테이블].dbo
+
+
+
+2.추가로 시스템테이블을 업데이터하는 방법을 통해 데이터베이스 차원에서 소유자를 바꾸는 방법도 있으며 커서를
+사용하는 방법도 존재합니다.
+
+[참고] 소유자가 dbo가 아닌 객체를 출력해봅시다.
+
+select name from sysobjects
+where uid <> user_id('dbo')

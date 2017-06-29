@@ -1,0 +1,28 @@
+http://egloos.zum.com/blackyyy/v/5314617
+
+
+
+예제
+def post_comment(request, new_comment):
+    if request.session.get('has_commented', False):
+('has_commented' 라는 key 가 있다면 value 를 return 하고, 아니면 False 를 return 합니다.)
+        return HttpResponse("You've already commented.")
+    c = comments.Comment(comment=new_comment)
+    c.save()
+    request.session['has_commented'] = True
+    return HttpResponse('Thanks for your comment!')
+
+def login(request):
+    m = Member.objects.get(username=request.POST['username'])
+    if m.password == request.POST['password']:
+        request.session['member_id'] = m.id
+        return HttpResponse("You're logged in.")
+    else:
+        return HttpResponse("Your username and password didn't match.")
+
+def logout(request):
+    try:
+        del request.session['member_id']
+    except KeyError:
+        pass
+    return HttpResponse("You're logged out.")

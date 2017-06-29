@@ -1,0 +1,8 @@
+ if (Pop == null) {
+                    Pop = window.open(url, name, "width=1000,height=750,toolbar=no,status=no,location=no,scrollbars=yes,menubar=no,resizable=no");
+                    Pop.moveTo(windowX, windowY);
+                } else if(typeof(Pop)=='undefined' || Pop.closed) {
+                    Pop = window.open(url, name, "width=1000,height=750,toolbar=no,status=no,location=no,scrollbars=yes,menubar=no,resizable=no");
+                    Pop.moveTo(windowX, windowY);
+                    
+                }else{Pop.location.href = url;}

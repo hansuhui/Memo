@@ -1,0 +1,11 @@
+https://www.w3schools.com/graphics/canvas_drawing.asp
+
+[Canvas Drawing]
+
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#FF0000";
+ctx.fillRect(0,0,150,75);
+</script>

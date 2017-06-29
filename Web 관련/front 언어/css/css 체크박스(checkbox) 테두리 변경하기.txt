@@ -1,0 +1,86 @@
+[체크박스(checkbox) 테두리 변경하기]
+
+input 요소의 테두리 색은 border 속성으로 정할 수 있습니다. 
+하지만 checkbox의 테두리 색은 border 속성으로 바꿀 수가 없습니다. 
+그래서 checkbox 테두리 색 변경은 다른 방식으로 접근해야 하는데, 
+그 중의 하나가 label 태그를 이용하는 것입니다. label을 클릭해도 해당 
+checkbox가 체크되거나 해제되는 것에 착안한 방법입니다.
+
+다음과 같이 빈 라벨을 갖는 체크박스를 하나 만듭니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tip | Checkbox Border Color</title>
+  </head>
+  <body>
+    <h3>Checkbox Border Color</h3>
+    <input type="checkbox" id="cb1">
+    <label for="cb1"></label>
+  </body>
+</html>
+
+
+다음의 CSS 코드로 라벨을 네모로 만들고 테두리를 원하는 모양으로 정합니다.
+
+input[id="cb1"] + label {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #bcbcbc;
+  cursor: pointer;
+}
+
+다음의 코드를 추가하여 라벨을 클릭했을 때의 모양을 정합니다.
+
+input[id="cb1"]:checked + label:after {
+  content: '\2714';
+  font-size: 12px;
+}
+
+이제 라벨을 클릭하면 다음과 같이 됩니다.
+
+다음의 코드를 추가하여 checkbox를 보이지 않게 합니다.
+
+input[id="cb1"] {
+  display: none;
+}
+
+
+단순히 테두리를 바꾸는데 초점을 두었지만, 
+label 태그는 다양하게 꾸밀 수 있으므로 여러 모양으로 체크박스를 만들 수 있습니다. 
+다음은 label을 회색 원으로 만들고 클릭하면 파란색 원이 되게 하는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tip | Checkbox Border Color</title>
+    <style>
+      input[id="cb2"] + label {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background-color: #bcbcbc;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      input[id="cb2"]:checked + label {
+        background-color: blue;
+      }
+      input[id="cb2"] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Circle Checkbox</h3>
+    <input type="checkbox" id="cb2">
+    <label for="cb2"></label>
+  </body>
+</html>
+
+
+
+

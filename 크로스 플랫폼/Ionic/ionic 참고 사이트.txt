@@ -1,0 +1,7 @@
+https://ionicframework.com/docs/api/components/icon/Icon/
+
+https://ionicframework.com/docs/ionicons/
+
+http://www.gajotres.net/ionic-2-making-rest-http-requests-like-a-pro/
+
+https://www.joshmorony.com/using-http-to-fetch-remote-data-from-a-server-in-ionic-2/

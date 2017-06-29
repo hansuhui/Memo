@@ -1,0 +1,163 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <link rel="stylesheet" href="css/base/jquery.ui.all.css">
+  <script type="text/xxjavascript" src="js/jquery-1.4.4.js"></script>
+  <script type="text/xxjavascript" src="js/jquery-ui-1.8.9.custom.js"></script>
+  <script type="text/xxjavascript">
+ $(document).ready(function(){
+  // default가 true인것은 굳이 설정하지 않아도 적용됨.
+  $("#dialog1").dialog({
+   disabled: false,  // ????????????????????????
+   autoOpen: false,     // 다이얼로그 창이 자동으로 보이게 하는지의 여부 설정.
+   //buttons: {"ok" : function() { alert(?"ok 하셨습니다!!"); }, "cancel" : function() { $(this).dialog("close"); } }   // 버튼 설정1.
+   buttons: [         // 버튼 설정2. 배열로 이벤트까지 직접 설정할 수 있다.
+     {
+      text: "ok",
+      click:  function() { alert(?"ok 하셨습니다!!"); }
+     },
+     {
+      text: "cancel",
+      click:  function() { $(this).dialog("close");  }
+     }
+      ],
+   closeOnEscape: false,    // ESC키를 눌렀을때 다이얼로그 박스를 닫을것인지의 설정. 설정하지않으면 기본 true로써 닫히게된다.
+   closeText: "창닫기",       // 창을 닫는 텍스트를 추가할 수 있다.
+   dialogClass: "alert",   // ??????????????????????????????
+   draggable: false,   //  드래그를 가능하게할지 여부. 기본 true로써 드래그가 가능하다.
+   height: 400,    // 창의 높이 설정. 기본 auto.
+   width: 800,    // 창의 넓이 설정. 기본 auto.
+   hide: "slide",     // 다이얼로그가 닫길때의 효과 설정.
+   maxHeight: 600,    // 리사이징 될때의 최대 높이를 설정.
+   maxWidth: 500,    // 리사이징 될때의 최대 넓이를 설정.
+   minHeight: 600,    // 리사이징 될때의 최소 높이를 설정.
+   minWidth: 500,     // 리사이징 될때의 최소 넓이를 설정.
+   modal: true,     // 모달창으로서 사용할지의 여부 설정. 마스크레이어가 자동 설정된다.
+   //position: "left"     // 창의 위치 설정. top, right, bottom, left.
+   //position: ["right","top"]   // 창의 위치 설정.
+   //position: [350,400]             // 창의 위치 설정. 픽셀로 설정할 수 있다.
+   resizable: false,    // 리사이징 가능 여부.
+   show: "slide",     // 창을 오픈할때의 효과 지정. 여러가지 효과를 지정할 수 있다.
+   //stack: false     // 여러개의 창을 띄울때 마지막에 띄운 창이 다른 창위에 쌓여서 보이게 할지의 여부 설정.
+   title: "첫번째 다이얼로그" // 다이얼로그의 타이틀 지정. html 코드도 올 수 있다. 다이얼로그로 지정된 html태그에 타이틀 속성으로도 지정할수있다.
+   //zIndex: 3999     // 다이얼로그의 zindex를 지정. 기본값은 1000이다.
+  });
+ 
+
+  $("#dialog2").dialog({
+   autoOpen: false,    // 다이얼로그 창이 자동으로 보이게 하는지의 여부 설정.
+   height: 600,
+   width: 700,
+   title: "<h2>두번째 다이얼로그</h2>"
+  });
+
+  $("#dialog3").dialog({
+   autoOpen: false,    // 다이얼로그 창이 자동으로 보이게 하는지의 여부 설정.
+   height: 600,
+   width: 700,
+   create: function(event,ui){          // 창이 생성될때 호출되는 콜백함수.
+    alert(?"창이 생성될때의 이벤트");
+   },
+   beforeClose: function(event,ui){   // 창이 닫히기 직전에 호출되는 콜백함수.
+    alert(?"창이 닫히기 직전때의 이벤트");
+   },
+   open: function(event,ui){  // 창이 열릴때 호출되는 콜백함수.
+    alert(?"창이 열릴때의 이벤트");
+   },
+   //focus: function(event,ui){  // 창에 포커스가 왔을때 호출되는 콜백함수.
+    //alert(?"창에 포커스가 왔을때의 이벤트");
+   //},
+   //dragStart: function(event,ui){  // 드래그가 시작될때 호출되는 콜백함수.
+    //alert(?"드래그가 시작될때의 이벤트");
+   //},
+   //drag: function(event,ui){  // 드래그 될때 호출되는 콜백함수.
+    //alert(?"드래그 될때의 이벤트");
+   //},
+   dragStop: function(event,ui){  // 드래그가 끝날때 호출되는 콜백함수.
+    alert(?"드래그가 끝날때의 이벤트");
+   },
+   resizeStart: function(event,ui){  // 리사이징이 시작될때 호출되는 콜백함수.
+    alert(?"리사이징이 시작될때의 이벤트");
+   },
+   resize: function(event,ui){  // 리사이징 될때 호출되는 콜백함수.
+    alert(?"리사이징 될때의 이벤트");
+   },
+   resizeStop: function(event,ui){  //  리사이징이 끝날때 호출되는 콜백함수.
+    alert(?"리사이징이 끝날때의 이벤트");
+   },
+   close: function(event,ui){  //  창이 닫힐때 호출되는 콜백함수.
+    alert(?"창이 닫힐때의 이벤트");
+   }
+  });
+  // 버튼을 클릭하여 창을 열기.
+  $("#btn_dialog1_open").click(function(){
+   $("#dialog1").dialog("open");  // 첫번째 다이얼로그 박스를 오픈한다. 닫는것은 $("#dialog1").dialog("close");
+  });
+  $("#btn_dialog2_open").click(function(){
+   $("#dialog2").dialog("open"); // 두번째 다이얼로그 박스를 오픈한다.
+  });
+  $("#btn_dialog3_open").click(function(){
+   $("#dialog3").dialog("open"); // 두번째 다이얼로그 박스를 오픈한다.
+  });
+ });
+ /*
+  Methods
+destroy
+Signature: 
+.dialog( "destroy" ) 
+Remove the dialog functionality completely. This will return the element back to its pre-init state.
+disable
+Signature: 
+.dialog( "disable" ) 
+Disable the dialog.
+enable
+Signature: 
+.dialog( "enable" ) 
+Enable the dialog.
+option
+Signature: 
+.dialog( "option" , optionName , [value] ) 
+Get or set any dialog option. If no value is specified, will act as a getter.
+option
+Signature: 
+.dialog( "option" , options ) 
+Set multiple dialog options at once by providing an options object.
+widget
+Signature: 
+.dialog( "widget" ) 
+Returns the .ui-dialog element.
+close
+Signature: 
+.dialog( "close" ) 
+Close the dialog.
+isOpen
+Signature: 
+.dialog( "isOpen" ) 
+Returns true if the dialog is currently open.
+moveTo?Top
+Signature: 
+.dialog( "moveTo?Top" ) 
+Move the dialog to the top of the dialogs stack.
+open
+Signature: 
+.dialog( "open" ) 
+Open the dialog.
+
+ */
+  </script>
+ </HEAD>
+ <BODY style="font-size:70.5%;">
+ <div id="dialog1" title="Dialog Title" style="border:1px solid">첫번째 다이얼로그 박스에용!!</div>
+ <div id="dialog2" title="Dialog Title" style="border:1px solid">두번째 다이얼로그 박스에용!!</div>
+ <div id="dialog3" title="세번째 다이얼로그" style="border:1px solid">세번째 다이얼로그 박스에용!!</div>
+ <input type="button" id="btn_dialog1_open" value="첫번째 팝업 열기"/>
+ <input type="button" id="btn_dialog2_open" value="두번째 팝업 열기"/>
+ <input type="button" id="btn_dialog3_open" value=" 세번째 팝업 열기"/>
+ </BODY>
+</HTML>

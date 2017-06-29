@@ -1,0 +1,20 @@
+[예제 1]
+if (e.keyCode === 8) {
+        window.onbeforeunload = function () {
+            debugger;
+            alert("뒤로 간다");
+        };
+    }
+
+
+[예제 2]
+
+
+        $(document).keydown(function (e) {
+            if (e.target.nodeName != "INPUT" && e.target.nodeName != "TEXTAREA") {
+                if (e.keyCode === 8) {
+                    GoOrderView('1');;
+                    return false;
+                }
+            }
+        });

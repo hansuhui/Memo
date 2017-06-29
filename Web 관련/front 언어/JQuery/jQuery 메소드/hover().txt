@@ -1,0 +1,44 @@
+[.hover()]
+
+.hover()는 선택한 요소에 마우스 포인터를 올렸을 때, 
+그리고 마우스 포인터가 그 요소를 벗어났을 때 어떤 효과를 넣게 해줍니다.
+
+
+.hover( handlerIn(eventObject), handlerOut(eventObject) )
+handlerIn(eventObject)에는 요소에 마우스 포인터를 올렸을 때의 효과를, 
+handlerOut(eventObject)에는 마우스 포인터가 요소를 벗어났을 때의 효과를 넣습니다.
+
+span 요소에 마우스 포인터를 올리면 글자가 커지고, 포인터가 벗어나면 다시 원래대로 돌아오는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .hover()</title>
+    <style>
+      span {
+        border: 1px solid #bcbcbc;
+        cursor: pointer;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'span' ).hover(
+          function () {
+            $( this ).animate( {
+              fontSize: '50px'
+            }, 500 );
+          }, function () {
+            $( this ).animate( {
+              fontSize: '1em'
+            }, 500 );
+          }
+        );
+      } );
+    </script>
+  </head>
+  <body>
+    <p>Lorem <span>Ipsum</span> Dolor</p>
+  </body>
+</html>

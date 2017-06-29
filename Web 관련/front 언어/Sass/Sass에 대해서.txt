@@ -1,0 +1,708 @@
+https://velopert.com/1712
+
+
+[SASS가 뭐죠?]
+
+Sass(Syntacitically Awesome Style Sheets)는 CSS pre-processor 로서, 복잡한 작업을 
+쉽게 할 수 있게 해주고 , 코드의 재활용성을 높여줄 뿐만 아니라, 코드의 가독성을 높여 주어 
+유지보수를 쉽게 해줍니다.
+
+(
+[CSS pre-porcessor란?]
+CSS를 확장하는 스크립팅 언어로서, 컴파일러를 통하여 브라우저에서 사용할 수 있는 
+일반 CSS 문법 형태로 변환합니다.
+)
+
+
+
+[어떻게 컴파일하죠?]
+
+SASS를 컴파일하는 방법은 여러가지가 있습니다.
+
+- 오리지널 Ruby Sass 사용하기
+  gem install sass 로 설치하고
+  sass style.scss style.css 로 변파일한다.
+
+- GUI 어플리케이션 사용하기 - Koala,Hammer , Compass 등
+
+- libsass 사용하기
+  이는 C언어로 작성된 매우 빠른 Sass complier 입니다.
+  많은 환경에서 사용될 수 있습니다.
+
+어떤걸 선택하냐구요? 여러분이 무엇을 만드는지, 어떤 환경에서 작업하는지에 따라 다릅니다.
+
+저는 빠른 컴파일 속도를 선호하고, Node.js 환경에서 작업을 하므로 node 환경에서
+libsass를 사용할 수 있게 해주는 node-sass를 사용합니다.
+
+
+- node-sass 사용하기 -
+
+
+sudo npm install -g node-sass
+
+# 컴파일 하여 ㅍ현재 디렉토리에 저장
+node-sass style.scss -0 .
+
+# style.scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일
+node-sass style.scss -w -o /
+
+
+libsass이 오리지널 Ruby Sass에 비하여 휠씬 빠른 성능을 지니고 있습니다.
+주의 : libsass는 Ruby의 기능의 100%를 지원하지는 않습니다. 지금 시점으로는 모든 기능이
+지원되기는 합니다.
+
+허나, Ruby Sass가 업데이트 되었을 때는, LibSass 역시 업데이트 될 때까지 기다려야 하빈다.
+이에 대한 자세한 내용은  Sass Compatibility 를 참고하세요.
+
+http://sass-compatibility.github.io/
+
+그냥 공부만 하거나, 예제를 만들어 공유하고싶은 분들께는 Sassmeister 를 사용하는것을 추천드립니다.
+웹상에서 SASS 코드를 CSS 를 변화해주는 웹서비스이며, 예제를 만들어 공유 할 수도있습니다.
+
+
+[.SASS 와 .SCSS의 차이는 뭐죠?]
+
+Sass가 처음 릴리즈 되었을때, 주 문법은 CSS와 많이 달랐습니다. 괄호 {} 대신 들여쓰기를 
+사용하였으며 세미콜론; 을 사용하지 않고 단축 연산자를 사용하였습니다.
+
+대략 다음과 같은 형태이지요.
+
+
+=myclass // = means @ mixin
+  font-size: 12px
+ 
+p
+  +myclass // + means @include
+
+그 시절, 일부 개발자는 이 새로운 문법에 익숙하지 않아서, Sass 버전 3 이상부터는 
+주 문법이.scss로 변경되었습니다.
+
+SCSS는 CSS의 상위집합으로서, CSS와 동일한 문법으로 SASS의 특별한 기능들이 추가되어있습니다.
+
+이 강좌에서는 .scss 문법을 사용하도록 하겠습니다. 
+(오리지널 문법도 아직까지 지원되므로, 옛날 문법이 맘에 드시는 분들은 그 문법을 사용해도 됩니다.)
+
+
+
+[0. Comment (주석) ]
+
+Sass의 주석이 CSS와 다른점은 한 줄 주석이 추가되었다는 점입니다.
+한 줄 주석은 //로 표기하며, CSS로 컴파일 되었을 떄 나타나지 않습니다.
+여러 줄 주석은 CSS와 동일하며 CSS로 컴파일 되었을떄 나타납니다.
+
+
+Sass
+
+/* 주석이다. */
+
+// 주석이다.
+
+/*
+  여러줄 주석이다.
+*/
+
+
+CSS
+
+
+/* 주석이다. */
+
+/*
+  여러줄 주석이다.
+*/
+
+
+
+[1. Variable (변수)]
+
+Sass는 CSS에 변수 개념을 도입해줍니다.
+
+변수로 사용 가능한 형태는 숫자, 문자열 , 폰트 , 색상 null, lists 와 maps가 있습니다.
+변수를 사용할 때는 $ 문자를 사용합니다. 첫 변수를 한번 만들어 볼까요?
+
+[Sass]
+
+	
+$primary-color: #333;
+
+[CSS]
+
+
+
+변수를 만들어도 , 사용하지 않으면 컴파일된 CSS 파일에는 아무것도 나타나지 않습니다.
+한번 body에서 사용을 해봅시다.
+
+[Sass]
+
+$primary-color: #333;
+ 
+body {
+  background-color: $primaryColor;
+}
+
+
+[CSS]
+
+body {
+  background-color: #333;
+}
+
+
+- Variable Scope(변수 범위) -
+
+Sass의 변수엔 변수범위가 있습니다. 변수를 특정 selector(선택자)에서 선언하면
+해당 selector 에서만 접근이 가능합니다.
+
+
+[Sass]
+
+$primary-color : #333;
+
+boay {
+   $primary-color : #eee;
+   backgorund-color : $primary-color;   
+}
+
+  p {
+    color : $primary-color; 
+  }
+
+
+[CSS]
+
+body {
+  background-color: #eee;
+}
+ 
+p {
+  color: #333;
+}
+
+
+변수를 선언 할 때, 변수를 global(전역)하게 설정 할 떄는 !global 플래그를 사용합니다.
+
+
+[Sass]
+
+$primary-color : #333;
+ 
+body {
+  $primary-color : #eee !globall;;
+  boackground-color : $primary-color;
+}
+
+ p {
+  color : $primary-color;
+}
+
+
+[CSS]
+
+body {
+  background-color : #eee;
+}
+
+p {
+  color : #eee;
+}
+
+
+추가적으로, !default 플래그는 해당 변수가 설정되지 않았거나 값이 null일때 값을 설정합니다.
+이 플래그는 나중에 mixin을 작성할 떄 유용하게 사용됩니다. 
+
+
+[Sass]
+
+$primary-color : #333;
+
+$primary-color : #eee !default;
+
+p {
+  color : $primary-color;
+}
+
+[CSS]
+
+p {
+  color : #333;
+}
+
+
+[2.Math Operators(수학 연산자)]
+
+Sass 에서는 수학 연산자들을 사용할 수 있습니다. 지원되는 연산자들은 다음과 같습니다:
+
++ : addtion
+
+- : subtraction
+
+/ : division
+
+* : multiplication
+
+% : modulo
+
+== : equality
+
+!= : inequality
+
+
+주의 하실 점은 +,- oprator를 사용할 떄는 단위를 언제나 통일 시켜야 합니다.
+
+예를들어 , 다음과 같은 코드는 오류가 발생하게 됩니다: $box-width : 100% -20px
+
+이런 작업을 해야한다면 css의 calc() 함수를 사용해야 합니다.
+
+다음과 같은 식은 오류 없이 잘 작동합니다. : $box-width : 300px / 960px * 100%
+
+
+[Sass]
+
+.contatiner {width : 100%;}
+
+article[role="main"]{
+  float : left;
+   width : 600px / 960px * 100%;
+}
+
+aside[role="complementary"]{
+  float : right;
+  width : 300px / 960px * 100%;
+}
+
+
+[CSS]
+
+.container {
+   width : 100%;
+}
+
+
+aricle[role="main"]{
+   float : left;
+   width : 62.5%
+}
+
+aside[role="complementary"]{
+  float : right;
+  width : 31.25%;
+}
+
+
+
+
+[3,Built-in Functions(내장함수)]
+
+이전에 여러분들이 CSS 작업을 하실 때, 멋진 버튼을 만들려고 컬러 팔레트 툴로 적절한
+그림자 색깔을 찾으려고 노력한 적이 있으신가요?
+
+그런 여러분들께 darken() 함수를 소개합니다!
+이 함수는 특정 색깔과, 얼마나 어둡게 할지를 인수로 던져주면 자동으로 색상을 계산해서 나타내줍니다.
+
+
+[SCSS]
+
+$buttonColor : #2ecc71;
+$buttonDark : darken($buttonColor,10%);
+$buttonDarker : darken($buttonDark,10%);
+
+button{
+  background : $buttonColor;
+  border-radius: 3px;
+  box-shadow: 0px 5px 0px $buttonDark;
+  border: 0;
+  color: white;
+  font-size: 17px;
+  padding: 10px 30px;
+  display: inline-block;
+  outline: 0;
+  &:hover {
+    background: $buttonDark;
+    box-shadow: 0px 5px 0px $buttonDarker;
+  }
+  &:active {
+    box-shadow: none;
+    margin-top: 5px;
+  }
+}
+
+body {
+  text-align: center;
+  padding-top: 100px;
+}
+
+
+이 함수 외에도, 많은 유용한 함수들이 엄청 많습니다. 내장함수들의 목록은 여기서 확인 할 수 있습니다.
+
+http://sass-lang.com/documentation/Sass/Script/Functions.html
+
+(
+ 색깔에 관한 함수들의 보이는 예제는 
+ Jackie Balzer 의 Visual Guide to Sass & Compass Color Functions 에서 확인 할 수 있습니다.
+
+ http://jackiebalzer.com/color
+
+)
+
+
+[4.Nesthin(중첩)]
+
+Sass의 매우 유용한 기능중 하나는 선언을 중첩시킬 수 있다는 것입니다. 어떻게 작동하는지, 또 어떤점을 주의해야 할지 알아봅시다.
+일반 CSS에선 특정 선택자 안의 선택자를 스타일링 하려면 어떻게 했었죠?
+
+[CSS]
+
+.container{
+  width:100%;
+}
+
+.container h1{
+  color : red;
+}
+
+
+간단한 CSS면, 큰 문제는 없지만 , CSS 파일이 커지면 유지보수가 어려워지죠..
+Sass 에선 , 이런식으로 작성하면 위와 같은 결과물을 얻을 수 있게 됩니다.
+
+[Sass]
+
+.container {
+   width: 100%;
+   h1 {
+     color : red;
+   }
+}
+
+
+부모 선택자를 리퍼런스 할 때는 &문자를 사용합니다.
+
+[Sass]
+
+a {
+   color : black;
+   &:hover {
+     text-decoration : underline;
+     color : gray;
+   }
+   &:visited {
+      color : purple;
+   }
+}
+
+
+
+
+[CSS]
+
+a {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+  color: gray;
+}
+a:visited {
+  color: purple;
+}
+
+코드 중첩을 하는건 위와 같이 하면 됩니다. 하지만 중첩에서 벗어나려면(de-nest)
+어떻게 할까요 ? 예를 들어.. 다음과 같은 코드가 있을 때
+
+[Sass]
+
+.container {
+   .child {
+      color : blue;
+    }
+   .sibling {
+      color : gray;
+    }  
+}
+
+
+sibing 클래스가 container 클래스 밖에서도 사용하는 것을 알게 되었을땐,
+@at-root directive(지시자)를 사용합니다.
+
+
+[Sass]
+
+.container {
+   .child {
+      color : blue;
+    }
+   @at-root .sibling {
+      color : gray;
+    }  
+}
+
+
+[CSS]
+
+.container .child {
+  color: blue;
+}
+.sibling {
+  color: gray;
+}
+
+위는 그냥 사실 사용 예제일 뿐이고 사실상 이런 상황이 오면 코드를 잘나내서 밖에 붙여 넣는게 맞죠
+보통 @at-root는 Sass 코드를 깔끔하게 정리하면서 작성 할떄 사용됩니다.
+(참조 : https://benfrain.com/writing-modular-css-bemoocss-selectors-sass-3-3/)
+
+
+(
+[인셉션 규칙:Sass 코드 중첩을 할 때,4 레벨 보다 깊게 들어가지 말것]
+영화 인셉션에서 보면, 레벨 5의 꿈을 꾸게 될 땐 림보에 빠져서 개고생하게되죠..
+더 깊게 들어간다고해서 오류가 나거나 Sass 개발자가 화를 내지는 않겠지만 코드가 복잡해질 확률이 높고
+유지보수가 어려워집니다.
+)
+
+
+[5.Import(불러오기)]
+
+import 기능은 스타일들을 여러 파일들로 나누고, 다른 파일에서 불러와서 사용하는 기능입니다.
+다음과 같이 @import directive를 사용하여 특정 .scss 파일을 불러 올 수 있습니다.
+@import "layout.css"
+
+참고로 , 확장자를 붙이지 않아도 됩니다.
+
+@import "layout"
+
+- partial -
+
+partial 기능에 대해여 알아봅시다.
+만약에 .sass 파일이나 .scss 파일의 파일이름을 underscore _ 로 시작하면 css 파일로 따로 컴파일 되지 않습니다.
+
+html에서 해당 css 파일을 불러올 일이 없고, import만 되는 경우에는 이 기능을 사용하세요.
+
+
+[6.Extend(상속)]
+
+Sass 에서 특정 선택자를 상속 할 때 , @extend directive를 사용합니다.
+
+
+[Sass]
+
+.box {
+  border : 1px solid gray;
+  padding : 10px;
+  display : inline-block;
+}
+
+.success-box{
+  @extend .box;
+  border : 1px solid green;
+}
+
+
+[CSS]
+
+.box, .success-box {
+  border : 1px solid gray;
+  padding : 10px;
+  display : inline-block;
+}
+
+.success-box {
+  border : 1px solid green;
+}
+
+
+
+- Placeholder -
+
+Placeholder 선택자 % 를 사용하면 상속은 할 수 있지만 해당 선택자는 컴파일되지 않습니다.
+
+[Sass]
+
+%box{
+  padding: 0.5em;
+}
+
+
+.success-box {
+  @extend %box;
+  color : green;
+}
+
+.error-box{
+  @extend %box;
+  color : red;
+}
+
+
+[CSS]
+
+.success-box, .error-box {
+  padding: 0.5em;
+}
+ 
+.success-box {
+  color: green;
+}
+ 
+.error-box {
+  color: red;
+}
+
+
+
+[7.Mixin(믹스인)]
+
+Mixin은 Sass의 아주 유용한 기능 중 하나인데요. extend 와 비슷하지만 argument(인수)를 
+받을 수 있습니다. mixin 을 선언 할 떄는 @mixin directive를 사용하며, 
+이를 사용할 때는 @include directive를 사용합니다.
+
+
+[Sass]
+
+@mixin headline($color , $size){
+   color : $color;
+    font-size : $size;
+}
+
+h1 {
+  @include headline(green , 12px)'
+}
+
+[CSS]
+
+h1{
+  color ; green;
+  font-size : 12px;
+}
+
+Mixin을 응용하면 이런식으로도 사용 가능합니다.
+
+
+[Sass]
+
+@mixin media($queryString){
+  @media #($queryString){
+     @content;
+  } 
+}
+
+
+.container{
+  width: 900px;
+  @include media ("(max-width : 767px)"){
+    width: 100%;
+  }
+}
+
+[CSS]
+
+.container {
+  width: 900px;
+}
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+  }
+}
+
+#{} 표현은 특정 문자열을 따로 처리하지 않고 그대로 출력할 때
+사용됩니다.
+
+@content directive를 사용하면 나중에 @include 하였을 때, 그 선택자 내부의 내용들이
+@content 부분에 나타나게 됩니다.
+
+
+
+[8.Function(함수)]
+
+Built-in Function 과는 달리 이부분은 임의 함수 입니다.
+
+Function은 위에서 소개한 mixin 과도 사뭇 비슷한데요. 차이점은 mixin은 
+style markup을 반환하지만, function은 @return directive를 통하여 값을 반환합니다.
+
+Function을 선언할 떄는, 예상하셨겠지만! @function directive를 사용합니다.
+
+[Sass]
+
+@function calc-percent($target , $container){
+  @return ($target / $container) * 100%;
+}
+
+@function cp($target , $container){
+  @return calc-percent($target , $container);
+}
+
+.my-module {
+   width : calc-percent(650px , 1000px);
+}
+
+
+[CSS]
+
+.my-module {
+  width: 65%;
+}
+
+
+
+
+[마치면서]
+
+Sass에 대하여 더 배우고 싶으신 분들께 다음 링크를 추천해 드리겠습니다.
+
+- http://www.thesassway.com/
+
+- https://www.sitepoint.com/sass-reference/
+
+- https://www.sitepoint.com/html-css/css/sass-css/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

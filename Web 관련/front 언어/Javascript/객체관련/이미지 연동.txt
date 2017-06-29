@@ -1,0 +1,26 @@
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
+				reader.onload = function(e) {
+					$('#imgViewSet').hide();
+					$('#imgView').attr('src', e.target.result).show();
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+
+		function ImgTypecheck(thisObj) {
+
+			if (thisObj.value != "") {
+				if (thisObj.id == "file1") {
+					readURL(thisObj);
+				}
+				if (!/(\.gif|\.jpg|\.jpeg|\.png)$/i.test(thisObj.value)) {
+					alert("이미지 형식의 파일을 선택하십시오");
+					$("#file1").val("");
+					$('#imgViewSet').show();
+					$('#imgView').hide();
+					return false;
+				}
+			}
+		}

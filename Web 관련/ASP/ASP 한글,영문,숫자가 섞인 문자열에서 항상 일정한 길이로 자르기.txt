@@ -1,0 +1,37 @@
+데이타베이스를 사용하신다면 쿼리를 이용하시는게 훨씬 간단하고 Performance 또한 좋습니다.
+하지만 순수하게 ASP내에서 문자열 길이를 일정하게 유지하셔야  한다면 다음 함수를 써보세요.
+
+<%
+                  
+function LeftCut(strString, intCut)
+    dim intPos, chrTemp, strCut, intLength
+    '문자열 길이 초기화
+    intLength = 0
+    intPos = 1
+
+    '문자열 길이만큼 돈다
+    do while ( intPos <= Len( strString ))
+       '문자열을 한문자씩 비교한다
+        chrTemp = ASC(Mid( strString, intPos, 1))
+
+        if chrTemp < 0 then '음수값(-)이 나오면 한글임
+          strCut = strCut & Mid( strString, intPos, 1 ) 
+          intLength = intLength + 2  '한글일 경우 문자열 길이를 2를 더한다 
+        else
+          strCut = strCut & Mid( strString, intPos, 1 )            
+          intLength = intLength + 1  '한글이 아닌경우 문자열 길이를 1을 더한다
+        end If
+
+        if intLength >= intCut  then
+           exit do
+        end if
+
+        intPos = intPos + 1
+  
+    Loop
+    '리턴값
+    LeftCut = strCut
+ end function
+Response.Write LeftCut("2010-12-10 미래에서 잘라낼 길이", 12) & "<br>"
+Response.Write LeftCut("미래 2010-12-10 문자열중 잘라낼 길이", 12)
+%>

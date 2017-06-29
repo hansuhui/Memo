@@ -1,0 +1,24 @@
+https://opentutorials.org/module/384/4510
+
+
+[www 제거]
+
+URL에 www가 포함되어 있으면 이것을 제거한 URL로 영구(permanent) 이동 시킨다.
+
+if ($host ~* ^www\.(.*)){
+    set $host_without_www $1;
+    rewrite ^/(.*)$ $scheme://$host_without_www/$1 permanent;
+}
+
+
+[favicon.ico 무시]
+
+브라우저는 웹사이트에 접근 시에 자동으로 favicon.ico 파일을 요청한다. 다음은 favicon.ico 파일을
+제공하지 않는 경우 이를 무시하는 방법이다. 204는 no content를 의미한다. 즉, 요청을 정상적으로 
+수신했지만 응답할 데이터가 없을 경우 이를 사용한다.
+
+location = /favicon.ico {
+    return 204;
+}
+
+

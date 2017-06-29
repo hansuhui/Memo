@@ -1,0 +1,10 @@
+
+참조 http://www.cmsfactory.net/node/10546
+
+td or th 안에 text가 지정하는 것을 찾는다
+
+
+
+$("td:contains('null')").html("");
+$("td:contains('undefined')").html("");
+$("th:contains('관리법인')")

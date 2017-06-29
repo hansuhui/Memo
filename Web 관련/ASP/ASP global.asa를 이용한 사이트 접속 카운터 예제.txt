@@ -1,0 +1,68 @@
+http://www.webmadang.net/develop/develop.do?action=read&boardid=1001&page=4&seq=2
+
+global.asa를 이용한 카운터 예제입니다.
+너무흔한 예제이지만 파일처리와 global.asa를 이해하는데 더 없이 좋은 예제인거 같아서 올려봅니다.
+가급적 이해하기 쉬우시라고 많은 주석처리를 하였습니다.
+
+예제를 실행시키기 위해서는 counter.txt라는 파일을 웹사이트 루트에 만들고, 초기값을 0을 주셔야 합니다.
+파일이 없을때 파일을 생성시키는 것도 가능하나 예제이니 만큼 파일생성 부분은 배제하였습니다.
+
+※혹시 모르시는분을 위한 총접속자 확인방법
+
+첫번째방법 : global.asa에 저장된 총접속자수를 확인하기 위해서는 확인하고자 하시는 asp파일에
+<%=Application("cnt")%> 부분을 삽입해 두거나 Application("cnt") 값을 특정
+변수에 할당해서 그변수값을 출력해서 확인합니다.
+
+두번째방법 : 웹사이트의 루트에 생성해둔 counter.txt파일을 직접 열어서 확인합니다. 
+<SCRIPT LANGUAGE=VBScript RUNAT=Server>
+SUB Application_OnStart
+"이곳에서는 서버가 시작되고 사용자가 처음 들어왔을때 딱 한번실행 
+
+"서버 시작후 사용자가 처음 방문했을때 counter.txt 파일에서 값을 읽어서 Application("cnt")에 대입합니다. 
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+FilePath = Server.MapPath(".") & "counter.txt"
+Set objFile = objFSO.OpenTextFile(FilePath, 1) "Open Text File의 두번째 인수 1은 읽기전용입니다.
+cnt = objFile.ReadLine "파일의 라인을 읽어서 값을 cnt 에 대입한다
+Application("cnt")=cnt "Application("cnt")에 cnt값을 대입합니다.Application("cnt")에는 총방문자수가 기록됩니다.
+objFile.Close
+Set objFile=nothing
+Set objFSO = nothing
+
+End Sub
+
+Sub Application_OnEnd
+"이곳은 모든 사용자의 세션이 (개별 세션이 아님, 사이트종료 시점) 끝나게될때 실행됩니다.
+
+
+"세션이 끝날때 총방문자수(Application("cnt"))를 파일에 저장해 둡니다.
+Set objFSO=Createobject("Scripting.FileSystemObject") 
+FilePath=Server.MapPath(".") & "counter.txt"
+Set objFile=objFSO.OpenTextFile(FilePath,2) "Open Text File의 두번째 인수 2는 쓰기전용입니다.
+objFile.WriteLine(Application("cnt"))
+objFile.close
+Set ObjFile=nothing
+Set ObjFSO=nothing 
+
+End sub
+Sub Session_OnStart
+"여긴 매 사용자가 들어올때마다 실행됩니다.
+Session.TimeOut=30 "세션 지속시간을 30분으로설정, Default지속시간은 20분입니다. 
+Application.Lock "Application("cnt")의 값을 수정하기 위해 다른사람의 접근을 막습니다.
+Application("cnt")=Application("cnt")+1 
+Application.Unlock "변수수정이 끝나면 접근금지를 풉니다
+
+Set objFSO=Createobject("Scripting.FileSystemObject") 
+FilePath=Server.MapPath(".") & "counter.txt" 
+Set objFile=objFSO.OpenTextFile(FilePath,2) "Open Text File의 두번째 인수 1은 읽기전용입니다.
+objFile.WriteLine(application("cnt"))
+objFile.close
+set objFSO=nothing
+set objFile=nothing
+
+End Sub
+
+Sub Session_OnEnd
+"이곳에서는 세션이 종료시 실행됩니다. 세션 종료시점은 TimeOut(default 20분)동안 아무런 페이지도 접근하지않았을때, 세션의 "Abondon명령을 실행했을 때입니다.
+End Sub
+
+</SCRIPT>

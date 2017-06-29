@@ -1,0 +1,38 @@
+[.unwrap()]
+
+.unwrap()은 선택한 요소의 부모 요소를 제거합니다.
+.unwrap()
+
+- 예제 -
+
+h1 요소를 선택하고 .unwrap()으로 div 태그를 제거하는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .unwrap()</title>
+    <style>
+      .ab {
+        color: red;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'h1.cd' ).unwrap();
+      } );
+    </script>
+  </head>
+  <body>
+    <div class="ab">
+      <h1 class="cd">Lorem ipsum dolor.</h1>
+    </div>
+  </body>
+</html>
+
+만약 h1 태그를 선택하기 힘든 상황이라면 div를 선택하여 제거할 수도 있습니다. 
+이때는 .contents()를 추가하여 자식 요소를 선택 후 제거합니다.
+
+$( 'div.ab' ).contents().unwrap();

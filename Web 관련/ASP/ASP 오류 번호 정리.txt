@@ -1,0 +1,154 @@
+ASP 오류 번호 정리
+
+
+ASP 0100 메모리 부족 
+ASP 0101 예기치 않은 오류 
+ASP 0102 문자열 입력 필요 
+ASP 0103 정수 입력 필요 
+ASP 0104 허용되지 않는 작업 
+ASP 0105 범위를 벗어난 인덱스 
+ASP 0106 형식 불일치 
+ASP 0107 스택 오버플로 
+ASP 0108 개체 만들기 실패 
+ASP 0109 구성원 없음 
+ASP 0110 알 수 없는 이름 
+ASP 0111 알 수 없는 인터페이스 
+ASP 0112 매개 변수 없음 
+ASP 0113 스크립트 시간 초과 
+ASP 0114 자유 스레드 개체가 아님 
+ASP 0115 예기치 않은 오류 
+ASP 0116 스크립트 닫기 구분 기호 없음 
+ASP 0117 스크립트 닫기 태그 없음 
+ASP 0118 개체 닫기 태그 없음 
+ASP 0119 Classid 또는 Progid 특성 없음 
+ASP 0120 잘못된 Runat 특성 
+ASP 0121 개체 태그의 잘못된 범위 
+ASP 0122 개체 태그의 잘못된 범위 
+ASP 0123 ID 특성 없음 
+ASP 0124 언어 특성 없음 
+ASP 0125 특성 닫기 구분 기호 없음 
+ASP 0126 Include 파일 없음 
+ASP 0127 HTML 설명 닫기 구분 기호 없음 
+ASP 0128 File 또는 Virtual 특성 없음 
+ASP 0129 알 수 없는 스크립트 언어 
+ASP 0130 잘못된 파일 특성 
+ASP 0131 허용되지 않는 부모 경로 
+ASP 0132 컴파일 오류 
+ASP 0133 잘못된 ClassID 특성 
+ASP 0134 잘못된 ProgID 특성 
+ASP 0135 순환적 포함 
+ASP 0136 잘못된 개체 인스턴스 이름 
+ASP 0137 잘못된 글로벌 스크립트 
+ASP 0138 중첩된 스크립트 블록 
+ASP 0139 중첩된 개체 
+ASP 0140 잘못된 페이지 명령 
+ASP 0141 반복된 페이지 명령 
+ASP 0142 스레드 토큰 오류 
+ASP 0143 잘못된 응용 프로그램 이름 
+ASP 0144 초기화 오류 
+ASP 0145 새 응용 프로그램 실패 
+ASP 0146 새 세션 실패 
+ASP 0147 500 Server Error 
+ASP 0148 Server Too Busy 
+ASP 0149 Application Restarting 
+ASP 0150 응용 프로그램 디렉터리 오류 
+ASP 0151 변경 알림 오류 
+ASP 0152 Security Error 
+ASP 0153 스레드 오류 
+ASP 0154 HTTP 헤더 쓰기 오류 
+ASP 0155 페이지 콘텐트 쓰기 오류 
+ASP 0156 헤더 오류 
+ASP 0157 버퍼링 설정 
+ASP 0158 URL 없음 
+ASP 0159 버퍼링 해제 
+ASP 0160 로깅 실패 
+ASP 0161 데이터 형식 오류 
+ASP 0162 쿠키를 수정할 수 없음 
+ASP 0163 잘못된 쉼표 사용 
+ASP 0164 잘못된 시간 제한 값 
+ASP 0165 SessionID 오류 
+ASP 0166 초기화되지 않은 개체 
+ASP 0167 세션 초기화 오류 
+ASP 0168 허용되지 않는 개체 사용 
+ASP 0169 개체 정보 없음 
+ASP 0170 세션 삭제 오류 
+ASP 0171 경로 없음 
+ASP 0172 잘못된 경로 
+ASP 0173 잘못된 경로 문자 
+ASP 0174 잘못된 경로 문자 
+ASP 0175 허용되지 않는 경로 문자 
+ASP 0176 경로를 찾을 수 없음 
+ASP 0177 Server.CreateObject 실패 
+ASP 0178 Server.CreateObject 액세스 오류 
+ASP 0179 응용 프로그램 초기화 오류 
+ASP 0180 허용되지 않는 개체 사용 
+ASP 0181 잘못된 스레딩 모델 
+ASP 0182 개체 정보 없음 
+ASP 0183 빈 쿠키 키 
+ASP 0184 쿠키 이름 없음 
+ASP 0185 기본 속성 없음 
+ASP 0186 인증서 구문 분석 오류 
+ASP 0187 개체 추가 충돌 
+ASP 0188 허용되지 않는 개체 사용 
+ASP 0189 허용되지 않은 개체 사용 
+ASP 0190 예기치 않은 오류 
+ASP 0191 예기치 않은 오류 
+ASP 0192 예기치 않은 오류 
+ASP 0193 OnStartPage 실패 
+ASP 0194 OnEndPage 실패 
+ASP 0195 잘못된 서버 메서드 호출 
+ASP 0196 Out of Process 구성 요소를 시작할 수 없음 
+ASP 0197 허용되지 않는 개체 사용 
+ASP 0198 Server shutting down 
+ASP 0199 허용되지 않는 개체 사용 
+ASP 0200 범위를 벗어난 'Expires' 특성 
+ASP 0201 잘못된 기본 스크립트 언어 
+ASP 0202 코드 페이지 없음 
+ASP 0203 잘못된 코드 페이지 
+ASP 0204 잘못된 CodePage 값 
+ASP 0205 변경 알림 
+ASP 0206 BinaryRead를 호출할 수 없음 
+ASP 0207 Request.Form을 사용할 수 없음 
+ASP 0208 일반 Request 컬렉션을 사용할 수 없음 
+ASP 0209 TRANSACTION 속성의 잘못된 값 
+ASP 0210 구현되지 않은 메서드 
+ASP 0211 범위를 벗어난 개체 
+ASP 0212 버퍼를 지울 수 없음 
+ASP 0214 잘못된 Path 매개 변수 
+ASP 0215 ENABLESESSIONSTATE 속성의 잘못된 값 
+ASP 0216 MSDTC 서비스를 실행하고 있지 않음 
+ASP 0217 개체 태그의 잘못된 범위 
+ASP 0218 LCID가 없음 
+ASP 0219 잘못된 LCID 
+ASP 0220 Requests for GLOBAL.ASA Not Allowed 
+ASP 0221 잘못된 @ 명령 지시어 
+ASP 0222 잘못된 TypeLib 지정 
+ASP 0223 TypeLib를 찾을 수 없음 
+ASP 0224 TypeLib를 로드할 수 없음 
+ASP 0225 TypeLib를 래핑할 수 없음 
+ASP 0226 StaticObjects를 수정할 수 없음 
+ASP 0227 Server.Execute 실패 
+ASP 0228 Server.Execute 오류 
+ASP 0229 Server.Transfer 실패 
+ASP 0230 Server.Transfer 오류 
+ASP 0231 Server.Execute 오류 
+ASP 0232 잘못된 쿠키 지정 
+ASP 0233 쿠키 스크립트 소스를 로드할 수 없음 
+ASP 0234 잘못된 include 지시어 
+ASP 0235 Server.Transfer 오류 
+ASP 0236 잘못된 쿠키 지정 
+ASP 0237 잘못된 쿠키 지정 
+ASP 0238 특성 값 없음 
+ASP 0239 파일을 처리할 수 없음 
+ASP 0240 스크립트 엔진 예외 
+ASP 0241 CreateObject 예외 
+ASP 0242 OnStartPage 인터페이스 쿼리 예외 
+ASP 0243 Global.asa에 있는 잘못된 METADATA 태그 
+ASP 0244 세션 정보를 사용할 수 없음 
+ASP 0245 코드 페이지 값 혼용 
+ASP 0246 Too many concurrent users. Please try again later. 
+ASP 0247 BinaryRead의 잘못된 인수 
+ASP 0248 스크립트가 트랜잭션 처리되지 않음. ObjectContext 개체를 사용하려면 이 ASP 파일을 트랜잭션 처리해야 합니다. 
+ASP 0249 Request에서 IStream을 사용할 수 없음. Request.Form 컬렉션 또는 Request.BinaryRead를 사용한 다음 Request 개체에서 IStream을 사용할 수 없습니다. 
+ASP 0250 잘못된 기본 코드 페이지. 이 응용 프로그램에 지정된 기본 코드 페이지가 잘못되었습니다. 
+ASP 0251 Response 버퍼 제한 초과됨. ASP 페이지를 실행하여 Response 버퍼의 구성된 제한이 초과되었습니다. 

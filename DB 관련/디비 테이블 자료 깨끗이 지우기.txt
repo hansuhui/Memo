@@ -1,0 +1,4 @@
+truncate table parnasData_met
+
+
+흔적이 안남는 삭제

@@ -1,0 +1,6 @@
+SendEntity info = new SendEntity();
+List<SendEntity> list = new List<SendEntity>();
+Tuple<SendEntity, List<SendEntity>>(info, list);
+
+Model.Item1
+Model.Item2

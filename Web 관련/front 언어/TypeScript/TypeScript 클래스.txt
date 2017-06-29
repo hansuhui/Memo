@@ -1,0 +1,13 @@
+http://blog.danggun.net/4286
+
+[클래스]
+
+class Student {
+    fullName: string;
+    constructor(public firstName, public middel, public Last) {
+        this.fullName = firstName + "" + middel + "" + Last;
+    }
+}
+
+var user = new Student("처음", "중간", "끝");
+document.body.innerHTML = user.fullName;

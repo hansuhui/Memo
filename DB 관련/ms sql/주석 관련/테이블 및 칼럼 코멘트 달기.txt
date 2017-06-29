@@ -1,0 +1,24 @@
+
+
+
+--테이블 코멘트 추가
+EXEC SP_ADDEXTENDEDPROPERTY 'MS_DESCRIPTION', '이건테스트로만든거예요', 'SCHEMA', 'DBO', 'TABLE', '테이블명'
+
+--테이블 코멘트 수정
+EXEC sys.sp_updateextendedproperty 'MS_DESCRIPTION', '코멘트' , 'SCHEMA', 'dbo', 'TABLE', 'TESTA'
+
+-- 칼럼에 코멘트 추가
+EXEC sp_addextendedproperty 'MS_Description' ,'코멘트','SCHEMA' , 'dbo','TABLE','테이블명','COLUMN' ,'칼럼명'
+
+-- 칼럼에 코멘트 수정
+EXEC sp_updateextendedproperty 'MS_Description' ,'코멘트','SCHEMA' , 'dbo','TABLE','테이블명','COLUMN' ,'칼럼명'
+
+
+--테이블 코멘트 조회
+SELECT OBJTYPE, OBJNAME, NAME, VALUE
+FROM ::FN_LISTEXTENDEDPROPERTY (NULL, 'SCHEMA', 'DBO', 'TABLE', '테이블명', DEFAULT, DEFAULT)
+;
+
+--컬럼 코멘트 조회
+SELECT OBJTYPE, OBJNAME, NAME, VALUE
+FROM ::FN_LISTEXTENDEDPROPERTY(NULL, 'SCHEMA', 'DBO', 'TABLE', '테이블명', 'COLUMN', DEFAULT);

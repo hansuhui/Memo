@@ -1,0 +1,28 @@
+https://msdn.microsoft.com/ko-kr/library/ms178583(v=vs.100).aspx
+
+세션 이벤트 예제
+다음 코드 예제에서는 Global.asax 파일에 추가할 수 있는 Session_OnStart 및 Session_OnEnd 서브루틴의 샘플을 보여 줍니다. 
+이 예제에 정의된 서브루틴은 응용 프로그램을 실제로 사용하고 있는 사용자의 수를 추적하는 카운터를 만듭니다. 
+Session_OnEnd 이벤트는 in-process 세션 상태 저장소에 대해서만 지원되므로 이 예제는 세션 상태 
+Mode 속성이 InProc로 설정되어 있는 경우에만 올바르게 작동합니다
+
+
+
+public void Application_OnStart()
+{
+  Application["UsersOnline"] = 0;
+}
+
+public void Session_OnStart()
+{
+  Application.Lock();
+  Application["UsersOnline"] = (int)Application["UsersOnline"] + 1;
+  Application.UnLock();
+}
+
+public void Session_OnEnd()
+{
+  Application.Lock();
+  Application["UsersOnline"] = (int)Application["UsersOnline"] - 1;
+  Application.UnLock();
+}

@@ -1,0 +1,547 @@
+http://addio3305.tistory.com/72
+
+1.DB 
+
+데이터베이스는 자신이 사용하기 편한것으로 하자. 필자는 Oracle 과 MySql을 사용하는데,
+이 글애서는 Oracle 10g XE를 기준으로 설명하려고 한다.
+
+1.테이블 생성
+다음의 쿼리를 실행시키자.
+
+CREATE TABLE TB_BOARD
+(
+    IDX NUMBER PRIMARY KEY,
+    PARENT_IDX NUMBER,
+    TITLE VARCHAR2(100) NOT NULL,
+    CONTENTS VARCHAR2(4000) NOT NULL,
+    HIT_CNT NUMBER NOT NULL,
+    DEL_GB VARCHAR2(1) DEFAULT 'N' NOT NULL,
+    CREA_DTM DATE DEFAULT SYSDATE NOT NULL,
+    CREA_ID VARCHAR2(30) NOT NULL
+);
+  
+COMMENT ON TABLE TB_BOARD IS '게시판';
+COMMENT ON COLUMN TB_BOARD.IDX IS '인덱스';
+COMMENT ON COLUMN TB_BOARD.PARENT_IDX IS '부모글 인덱스';
+COMMENT ON COLUMN TB_BOARD.TITLE IS '제목';
+COMMENT ON COLUMN TB_BOARD.CONTENTS IS '내용';
+COMMENT ON COLUMN TB_BOARD.HIT_CNT IS '조회수';
+COMMENT ON COLUMN TB_BOARD.DEL_GB IS '삭제구분';
+COMMENT ON COLUMN TB_BOARD.CREA_DTM IS '생성일자';
+COMMENT ON COLUMN TB_BOARD.CREA_ID IS '생성자 ID';
+
+몇가지 컬럼만 살펴보자. 
+PARENT_IDX 는 추후 계층형 게시판으로 변형할 때, 사용하려고 미리 컬럼을 만들었다.
+DEL_GB는 글을 삭제할 경우, 실제로 DELETE 쿼리를 이용하여 삭제하는것이 아닌, 
+삭제구분값만 바꾸려고 한다.
+그 외의 컬럼들은 따로 설명이 필요없을것이라고 생각한다.
+
+2. 시퀀스 생성
+
+게시판의 인덱스를 자동 증가시키기 위해서 시퀀스 하나 생성한다.
+오라클은 Mysql이나 MSSql 에서 사용되는 Auto Increment가 없다.
+
+왜 없는지는 모르겠지만, 시퀀스를 통해서 비슷한 작업은 수행할 수있다.
+
+다음의 쿼리를 실행시키자.
+
+CREATE SEQUENCE SEQ_TB_BOARD_IDX
+START WITH 1
+INCREMENT BY 1
+NOMAXVALUE
+NOCACHE;
+
+모두 완료하면 다음과 같은 테이블과 시퀀스가 만들어져있다.
+이렇게 DB는 완료되었다.
+
+
+==========================================================
+
+[데이터 조회]
+
+이제 스프링에서 해당 데이터를 어떻게 조회하는지 알아보자.
+
+http://addio3305.tistory.com/41 글에서 MVC의 구조에 대해서 간단히 이야기를 했었다. 
+여태까지 작성했던것은 Client와 Controller까지만 작성이 되었는데, 
+이제 본격적으로 비지니스로직과 DB와의 연동을 시작한다.
+
+
+1. 폴더 및 패키지 구성하기
+
+1) serive, dao 패키지 생성
+
+src/main/java 밑의 first.sample 패키지 밑에 service, dao 패키지를 생성한다.
+
+- service 패키지는 다시 Service 인터페이스와 그 인터페이스를 구현한 
+ServiceImpl 클래스가 위치하게 된다. ServiceImpl 클래스는 각 요청에 
+필요한 비지니스 로직의 수행을 담당하게 된다. 
+
+- dao 패키지는 DAO클래스가 위치하게 되는곳으로, DAO 클래스를 통하여 
+데이터베이스에 접근하는 역할을 수행한다.
+
+2) sample 폴더 생성
+src/main/resources/ 밑의 mapper 폴더 밑에 sample 폴더를 생성한다.
+이 폴더에는 게시판에 관련된 쿼리가 담긴 XML 파일이 위치하게 된다.
+
+2. 실제 기능 구현
+이제 실제로 기능을 구현할 차례다. 
+기능 구현은 다음과 같은 순서로 작성한다. 
+- Controller > Service > ServiceImpl > DAO > SQL(XML) > JSP
+현재로서는 이게 무슨 의미인지 이해가 어려울것으로 생각된다. 하나씩 따라해보자.
+
+1) Controller 구현
+일단 SampleController에 다음의 내용을 작성한다. 
+
+
+package first.sample.controller;
+ 
+import java.util.List;
+import java.util.Map;
+ 
+import javax.annotation.Resource;
+ 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+ 
+@Controller
+public class SampleController {
+    Logger log = Logger.getLogger(this.getClass());
+     
+    @Resource(name="sampleService")
+    private SampleService sampleService;
+     
+    @RequestMapping(value="/sample/openSampleBoardList.do")
+    public ModelAndView openSampleBoardList(Map<string,object> commandMap) throws Exception{
+        ModelAndView mv = new ModelAndView("/sample/boardList");
+         
+        List<Map<String,Object>> list = sampleService.selectBoardList(commandMap);
+        mv.addObject("list", list);
+         
+        return mv;
+    }
+}
+
+일단 이 코드를 작성하면 18, 24번째줄에서 에러가 발생한다. 
+이 단계에서 여기서 에러가 나는것은 당연한 일이니 걱정하지 말고 쭉 따라가자.
+
+간단히 살펴보자. 
+컨트롤러(Controller)는 웹 클라이언트에서 들어온 요청을 해당 비지니스 로직을 호출하고, 
+수행결과와 함께 응답을 해주는 Dispatcher 역할을 한다. 클래스의 선언부에 @Controller 어노테이션(Annotation)을 이용하여, Controller 객체임을 선언한다. 
+
+
+@RequestMapping은 요청 URL을 의미한다. 우리가 /sample/openSampleBoardList.do 라는 
+주소를 호출하게 되면, 이 주소는 @ReqeustMapping 어노테이션과 매핑되어 , 해당 메서드가
+실행된다.
+ModelAndView mv = new ModelAndView("/sample/sampleBoardList"); 는 우리가 화면에 보여줄
+jsp 파일을 의미한다. 아직 sampleBoardList.jsp 파일을 만들지는 않았지만, 추후 저 위치에
+저 이름으로 생성할 거라서, 미리 작성하였다.
+
+그 다음 중요한부분이다. List<Map<<String,Object>>> list는 길어보이지만 단순한 변수의 선언이다.
+우리가 변수를 선언할 경우 int num = 0; 이런식으로 선언하는데, 이것과 동일하다. 단지 변수의
+형태가 좀 더 복잡할 뿐이다.
+
+하나씩 살펴보면 다음과 같다.
+게시판 목록을 보여주기 때문에, 목록을 저장할 수 있는 List를 선언하였다. 그리고 그 List의
+형식은 Map<String,Object> 인데, 하나의 게시글 목록에도 여러가지 정보가 존재한다.
+글번호, 글제목 , 작성일 등의 내용을 Map에 저장하려는 것이다. Map은 다시 키(Key)와 값(value)로
+구분되어지는데, 각각의 컬럼인 글번호,글제목,작성일 등의 키와 실제 값이 저장된다.
+이는 잠시후, 데이터를 읽어와서 화면에 보여줄때 , 다시 설명을 하도록 하겠다.
+
+
+그 다음은 sampleService.selectBoardList(commandMap); 부분이다.
+Controller는 단순히 어던 주소와 화면은 연결하고, 비지니스 로직을 호출하는 역할을 한다.
+실제로 여러가지 비지니스 로직은 Service에서 작성한다. 여기서는 단순히 게시글을 조회하는 
+역할을 하지만, 나중에 게시글 상세조회의 경우, 조회수 증가와 게시글 상세내용을 조회하는
+두가지 기능이 필요한데, 이를 Service에서 처리해주게 된다.
+
+마지막으로 mv.addObject("list",list);는 서비스로직의 결과를 ModelAndView 객체에 담아서
+클라이언트, 즉 jsp에서 그 결과를 사용할 수 있도록 한다. mv에 값을 저장하는것은 map과 똑같이
+키와 값으로 구성이 되는데, sampleService.selectBoardList 메서드를 통해 얻어온 결과 
+list를 "list"라는 이름으로 저장하고 있다.
+나중에, jsp 화면을 설명할 때 , 이 값이 어떻게 사용되는지 좀 더 자세히 볼 예정이다.
+
+
+2) Service 구현
+
+Service 영역은 두개의 파일로 구성된다. Service 인터페이스와 이 인터페이스를 실제로
+구현한 ServiceImpl 클래스로 구성이 되어있다. 이는 Spring의 IoC/DI (Inversion Of Control / 
+Dependency Injection) 기능을 이용한 Bean 관리 기능을 사용하기 위함이다.
+
+먼저 service 패키지에 SampleService 인터페이스와 SampleServiceImpl 클래스를 만들자.
+
+package first.sample.service;
+ 
+public interface SampleService {
+ 
+}
+
+package first.sample.service;
+ 
+import org.springframework.stereotype.Service;
+ 
+@Service("sampleService")
+public class SampleServiceImpl implements SampleService{
+ 
+}
+
+
+일단 지금은 클래스만 생성했으며, 이제 하니씩 채워나가보자.
+먼저 Service 인터페이스는 비즈니스 로직의 수행을 위한 메서드를 정의한다.
+ServiceImpl 클래스는 Service 인터페이스를 통해 정의된 메서드를 실제로 구현하는 클래스다.
+@Service 어노테이션을 이용하여 Service 객체임을 선언하였고. 객체이름은 sampleService라고 
+선언하였다.
+
+이렇게 Service 영역의 파일을 생성한 후, 다시 Controller로 돌아가서 Ctrl + Shift + O를 
+눌러보자. ( 임포트 단축키)
+
+@Resource(name="sampleService")
+private SampleService sampleService;
+이 부분은 Service 영역의 접근을 위한 선언이라고 이야기를 하였다. 우리가 SampeServiceImpl을 생성하고 그 Service를 "sampleService"라는 이름으로 선언을 하였는데, 
+이를 사용하기 위한 선언이다. 여기서 @Resource어노테이션을 통해서 필요한 빈(bean)을 
+수동으로 등록하는것이다. 그리고 수동으로 등록할 빈의 이름이 "sampleService"이고, 
+이는 @Service("sampleService")라고 선언했을 때의 그 이름인것을 확인한다.
+
+이후, sampleService.selectBoardList(commandMap);에서 selectBoardList에 아직 
+빨간 밑줄이 그어져 있을것이다. 해당 라인 위에 마우스를 올려보자.
+그러면 다음과 같은 화면이 나올것이다. 
+
+이는 sampleService에 selectBoardList라는 메서드가 정의되지 않았음을 의미한다.
+Create method 'selectBoardList(Map<String,Object>)' in type 'SampleService'를 클릭하자
+그러면 자동적으로 SampleService에 해당 메서드가 선언이 된다.
+
+이 후 , SampleService를 다음과 같이 수정하자.
+
+package first.sample.service;
+ 
+import java.util.List;
+import java.util.Map;
+ 
+public interface SampleService {
+ 
+    List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception;
+ 
+}
+
+변수 이름을 map으로 바꾸었고, 뒤에 throws Exception을 붙였다.
+이는 추후 에러처리를 위한것으로 , 원래 자바에서는 에러처리를 위하여 tyr,catch 문을
+이용하여 적절한 에러처리를 해야한다. 그렇지만 모든곳에서 동일한 에러처리를 하는것은
+현실적으로 힘들고, 예상하지 못한 에러도 발생할 수 있다.
+그래서 모든 메서드에서는 에러가 발생하면 Exception을 날리고, 공통으로 이 Exception을
+처리하는 로직을 추후 추가하려고 한다. 이는 나중에 에러처리 포스팅을 하면서 설명하겠다.
+
+이와 같이 수정한 후에는 SampleServiceImpl에서 에러가 발생할 것이다.
+SampleServiceImpl.java 파일에서는 클래스 명에서 에러가 발생한다. 마우스를 올려보자
+
+아까 Controller에서 봤던 에러와는 약간 다르다.
+Controller에서는 selectBoardList라는 메서드가 선언되지 않았다는 에러메시지였는데,
+여기서는 selectBoardList를 무조건 구현해야 한다는 메시지다.
+
+ServiceImpl 클래스는 SampleService 인터페이스를 상속(extends와 implements의 차이다.
+extends는 클래스를 상속, implememnts는 인터페이스의 상속)하여, 해당 인터페이스에 정의된
+메서드를 무조건 작성해야한다.
+인터페이스에 대한 자세한 내용은 Java 기본서적등을 통해서 확인하자.
+
+Add unimplemented methods를 클릭하자.
+이렇게 인터페이스에 정의된 메서드를 실제 구현할 수 있는 코드가 작성된다.
+이제 이 ServiceImpl 클래스를 다음과 같이 수정하다.
+
+
+package first.sample.service;
+ 
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+ 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+ 
+@Service("sampleService")
+public class SampleServiceImpl implements SampleService{
+    Logger log = Logger.getLogger(this.getClass());
+     
+    @Resource(name="sampleDAO")
+    private SampleDAO sampleDAO;
+     
+    @Override
+    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception {
+        return sampleDAO.selectBoardList(map);
+    }
+ 
+}
+
+먼저 여기서도 @Resource 어노테이션을 볼 수 있다.
+Controller에서 Service 접근을 위한 선언을 한것과 마찬가지로, Service에서는
+데이터 접근을 위한 DAO(Data Access Objcet) 객체를 선언하였다.
+아직 SampleDAO 클래스가 작성되지 않았으니, 에러는 발생할 것이다.
+
+그 다음으로 서비스의 selectBoardList의 결과값으로 sampleDAO 클래스의 selectBoardList 메서드를
+호출하고, 그 결과값을 바로 반환하였다.
+현재로는 Service 영역에서 수행해야할 비지니스 로직이 목록조회밖에 없기 때문에, 바로
+return을 했지만, 게시판 상세조회 등에서는 2개 이상의 로직이 필요하기 떄문에, 비즈니스 로직에서
+여러가지 일을 수행하는 모습을 볼 수 있다. 이는 다음 포스팅에서 작성하겠다.
+
+3) DAO 구현
+
+이제 실제로 데이터베이스에 접그하는 DAO를 생성해보자.
+dao 패키지에 SampleDAO 클래스를 생성하자.
+
+
+package first.sample.dao;
+ 
+import org.springframework.stereotype.Repository;
+ 
+import first.common.dao.AbstractDAO;
+ 
+@Repository("sampleDAO")
+public class SampleDAO extends AbstractDAO{
+ 
+}
+
+@Repository라는 어노테이션을 통해서 이 클래스가 DAO 임을 선언하고 이름을 "sampleDAO"로 
+작성하였다. SampleServiceImpl에서 @Resource(name="sampleDAO")로 bean을 수동으로 등록하였고,
+거기서 사용된 빈이 방금 작성한 SampleDAO 클래스다.
+그리고 AbstractDAO 클래스를 상속받았다. 이는 MyBatis의 기능 및 추가적인 작업을 위해서 지난
+포스팅인 http://addio3305.tistory.com/62 에서 작성한 클래스이다. 
+
+
+AbstractDAO 클래스는 순전히 본인의 필요에 의해서 만든것으로, 
+필요없다고 생각된다면, AbstractDAO에서 사용중인 기능등을 바로 
+SampleDAO 등 클래스에서  구현하면 된다.
+
+이렇게 DAO 클래스를 만들었드면 다시 SampleServiceImpl.java 파일로 가서 아까와 마찬가지로
+selectBoardList에 마우스를 올려놓자
+
+뭐...이제 말을 안해도 무엇을 해야할지 감이 잡힐듯 하다. Create method 'selectBoardList(Map<String,Object>)' in type 'SampleDAO'를 클릭하자.
+그러면 SampleDAO에 다음과 같은 메서드가 생긴다.
+
+이렇게 생성된 메서드를 실제 동작하도록 바꾸자.
+다음과 같이 작성한다.
+
+
+package first.sample.dao;
+ 
+import java.util.List;
+import java.util.Map;
+ 
+import org.springframework.stereotype.Repository;
+ 
+import first.common.dao.AbstractDAO;
+ 
+@Repository("sampleDAO")
+public class SampleDAO extends AbstractDAO{
+ 
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception{
+        return (List<Map<String, Object>>)selectList("sample.selectBoardList", map);
+    }
+ 
+}
+
+DAO는 데이터베이스에 접근하여 데이터를 조작하는 (가져오거나 입력하는 등) 역할만 수행한다.
+우리는 MyBatis 프레임워크를 사용하기 때문에 JDBC 연결 및 쿼리 수행을 편하게 할 수 있다.
+MyBatis는 프로그램의 소스코드에서 SQL을 분리하여 별도의 XML 파일에 저장하고, 이 둘을 연결하는
+방식으로 작동한다. 여기서는 우리가 실행할 쿼리 이름과 해당 쿼리에 필요한 변수들을 매개변수로
+MyBatis의 리스트 조회 메서드를 호출하였다.
+
+
+여기서 사용한 selectList는 MyBatis의 기본 기능으로, 리스트를 조회할때 사용한다. 지난글에서
+AbstractDAO를 생성할 때, MyBatis의 기본기능과 동일한 이름으로 만들어놨는데, 필요에 따라서
+이름을 변경하는 등, 자신에 맞게끔 변경하여 사용하면 된다.
+
+selectList 메서드의 인자는 두가지이다. 첫번째는 쿼리 이름, 두번째는 쿼리가 실행되는데 필요한 
+변수들이다. "sample.selectBoardList"가 쿼리 이름이고, Controller에서부터 계속 넘어온 
+Map<String,Object> map이 쿼리 실행시 필요한 변수들이다. 게시판 목록을 조회할때 지금 당장
+필요한 변수들이 없기때문에, 이 인자는 무의미하게 느껴질수 있지만, 추후 다른 기능등에서
+사용하게 될겁니다.
+쿼리 이름을 봐서는 이게 무엇인가 하렌데, 이는 잠시후 SQL 부분에서 자세히 설명하겠다.
+그리고 그 결과값은 List<Map<String,Object>> 형식으로 반환할 수 있도록 형변환을 하였다. 
+
+4) SQL 작성
+
+이게 게시판 목록을 조회하는 쿼리를 작성하자.
+src/main/resources 폴더 밑에 mapper/sample 폴더를 작성했었다.
+여기에 Sample_SQL.xml 파일을 만들고, 다음의 내용을 작성하자.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="sample">
+     
+     
+</mapper>
+
+우리는 MyBatis를 사용하고, 이 프레임워크는 SQL를 분리하여 별도의 XML 파일에 저장한다고 이야기
+하였다. 지금 만든 Sample_SQL.xml 파일에 우리가 호출할 쿼리가 저장된다.
+프로젝트에서는 기본적으로 여러개의 <mapper>를 가지기 떄문에 중복되는 이름을 가진 SQL이 존재할 
+수 있다. 따라서 각 <mapper> 마다 namespace 속성을 이용하여 <mapper> 간 유일성을 보장해야 한다.
+여기서는 sample이라는 이름의 namespace를 사용하였다.
+
+여기서 잘 봐야할것은 아까 DAO에서 쿼리 아이디를 잘 생각해보자.
+"sample.selectBoardList"라는 이름인것을 확인할 수 있다. 여기서 앞에 붙은 sample 이라는
+부분이 바로 XML에서 설정한 namespace의 이름이다. 다시말해, 모든 쿼리는 "NAMEPSPACE.SQL ID"
+의 구조로 구성된다 (namespace를 사용하지 않을 경우, 바로 SQL ID만 호출하여도 되지만 위에서
+이야기한것처럼 중복된 아이디가 있을수 있다. 따라서 가능한 namespace를 사용하자.
+
+이쿼 쿼리를 작성해보자.
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="sample">
+     
+    <select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[
+            SELECT
+                IDX,
+                TITLE,
+                HIT_CNT,
+                CREA_DTM
+            FROM
+                TB_BOARD
+            WHERE
+                DEL_GB = 'N'
+            ORDER BY IDX DESC
+        ]]>
+    </select>
+     
+</mapper>
+
+이게 MyBatis에서 사용하는 XML의 모습이다.
+
+하나씩 살펴보자.
+
+- 첫번째로, <select> 태그를 이용하여 이 쿼리가 select 문이라는것을 명시하였다.
+- id = "selectBoardList" 부분은 이 쿼리의 id는 selectBoardList 라고 정의하였다.
+- parameterType="hashmap" 부분은 이 쿼리가 실행될때 필요한 변수는 HashMap 형태를 의미한다.
+- resultType = "hashmap" 부분은 이 쿼리의 결과값은 HashMap에 담겨서 반환된다는 것을 의미한다.
+
+parameterType과 resultType으로 모두 HashMap을 사용할것인데, 다른 클래스를 사용할 경우
+해당 클래스의 이름을 적어주면 된다.
+
+원래는 HashMap을 사용하려면 하면 parameterType="java.util.HashMap"이라고 패키지명까지 
+정확히 명시를 해야 하지만, MyBatis에서 우리가 많이 사용하는 변수형은 hashmap 과 같이 간단히
+사용할 수 있도록 지원하고 있다.
+이에 대한 상세한 내용은  https://mybatis.github.io/mybatis-3/ko/configuration.html#typeAliases
+ 부분을 참조하자.
+
+부가적으로, 필자는 모든 결과값은 Map을 사용하여 전달하고 전달받는데, 프로젝트에 따라서는 DTO를
+사용하는 경우도 있다. 
+
+DTO는 Data Transfer Object의 약자로 TO, VO 등의 이름으로도 사용된다. 각 프로젝트별로
+DTO, TO , VO를 혼용하여 사용하는데 TO와 VO는 약간 다른 개념이긴 하지만, 우리나라에서는
+보통 혼용하여 사용된다.
+
+Map과 TO는 각각 장단점이 있고, 무엇이 더 좋다라고 이야기하기는 어렵지 않나 생각한다. 단,
+필자는 TO보다는 MAP을 사용하는것이 여러가지 측면에서 좀 더 좋지않나 라는 생각을 하기떄문에,
+MAP을 사용할뿐이다. 이에 대한것은 워낙 논쟁이 뜨거운 주제이기도 하다. 이에 대한 내용은
+나중에 다시 설명하도록 하겠다.
+
+5) jsp 구현
+이제 마지막으로 사용자에서 보여줄 jsp를 구현하는 일만 남았다.
+src/main/webapp/WEB-INF/jsp/sample 폴더 밑에 boardList.jsp 파일을 생성하자.
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>first</title>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+</head>
+<body>
+<h2>게시판 목록</h2>
+<table style="border:1px solid #ccc">
+    <colgroup>
+        <col width="10%"/>
+        <col width="*"/>
+        <col width="15%"/>
+        <col width="20%"/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">글번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">조회수</th>
+            <th scope="col">작성일</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:choose>
+            <c:when test="${fn:length(list) > 0}">
+                <c:forEach items="${list }" var="row">
+                    <tr>
+                        <td>${row.IDX }</td>
+                        <td>${row.TITLE }</td>
+                        <td>${row.HIT_CNT }</td>
+                        <td>${row.CREA_DTM }</td>
+                    </tr>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="4">조회된 결과가 없습니다.</td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
+         
+    </tbody>
+</table>
+</body>
+</html>
+
+JSTL의 기본문법에 대한 설명은 넘어가도록 하겠다.
+만약 JSTL이 무엇인지 모른다면 JSTL에 대한 내용은 간단하게라도 공부할 필요가 있다.
+
+전체 조회결과가 있으면 그 결과를 보여주고, 없으면 조회된 결과가 없다는 메시지를 보여주는 
+화면이다. 여기서 <c:forEach item="${list}" var="row"> 라는 부분을 봐야한다.
+Controller 에서 DB에서 조회된 결과 list를 mv.addObject를 이용하여 llist라는 이름으로 mv에
+값을 저장 했었던 것을 떠오려보자. (mv.addObject("list",list);라고 작성했었다.)
+JSTL의 forEach문을 통해서 테이블의 목록을 만드려고 하는데, 여기서 사용할 아이템은 ${list}라고
+되어있다. 이게 바로 우리가 mv에서 추가를 해줬던 그 list를 의미한다.
+
+그 다음으로 var="row" 라고 되어있다. 우리는 List<Map<String,Object>> 라는 형식으로 list를 
+선언하고 , DB에서 조회된 결과를 받았다.
+
+이 list에서 하나의 데이터쌍을 가져오면 (Java에서 list.get(index)를 의미한다. 
+그 데이터는 Map<String,Object>  형식의 데이터 한줄이 나오게 되고, 그 데이터는 row라는 이름의 변수에 저장이 된다. 
+그 후, row에서 원하는 데이터를 뽑아서 사용하면 된다. 
+row.IDX, TITLE, HIT_CNT, CREA_DTM의 이름에서 볼 수 있듯이, 
+이는 우리가 select 쿼리를 실행하였을 때 뽑아온 데이터의 이름이다. (대소문자를 구분한다.) 
+쿼리의 select 문에서 뽑아온 이름이 Map의 키(key)로 사용되고, 
+화면에서는 그 키를 이용하여 데이터에 접근할 수 있다. 
+
+그럼 이제 실행시켜 보자.
+톰캣 서버를 실행시키고, 아까 Controller에서 설정한 주소를 입력하면 된다.
+여기까지 모두 정상적으로 되었으면 다음과 같은 화면이 보인다.
+
+
+우리는 아까 테이블만 만들고 실제 데이터가 하나도 없기 때문에,
+위와 같이 조회된 결과가 없다고 보여지고 있다. 
+
+그럼 DB에 아무렇게나 데이터를 하나 입력하고 결과를 살펴보자.
+
+INSERT INTO TB_BOARD
+(
+    IDX,
+    TITLE, 
+    CONTENTS, 
+    HIT_CNT, 
+    DEL_GB, 
+    CREA_DTM, 
+    CREA_ID
+)
+VALUES
+(
+    SEQ_TB_BOARD_IDX.NEXTVAL, 
+    '제목', 
+    '내용', 
+    0, 
+    'N', 
+    SYSDATE, 
+    'Admin'
+);

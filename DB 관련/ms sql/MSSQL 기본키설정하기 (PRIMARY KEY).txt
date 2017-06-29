@@ -1,0 +1,20 @@
+ - PRIMARY KEY 란?
+   PRIMARY KEY 는 제약조건의 하나로 기본키라고 부르는데 레코드의 대표값으로 레코드를 구별하는 유일값이 들어가야 합니다.
+   PRIMARY KEY 제약조건이 설정된 컬럼은 NULL 을 허용하지 않게 되고, UNIQUE 제약조건이 자동으로 설정됩니다.
+
+?
+ 
+- 테이블 생성시 PRIMARY KEY 가 설정된 컬럼을 포함하는 방법
+   CREATE TABLE [테이블명] (
+       [컬럼명] [데이터형식] PRIMARY KEY [제약조건]
+   )
+ 
+
+ - 컬럼에 PRIMARY KEY 추가방법
+   ALTER TABLE [테이블명] ADD CONSTRAINT [PRIMARY KEY명] PRIMARY KEY ([컬럼명])
+
+ - 컬럼에 PRIMARY KEY 삭제방법
+   ALTER TABLE [테이블명] DROP CONSTRAINT [PRIMARY KEY명]
+
+?
+ 

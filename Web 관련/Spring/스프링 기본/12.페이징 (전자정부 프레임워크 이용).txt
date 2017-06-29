@@ -1,0 +1,543 @@
+http://addio3305.tistory.com/89
+
+
+1.설정 및 공통 기능
+
+전자 정부 프레임워크의 페이징 기능을 사용하기 위해서는 몇가지 설정이 필요하다.
+
+[라이브러리]
+
+pom.xml에 전자정부 프레임워크 라이브러리를 추가해야 한다.
+그런데 전자정부 프레임워크는 별도의 저장소에서 다운을 받아야하기 떄문에 repository를 
+등록하고 라이브러리를 추가해주자.
+먼저 repository는 다음과 같다.
+
+<repository>
+    <id>egovframe</id>
+    <url>http://www.egovframe.go.kr/maven/</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+그 다음으로 라이브러리는 다음과 같다.
+
+
+<dependency>
+    <groupid>egovframework.rte</groupid>
+    <artifactid>egovframework.rte.ptl.mvc</artifactid>
+    <version>3.5.0</version>
+</dependency>
+
+
+[페이징 Bean 설정]
+
+다음으로는 페이징을 사용하기 위한 Bean을 설정할 차례이다.
+context-common.xml에 다음의 내용을 작성하자. 
+
+<bean id="textRenderer" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationRenderer"/>   
+    <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+        <property name="rendererType">
+            <map>
+                <entry key="text" value-ref="textRenderer"/>
+            </map>
+        </property>
+    </bean>
+
+이것은 전자정부 프레임워크의 페이지 랜더방식을 결정하는 부분이다. 이에 대한 자세한 설명은
+전자정부 프레임워크의 설명을 참조하길 바란다.
+
+
+[SQL]
+
+페이징의 기능을 구현하기에 앞서 쿼리에 대해서 잠시 설명을 하려고 한다.
+오라클의 페이징 쿼리는 그 종류가 몇가지가 있다.
+그중에서 대표적으로 사용되는 쿼리들은 다음과 같다.
+
+SELECT
+    *
+FROM
+    (SELECT
+        ROWNUM AS RNUM, T1.*
+    FROM
+        (SELECT
+            *
+        FROM
+            TB_BOARD
+        ORDER BY IDX DESC) T1
+    WHERE ROWNUM <= 20)
+ WHERE RNUM >= 0;
+
+또는
+
+SELECT
+    * 
+FROM(
+    SELECT
+        T1.*,
+        ROWNUM AS RNUM,
+        COUNT(*) OVER() AS TOTAL_CNT
+    FROM(
+        SELECT
+            *
+        FROM
+            TB_BOARD
+        ORDER BY IDX DESC) T1
+    )
+WHERE
+    RNUM > 0 AND RNUM <= 20
+
+
+이러한 쿼리는 실행속도도 괜찮고, 대용량 (100만건 이상)의 데이터에서도 큰 성능저하가 없이
+실행이 되기 때문에 많이 사용되는 쿼리이다.
+그런데 필자의 경험상 딱 한번, 이러한 페이징 쿼리가 제대로 동작하지 않는 경우가 있었다.
+첫페이지에서는 20개를 가져오는데, 2페이지에서는 30개, 3페이지에서는 40개 이런식으로 데이터를
+이상하게 가져오는 경우가 딱 한번 있었다.
+그것도 개발서버에서는 문제가 없었는데 실제서버에서 저렇게 동작을 했었다.
+
+그 후로는 이런식으로 페이징 쿼리를 작성하였다.
+
+
+SELECT
+    AAA.*
+FROM(
+    SELECT
+        COUNT(*) OVER() AS TOTAL_COUNT,
+        AA.*
+    FROM(
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY IDX DESC) RNUM,
+            IDX,
+            TITLE,
+            HIT_CNT,
+            CREA_DTM
+        FROM
+            TB_BOARD
+    ) AA
+) AAA
+WHERE
+    AAA.RNUM BETWEEN 0 AND 20
+
+
+바로 ROW_NUMBER() 함수를 이용한 방식이다.
+이러한 방식은 오라클에서 공식적으로 보여주고 있는 방식이다.
+URL의 하단에 Pagination in Getting Row N Through M 부분을 학인하면 된다.
+따라서 앞으로는 위와 같은 쿼리를 이용하여 페이징을 처리를 할 계획이다.
+
+
+여기서 9번째 줄의 ROW_NUMBER() OVER() RNUM 부분이 굉장히 중요하다.
+OVER() 안에서 정렬조건, 즉 정렬을 수행할 컴럼과 순서를 정하고 해당 결과를 
+RNUM이라는 별칭으로 조회를 하고있다.
+
+꼭 여기서 정렬을 수행하고, 그 결과를 RNUM이라는 이름으로 해야한다.
+페이징 쿼리는 프로그램의 여러곳에서 사용이 되기 때문에 공통기능을 작성할 것이고,
+퀴리 역시 마찬가지이다.
+
+공통적으로 사용될 수 있는 부분은 따로 작성을 해서 참조하는 식으로 할 예정이다.
+따라서 해당 컬럼의 이름을 다르게 작성한다면 에러가 발생할 것이다.
+
+맨 마지막의 WHERE절을 보면 AAA.RNUM BETWEEN 0 AND 20 이라고 되어있는것을 볼 수 있다.
+해당 부분이 공통으로 빠질 부분이다. 여기서 AAA,RNUM이 방금 이야기한 ROW_NUMBER() 컬럼인것을
+확인하자. (RNUM이라는 이름이 아니더라도 상관은 없다. 단 , 공통으로 빼는 부분에서는 해당 컬럼의
+이름을 동일하게 맞춰야한다.)
+
+먼저 , TB_BAORD에 데이터를 좀 만들어 놓자.
+기존에 작성을 했을때는 데이터가 몇개 없기 떄문에 페이징이 제대로 동작하는지 확인하기가 어렵다.
+
+BEGIN
+    FOR i IN 1..500 LOOP
+    INSERT INTO TB_BOARD(IDX, TITLE, CONTENTS, HIT_CNT, DEL_GB, CREA_DTM, CREA_ID) VALUES(SEQ_TB_BOARD_IDX.NEXTVAL, '제목 '||i, '내용 '||i, 0, 'N', SYSDATE, 'Admin');
+    END LOOP;
+END;
+
+
+TB_BOARD 테이블에 500건의 데이터를 집어넣는 쿼리이다.
+TB_BOARD 테이블에 기존 테이블에 500건의 데이터를 추가하고 페이징 쿼리를 실행시킨 결과이다.
+화면 하단에서 볼 수 있듯이 20개의 데이터를 정상적으로 조회한 것을 확인할 수 있다.
+여기서 숫자를 0,20 대신에 원하는 부분을 입력하게 되면 해당 데이터가 조회된다.
+
+[AbstractDAO]
+
+이제 DAO에 페이징 쿼리용 메서드를 하나 만드려고 한다. 페이징을 처리하는 로직은 항상 똑같기
+때문에 하나의 메서드를 정의해놓고 해당 메서드를 호출하면 좀 더 편하게 개발을 할 수가 있다.
+AbstractDAO.java 파일에 다음의 내용을 추가한다.
+
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public Map selectPagingList(String queryId, Object params){
+    printQueryId(queryId);
+    Map<String,Object> map = (Map<String,Object>)params;
+    PaginationInfo paginationInfo = null;
+
+    if(map.containsKey("currentPageNo") == false || StringUtils.isEmpty(map.get("currentPageNo")) == true)
+        map.put("currentPageNo","1");
+    paginationInfo = new PaginationInfo();
+    paginationInfo.setCurrentPageNo(Integer.parseInt(map.get("currentPageNo").toString()));
+    if(map.containsKey("PAGE_ROW") == false || StringUtils.isEmpty(map.get("PAGE_ROW")) == true){
+        paginationInfo.setRecordCountPerPage(15);
+    }
+    else{
+        paginationInfo.setRecordCountPerPage(Integer.parseInt(map.get("PAGE_ROW").toString()));
+    }
+
+    paginationInfo.setPageSize(10);     
+    int start = paginationInfo.getFirstRecordIndex();
+    int end = start + paginationInfo.getRecordCountPerPage();
+    map.put("START",start+1);
+    map.put("END",end);
+    params = map;
+    Map<String,Object> returnMap = new HashMap<String,Object>();
+    List<Map<String,Object>> list = sqlSession.selectList(queryId,params);
+     
+    if(list.size() == 0){
+        map = new HashMap<String,Object>();
+        map.put("TOTAL_COUNT",0);  
+        list.add(map);
+        if(paginationInfo != null){
+            paginationInfo.setTotalRecordCount(0);
+            returnMap.put("paginationInfo", paginationInfo);
+        }
+    }
+    else{
+        if(paginationInfo != null){
+            paginationInfo.setTotalRecordCount(Integer.parseInt(list.get(0).get("TOTAL_COUNT").toString()));
+           returnMap.put("paginationInfo", paginationInfo);
+        }
+
+    }
+
+    returnMap.put("result", list);
+    return returnMap;
+
+}
+
+
+소스를 간단히 살펴보자
+먼저 8번째 줄에서 볼 수 있는 currentPageno는 현재 페이지 번호를 의미한다. 예상치 못한
+상황에서 이 값이 없을 경우 에러가 발생하는걸 방지하기 위한 부분이다.
+
+그 다음 볼수 있는 PaginationInfo 클래스는 페이징에 필요한 정보를 가지고 있는 전자정부
+프레임워크의 클래스다. 이 클래스에 여러가지 값을 설정하고 그 값을 이용해서 화면에 출력할 
+것을 계산하기도 한다.
+
+그 다음으로는 13~18번째 줄은 한 페이지에 몇개의 행을 보여줄 것인지를 설정한다. 만약 화면에서
+특정한 값을 보내준다면 그에 맞는 행을 보여주고, 그 값이 없으면 15개를 보여주도록 하였다.
+
+19번쨰줄은 한번에 보여줄 페이지의 크기를 지정하였다. [이전] 1~10 [다음] 식으로 나올때
+1~10의 10개를 설정한 것이다.
+
+그 다음으로 시작과 끝 값을 계산해서 파라미터를 추가해주고 쿼리를 실행시킨
+
+
+AbstractDAO의 selectList는 단순히 결과를 반환하고 끝났지만, 여기서는 추가로 작업을 해야할 것이
+남아있다. 만약 조회된 결과값이 없으면 그에 해당하는 결과를 화면에 표시할 수 있도록 
+TOTAL_COUNT라는 값을 추가해주었다.
+
+그리고 반환될 결과에 위에서 만든 paginationInfo 클래스와 조회 후 결과리스트를 각각 
+paginnationInfo 와 result라는 ket로 저장하여 반환을 하여싸.
+
+
+[태그 라이브러리 추가]
+
+페이징 태그를 작성하기 위해서 JSP에서는 전자정부 태그 라이브러리를 추가해야한다.
+include-header.jspf 파일에 다음의 태그 라이브러리를 추가하자.
+
+<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
+
+
+2. 개발 소스
+
+위에서 작성한것은 공통적으로 사용될 부분을 작성하였다. 이제 이러한 것을 바탕으로 기존의 
+게시판을 변경하도록 하겠다.
+
+[JSP]
+
+먼저 jsp를 변경하도록 하자.
+boardList.jsp를 다음과 같이 수정하도록 한다.
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<%@ include file="/WEB-INF/include/include-header.jspf" %>
+</head>
+<body>
+    <h2>게시판 목록</h2>
+    <table class="board_list">
+        <colgroup>
+            <col width="10%"/>
+            <col width="*"/>
+            <col width="15%"/>
+            <col width="20%"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">글번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">조회수</th>
+                <th scope="col">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:choose>
+                <c:when test="${fn:length(list) > 0}">
+                    <c:forEach var="row" items="${list}" varStatus="status">
+                        <tr>
+                            <td>${row.IDX }</td>
+                            <td class="title">
+                                <a href="#this" name="title">${row.TITLE }</a>
+                                <input type="hidden" id="IDX" value="${row.IDX }">
+                            </td>
+                            <td>${row.HIT_CNT }</td>
+                            <td>${row.CREA_DTM }</td>
+                        </tr>
+                    </c:forEach>  
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="4">조회된 결과가 없습니다.</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>   
+        </tbody>
+    </table>
+    
+    <c:if test="${not empty paginationInfo}">
+        <ui:pagination paginationInfo = "${paginationInfo}" type="text" jsFunction="fn_search"/>
+    </c:if>
+    <input type="hidden" id="currentPageNo" name="currentPageNo"/>
+    <br/>
+    <a href="#this" class="btn" id="write">글쓰기</a>
+    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#write").on("click", function(e){ //글쓰기 버튼
+                e.preventDefault();
+                fn_openBoardWrite();
+            }); 
+
+             
+
+            $("a[name='title']").on("click", function(e){ //제목 
+                e.preventDefault();
+                fn_openBoardDetail($(this));
+            });
+        });
+
+
+        function fn_openBoardWrite(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardWrite.do' />");
+            comSubmit.submit();
+        }
+
+         
+
+        function fn_openBoardDetail(obj){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+            comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
+            comSubmit.submit();
+        }
+         
+
+        function fn_search(pageNo){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+            comSubmit.addParam("currentPageNo", pageNo);
+            comSubmit.submit();
+        }
+    </script> 
+</body>
+</html>
+
+먼저 48~50번쨰 줄을살펴보자.
+이 부분이 화면에서 페이징으로 바뀔 부분이다. 전자정부 프레임워크에서는 페이징을 커스텀태그를
+이용하면 화면에 보여주도록 구성되어있다. 이게 무슨 소리인지는 잠시 후에 결과를 보면서 이야기를
+하겠다.
+
+여기서 살펴볼것은 <ui:pagination> 태그에서 paginationInfo = "${paginationInfo}" 와 
+jsFunction = "fn_search" 부분이다.
+
+먼저 paginationInfo는 페이징 태그를 만들기 위해서 필요한 정보들을 의미한다. 앞에서
+AbstracDAO에서 결과를 반환할 때 , paginationInfo 와 result를 반환하도록 설정한것을 다시 
+한번 확인해보자.
+
+그때 반환했던 paginationInfo 가 여기서 사용되는 것이다.
+그리고 jsFuncion은 페이징 태그를 클릭했을 때 수행할 함수를 의미한다. 여기서는 fn_search 라는
+함수를 호출하도록 하였다.
+
+그 다음으로 51번 줄에서는 currentPaageNo라는 hidden 태그를 놓고, 현재 페이지 번호를 저장하도록
+하였다.
+
+그 다음으로는 84번째줄의 fn_search 함수를 살펴보자.
+이 함수가 위에서 jsFunction에서 호출하려고 하는 함수이다.
+특별한 부분은 없고 게시판 목록을 호출할 때 currentPageNo라는 값을 같이 전송해주는것을 확인하자.
+
+여기서 잠시 앞으로 모든 작업을 끝낸 후의 결과를 한번 보고 넘어가자.
+앞으로 모든 작업을 완료하고 실행시키면 다음과 같은 화면을 볼 수 있다.
+
+게시글 목록이 15개씩 보여지면서 하단에는 [처음][이전]1~10 [다음][마지막] 이라는 태그가 생긴것을
+확인할 수 있다.
+위에서 <ui:pagination> 태그 부분이 실제 화면에서는 이런식으로 화면에 표시가 된다.
+
+
+[JAVA]
+
+이제 서버 부분을 하나씩 살펴보도록 하겠다, Controller, Service , DAO 순서로 하나씩 살펴보자.
+
+1)Controller 
+
+SampleController.java 파일을 열어서 openBoardList.do를 다음과 같이 수정하다.
+
+
+RequestMapping(value="/sample/openBoardList.do")
+public ModelAndView openBoardList(CommandMap commandMap) throws Exception{
+
+    ModelAndView mv = new ModelAndView("/sample/boardList");
+    Map<String,Object> resultMap = sampleService.selectBoardList(commandMap.getMap());
+
+    mv.addObject("paginationInfo", (PaginationInfo)resultMap.get("paginationInfo"));
+    mv.addObject("list", resultMap.get("result"));
+    return mv;
+}
+
+
+기존의 openBoardList가 약간 수정되었다.
+먼저 sampleSrvice.selectBoardList의 결과로 map을 반환받는것을 볼 수 있다. 이것은 앞에서
+AbstactDAO를 만들었들 때 paginationInfo 와 result 두가지를 반화도록 했기 때문에 결과같이
+list 에서 map 형식으로 수정되었다.
+그리고 그 결과값인 resultMap에서 paginationInfo와 result 를 mv에 담아주는것을 확인할 수 있다.
+앞의 jsp에서 <ui:paginationInfo = "${paginationInfo}" 락 했던것을 기억해보자.
+그 값을 사용할 수 있도록 클라이언트에 paginationInfo 라는 클래스를 보내주었다.
+
+
+2) Service
+
+SampleService.java 파일과 SampleServiceImpl.java 파일의 selectBoardList 메서드를 각각
+다음과 같이 변견한다.
+
+
+
+SampleService.java
+ 
+Map<String, Object> selectBoardList(Map<String, Object> map) throws Exception;
+ 
+
+
+SampleServiceImpl.java
+
+@Override
+public Map<String, Object> selectBoardList(Map<String, Object> map) throws Exception {
+    return sampleDAO.selectBoardList(map);
+}
+
+
+리턴값이 list에서 map으로 변경되었다.
+
+3)DAO
+
+sampleDAO.java 파일을 다음과 같이 변경한다.
+
+
+@SuppressWarnings("unchecked"
+public Map<String, Object> selectBoardList(Map<String, Object> map) throws Exception{
+    return (Map<String, Object>)selectPagingList("sample.selectBoardList", map);
+}
+
+
+DAO에서는 selectList 대신 방금 만든 selectPagingList를 사용하도록 변경하였다.
+그리고 리턴값도 마찬가지로 map인 것을 볼수 있다.
+
+
+4)XML
+
+이제 마지막으로 쿼리문을 변경할 차례이다.
+Sample_SQL.xml에서 selectBoardList 쿼리를 다음과 같이 변경하자.
+
+<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
+    <include refid="common.pagingPre"/> 
+    <![CDATA[
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY IDX DESC) RNUM,
+            IDX,
+            TITLE,
+            HIT_CNT,
+            CREA_DTM
+        FROM
+            TB_BOARD
+        WHERE
+            DEL_GB = 'N'
+    ]]>
+    <include refid="common.pagingPost"/> 
+</select>
+
+여태까지 작성했던 쿼리들과는 약간 다른것을 확인할 수 있다.
+쿼리의 앞,뒤로 <include> 라는게 붙어있는 것을 볼 수 있다.
+이것은 MyBatis의 기능으로 쿼리의 일부분을 만들어놓고, 그것을 가져다 사용할 수 있도록 해주는
+방법이다.
+
+위에서 페이징쿼리에 대해서 이야기할 때, "페이징 쿼리는 프로그램의 여러곳에서 사용이 되기 때문에
+공통기능으로 작성할 것이고, 쿼리 역시 마찬가지이다." 라는 이야기를 했었다.
+
+여기서 그것을 확인할 수 있다. 페이징 쿼리에서 항상 똑같이 사용되는 부분을 각 paginPer와 
+pagingPost 라는 이름으로 만들어놓고, 실제 개발을 할때는 이 부분을 그냥 붙여넣는 식으로 해서
+최대한 중복되는 것을 적게 하였다.
+
+따라서 페이징이 들어가는 다른 모든 부분도 이와 같이 앞,뒤로 페이징 쿼리만 참조하고 그 외 
+부분은 페이징을 신경쓰지 않고 쿼리를 장석하면 된다.
+단, 1) RNUM은 필수로 만들어줘야 한다.
+2) 모든 쿼리를 이렇게 작성할 수는 없다. 화면에 보여줄 결과와 쿼리에 따라서는 
+페이징 쿼리 부분도 약간 바꿔야 할수도 있다. 그럴때는 어쩔수 없이 전체적인 쿼리를 직접 써야한다.
+그렇지만 그런 경우는 많이 없다.
+
+어쨋든 앞에서 페이징 쿼리에 대해서 설명했기 때문에 여기서 쿼리에 대해서 설명하는것은 넘어가도록
+하겠다.
+
+그럼 마지막으로 pagingPer 와 pagingPost를 작성하면된다.
+Common_SQL.xml을 열고 다음을 작성하자.
+
+<sql id="pagingPre">
+
+    <![CDATA[
+        SELECT
+            AAA.*
+        FROM(
+            SELECT
+                COUNT(*) OVER() AS TOTAL_COUNT,
+                AA.*
+            FROM(  
+    ]]>
+</sql>
+
+ 
+
+<sql id="pagingPost">
+    <![CDATA[
+            ) AA
+        ) AAA
+        WHERE
+            AAA.RNUM BETWEEN #{START} AND #{END}
+    ]]>
+</sql>
+
+앞에서 페이징 쿼리에 대해ㅓ 설명했던 부분들이다. 따라서 특별한 설명은 하지 않겠다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

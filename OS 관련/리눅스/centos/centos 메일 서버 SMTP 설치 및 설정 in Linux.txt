@@ -1,0 +1,93 @@
+http://lightandtruth.tistory.com/9
+1. sendmail 관련 패키지 설치
+
+일단 sendmail 을 사용하기 위해서는 아래의 3개의 패키지를 설치해야 한다.
+
+<표준 패키지>
+sendmail - 메일 전송 에이전트
+<추가 패키지>
+sendmail-cf - sendmail을 재설정 하느데 필요한 파일들
+sendmail-devel
+
+먼저, sendmail 프로그램 관련 어떤 패키지들이 설치 되었는지 확인해 본다.
+
+# rpm -qa | grep sendmail
+
+위의 3개의 패키지 중에 설치 되지 않은 패키지를 설치한다.
+(제 리눅스에서는 sendmail-devel 이 설치되지 않아서 설치했습니다.)
+
+# yum install sendmail sendmail-cf sendmail-devel
+
+
+2. ?sendmail 설정
+
+2-1. sendmail.cf
+
+sendmail에서는 릴리즈 제한을 위해서 로컬에서만 메일을 발송하도록 하고 있다. 
+이 설정을 아래와 같이 변경 시켜서, 릴레이는 허용하지 않고, 어디에서나 메일 클라이언트(아웃룩)을 통해서 발송할 수 있도록 설정을 변경시키자.
+아래 파일의 해당 줄을 다음과 같이 변경시키면 된다.
+
+# vi /etc/mail/sendmail.mc
+52줄 : TRUST_AUTH_MECH('EXTERNAL DIGEST-MD5 CRAM-MD5 LOGIN PLAIN') dnl
+53줄 : define('confAUTH_MECHANISMS' , 'EXTERNAL GSSAPI DIGEST-MD5 CRAM-MD5 LOGIN PLAIN') dnl
+116줄 : dnl DAEMON_OPTIONS('Port=smtp,Name=MTA') dnl
+
+위의 파일로 sendmail.cf 파일을 생성한다.
+
+# m4 sendmail.mc > sendmail.cf
+
+2-2. /etc/hosts
+
+메일의 정상적인 수신을 위해서는, 호스트명이 존재해야 한다.
+(fedora10.jjangmin.com 은 예제 호스트 이름임,
+ 192.168.20.201 대신에 해당 서버의 ip주소를 입력하면 됩니다.)
+
+# vi /etc/hosts
+127.0.0.1         fedora10.jjangmin.com fedora10 localhost.localdomain localdomain
+::1         localhost6.localdomain6 localhost6
+192.168.20.201        mail.jjangmin.com        mail
+
+2-3. /etc/mail/local-host-names
+
+메일을 수신할 호스트명을 설정한다.
+
+# vi /etc/mail/local-host-names
+fedora10.jjangmin.com
+
+
+3. sendmail 서비스 시작
+
+# service sendmail start
+
+# chkconfig --level 2345 sendmail on
+
+sendmail 이 리눅스 부팅시 실행되도록 설정한다.
+
+
+4. sendmail 테스트
+
+테스트 하기 전에, 메일 전송 프로토콜인 SMTP를 사용하기 위해서 TCP 25번 포트를 방화벽에서 열어아 한다.
+
+# telnet 192.168.20.201 25
+<안내 메시지가 나옴>
+mail from:root@fedora10.jjangmin.com
+<성공 메시지가 나옴>
+rcpt to:testmail@daum.net
+<성공 메시지가 나옴>
+data
+<메시지 작성 후 '.' 입력>
+quit
+
+
+5. SMTP 인증 관련 설정
+
+아웃룩에서 SMTP를 사용해서 메일을 보내기 위해서 추가로 설정해 주어야 하는 서비스가 있다.
+saslauthd 라는 데몬을 돌려 줘야 한다, 시간이 없어서 자세히 못 알아 봤지만..
+아마도 로그인 인증에 필요한 데몬인것 같다. (아시는 분 리플로 남겨 주시면 감사하겠습니다.^^)
+그래서 위의 데몬을 돌려 줘야 아웃룩에서 SMTP로 인증하여 메일을 보낼 수 있다.
+
+# service saslauthd start
+
+
+
+

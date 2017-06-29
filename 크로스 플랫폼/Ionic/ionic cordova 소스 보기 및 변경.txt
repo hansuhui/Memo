@@ -1,0 +1,8 @@
+[소스보기]
+plugins 파일에 보면 추가한 코르도바 plugin이있다
+각 플랫폼 소스로 이루어져 있음
+
+[소스변경-안드로이드]
+
+/platforms/android/src/com/wordsbaking/cordova
+

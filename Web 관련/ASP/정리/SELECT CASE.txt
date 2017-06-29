@@ -1,0 +1,22 @@
+SELECT CASE intNumber
+CASE 1
+    Response.Write "intNumber 에 들어있는 수는 1입니다!"
+CASE 2
+    Response.Write "intNumber 에 들어있는 수는 2입니다!"
+CASE 3
+    Response.Write "intNumber 에 들어있는 수는 3입니다!"
+CASE 4
+    Response.Write "intNumber 에 들어있는 수는 4입니다!"
+CASE 5
+    Response.Write "intNumber 에 들어있는 수는 5입니다!"
+CASE 6
+    Response.Write "intNumber 에 들어있는 수는 6입니다!"
+CASE 7,8,9
+    Response.Write "intNumber 에 들어있는 수는 7,8,9 중 하나입니다!"
+CASE 10
+    Response.Write "intNumber 에 들어있는 수는 10입니다!"
+CASE ELSE
+    Response.Write "intNumber 에 들어있는 수는 1부터 10 사이의 정수가 아닙니다."
+END SELECT
+
+

@@ -1,0 +1,28 @@
+해당사이드로 로그인 정보를 날리고           
+
+ $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: "http://admin.dotory-vip.com/Admin_Control/Login/LoginChk.asp",
+                async: false,
+                data: { AdminID: "admin", AdminPW: 123456 } //사용할 파라미터값 넘기기
+            })
+
+
+$("#id").attr("src", "http://admin.dotory-vip.com/Admin_Control/04_Game/List.asp?SRS_Sports=사다리 게임&SRL_League=&SFlag=S&GSITE=&IG_TYPE=9");
+
+프레임 정보를 바꾸거나
+
+해당 로그인 폼을따서 만들어서 
+
+서브밋 한후
+
+
+ login.document.flogin.submit();
+  timer = setTimeout(function () {
+  setTimeout($("#login").attr("src", "http://named.com/page/ladder/stats.php"), 1500);
+  }, 500);
+
+원하는 페이지로 이동
+
+

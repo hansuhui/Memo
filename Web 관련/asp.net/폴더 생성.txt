@@ -1,0 +1,12 @@
+
+using System.IO;
+
+
+string serverPath = Server.MapPath("~" + "/Upload/CarDeal/" + GetDate + "");
+
+DirectoryInfo Directory = new DirectoryInfo(@serverPath);
+
+if (!Directory.Exists)
+                    {
+                        Directory.Create();
+                    }

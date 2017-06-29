@@ -1,0 +1,74 @@
+
+
+
+			$(".submenu li a").each(function () {
+
+				if ($(this).attr("href").toLocaleLowerCase() == page) {
+					$(this).addClass("submenufix");
+					$(this).parents("ul").first().show();
+					$(this).parents("h4").first().removeClass("submenuClick");
+
+				}
+
+			});
+
+
+
+
+jQuery의 toggleClass()를 사용하기로 마음 먹었다.
+만약 정상 작동한다면 리스트를 클릭할 때마다 <li>에 <li class="on">처럼 클래스명이 추가 또는 제거가 돼야 한다.
+jQuery 소스는 아래와 같다.
+
+
+$("#list > li").bind( "click" , function(){
+  $(this).toggleClass("on");
+});
+
+
+
+ addClass()와 removeClass()를 사용하여 동일한 기능을 구현하기로 했다.
+
+
+$("#list > li").bind( "click" , function(){
+  if( $(this).hasClass("on") ){
+    $(this).removeClass("on");
+  }
+  else{
+    $(this).addClass("on");
+  }
+});
+
+
+
+$("#list > li").bind( "click" , function(){
+  if( $(this).hasClass("on") ){
+    $(this).css("background","red");
+  }
+  else{
+    $(this).css("background","blue");
+  }
+});
+
+
+
+
+$(" #list > li > input ").bind("click", function(){
+ $(this).parent("li").toggleClass("on");
+});
+ 
+
+
+태그에 따로 이름을 주고 그 값을 받아오기
+
+<option  pcode=" + data[i].PCODE + " price=" + data[i].PRICE + " value=" + data[i].TITLE + ">" + data[i].TITLE + "</option>
+
+
+$("#GIFTTITLE option:selected").attr("pcode");
+
+   해당 아이디에 속성이 맞는거에 pcode 값을 가져옴
+
+<select id="GIFTTITLE">
+<option pcode="값">설정</option>
+
+
+

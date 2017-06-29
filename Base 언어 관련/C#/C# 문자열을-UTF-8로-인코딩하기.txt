@@ -1,0 +1,26 @@
+  static void Main(string[] args)
+        {
+            string sample = "테스트";
+            Console.WriteLine("<Unicode -> UTF-8 변환하기>");
+            Console.WriteLine(" - 문자열 : {0}", sample);
+
+            //인코딩 방식을 지정
+            System.Text.Encoding utf8 = System.Text.Encoding.UTF8;
+            
+            //변환하고자 하는 문자열을 UTF8 방식으로 변환하여 byte 배열로 반환
+            byte[] utf8Bytes = utf8.GetBytes(sample);
+            
+            //UTF-8을 string으로 변한
+            string utf8String = "";
+            Console.Write(" - Encode: ");
+            foreach (byte b in utf8Bytes)
+            {
+                 utf8String += "%" + String.Format("{0:X}", b);
+            }
+            Console.WriteLine(utf8String);
+ 
+
+            // 인코된 문자열 디코딩
+            string Unicode = utf8.GetString(utf8Bytes);
+            Console.WriteLine(" - Decode: " + Unicode);
+

@@ -1,0 +1,919 @@
+http://www.phpschool.com/gnuboard4/bbs/board.php?bo_table=teach&wr_id=361&page=7
+
+
+[mysqladmin] 
+
+▷mysqladmin -u root -p proc stat(=processlist) --> 서버에 현재 활동중인 threads상태보기 
+Enter password: 
++------+------+-----------+----+---------+------+-------+------------------+ 
+| Id  | User | Host      | db | Command | Time | State | Info            | 
++------+------+-----------+----+---------+------+-------+------------------+ 
+| 3704 | root | localhost |    | Query  | 0    |      | show processlist | 
++------+------+-----------+----+---------+------+-------+------------------+ 
+Uptime: 281302  Threads: 1  Questions: 27330  Slow queries: 0  Opens: 1771 
+Flush tables: 1  Open tables: 64 Queries per second avg: 0.097 
+
+
+▷mysqladmin status 
+
+Uptime  : the MySQL server 시작된 후 현재까지 시간 (초) 
+
+Threads  : 현재 디비서버에 연결된 유저수 
+
+Questions  : 서버시작후 지금까지 요청된 쿼리수  
+
+Slow queries  : --log-slow-queries[=file_name] option로 시작된 서버가 variables에 지정된 
+                long_query_time seconds시간보다 큰 쿼리시간을 가진 요청수 
+
+Opens  : 서버가 시작된 후 현재까지 열렸던 테이블 수 
+
+Flush tables  : flush ..., refresh, and reload commands된 수 
+
+Open tables  : 현재 열려 있는 테이블 수 
+
+Queries per second avg : 평균 초당 쿼리수 
+
+Memory in use  :the mysqld code에 의해 직접 할당된 메모리 
+(only available when MySQL is compiled with --with-debug=full).  
+
+Max memory used  : the mysqld code에 의해 직접 할당된 최대메모리 
+(only available when MySQL is compiled with --with-debug=full).  
+
+
+▷mysqladmin -u root -p ping  -->디비서버가 살아있는지 확인    
+Enter password: 
+mysqld is alive 
+
+
+▷mysqladmin -u root -p extended-status(※mysql>show stauts) 
++--------------------------+-----------+ 
+| Variable_name            | Value    | 
++--------------------------+-----------+ 
+| Aborted_clients          | 0        | 
+| Aborted_connects        | 7        | 
+| Bytes_received          | 1273369  | 
+| Bytes_sent              | 334385278 | 
+| Connections              | 3656      | 
+| Created_tmp_disk_tables  | 0        | 
+| Created_tmp_tables      | 0        | 
+| Created_tmp_files        | 0        | 
+| Delayed_insert_threads  | 0        | 
+| Delayed_writes          | 0        | 
+| Delayed_errors          | 0        | 
+| Flush_commands          | 1        | 
+| Handler_delete          | 4        | 
+| Handler_read_first      | 1766      | 
+| Handler_read_key        | 3525      | 
+| Handler_read_next        | 2052      | 
+| Handler_read_prev        | 1859      | 
+| Handler_read_rnd        | 757854    | 
+| Handler_read_rnd_next    | 1975607  | 
+| Handler_update          | 3190      | 
+| Handler_write            | 36        | 
+| Key_blocks_used          | 245      | 
+| Key_read_requests        | 7473      | 
+| Key_reads                | 245      | 
+| Key_write_requests      | 386      | 
+| Key_writes              | 209      | 
+| Max_used_connections    | 1        | 
+| Not_flushed_key_blocks  | 0        | 
+| Not_flushed_delayed_rows | 0        | 
+| Open_tables              | 64        | 
+| Open_files              | 128      | 
+| Open_streams            | 0        | 
+| Opened_tables            | 1768      | 
+| Questions                | 27128    | 
+| Select_full_join        | 0        | 
+| Select_full_range_join  | 0        | 
+| Select_range            | 22        | 
+| Select_range_check      | 0        | 
+| Select_scan              | 7694      | 
+| Slave_running            | OFF      | 
+| Slave_open_temp_tables  | 0        | 
+| Slow_launch_threads      | 0        | 
+| Slow_queries            | 0        | 
+| Sort_merge_passes        | 0        | 
+| Sort_range              | 38        | 
+| Sort_rows                | 757848    | 
+| Sort_scan                | 5121      | 
+| Threads_cached          | 0        | 
+| Threads_created          | 3655      | 
+| Threads_connected        | 1        | 
+| Threads_running          | 1        | 
+| Uptime                  | 279770    | 
++--------------------------+-----------+ 
+
+
+▷mysqladmin -u root -p variables(※mysql>show valiables) 
++-------------------------+-----------------------------------------+ 
+| Variable_name          | Value                                  | 
++-------------------------+-----------------------------------------+ 
+| ansi_mode              | OFF                                    | 
+| back_log                | 50                                      | 
+| basedir                | /usr/local/mysql/                      | 
+| binlog_cache_size      | 32768                                  | 
+| character_set          | euc_kr                                  | 
+| character_sets          | euc_kr dec8 dos german1 hp8 koi8_ru latin1 
+latin2 swe7 usa7 cp1251 danish hebrew win1251 estonia hungarian koi8_ukr 
+win1251ukr greek win1250 croat cp1257 latin5 | 
+| concurrent_insert      | ON                                      | 
+| connect_timeout        | 5                                      | 
+| datadir                | /usr/local/mysql/data/                  | 
+| delay_key_write        | ON                                      | 
+| delayed_insert_limit    | 100                                    | 
+| delayed_insert_timeout  | 300                                    | 
+| delayed_queue_size      | 1000                                    | 
+| flush                  | OFF                                    | 
+| flush_time              | 0                                      | 
+| have_bdb                | NO                                      | 
+| have_gemini            | NO                                      | 
+| have_innobase          | NO                                      | 
+| have_isam              | YES                                    | 
+| have_raid              | NO                                      | 
+| have_ssl                | NO                                      | 
+| init_file              |                                        | 
+| interactive_timeout    | 28800                                  | 
+| join_buffer_size        | 131072                                  | 
+| key_buffer_size        | 8388600                                | 
+| language                | /usr/local/mysql/share/mysql/korean/    | 
+| large_files_support    | ON                                      | 
+| locked_in_memory        | OFF                                    | 
+| log                    | OFF                                    | 
+| log_update              | OFF                                    | 
+| log_bin                | OFF                                    | 
+| log_slave_updates      | OFF                                    | 
+| long_query_time        | 10                                      | 
+| low_priority_updates    | OFF                                    | 
+| lower_case_table_names  | 0                                      | 
+| max_allowed_packet      | 1048576                                | 
+| max_binlog_cache_size  | 4294967295                              | 
+| max_connections        | 100                                    | 
+| max_connect_errors      | 10                                      | 
+| max_delayed_threads    | 20                                      | 
+| max_heap_table_size    | 16777216                                | 
+| max_join_size          | 4294967295                              | 
+| max_sort_length        | 1024                                    | 
+| max_tmp_tables          | 32                                      | 
+| max_write_lock_count    | 4294967295                              | 
+| myisam_recover_options  | OFF                                    | 
+| myisam_sort_buffer_size | 8388608                                | 
+| net_buffer_length      | 16384                                  | 
+| net_read_timeout        | 30                                      | 
+| net_retry_count        | 10                                      | 
+| net_write_timeout      | 60                                      | 
+| open_files_limit        | 0                                      | 
+| pid_file                | /usr/local/mysql/data/3egg.com.pid      | 
+| port                    | 3306                                    | 
+| protocol_version        | 10                                      | 
+| record_buffer          | 131072                                  | 
+| query_buffer_size      | 0                                      | 
+| safe_show_database      | OFF                                    | 
+| server_id              | 0                                      | 
+| skip_locking            | ON                                      | 
+| skip_networking        | OFF                                    | 
+| skip_show_database      | OFF                                    | 
+| slow_launch_time        | 2                                      | 
+| socket                  | /tmp/mysql.sock                        | 
+| sort_buffer            | 2097144                                | 
+| table_cache            | 64                                      | 
+| table_type              | MYISAM                                  | 
+| thread_cache_size      | 0                                      | 
+| thread_stack            | 65536                                  | 
+| timezone                | KST                                    | 
+| tmp_table_size          | 1048576                                | 
+| tmpdir                  | /tmp/                                  | 
+| version                | 3.23.32                                | 
+| wait_timeout            | 28800                                  | 
++-------------------------+-----------------------------------------+ 
+
+
+[그외] 
+mysqladmin create [databasename] : Create a new database. 
+
+mysqladmin drop [databasename] : Delete a database and all its tables. 
+
+mysqladmin flush-hosts : Flush all cached hosts. 
+
+mysqladmin flush-logs : Flush all logs. 
+
+mysqladmin flush-tables : Flush all tables. 
+
+mysqladmin flush-privileges : Reload grant tables (same as reload). 
+
+mysqladmin kill [id(,id,...)]: Kill mysql threads. 
+
+mysqladmin password : Set a new password. Change old password to new-password. 
+
+mysqladmin reload : Reload grant tables. 
+
+mysqladmin refresh : Flush all tables and close and open logfiles. 
+
+mysqladmin shutdown : Take server down. 
+
+mysqladmin slave-start : Start slave replication thread. 
+
+mysqladmin slave-stop : Stop slave replication thread. 
+
+mysqladmin version : Get version info from server. 
+
+
+
+▷ mysqladmin -u root -p variables(※mysql>show valiables) 
+----------------------------------------------------------- 
+ansi_mode 
+on으로 되어있으면 --ansi로 시작된 것이다(Running MySQL in ANSI Mode를 참조하고,설명은 다음에) 
+
+back_log 
+mysql이 가지는 현저한 커넥션요청수 
+메인 mysql 스레드가 짧은시간에 매우 많은 커넥션이 일어났을때 생기며, 이때 그러한 커넥션을 체크하고 
+새로운 스레드를 생성시키기위해 생기지만 이러한 현상은 극히 적게 발생하는 것이다. 
+back_log는 mysql이 순간적으로 새로운 요청에 답변하는 것을 멈추기전 짧은 시간동안 얼마나 많은 요청들이 
+쌓일 수있는지 알려준다. 만약, 짧은 시간동안 많은 수의 커넥션이 생길것을 예상한다면 back_log를 증가시켜주어야 한다 
+back_log를 다른말로 표현하면 들어오는 TCP/IP커넥션에 대해서 귀기울이는 큐의 수이다. 
+사용자OS마다 이러한 큐의 사이즈에 한계가 있다. 따라서, 자신들이 가지고 있는 OS의 메뉴얼을 참고하여 
+최대치가 얼마인지 확인하여야 한다. 또한, 자신의 OS시스템이 가지는 한계치보다 높게 back_log를 가지면 효가가 없다. 
+
+basedir 
+mysql이 설치된 기본 디렉토리 
+
+-------------------------------------------------------------------------------------------------------------- 
+bdb_cache_size 
+bdb테이블에 대한 rows와 인데스 케쉬에 할당된 버퍼 
+bdb테이블을 사용하지않는다면 시작할 때 --skip-dbd로 시작해야 이러한 케쉬에 대해 메모리를 낭비하지 않는다 
+
+bdb_log_buffer_size 
+dbd테이블의 인덱스와 rows를 케쉬하는데 할당된 버퍼 
+bdb테이블을 사용하지않는다면 시작할 때 --skip-dbd로 시작해야 이러한 케쉬에 대해 메모리를 낭비하지 않는다 
+
+bdb_home 
+--dbd-home옵션으로 설치했을대 나타나는 버클리디비 홈디렉토리 
+
+bdb_max_lock 
+긴 트랙잭션이나 mysql이 쿼리계산시에 많은 rows를 검사해야만 할때, lock테이블이 12개의 에러혹은 lock이 가능하지 않는 
+dbd타입의 에러가 발생되면 bdb_max_lock를 증가시켜야한다. 디폴트는 1000이며 bdb테이블을 활성화시킬수있다 
+
+bdb_logdir 
+--bdb-logdir 옵션을 주었을때 나타난다 
+
+bdb_shared_data 
+--bdb-shared-data을 사용하면 on된다 
+
+bdb_tmpdir 
+--bdb-tmpdir옵션을 주었을 때 
+
+※ 위는 버클리디비를 사용하였을 때 나타나는 values이다 
+----------------------------------------------------------------------------- 
+
+binlog_cache_size. 
+트랜젝션동안 binary log에 대해 sql문을 잡고있는 케쉬사이즈 
+큰 다중문 트랜젝션을 빈번히 사용한다면, 이 사이즈를 높게잡아 퍼포먼스를 증가시킬수있다 
+자세한 것은 BEGIN/COMMIT/ROLLBACK Syntax를 참조하라 
+
+character_set 
+디폴트 문자셋(현재 세팅한) 
+
+character_sets 
+지원하는 모든 문자셋 
+
+concurrent_inserts 
+디폴트로 on되어있으면 mysql은 select하는 동안에 동시에 myisam테이블에 insert를 사용할 수있도록한다 
+시작시 off로 하려면 --safe or --skip-new로 해주어야 한다 
+
+connect_timeout 
+mysqld server가 Bad handshake에 반응하기전 연결된 패킷에 대해 기다리는 시간(초) 
+
+datadir 
+mysql 데이타가 들어있는 홈디렉토리 
+
+delay_key_write 
+(디폴트로 )on되어있으면 mysql은 delay_key_write option을 테이블생성에 honor(??)한다 
+이 옵션과 함께 테이블에 대한 key buffer는 모든 인덱스 update시에 flush하지 않고 테이블이 잠겨질때만 flush한다 
+이것은 key가 많을때 쓰기 속도를 높일 수있으나, 이를 사용하려면 myisamchk --fast --force함께 모든 테이블에 자동 체크를 
+추가하여야 한다. mysqld를 --delay-key-write-for-all-tables option으로 시작하면, 모든 테이블들이 마치 the delay_key_write option 
+으로 생성된 것으로 취급된다. 
+mysqld를 --skip-new or --safe-mode로 시작함으로써 이런 flag를 없앨수 있다. 
+
+
+delayed_insert_limit 
+delayed_insert_limit rows를 삽입한 후에 INSERT DELAYED handler는 어떠한 select문들이 해결되지 않았는지 체크한다 
+만약 해결되지않은 select문들이 있다면 실행한다. 
+
+delayed_insert_timeout 
+INSERT DELAYED thread는 얼마나 오래동안 종료되기전 insert문들을 기다려야 하는지를 나타낸다. 
+
+delayed_queue_size 
+INSERT DELAYED를 처리하는데 할당된 rows의 queue사이즈 
+queue가 풀되면 INSERT DELAYED를 행하는 클라이언트는 queue에 다시 여유가 생길때까지 기다릴 것이다. 
+
+flush 
+--flush option으로 시작된 mysql은 on으로 표시된다 
+
+flush_time 
+non-zero value로 세팅되면 매번 flush_time시 모든 테이블이 닫히는 것을 기다린다.(디스크에 resources and sync things를 비우기 위해) 
+작은 리소스를 가지는 Win95, Win98에서 이러한 옵션을 사용하기를 추천한다. 
+
+ft_min_word_len 
+FULLTEXT index에 포함된 최소문자길이 
+이 값을 바꾼후에는 FULLTEXT index를 재생성해야만 한다 
+
+ft_max_word_len 
+FULLTEXT index에 포함된 최대문자길이 
+이 값을 바꾼후에는 FULLTEXT index를 재생성해야만 한다 
+
+ft_max_word_len_sort 
+REPAIR, CREATE INDEX, or ALTER TABLE에서 빠른 인데스 재생성에 사용되는 FULLTEXT index의 최대문자길이 
+문자길이가 길면 길수록 늦게 insert된다. 
+thumb규칙은 다음과 같다. 
+ft_max_word_len_sort를 증가시킬때 mysql은 temporary files을 더크게 생성하고(따라서, disk I/O로 인해 프로세스가 줄어든다) 
+one sort block에 더적은 keys를 둘것이다(이것은 효율성을 저하시킨다) 
+ft_max_word_len_sort가 너무 작을 때, 대신 mysql은 인덱스에 많은 단어들을 천천히 insert하지만, 짧은 단어들은 매우 빠르게 입력한다. 
+이것은 단지 EPAIR, CREATE INDEX, or ALTER TABLE동안 인덱스를 재성시 적용된다 
+
+ft_boolean_syntax 
+List of operators는 MATCH ... AGAINST(... IN BOOLEAN MODE)의해 지원된다. MySQL Full-text Search참조 
+
+have_innodb 
+InnoDB tables을 지원할 시에 YES가 되고, --skip-innodb사용하면 disalbed된다 
+
+have_bdb 
+Berkeley DB tables을 지원할 시에 YES가 되고, --skip-bdb사용하면 disalbed된다 
+
+have_raid 
+mysqld가 RAID option을 지원하면 YES 
+
+have_openssl 
+mysql이 the client/server protocol상에서 SSL (encryption:암호화)를 지원하면 YES로 나타난다 
+
+init_file 
+서버를 시작할때 --init-file option를 지정할 때 나타는 파일 이름 
+서버가 시작시에 이파일을 실행하기를 원하는 sql문 파일이다 
+
+interactive_timeout 
+서버가 close전에 상호작용할 커넥션에 activity를 기다리는 시간(초) 
+상호작용하는 클라이언트는 mysql_real_connect()에 CLIENT_INTERACTIVE option를 사용하는 클라이언트로 정의된다 
+wait_timeout를 참조하라 
+
+join_buffer_size 
+인덱스를 사용하지않는 full 조인에 사용되는 버퍼사이즈 
+이 버퍼는 두개의 테이블사이에 각각의 full조인에 대한 유일한 시간이 할당된다 
+인덱스를 추가하는 것이 불가능할때 더 빠른 full조인을 하기위해 증가시켜라 
+보통 빠른 조인을 수행하는 최상의 방법은 인덱스를 추가하는 것이다 
+
+key_buffer_size 
+인덱스 블럭은 모든 쓰레드에의해 완화되어지고 공유되어진다. 
+key_buffer_size는 인덱스블럭에 사용되어지는 버퍼사이즈이다. 
+인덱스를 더 잘 다루기위해 허용된 만큼 많이 이것을 증가시켜라. 
+256M에 64M를 할당하는 것이 주로 mysql에서 일반화 되어있다. 
+하지만,당신의 시스템의 50% 이상 커진다면, 시스템이 페이징하면서 굉장히 느려진다. 
+mysql이 데이타를 읽는데 케쉬하지 않기 때문에 show status와 show varibles를 사용하여 
+Key_read_requests, Key_reads, Key_write_requests, Key_writes를 검사하고 key buffer의 퍼포먼스를 체크하는 것을 명심하라. 
+Key_reads/Key_read_request율은 보통 0.01보다 작아야한다. 
+updates/deletes를 대부분 사용한다면 Key_write/Key_write_requests가 1에 가까워지는게 일반적이고, 
+동시에 update를 많이하거나 delay_key_write를 사용한다면 Key_write/Key_write_requests는 작아진다. 
+※기본은 16M이다. 
+Key_buffer_used*1024(byte)에 2~3배면 충분하다(투덜이님) 
+
+SHOW Syntax를 참조하라 
+동시에 많은 rows를 쓰게하려면 LOCK TABLES를 사용하라 
+LOCK TABLES/UNLOCK TABLES Syntax를 참조하라 
+
+language 
+에러메세지에 사용되는 언어 
+
+large_file_support 
+big file support로 mysql이 컴파일되을때 
+
+locked_in_memory 
+mysqld는 --memlock로 메모리에 lock된다면 on 
+
+log 
+시작시 --log로 모든 쿼리를 logging하면 on 
+
+log_update 
+시작시 --update-log하면 on 
+
+log_bin 
+시작시 binary log를 하면 
+
+log_slave_updates 
+If the updates from the slave should be logged. 
+
+long_query_time 
+하나의 쿼리가 long_query_time(초)보다 길면, Slow_queries counter가 증가될 것이다 
+시작시 --log-slow-queries를 사용하면, 쿼리는 slow query logfile에 쌓인다 
+The Slow Query Log를 참조하라 
+
+lower_case_table_names 
+테이블이름에 1로 세팅되면, 디스크에 lowercase(인쇄)되어 쌓이며, 테이블이름은 case-insensitive될 것이다 
+Case Sensitivity in Names를 참조하라 
+
+max_allowed_packet 
+패킷의 최대사이즈 
+이 message버퍼는 net_buffer_length bytes에 최기화된다. 
+하지만, 필요시  max_allowed_packet bytes까지 증가한다. 
+
+가능한 잘못된 큰 패킷을 잡기위해 디폴트는 작다 
+biggest BLOB를 사용하기를 원하면 이것을 증가시켜야 하며, 당신이 사용하기 원하는 만큼 커진다. 
+The protocol limits for max_allowed_packet은 MySQL 3.23에서는 16M이고, MySQL 4.0에서는 4G이다 
+
+max_binlog_cache_size 
+multi-statement transaction가 max_binlog_cache_size의 메모리양보다 큰 메모리를 요청하면 
+에러가 발생 
+
+
+max_binlog_size 
+3.23.33이후에서 가능하며, 주어진 값보다 초과되어 binary (replication) log에 쓰는 것은 log가 rotate된다 
+1024bytes보다 작거나 1Gbytes보다 크게 할 수없으며, 디폴트는 1Gbytes이다 
+
+max_connections 
+동시유저 수 
+이 값이 mysqld에서 요구하는 file descriptors의 수를 증가하면 이 값을 증가시켜라 
+file descriptor limits와 Too many connections Error를 참조하라 
+
+※기본 값은 100이다. 투덜이님에 의하면 max_userd_connections의 두배정도가 적정하다고 한다 
+
+
+max_connect_errors 
+호스트로 부터 interrupted connections수가 많아지면, 이 호스트는 많아진 수부터 block될 것이다. 
+FLUSH HOSTS를 사용하여 unblock할 수있다. 
+
+max_delayed_threads 
+INSERT DELAYED statements를 다루기 위해 쓰레드수들보다 더 많이 시작시키지 마라. 
+모든 INSERT DELAYED threads가 사용되어진 이후 새로운 테이블에 데이타를 입력시키면, 
+그 row는 마치 DELAYED attribute이 지정되지 않은것처럼 입력될 것이다. 
+
+max_heap_table_size 
+Don't allow creation of heap tables bigger than this. 
+여기에서 정의 되어진 것보다 더큰 테이블을 heap에 만들지 못한다 
+
+max_join_size 
+max_join_size 레코드들보다 더 큰것들을 읽으려 조인을 사용하는 것은 에러를 발생시킨다. 
+where절이 없고, 오래걸리는 조인과 많은(수백만)rows를 반환하려는 유저가 있으면 이것을 세팅하라 
+
+
+max_sort_length 
+BLOB or TEXT values를 정렬할때 사용되는 수(bytes) 
+(only the first max_sort_length bytes of each value are used; the rest are ignored). 
+
+max_user_connections 
+하나의 유저당 활성화된 커넥션수(0 = no limit). 
+
+max_tmp_tables 
+(This option doesn't yet do anything.) 
+클라이언트가 동시에 열수있는 임시테이블의 최대수 
+
+max_write_lock_count 
+After this many write locks, allow some read locks to run in between. 
+
+
+myisam_bulk_insert_tree_size 
+MySQL은 bulk inserts를 하기위해 특별한 트리구조의 케쉬를 사용한다 
+(예: INSERT ... SELECT, INSERT ... VALUES (...), (...), ..., and LOAD DATA INFILE) 
+이것은 쓰레드당 bytes에 케쉬 트리 사이즈를 제한한다. 
+0으로 세팅하면 이 최적화는 disable된다 
+디폴트는 8MB이다 
+
+myisam_recover_options 
+--myisam-recover option를 사용하였을때 
+
+myisam_sort_buffer_size 
+REPAIR를 사용하는 인덱스를 정력하거나 CREATE INDEX or ALTER TABLE과 함께 인덱스를 만들때 할당되는 버퍼사이즈 
+
+myisam_max_extra_sort_file_size 
+fast index creation를 위해 temporary file를 생성하는 것이 key cache보다 더 커진다면 key cache method가 우선한다 
+이것은 인덱스를 생성하기위해 slower key cache method를 사용하는 large tables에서 long character keys에 주로 사용된다 
+이 parameter는 Mbytes이다 
+
+myisam_max_sort_file_size 
+temporary file은 최대사이즈는 인덱스(mysql이 REPAIR, ALTER TABLE or LOAD DATA INFILE동안)를 
+재생성하는 동안 사용되도록 허락한다. 
+파일사이즈는 이것보다 더 클것이며, 인덱스는 slower key cache를 통해 생성될 것이다. 
+이 parameter는 Mbytes이다 
+
+net_buffer_length 
+communication buffer는 쿼리사이에 이 사이즈를 다시 세팅하여야 한다 
+net_buffer_length가 보통 바뀌지는 않지만, 당신이 매우 작은 메모리를 가지고 있다면 
+이것을 기대된 쿼리사이즈를 세팅할 수있다. 
+(클라이언트에 의해 보내진 sql문의 기대된 길이이다. sql문이 이 길이를 초과한다면, 
+버퍼는 max_allowed_packet까지 자동적으로 커진다) 
+
+net_read_timeout 
+읽기가 안되기전 커넥션으로 부터 더 많은 데이타를 기다리는 시간(초) 
+커넥션으로부터 데이타를 기대하지 않을때는 이 타임아웃은 rite_timeout으로 정의된다 
+lave_read_timeout참조하라 
+
+
+net_retry_count 
+communication port에 읽기가 방해된다면, 이것은 포기하기전에 많은 수를 재시도한다. 
+이것은 internal interrupts가 모든 쓰레드에 보내짐으로써 FreeBSD에서 꽤 높게 나타난다 
+
+
+net_write_timeout 
+block이 쓰기를 회피하기전에 커넥션에 쓰여지기를 기다리는 시간(초) 
+
+open_files_limit 
+이 값이 '0'이면 mysqld는 max_connections*5 
+또는 max_connections + table_cache*2 (whichever is larger) number of files이 필요하다 
+mysqld가 'Too many open files'에러를 나타내면 이 값을 증가시켜야 한다. 
+open_files_limit  '0'이 아니면 mysqld는 file descriptors가 setrlimit()를 사용하도록 바꾸기위해 이것을 사용한다 
+open_files_limit  '0'이면, mysqld는 max_connections*5 
+
+pid_file 
+--pid-file pid 파일위치 
+
+port 
+mysql포트넘버 (디폴트 3306) 
+
+protocol_version 
+The protocol version used by the MySQL server. 
+
+record_buffer 
+일련의 연속적인 스캔을 하는 각각의 쓰레드는 쓰레드가 스캔하는 버퍼사이즈를 할당한다 
+많은 연속적인 스캔을 할경우 이값을 증가시키기를 원할 수있다. 
+
+record_rnd_buffer 
+정렬된 순서대로 rows를 읽을때 rows는 디스크찾기를 하지않고 이 버퍼를 통해 읽는다 
+세팅해놓지않으면 record buffer에서 세팅된값이다 
+
+query_buffer_size 
+쿼리버퍼의 초기 할당 
+대부분의 쿼리가 (like when inserting blobs) 길다면 이값을 증가시켜야만 한다 
+
+
+safe_show_databases 
+유저가 어떤 데이타베이스권한도 테이블의 권한도 가지지 않는 데이타베이스를 보여주지 마라 
+이것은 만약 당신이 다른 유저들이 가지고 있는 데이타베이스를 볼 수있는 사람들에 대해 걱정한다면 보안을 향상시킬수있다 
+skip_show_databases를 참조하라 
+
+server_id 
+--server-id option의 값 
+
+skip_locking 
+만약 mysqld가 외부 lock을 사용한다면 off이다 
+
+skip_networking 
+local(socket)커넥션만을 허락한다면 on이다 
+
+skip_show_databases 
+PROCESS_PRIV권한을 가지지 않는 사람들이 SHOW DATABASES를 못하게 한다 
+만약 사람들이 다른 유저들이 가지고있는 데이타베이스를 보는 것을 걱정한다면 이것은 보안을 향상시킨다 
+safe_show_databases참조 
+
+slave_read_timeout 
+읽기가 실패하기전 master/slave연결로 부터 더 많은 데이터를 기다릴 수있는 시간(초) 
+
+slow_launch_time 
+쓰레드 생성이 이 값보다 더 길다면(초당), Slow_launch_threads counter는 증가될 것이다 
+
+
+socket 
+서버에 의해 사용되는 Unix socket /[절대경로]/이름 
+
+sort_buffer 
+정렬을 필요로 하는 각 쓰레드는 버퍼사이즈를 할당한다. 
+더 빠른 ORDER BY or GROUP BY operations를 위해서 이 값을 증가시켜라. 
+section A.4.4 Where MySQL Stores Temporary Files를 참조하라 
+
+※sort_buffer와 record_buffer 
+sort_buffer와 record_buffer의 합이 8M가 넘지 않도록 주의한다 
+(sort_buffer+record_buffer)*max_connections가 자신의 램보다 크지 않도록해야 한다. 
+
+table_cache 
+모든 쓰레드들에 대한 오픈할 수있는 테이블 수 
+이 값을 증가시키면 mysqld가 필요로 하는 파일 descriptors의 수를 증가시킨다. 
+Opened_tables variable를 체크함으로서 테이블케쉬를 증가시키것이 필요한지 체크할 수있다. 
+SHOW Syntax를 참조하라 
+이 값이 크고 FLUSH TABLES가 많지않다면(모든 테이블들을 닫고 재오픈하도록 강요하는 것) 그때, 이값을 증가시켜야 한다 
+테이블케쉬에 더 많은 정보를 얻으려면 How MySQL Opens and Closes Tables를 참조하라 
+
+※이것은 투덜이님에 의하면 mysql서버가 한번에 열수있는 테이블 수라고 한다 
+기본값은 64인데, max_connections의 1.5배정도 크기로 하는것이 좋다고 한다. 
+
+
+table_type 
+디폴트 테이블 타입(myisam) 
+
+thread_cache_size 
+케쉬를 재사용하기위해 얼마나 많은 쓰래드를 유지해야하는가 
+클라이언트가 연결이 끊겼을 때, 그 클라이언트의 쓰래드는 이전보다 더 많은 thread_cache_size 쓰레드가 존재하지 않는다면 
+케쉬에 놓여진다. 
+모든 새로운 쓰레드들은 먼저 케쉬에서 나오며, 단지 케쉬가 비어있을대 새로운 쓰레드를 생성한다. 
+이 값은 새로운 연결이 많을 경우 성능향상을 위해 증가시키게 된다. 
+보통 이것은 좋은 쓰레드수행을 가진다면 현저한 성능향상을 주지는 않는다. 
+connection과 threds_created사이에 차이를 알기위해서는 현재의 쓰레드 케쉬가 당신에게 얼마나 효과적인지 알 수있다. 
+
+thread_concurrency 
+솔라리스에서, mysqld는 이 값과 thr_setconcurrency()를 호출할 것이다. 
+thr_setconcurrency()는 application에게 쓰레드시스템에게 동시에 실행되도록 원하는 쓰레드수에 대한 힌트를 준다 
+
+
+
+thread_stack 
+각 쓰레드에 대한 스택사이즈 
+the crash-me test에 의해 발견된 한계치 
+디폴트는 normal operation에 대해 충분히 크다. 
+MySQL Benchmark Suite를 참조하라 
+
+timezone 
+디비서버 타임 존 
+
+tmp_table_size 
+메모리안에 temporary table이 이 사이즈를 초과하면 mysql은 자동적으로 temporary table을 디스크에 MyISAM table으로 
+변환할 것이다. 당신이 많은 advanced GROUP BY queries과 많은 메모리를 가지고 있다면 이 값을 증가시켜라 
+
+
+tmpdir 
+temporary files 과 temporary tables를 사용할 수있는 디렉토리 
+
+version 
+mysql서버 버젼 
+
+wait_timeout 
+서버를 닫히기전에 연결을 활성화하는데 서버가 기다리는 시간(초) 
+interactive_timeout를 참조하라 
+-------------------------------------------------------------------------------------- 
+
+
+
+
+
+
+
+▷ mysqladmin -u root -p extended-status(※mysql>show stauts) 
+---------------------------------------------------------------------------------------- 
+Aborted_clients  
+클라이언트가 연결을 적절히 닫지않아서 죽었기때문에 끊어진 연결수 
+Communication Errors / Aborted Connection를 참조 
+
+Aborted_connects  
+연결실패된 mysql서버에 연결시도 수 
+Communication Errors / Aborted Connection참조  
+
+Bytes_received  
+모든 클라이언트로 부터 받은 바이트 수 
+
+Bytes_sent  
+모든 클라이언트에게 보낸 바이트수 
+
+Connections  
+mysql서버에 연결시도한 수 
+
+Created_tmp_disk_tables  
+sql문을 실행하는 동안 생성된 디스크에 존재하는 임시테이블 수 
+
+Created_tmp_tables  
+sql문을 실행하는 동안 생성된 메모리에 존재하는 임시테이블 수 
+
+Created_tmp_files  
+얼마나 많은 임시파일을 mysqld가 생성했는가 
+
+Delayed_insert_threads  
+사용중인 insert handler threads가 지연되고 있는 수 
+
+Delayed_writes  
+INSERT DELAYED로 쓰여진 rows수 
+
+Delayed_errors  
+어떤 에러(duplicate key로인한 때문에 INSERT DELAYED로 쓰여진 rows수 
+
+Flush_commands  
+초과 flush명령수 
+
+Handler_delete  
+테이블로 부터 지워진 rows수 
+
+Handler_read_first  
+인덱스로 부터 읽혀진 처음 entry수 
+이것이 높으면 서버는 많은 full index scans를 하고 있다는 것을 의미한다 
+예를 들어 SELECT col1 FROM foo는 col1은 인덱스되었다는 것을 추정한다. 
+
+Handler_read_key  
+키가 존재하는 row를 읽는 요청수 
+이것이 높으면 당신의 쿼리와 테이블이 적절히 인덱스화되었다는 좋은 지적이된다. 
+
+Handler_read_next  
+키순서대로 다음 row를 읽는 요청수 
+이것은 만약 range constraint와 함께 인덱스컬럼을 쿼리할 경우 높아질 것이다. 
+이것은 또한 인덱스 스캔하면 높아질 것이다 
+
+Handler_read_rnd  
+고정된 위치에 존재하는 row를 읽는 요청수 
+이것은 결과를 정렬하기를 요하는 많은 쿼리를 한다면 높아질 것이다 
+
+Handler_read_rnd_next  
+데이타파일에서 다음 row를 읽기를 요청수 
+이것은 많은 테이블 스캔을 하면 높아질 것이다 
+일반적으로 이것은 당신의 테이블들이 적절하게 인덱스되지 않았거나 당신의 쿼리들이 
+당신이 가지고 있는 인덱스들의 이점을 활용하지 못하고 있다는 것을 의미한다 
+
+Handler_update  
+Number of requests to update a row in a table.  
+한테이블에 한 row를 업데이트를 요청하는 수 
+
+Handler_write  
+Number of requests to insert a row in a table.  
+한테이블에 한 row를 insert요청하는 수 
+
+Key_blocks_used  
+The number of used blocks in the key cache.  
+key케쉬에서 블럭을 사용하는 수 
+
+Key_read_requests  
+케쉬에서 키블럭을 읽기를 요청하는 수 
+
+Key_reads  
+디스크로부터 키블럭을 물리적으로 읽는 수 
+
+Key_write_requests  
+The number of requests to write a key block to the cache.  
+케쉬에서 키블럭을 쓰기위해 요청하는 수 
+
+Key_writes  
+The number of physical writes of a key block to disk.  
+디스크에 키블럭을 물리적으로 쓰는 수 
+
+Max_used_connections  
+동시사용 연결 최대수  
+
+Not_flushed_key_blocks  
+키케쉬에서 키블럭이 바뀌지만 디스크에는 아직 flush되지 않는다 
+
+Not_flushed_delayed_rows  
+Number of rows waiting to be written in INSERT DELAY queues.  
+INSERT DELAY queue에서 쓰여지기를 기다리는 row수 
+
+Open_tables  
+현재 오픈된 테이블수 
+
+Open_files  
+현재 오픈된 파일수 
+
+Open_streams  
+주로 logging에 사용되는 현재 오픈된 stream수 
+
+Opened_tables  
+지금까지 오픈된 테이블 수 
+
+Select_full_join  
+키없이 조인된 수(0이 되어야만 한다) 
+
+Select_full_range_join  
+reference table에서 range search를 사용한 조인수 
+
+Select_range  
+첫번째 테이블에 range를 사용했던 조인수 
+보통 이것이 크더라도 위험하진 않다 
+
+Select_scan  
+첫번째 테이블을 스캔했던 조인수 
+
+Select_range_check  
+각 row후에 key usage를 체크한 키없이 조인한 수(0이어야만 한다) 
+
+Questions  
+서버에서 보낸 쿼리수 
+
+
+Slave_open_temp_tables  
+현재 slave thread에 의해 오픈된 임시 테이블 수 
+
+Slow_launch_threads  
+연결된 slow_launch_time보다 더 많은 수를 갖는 쓰레드수 
+
+Slow_queries  
+long_query_time보다 더 많은 시간이 걸리는 쿼리 수 
+Slow Query Log참고 
+
+Sort_merge_passes  
+정렬해야만 하는 merge수 
+이 값이 크면 sort_buffer를 증가하는것에 대해 고려해야한다 
+
+Sort_range  
+Number of sorts that where done with ranges.  
+
+Sort_rows  
+정렬된 row수 
+
+Sort_scan  
+테이블 스캔에 의해 행해진 정렬수 
+
+Table_locks_immediate  
+즉시 획득된 테이블 lock 시간 (3.23.33부터 추가된 항목) 
+
+Table_locks_waited  
+즉시 획득되지 않고 기다림이 필요한 테이블 lock 시간 
+이것이 높아지면 성능에 문제가 있으므로, 먼저 쿼리를 최적화 시키고, 테이블을 분산시키거나 복제를 사용해야한다 
+(3.23.33부터 추가된 항목) 
+
+Threads_cached  
+스레드 캐쉬에서 쓰레드 수 
+
+Threads_connected  
+현재 오픈된 연결수 
+
+Threads_created  
+연결을 다루기위해 생성된 쓰레드 수 
+
+Threads_running  
+sleeping하지 않는 쓰레드 수 
+
+Uptime  
+서버가 스타트된 후로 지금까지의 시간 
+
+[참고] 
+1. Opened_tables가 크면  table_cache variable의 값이 너무 작은것일지도 모른다 
+2. key_reads가 크면 key_cach의 값이 너무 작은것일지도 모른다 
+3. cache hit rate은 key_reads/key_read_requests이다 
+4. Handler_read_rnd가 크면 MySQL의 모든 테이블을 스캔하는 많은 쿼리가 있다거나 
+key를 적절히 사용하지 않는 조인들이 있을지 모른다 
+5. Threads_created가 크면 thread_cache_size값을 증가시키기를 바랄수도 있다 
+6. Created_tmp_disk_tables이 크면 디스크대신 임시테이블메모리를 얻기위해 
+tmp_table_size값을 증가시키기를 원할 수있다 
+--------------------------------------------------------------------------------------------- 
+
+
+[튜닝참조 1] 
+※ 기본적으로 support-files밑에 `my-huge.cnf', `my-large.cnf', `my-medium.cnf', `my-small.출 
+를 기본으로 my.cnf 로 바꾸어 사용하면서 조정한다. 
+
+1. memory (>=256M)이고 
+많은 테이블이 있으며, 적당한 클라이언트수에서 최고 성능을 유지하기 위해 
+shell> safe_mysqld -O key_buffer=64M -O table_cache=256 
+          -O sort_buffer=4M -O record_buffer=1M & 
+이러한 옵션으로 서버를 실행하는데, my-cnf에서 이를 수정하여 사용하면 될 것이다. 
+
+2. 128M메모리에 테이블이 적지만, 정렬이 많을 때 
+shell> safe_mysqld -O key_buffer=16M -O sort_buffer=1M 
+
+3. 메모리는 적지만 많은 연결이 있을 때 
+shell> safe_mysqld -O key_buffer=512k -O sort_buffer=100k 
+          -O record_buffer=100k & 
+또는 
+
+shell> safe_mysqld -O key_buffer=512k -O sort_buffer=16k 
+-O table_cache=32 -O record_buffer=8k -O net_buffer=1K & 
+
+[튜닝 참조2] 
+※group by와 order by작업이 가지고 있는 메모리보다 훨씬 클 경우, 정렬 후 row 읽는 것을 빠르게 
+하기위해 record_rnd_buffer값을 증가시켜라 
+
+※많은 연결로 인한 swapping problems는 메모리를 올려야 되는 것은 당연하다 
+
+※만약 튜닝을 위해 parameter를 바꾸고 그 효과에 대해 알아볼려면 
+shell> mysqld -O key_buffer=32m --help 
+를 사용하면된다. 주의할점은 --help를 나중에 붙여야 한다는 것이다. 
+
+※mysqladmin -u root -p -i5 -r extended-status | grep -v "0" 
+Enter password: 
++--------------------------+-------+ 
+| Variable_name            | Value | 
++--------------------------+-------+ 
+| Bytes_received          | 38    | 
+| Bytes_sent              | 55    | 
+| Connections              | 2    | 
+| Flush_commands          | 1    | 
+| Handler_read_first      | 1    | 
+| Handler_read_rnd_next    | 13    | 
+| Open_files              | 1    | 
+| Opened_tables            | 6    | 
+| Questions                | 1    | 
+| Table_locks_immediate    | 5    | 
+| Threads_created          | 1    | 
+| Threads_connected        | 1    | 
+| Threads_running          | 1    | 
+| Uptime                  | 5    | 
++--------------------------+-------+ 
+
+▶Bytes_received: 
+모든 클라이언트로 부터 받은 바이트 수 
+▶Bytes_sent: 
+모든 클라이언트에게 보낸 바이트수 
+▶Connections: 
+mysql서버에 연결시도한 수 
+▶Flush_commands: 
+초과 flush명령수 
+▶Handler_read_first: 
+인덱스로 부터 읽혀진 처음 entry수 
+이것이 높으면 서버는 많은 full index scans를 하고 있다는 것을 의미한다 
+예를 들어 SELECT col1 FROM foo는 col1은 인덱스되었다는 것을 추정한다. 
+▶Handler_read_rnd_next: 
+데이타파일에서 다음 row를 읽기를 요청수 
+이것은 많은 테이블 스캔을 하면 높아질 것이다 
+일반적으로 이것은 당신의 테이블들이 적절하게 인덱스되지 않았거나 당신의 쿼리들이 
+당신이 가지고 있는 인덱스들의 이점을 활용하지 못하고 있다는 것을 의미한다 
+▶Open_files: 
+현재 오픈된 파일수 
+▶Opened_tables: 
+현재 오픈된 테이블수 
+▶Questions: 
+서버시작후 지금까지 요청된 쿼리수  
+▶Table_locks_immediate: 
+즉시 획득된 테이블 lock 시간 (3.23.33부터 추가된 항목) 
+▶Threads_created: 
+연결을 다루기위해 생성된 쓰레드 수 
+▶Threads_connected: 
+현재 오픈된 연결수 
+▶Threads_running: 
+sleeping하지 않는 쓰레드 수 
+▶Uptime : 
+서버가 스타트된 후로 지금까지의 시간 

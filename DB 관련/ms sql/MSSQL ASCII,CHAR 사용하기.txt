@@ -1,0 +1,32 @@
+- ASCII / CHAR 이란?
+   ASCII는 문자하나를 받아 아스키코드 번호로 리턴하는 함수이며,
+   CHAR은 숫자를 받아 아스키코드에 맞게 문자를 리턴해주는 함수입니다.
+ 
+ [참고사항] 아스키코드란?
+   ASCII (American standard code for information interchange code)
+   미국 표준 정보교환 코드로 컴퓨터 내부에서 문자를 표현하는데 사용됩니다.
+
+  
+
+ - 아스키코드표
+   번호 / 코드 
+ 
+ 
+ - MSSQL ASCII / CHAR 사용방법 
+   ASCII('[문자]')
+   CHAR([코드값])
+
+? 
+ - 예제 1   "!"의 아스키 코드값을 구하시오.
+ 
+ 
+ - 예제 1 쿼리    SELECT ASCII('!') AS 아스키코드값
+ 
+
+ 
+ - 예제 2   아스키 코드값이 75에 해당하는 문자를 구하시오.
+  
+
+ - 예제 2 쿼리   SELECT CHAR(75) AS 결과
+ 
+ 

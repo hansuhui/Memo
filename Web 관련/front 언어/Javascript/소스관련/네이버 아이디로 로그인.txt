@@ -1,0 +1,147 @@
+[API 명세]
+https://nid.naver.com/devcenter/docs.nhn?menu=API
+
+
+1.네이버 아이디로 로그인 인증 요청
+
+1.1 설명
+네이버 사용자의 인증을 요청합니다.사용자 인증에 성공하면 콜백 URL로
+인증 코드(authoriaztion code)를 반환받습니다.
+
+1.2 요청 URL
+
+https:nid.naver.com/oauth2.0/authorize
+
+1.3 프로토콜
+
+HTTPS
+
+1.4 HTTP 메서드
+
+-GET
+-POST
+
+
+1.5 파라미터
+
+파라미터 / 타입 / 필수 여부 / 설명
+
+response_type / string / Y / 인증 과정에 대한 구분값, code로 값이 고정
+
+client_id / String / Y / 애플리케이션 등록 후 발급받은 클라이언트 아이디
+
+redirect_uri / String / Y / 콜백 URL 애플리케이션을 등록할 때 Callback URL에
+			    입력한 URL입니다. URL인코딩을 적용한 값을 사용합니다.
+
+scope / String / N / 접근 허용범위 현제는 네이버 아이디로 로그인 서비스에
+                     미리 설정된 값으로만 동작합니다
+
+
+state / String / Y / 사이트 간 요청 위조(cross-site request forgery)공격을
+		     방지하기 위해 애플리케이션에서 생성한 상태 토큰(state token)
+		     URL 인코딩을 적용한 값을 사용합니다.
+
+
+
+1.6 요청 예
+
+https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=jyvqXeaVOVmV
+      &redirect_uri=http%3A%2F%2Fservice.redirect.url%2Fredirect&state=hLiDdL2uhPtsftcU
+
+
+1.7 응답
+
+API를 요청했을 때 사용자가 네이버에 로그인했는지 여부에 따라 다음과 같이 이동합니다.
+
+-사용자가 네이버에 로그인한 상태 : 기본 정보 제공에 동의할 것인지 확인하는 페이지로 이동합니다.
+
+-사용자가 네이버에 로그인 안 한 상태 : 네이버 로그인 화면으로 이동합니다.
+
+로그인과 정보 제공 동의 과정이 완료되면 redirect_uri파라미터에 설정한 콜백 URL로 인증 정보가
+전송됩니다. 콜백 URL에 파라미터로 전송되는 정보는 다음과 같습니다.
+
+파라미터 / 타입 / 필수 여부 / 설병
+
+code / String / Y / 네이버 아이디로 로그인 인증에 성공하면 반환받는 인증 코드
+		    접근 토근(access token)발급에 사용합니다.
+
+
+state / String / Y / 사이트 간 요청 위조 공격을 방지하기 위해 애플리케이션에서
+		     생성한 상태 토근 URL 인코딩을 적용한 값입니다.
+
+error / String /   / 네이버 아이디로 로그인 인증에 실채하면 반환받는 오류 코드
+
+error_description / String / 네이버 아이디로 로그인 인증에 실패하면 반환받는 오류 메세지
+
+1.8 응답 예
+
+1.8.1 API요청 성공
+
+http://service.redirect.uri/redirect?code=#&state=#
+
+1.8.2 API요청 실패
+
+http://service.redirect.uri/redirect?error=#&state=#&error_description=#
+
+
+
+=========================================[사용하기]======================================================
+
+1.새 애플리케이션 등록
+  https://nid.naver.com/devcenter/register.nhn 
+
+2.SDKs 다운로드
+https://nid.naver.com/devcenter/docs.nhn?menu=SDK
+
+3.적용
+https://nid.naver.com/devcenter/docs.nhn?menu=Web
+
+
+
+
+===================================================================================================
+
+var naver_login = new naver_id_login()
+naver_login.setState(s.getUniqState());
+naver_login.getNaverIdLoginLink();
+
+//로그인후!!
+naver_login.parseCallBack()
+naver_login.parseCallBack_check()
+naver_login.init_naver_id_login_callback()
+naver_login.get_naver_userprofile()
+
+access_token=AAAANx1o3LyIgcm%2BlKl8qduCXOAwt6IENIA9Ll0l9S1vcR4fmcEPVFuXLzBN%2BLdJSkMiKtsiMDW4IvGF2zw%2Fd6ZQifE%3D
+&state=9813d807-35d4-4ff0-bd95-d139b28c7094
+&token_type=bearer&expires_in=1800
+
+
+local Storage에 해당 name 을 key로 가지는 value 값을 안전하게 받아온다.
+getLocalStorageItemSafely()
+
+local Storage 혹은 cookie storage 에 원하는 key vlaue 쌍을 저장 한다.
+setStateStore()
+
+네이버 아이디로 로그인때 사용할 링크의 주소를 생성한다.
+getNaverIdLoginLink()
+
+
+cookie Storage에 nil_state 을 key로 가지는 value 값을 받아온다.
+getCookie()
+
+callback 호출 주소를 parsing 해서 결과를 array 로 저장한다.
+parseCallBack()
+
+
+naver_login.getProfileData("nickname") //닉네임
+naver_login.getProfileData("name") //닉네임
+naver_login.getProfileData("id") //동일인 식별 정보는 네이버 아이디마다 고유하게 발급되는 값입니다.
+naver_login.getProfileData("email") //이메일
+naver_login.getProfileData("gender") //성별
+naver_login.getProfileData("age") //사용자 연령대
+naver_login.getProfileData("birthday") //생일 (MM-DD 형식)
+naver_login.getProfileData("profile_image") //프로필 사진
+
+
+
+

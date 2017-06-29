@@ -1,0 +1,17 @@
+현 칼럼의 이전 칼럼 및 다음 컬럼 선택하기
+
+lag(컬럼명, 현재레코드에서 얼마나 건너띈 레코드인지 수 [,'null일 경우 들어가는 값'])
+lead(컬럼명, 현재레코드에서 얼마나 건너띈 레코드인지 수 [,'null일 경우 들어가는 값'])
+
+
+select * from
+(
+    select
+     bmidx
+    ,lead(strTitle,1,'다음글이 존재 하지 않습니다') over (order by bmidx) next_title
+    ,lead(bmidx,1,0) over (order by bmidx) next_idx
+    ,lag(bmidx, 1, 0) over(order by bmidx) pre_idx
+    ,lag(strTitle, 1,'이전글이 존재 하지 않습니다') over (order by bmidx) pre_title
+    from BoardMaster 
+) 
+where bmidx='8'

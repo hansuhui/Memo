@@ -1,0 +1,13 @@
+ //积己磊
+  function __construct()
+  {
+   
+ //家胶内靛
+   
+  }
+ 
+  //家戈磊
+  function __destruct()
+  {
+ //家胶内靛
+  }

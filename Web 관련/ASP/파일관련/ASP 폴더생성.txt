@@ -1,0 +1,17 @@
+<%
+ G_TODAY = TRIM(REPLACE(LEFT(CSTR(NOW()),10),"-",""))          
+     Function CreateFolderDemo(new_folder)
+       Dim fso_d, f
+       Set fso_d = CreateObject("Scripting.FileSystemObject")
+
+       Set f = fso_d.CreateFolder(new_folder)
+       CreateFolderDemo = f.Path
+       set fso=nothing
+     End Function
+
+ for i = 1 to 12
+  for j = 1 to 31
+   CreateFolderDemo("e:\test.advalue.co.kr\FileImg\2015\"&i&"\"&j)
+  next
+ next
+%>

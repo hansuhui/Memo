@@ -1,0 +1,6 @@
+
+
+
+
+select * from GiftMst where GiftNo in (
+select GiftNo from SaleDtl where SaleCode = '20140227173138827')

@@ -1,0 +1,67 @@
+HTML input 태그에서 type을 file 로 지정하여 파일을 업로드하고자 할 때, accept 인자를 통해서 확장자 필터링을 할 수 있다.
+
+ 
+
+대부분의 확장자 필터링은 아래와 같은 코드로 필터링할 수 있다.
+<input type="file" accept=".FILETYPE" /> 
+ 
+
+ 
+
+▶ CSV
+<input type="file" accept=".csv" />
+
+- 주의) 만약 엑셀 CSV 파일을 화면에 띄우고자 업로드할 경우, 아래와 같은 타입은 사용하면 안된다.
+text/csv 
+application/csv 
+text/comma-separated-values (works in Opera only).
+
+ 
+
+ 
+
+▶ Excel Files 2003-2007 (.xls)
+
+<input type="file" accept="application/vnd.ms-excel" />
+
+ 
+
+▶ Excel Files 2010 (.xlsx)
+
+<input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+
+ 
+
+▶ Text Files (.txt)
+
+<input type="file" accept="text/plain" />
+
+ 
+
+▶ Image Files (.png/.jpg/etc) 
+
+<input type="file" accept="image/*" />
+
+ 
+
+▶ HTML Files (.htm,.html)
+
+<input type="file" accept="text/html" />
+
+ 
+
+▶ Video Files (.avi, .mpg, .mpeg, .mp4)
+
+<input type="file" accept="video/*" />
+
+ 
+
+▶ Audio Files (.mp3, .wav, etc)
+
+<input type="file" accept="audio/*" />
+
+ 
+
+▶ PDF Files
+
+<input type="file" accept=".pdf" /> 

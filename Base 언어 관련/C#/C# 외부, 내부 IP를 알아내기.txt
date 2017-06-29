@@ -1,0 +1,128 @@
+어떤 사항에 맞는 IP을 알아내는 방법
+1. HostName으로 내컴퓨터의 IP을 알 수 있습니다.
+2. 특정사이트의 IP을 가져올 수 있습니다. (도메인의 IP임)
+3. IP을 알려주는 사이트를 통하여 자신의 외부IP을 알 수 있습니다(꼼수)
+
+
+====================================================================
+
+1. 자신의 HOSTNAME을 통하여 자신의IP을 알 수 있습니다.
+
+// using을 추가합니다.
+using System.Net;
+
+
+// 자신의 HOSTNAME으로 IP가져오기
+// 지정된 DNS 호스트 이름에서 DNS 정보를 가져옵니다. 
+IPHostEntry IPHost = Dns.GetHostByName(Dns.GetHostName());
+ textBox2.Text = IPHost.AddressList[0].ToString();
+
+
+====================================================================
+
+2. 특정사이트의 IP을 알아내기 (Get IP Address from DNS Hostname in c#)
+즉, DNS Hostname을 통해서 IP을 가져오는 방법입니다.
+
+
+// using을 추가합니다.
+using System.Net;
+
+//특정사이트 도메인주소
+string sitedomain = "www.daum.net";
+
+//지정된 호스트의 IP(인터넷 프로토콜) 주소를 반환합니다. 
+IPAddress[] addresslist = Dns.GetHostAddresses(sitedomain);
+
+//GetHostAddresses 메서드를 사용하여 IP 주소를 IPAddress 형식의 배열로 확인합니다. 
+foreach (IPAddress theaddress in addresslist)
+ {
+     textBox1.Text = theaddress.ToString();
+ }
+
+
+
+====================================================================
+
+3. 꼼수로 외부 아이피 가져오기
+
+
+공유기를 사용하면 자신의 외부 아이피를 가져와서 보여주게 만들기 힘들었다.
+내부아이피를 가져오는 경우가 있는 것이다. 
+
+외국 포럼의 경우 외부 아이피(External Ip)를 어떻게 가져오는 지 이야기 하고 있다.
+
+Showing the external IP-address in C#
+http://www.dreamincode.net/forums/showtopic24692.htm
+
+결론은 꼼수를 이용하는 것이다. 웹페이지중 자신의 외부 아이피를 보여주는 웹사이트들이 있다.
+이 정보를 가져와서 이용하는 것이다.
+
+
+자신의 외부아이피를 보여주는 사이트들입니다.
+http://www.whatismyip.com/automation/n09230945.asp
+http://whatismyip.com
+http://checkip.dyndns.org/
+
+
+// using을 추가합니다.
+using System.Net;
+
+
+// 꼼수 (외부아이피 알려주는 사이트로 문자열 가져오기)
+try
+ {
+     string whatIsMyIp = "http://www.whatismyip.com/automation/n09230945.asp";
+     WebClient wc = new WebClient();
+     UTF8Encoding utf8 = new UTF8Encoding();
+     string requestHtml = "";
+
+     requestHtml = utf8.GetString(wc.DownloadData(whatIsMyIp));
+
+     IPAddress externalIp = null;
+
+     externalIp = IPAddress.Parse(requestHtml);
+
+     textBox3.Text = externalIp.ToString();
+
+ }
+ catch
+ {
+     throw;
+ }
+
+
+
+또는 더욱 간단히 요약하여 아래와 코드로 정리하죠 ^^
+
+
+
+// using을 추가합니다.
+using System.Net;
+
+
+// 꼼수 (외부아이피 알려주는 사이트로 문자열 가져오기)
+string WanIP = new System.Net.WebClient().DownloadString(("http://www.whatismyip.com/automation/n09230945.asp"));
+ textBox3.Text = WanIP.ToString();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+[프로퍼티 악세스 연산자]
+
+프로퍼티 악세스(Property Access)는 오브젝트{name : value} 형태에서 프로퍼티 값을
+반환 받는 처리를 의미하며 연산자(Operator)에는 두 가지 표기법이 있습니다.
+market['book']과 같이 대괄호 안에 프로퍼티 이름을 문자열로 작성하는 표기법과
+market.book과 같이 점(.)으로 연결하여 프로퍼티 이름을 작성하는 표기법이 있습니다.
+
+var sports = {soccer : '90분', baseball : '9명'};
+sports['baseball']; / 9명
+sports.soccer; / 90분

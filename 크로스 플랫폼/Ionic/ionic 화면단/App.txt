@@ -1,0 +1,79 @@
+https://ionicframework.com/docs/api/components/app/App/
+
+[App]
+
+App is a utility class used in ionic to get information about
+
+various aspects of an app
+
+
+- instance Members -
+
+[getActiveNav() - Returns : NavController]
+
+Returns the active NavController. Using this method is preferred
+when we need access to the top-level navigation controller
+while on the outside views and handlers like
+
+
+[registerBackButtonAction()]
+
+[getRootNaav() - Returns : NavController]
+
+Returns the root NavController
+
+
+
+[isScrolling()]
+Boolean if the app is actively scrolling or not.
+
+Returns : bllean 
+
+
+[setTitle(val)]
+
+Sets the document title.
+
+Param / Type / Details 
+
+val  / string / Value to set the document title to.
+
+
+[viewDidEnter]
+
+Observable that emits after any view is entered in the app.
+
+Returns : Observable
+
+Returns an Observable
+
+
+[viewDidLoad]
+
+Observable that emits whenever a view loads in the app.
+
+Returns : Observable
+
+
+[viewWillEnter]
+
+Observable that emits before any view is entered in the app.
+
+Returns : Observable
+
+
+[viewWillLeave]
+
+Observable that emits before any view is exited in the app.
+
+Returns : Observable
+
+
+[viewWillUnload]
+
+Observable that emits before any view unloads in the app.
+
+
+Returns: Observable
+
+

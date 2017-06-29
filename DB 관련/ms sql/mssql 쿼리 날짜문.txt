@@ -1,0 +1,23 @@
+
+select getdate() - 오늘 날짜를 반환[2014-01-17 10:08:30.277]
+
+select dateadd(변경식,추가식,날자)
+select dateadd(year,1,getdate()) , select dateadd(month,1,'2014-1-15')
+
+
+
+
+select datediff(변경식,날짜,날짜)
+select datddiff(year,'1989','2000') 결과는 '11'
+
+
+변경식 year,month,day,hour,minute,second
+
+
+
+
+나이 구하는거
+
+select datediff(year,'1989',getdate()) 
+    
+<add name="innobileEntities" connectionString="metadata=res://*/Models.Innobile.csdl|res://*/Models.Innobile.ssdl|res://*/Models.Innobile.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=211.233.58.54;initial catalog=innobile;user id=innobile;password=dlshqkdlf;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />

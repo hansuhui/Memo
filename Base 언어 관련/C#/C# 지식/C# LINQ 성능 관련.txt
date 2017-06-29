@@ -1,0 +1,10 @@
+LINQ는 무겁기 떄문에 자주 사용하지 않는것이 좋다 !!
+
+루프문에서는 사용하지 않는것이 좋다!
+
+//var ar = Enumerable.Range(0, 10000);   //열거 : 객체 루프가 반복될때마다 수열을 생성한다. (느리다)
+var ar = Enumerable.Range(0, 10000).ToArray();  //배열 :수열을 한번 만 생성한다. (빠르다)
+int sum = 0;
+for (int i = 0; i < ar.Count(); i++) {
+   sum = sum / 2 + ar.ElementAt(i);
+}

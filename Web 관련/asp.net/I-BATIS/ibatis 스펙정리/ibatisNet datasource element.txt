@@ -1,0 +1,43 @@
+
+
+Example 4.2. Sample <datasource> and <provider> elements (.NET)
+<!-- The ${properties} are defined in an external file, -->
+<!-- but the values could also be coded inline. -->
+
+<!-- Connecting to SQL Server -->
+<database>
+  <provider name="sqlServer1.1" />
+  <dataSource name="NPetstore" default="true" 
+       connectionString="data source=(local)\NetSDK;database=${database};
+       user id=${username};password=${password};"/>
+</database>
+
+<!-- Connecting to Oracle -->
+<database>
+  <provider name="oracleClient1.0"/>
+  <dataSource name="iBatisNet" 
+       connectionString="Data Source=${datasource};User Id=${userid};Password=${password}"/>
+</database>
+ 
+<!-- Connecting to Access -->
+<database>
+  <provider name="OleDb1.1" />
+  <dataSource name="NPetstore" default="true" 
+       connectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=${database}"/>
+</database>
+
+<!-- Connecting to a MySQL database --> 
+<database>
+  <provider name="ByteFx" />
+  <dataSource name="NPetstore" default="true" 
+       connectionString="Host=${host};Database=${database};
+       Password=${password};Username=${username}" />
+</database>
+
+<!-- Connecting to a PostgreSQL database --> 
+<database>
+  <provider name="PostgreSql0.7" />
+  <dataSource name="NPetstore" default="true" 
+       connectionString="Server=${server};Port=5432;User Id=${userid};Password=${password};
+       Database=${database};" />
+</database>

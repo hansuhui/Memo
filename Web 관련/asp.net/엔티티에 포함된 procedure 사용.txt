@@ -1,0 +1,13 @@
+@model List<DomainModel.Concrete.usp_shops_list_r_Result>
+
+exec
+
+
+GCCEntities gcc;
+
+		public ShopsController()
+		{
+			gcc = new GCCEntities();
+		}
+
+gcc.usp_shops_list_r

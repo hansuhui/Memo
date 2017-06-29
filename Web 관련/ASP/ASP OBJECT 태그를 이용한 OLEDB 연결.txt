@@ -1,0 +1,70 @@
+[ASP OBJECT 태그를 이용한 OLEDB 연결]
+
+<OBJECT> 태그는 객체(Object)의 인스턴스 생성과 해제를 개발자가 직접 처리하지 않고 서버에게 위임하는 방법입니다. 
+서버에게 위임한 만큼 웹서버인 IIS는 객체의 인스턴스 생성과 해제를 가장 적절한 방법으로 처리하게 됩니다.
+
+웹서버는 Server.CreateObject 명령어를 만나면 객체의 스크립트 내, 
+사용 여부와 상관없이 즉시 객체의 인스턴스를 생성시키게 됩니다. 
+반면에 <OBJECT> 태그 사용 시에는 웹서버는 객체가 스크립트 내에서 사용되기 전까지는 
+객체의 인스턴스를 생성시키지 않고 있다가, 객체가 해당 스크립트 내에서 사용될 때, 
+비로서 객체의 인스턴스를 생성시키게 됩니다. 
+
+객체의 해제또한 “rs.close”, “Set rs = nothing” 과 같은 번거로운 작업이 필요치 않습니다
+. <OBJECT> 태그 사용시 위의 구문을 만나면 오히려 에러가 발생하게 됩니다. 
+생성된 객체의 해제 역시 서버가 담당하기 때문입니다. 
+
+※ 인스턴스는 프로세스와 거의 같은 의미로 사용되기도 하는데 
+엄밀히 말하면 프로세스는 프로그램 또는 객체가 메모리에 로드되어 실행되고 있다의 의미이며 
+인스턴스는 객체또는 프로그램이 메모리에 로드되어 실행될 준비를 한다는 의미에서 차이가 있습니다.
+
+아래의 예는 개발자가 Server.CreateObject를 이용해서 객체(Object)의 생성을 처리하는 아주 익숙한 예제입니다.
+'// 레코드셋 객체를 이용한 데이타베이스 오픈
+SQL="SELECT uid, name, nickname, telephone, addr, inform "
+SQL=SQL & " FROM tbl_member ORDER BY regdate DESC"
+Set dbCon=Server.CreateObject("ADODB.Connection")
+Set Rs=Server.CreateObject("ADODB.RecordSet")
+
+strConnect = "DSN=testOK;UID=testOK;PWD=1234;" 
+dbCon.Open strConnect
+Rs.Open SQL, dbCon
+
+
+위의 예 중 dbCon.Open 부분만 <OBJECT>태그를 이용해서 바꿔보면 아래와 같습니다. 
+위의 예제와 같이 ODBC 를 이용해서 데이타베이스 연결을 시도합니다.
+'// <OBJECT> 태그를 이용한 ODBC 연결 
+<OBJECT RUNAT=server PROGID=ADODB.Connection id=dbCon></OBJECT>
+<%
+'//-----------------------------------------------------------------//
+'MSSQL ODBC Connection 문자열 
+'DSN -- ODBC DSN, UID -- 데이타베이스 사용자, PWD -- 데이타베이스 비밀번호
+dbCon.Open("DSN=testOK;UID=testOK;PWD=1234;")
+'//-----------------------------------------------------------------//
+%> 
+
+데이타베이스 연결을 OLEDB를 이용해서 할려면 dbCon.Open 뒤에 오는 연결 문자열만 아래와 같이 바꿔주면 됩니다.
+'// <OBJECT> 태그를 이용한 OLEDB 연결 
+<object RUNAT="Server" PROGID="ADODB.Connection" ID="dbCon"></object>
+<%
+'//----------------------------------------------------------------------------------------//
+'MSSQL OLEDB 연결부분 
+'Data Source -- 데이타베이스 경로, Initial Catalog -- 데이타베이스명
+'User ID -- 데이타베이스 사용자, Password -- 데이타베이스 접근 비밀번호
+dbCon.Open "Provider=SQLOLEDB;Data Source=(local);Initial Catalog=testOK;User ID=testOK;Password=1234;":
+'//---------------------------------------------------------------------------------------//
+%>
+
+일반적으로 위의 예제를 파일로 저장해서 데이타베이스 연결부분은 따로 관리를 하게 됩니다.
+위의 연결 예제를 "dbcon.asp" 파일로 저장했다고 가정하면 레코드셋은 다음과 같이 <OBJECT> 태그를 이용해서 가져오실 수 있습니다.
+<!-- #include file="dbcon.asp" -->
+<OBJECT RUNAT="server" PROGID="ADODB.Recordset" id="rs"></OBJECT>
+<%
+
+SQL="SELECT uid, name, nickname, telephone, addr, inform "
+SQL=SQL & " FROM tbl_member ORDER BY regdate DESC"
+
+rs.Open SQL,dbCon
+
+%>
+
+첨부파일에는 전 페이지의 "OLEDB를 이용한 로그인(Login) 처리" 예제를 <OBJECT>태그를 이용해서 수정한 소스가 
+들어 있습니다. 참조하시기 바랍니다.	

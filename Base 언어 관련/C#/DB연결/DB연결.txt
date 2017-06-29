@@ -1,0 +1,69 @@
+NuGet 패키지 추가에서 Enterprise 데이터 엑세스 추가
+
+
+Web.config 정보 변경
+
+
+<configSections>
+    <section name="dataConfiguration" type="Microsoft.Practices.EnterpriseLibrary.Data.Configuration.DatabaseSettings, Microsoft.Practices.EnterpriseLibrary.Data" requirePermission="true" />
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+  </configSections>
+
+<dataConfiguration defaultDatabase="DefaultConnection" />
+
+  <connectionStrings>
+<add name="DefaultConnection" connectionString="server=ip주소;uid=아이디;Password=암호;*();database=디비명;" providerName="System.Data.SqlClient" />
+  </connectionStrings>
+
+
+
+그리고 DBUtil를 만들어서 상속 받아서 사용하기
+
+
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+
+
+using Microsoft.Practices.EnterpriseLibrary.Common;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+
+
+namespace DomainModel
+{
+	public class DataBaseUtil
+	{
+		private Database _db;
+
+		public DataBaseUtil()
+		{
+			
+
+			DatabaseFactory.SetDatabaseProviderFactory(new DatabaseProviderFactory(new SystemConfigurationSource(true).GetSection), false);
+
+			try
+			{
+				_db = DatabaseFactory.CreateDatabase();
+			}
+			catch (Exception)
+			{
+				DatabaseFactory.ClearDatabaseProviderFactory();
+				throw;
+			}
+		}
+
+		public Database db { get { return _db; } }
+
+	}
+}
+
+
+
+http://msdn.microsoft.com/ko-kr/library/aa288540(v=vs.71).aspx
+
+
+http://sitecube.tistory.com/entry/ASPNET-MSSQL-%EC%97%B0%EB%8F%99-Windows-%EC%9D%B8%EC%A6%9D%EA%B3%BC-SQL-Server-%EC%9D%B8%EC%A6%9D

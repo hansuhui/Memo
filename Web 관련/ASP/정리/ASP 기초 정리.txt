@@ -1,0 +1,23 @@
+ASP 문법의 기본
+<% %>
+
+
+[선언 및 생성]
+
+
+Dim - 변수를 선언. (예: Dim strName)
+Set - 개체를 생성 (예: Set rs = Server.CreateObject("ADODB.RecordSet"))
+
+
+
+[논리 구문]
+
+IF ~ THEN : IF문
+
+SELECT CASE  : CASE 문
+
+FOR ~ NEXT : FOR문
+
+DO WHILE :  WHILE문
+
+

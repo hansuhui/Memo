@@ -1,0 +1,2 @@
+context.Database.ExecuteSqlCommand("UPDATE CS_INFO SET DOWN_YN = (DOWN_YN+1) WHERE SEQ = {0}", SEQ);
+context.SaveChanges();

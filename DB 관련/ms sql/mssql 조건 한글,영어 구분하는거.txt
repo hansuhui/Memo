@@ -1,0 +1,8 @@
+ [ÇÑ±ÛÄÃ·³°ª µé¾îÀÖ´Â °Í¸¸ Áö¿ì±â]
+select *  from tbl where field like '%[°¡-ÆR]%'
+delete  from tbl where field like '%[°¡-ÆR]%'
+ 
+ 
+[¿µ¹®ÄÃ·³°ª µé¾îÀÖ´Â °Í¸¸ Áö¿ì±â]
+select * from tbl where field like '%[A-Za-z]%'
+delete from tbl where field like '%[A-Za-z]%'

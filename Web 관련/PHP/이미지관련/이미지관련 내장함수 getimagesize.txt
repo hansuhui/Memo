@@ -1,0 +1,180 @@
+php > 내가 만들어 쓰는 함수 > 이미지관련 내장함수 getimagesize 입니다.
+php 에서 이미지를 처리하기 위해서는 기본적으로 php에서 제공하는 이미지관련 내장함수의 숙지가 필요합니다.
+
+php에서는 많은 이미지 관련 내장함수를 제공합니다. 그중 특히나 많이 쓰이고 꼭 기억해야 만 하는 함수 getimagesize 를 설명하고자 합니다.
+
+getimagesize
+설명 : 로컬 이미지 파일이나 원격 이미지의 여러가지 정보를 배열로 반환합니다.
+
+인자 : 파일의 절대 경로나 상대경로가 들어갑니다. 원격 이미지 일 경우에는 원격 파일의 url 이 들어갑니다.
+
+용도 :
+ -> 이미지인지 여부와 이미지 타입을 확인합니다.
+ -> 이미지의 너비와 높이 정보 확인합니다.
+ -> 이미지의 mimetype 을 확인합니다.
+※ 원격 이미지는 php.ini 에서 allow_url_fopen 이 on 으로 되어 있을 때만 사용가능합니다.
+일반적으로 대부분은 보안 문제 때문에 off 되어있으므로 getimagesize 는 로컬이미지에만 이용한다고 생각하면 됩니다.
+
+
+예제 :
+<?php
+
+$size = getimagesize("./Forest Flowers.jpg");
+print_r($size);
+
+?>
+
+출력 :
+Array
+(
+   [0] => 1024
+   [1] => 768
+   [2] => 2
+   [3] => width="1024" height="768"
+   [bits] => 8
+   [channels] => 3
+   [mime] => image/jpeg
+)
+
+위의 예제에서도 알수 있듯이
+$size[0] 에는 이미지의 너비
+$size[1] 에는 이미지의 높이
+$size[2] 에는 이미지의 타입
+$size[3] 에는 html로 출력시 img 태그에 넣을 요소
+$size['mime'] 에는 이미지의 mimetype
+등의 정보를 반환합니다.
+
+$size[2] 의 이미지 정보는 숫자로 반환되는데 숫자와 매치되는 이미지 타입은 아래와 같습니다.
+
+1 => 'GIF',
+2 => 'JPG',
+3 => 'PNG',
+4 => 'SWF',
+5 => 'PSD',
+6 => 'BMP',
+7 => 'TIFF(intel byte order)',
+8 => 'TIFF(motorola byte order)',
+9 => 'JPC',
+10 => 'JP2',
+11 => 'JPX',
+12 => 'JB2',
+13 => 'SWC',
+14 => 'IFF',
+15 => 'WBMP',
+16 => 'XBM'
+
+보통은 다 외우거나 하기 힘들기 때문에 아래와 같은 함수를 만들어 놓고 사용하기도 합니다.
+
+※ 일반적으로 php에서 이미지 처리에 사용되는 확장자는 gif, jpg, png 입니다.
+bmp는 기본적으로 php에서 내장함수를 지원하지는 않습니다.
+굳이 bmp를 사용해야 할때라면 imagecreatefrombmp 와 같은 함수를 새로 정의하여 이미지타입을 변경후 처리합니다.
+bmp 와 wbmp는 다릅니다.
+
+
+예제 :
+<?php
+
+function get_image_kind($kind_no){
+
+ switch($kind_no) {
+
+   case 1 :
+     $kind = 'GIF';
+     break;
+
+   case 2 :
+     $kind = 'JPG';
+     break;
+
+   case 3 :
+     $kind = 'PNG';
+     break;
+
+   case 4 :
+     $kind = 'SWF';
+     break;
+
+   case 5 :
+     $kind = 'PSD';
+     break;
+
+   case 6 :
+     $kind = 'BMP';
+     break;
+
+   case 7 :
+     $kind = 'TIFF(intel byte order)';
+     break;
+
+   case 8 :
+     $kind = 'TIFF(motorola byte order)';
+     break;
+
+   case 9 :
+     $kind = 'JPC';
+     break;
+
+   case 10 :
+     $kind = 'JP2';
+     break;
+
+   case 11 :
+     $kind = 'JPX';
+     break;
+
+   case 12 :
+     $kind = 'JB2';
+     break;
+
+   case 13 :
+     $kind = 'SWC';
+     break;
+
+   case 14 :
+     $kind = 'IFF';
+     break;
+
+   case 15 :
+     $kind = 'WBMP';
+     break;
+
+   case 16 :
+     $kind = 'XBM';
+     break;
+
+   default :
+     $kind = '';
+ }
+
+ return $kind;
+}
+
+
+$path_file = './Forest Flowers.jpg';
+list($width, $height, $kind_no) = getimagesize($path_file);
+$kind = get_image_kind($kind_no);
+
+echo $path_file . " 은 <br />n";
+
+if (empty($kind)) {
+
+ echo "이미지가 아닙니다.<br />n";
+}
+else {
+
+ echo "너비가 $width px 이고 높이가 $height px 인 $kind 이미지 입니다.<br />n";
+}
+
+?>
+
+결과 :
+./Forest Flowers.jpg 은
+너비가 1024 px 이고 높이가 768 px 인 JPG 이미지 입니다.
+
+위 예제와 같이
+list($width, $height, $kind_no) = getimagesize($path_file);
+로 사용하면 바로 특정 변수로 해당 값을 바로 받을수 있습니다.
+
+
+list
+설명 : 값으로 대입되는 배열을 순서대로 변수로 나누어서 할당

@@ -1,0 +1,77 @@
+===========================================================================================================
+' 사업자등록번호 체크 함수
+'
+Public Function Check_RegNo(sRegNo As String) As Boolean
+  Dim ChkValue As Byte
+  Dim iRegNo(1 To 10) As Byte
+  Dim iWeight(1 To 9) As Byte
+  Dim Total As Byte
+  Dim i As Byte
+
+  Check_RegNo = False
+  If Len(sRegNo) <> 10 Then Exit Function
+   
+  '체크값(가중치)
+  iWeight(1) = 1
+  iWeight(2) = 3
+  iWeight(3) = 7
+  iWeight(4) = 1
+  iWeight(5) = 3
+  iWeight(6) = 7
+  iWeight(7) = 1
+  iWeight(8) = 3
+  iWeight(9) = 5
+ 
+  '사업자등록번호
+  For i = 1 To 10
+      iRegNo(i) = Val(Mid(sRegNo, i, 1))
+  Next i
+
+  Total = 0
+  For i = 1 To 9
+      Total = Total + (iWeight(i) * iRegNo(i))
+  Next i
+ 
+  Total = Total + ((iRegNo(9) * 5) / 10)
+ 
+  ChkValue = Total Mod 10
+ 
+  If ChkValue <> 0 Then ChkValue = 10 - ChkValue
+ 
+  If ChkValue = iRegNo(10) Then
+     Check_RegNo = True
+  Else
+     Check_RegNo = False
+  End If
+End Function
+ 
+'===========================================================================================================
+' 주민등록번호 체크 함수
+'
+Public Function Check_IDNO(sIDNO As String) As Boolean
+  Dim Weight As String
+  Dim Total As Byte
+  Dim ChkDigit As Byte
+  Dim ChkValue As Byte
+  Dim dt As Byte
+  Dim wt As Byte
+  Dim i As Byte
+ 
+  Check_IDNO = False
+  If Len(sIDNO) <> 13 Then Exit Function
+ 
+  ChkDigit = Val(Right(sIDNO, 1))
+ 
+  Weight = "234567892345"  '체크값(가중치)
+  Total = 0
+  For i = 1 To 12
+      dt = Val(Mid(sIDNO, i, 1))
+      wt = Val(Mid(Weight, i, 1))
+      Total = Total + (dt * wt)
+  Next i
+ 
+  ChkValue = 11 - (Total Mod 11)
+ 
+  If ChkValue > 9 Then ChkValue = ChkValue Mod 10
+  Check_IDNO = IIf(ChkValue = ChkDigit, True, False)
+End Function

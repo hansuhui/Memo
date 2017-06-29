@@ -1,0 +1,7 @@
+예를 들어 <iframe id="inbox"~라는 iframe이 있을 때 
+
+부모창에서 onclick="document.getElementById('iframe id').contentWindow.location.reload();"를 
+이용해 iframe창을 새로고침 시킬 수 있어요. 
+
+document.getElementById('iframe id').contentWindow.location.reload();
+

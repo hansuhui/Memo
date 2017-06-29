@@ -1,0 +1,94 @@
+http://stackoverflow.com/questions/2428092/creating-a-json-response-using-django-and-python
+
+[Django Json Data]
+
+
+import json
+
+from django.http import HttpResponse
+
+response_data = {}
+response_data['result'] = 'error'
+response_data['message'] = 'Some error message'
+
+return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+For Django 1.7+, use JsonResponse as shown in this SO answer like so :
+
+from django.http import JsonResponse
+return JsonResponse({'foo':'bar'})
+
+
+----------------------------------------------------------------
+
+
+from django.utils import simplejson
+from django.http import HttpResponse
+
+def some_view(request):
+    to_json = {
+        "key1": "value1",
+        "key2": "value2"
+    }
+    return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+
+
+----------------------------------------------------------------
+
+
+from django.utils import simplejson
+
+class JsonResponse(HttpResponse):
+    """
+        JSON response
+    """
+    def __init__(self, content, mimetype='application/json', status=None, content_type=None):
+        super(JsonResponse, self).__init__(
+            content=simplejson.dumps(content),
+            mimetype=mimetype,
+            status=status,
+            content_type=content_type,
+        )
+
+
+----------------------------------------------------------------
+
+from django.http import JsonResponse
+...
+return JsonResponse(array_to_js, safe=False)
+
+----------------------------------------------------------------
+
+
+from django.core import serializers
+
+json_serializer = serializers.get_serializer("json")()
+    response =  json_serializer.serialize(list, ensure_ascii=False, indent=2, use_natural_keys=True)
+    return HttpResponse(response, mimetype="application/json")
+
+
+
+	
+How to use google app engine with ajax (json)?
+
+----------------------------------------------------------------
+
+Code Javascript with JQuery:
+
+$.ajax({
+    url: '/ajax',
+    dataType : 'json',
+    cache: false,
+    success: function(data) {
+        alert('Load was performed.'+data.ajax_resp);
+    }
+});
+Code Python
+
+class Ajax(webapp2.RequestHandler):
+def get(self):
+    my_response = {'ajax_resp':'Hello, webapp World!'}
+    datos = json.dumps(my_response)
+
+    self.response.headers.add_header('content-type', 'application/json', charset='utf-8')
+    self.response.out.write(datos)

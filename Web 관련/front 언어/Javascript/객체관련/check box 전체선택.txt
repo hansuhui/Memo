@@ -1,0 +1,19 @@
+		function checkAll(idx) {
+			var all_check = document.frm.SaleCode;
+			if (all_check == null) {
+				alert("선택가능한건이 없습니다.");
+				$("#CheckAll").attr("checked", false);
+				return false;
+			}
+			all_check.checked = idx;
+			for (var i = 0; i < all_check.length; i++) {
+				if (all_check[i].type == "checkbox") {
+					all_check[i].checked = idx;
+				}
+			}
+		}
+
+
+$('input[name='+Name+']').attr('checked',state);  
+
+$('input[name=' + Name + ']').prop('checked', state);

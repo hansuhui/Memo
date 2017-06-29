@@ -1,0 +1,51 @@
+자바스크립트 소수점 값 올림, 내림 방법 - Math 객체 ceil, floor 예제
+ 
+ 
+실행결과 : [ jsfiddle ] 
+? 
+? 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  </head>
+  <body>
+       <!-- 버튼 클릭시 mathResult 함수에 인자로 up,down 을 넘깁니다. -->
+       <input type='button' onclick="mathResult('up');" value='올림' />
+       <input type='button' onclick="mathResult('down');" value='내림' />
+       <br/>
+       <!-- 값이 삽입될 div 를 셋팅 해줍니다 -->
+       <div id='resultDiv' style='margin:0 0 0 10px;'>
+            &nbsp;
+       </div>
+ 
+       <script type='text/javascript'> 
+           // 함수 실행시 인자로 받은 a 를 조건문(if) 으로 체크 하여 작업을 수행합니다.
+           function mathResult( a ) {
+               var sum = 3.24354;
+               if ( a == 'up') {
+                   // Math 객체를 참조하여 ceil 메소드로 sum 변수 올림 값을 result 변수에 담습니다.
+                    var result = Math.ceil(sum);
+               } else {
+                    // Math 객체를 참조하여 floor 메소드로 sum 변수 내림 값을 result 변수에 담습니다.
+                    var result = Math.floor(sum);
+               }
+               // 값이 삽입될 resultDiv id값의 div 의 innerHTML 로 올림/내림 값을 담은 result 변수 값을 삽입 합니다.
+               document.getElementById('resultDiv').innerHTML = result;
+            }
+       </script> 
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+ceil  - 소수점 값을 올림 해줍니다. ( Math 객체 메소드 )
+floor  - 소수점 값을 내림 해줍니다. ( Math 객체 메소드 )

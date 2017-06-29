@@ -1,0 +1,8 @@
+(case @KeyCode 
+			when 'Title' then b.Title
+			when 'Code' then  a.Code
+			when 'SaleCode' then a.SaleCode
+			else '' end)
+
+
+and (case when @RefundState = '' then '' else a.RefundState end) = @RefundState

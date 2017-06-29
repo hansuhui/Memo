@@ -1,0 +1,5 @@
+http://87nyunseng.tistory.com/entry/asp-request-for-each
+
+For Each i In request.form
+	response.write i & " / " & request.form(i) & "<br>"
+Next

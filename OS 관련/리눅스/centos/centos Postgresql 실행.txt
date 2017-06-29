@@ -1,0 +1,9 @@
+설치후 
+
+psql
+
+안되면 
+
+sudo su - postgres 
+
+psql

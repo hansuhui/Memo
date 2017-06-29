@@ -1,0 +1,6 @@
+
+path = "/경로/파일명.txt"
+
+StreamWriter writer = new StreamWriter(path, true,System.Text.Encoding.GetEncoding("euc-kr"));
+            writer.WriteLine(msgbody);
+            writer.Close();

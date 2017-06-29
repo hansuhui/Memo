@@ -1,0 +1,20 @@
+https://developer.mozilla.org/ko/docs/Web/CSS/transition-property
+
+[transition-property]
+
+/* Keyword values */
+transition-property: none;
+transition-property: all;
+transition-property: test_05;
+transition-property: -specific;
+transition-property: sliding-vertically;
+
+transition-property: test1;
+transition-property: test1, animation4;
+transition-property: all, height, all;
+transition-property: all, -moz-specific, sliding;
+
+/* Global values */
+transition-property: inherit;
+transition-property: initial;
+transition-property: unset;

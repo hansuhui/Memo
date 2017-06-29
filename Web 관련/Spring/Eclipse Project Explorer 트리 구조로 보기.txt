@@ -1,0 +1,11 @@
+http://blog.whitelife.co.kr/46
+
+
+Eclipse Project Explorer 트리 구조로 보기
+
+Windows 탐색기에 익숙해져 있기 때문에 개발 시 Flat 형태가 불편 할 수 있다.
+트리 구조로 변경을 해보자.
+
+Project Explorer 오른쪽 상단을 클릭하여 메뉴를 변경 하자.
+
+

@@ -1,0 +1,9 @@
+  <system.web>
+<sessionStatecookieless="false"mode="StateServer"stateConnectionString="tcpip=localhost:42424" timeout="60">
+</sessionState>
+    <authentication mode="None"/>
+    <compilation debug="true" targetFramework="4.5"/>
+	<httpRuntime requestValidationMode="2.0"/>
+    <pages controlRenderingCompatibilityVersion="4.0"/>
+	<customErrors mode="Off"/>
+  </system.web>

@@ -1,0 +1,9 @@
+insert into CartProduct (Code,Pcode,Qty,Ptype,Title,Img,Jong,Price,SaleRate,Summary,Guide,Memo,RegDate)
+select
+2014022018461111
+,'12321'
+,'1'
+,Ptype , Title , Img , Summary , Guide
+, 'asda'
+
+from Product where Pcode = '10000001'

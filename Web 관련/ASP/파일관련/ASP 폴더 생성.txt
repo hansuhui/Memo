@@ -1,0 +1,35 @@
+http://www.webmadang.net/develop/develop.do?action=read&boardid=1001&page=5&seq=19
+
+
+[ASP] FileSystemObject를 이용한 폴더(디렉토리) 생성하기
+
+FileSystemObject를 이용해서 폴더(디렉토리)를 생성하는 짧은 예제입니다. 
+FileSystemObject(FSO)를 사용하기 위해서는 CreateObject를 메서드를 사용하여 FileSystemObject를 만들어야 합니다. 
+
+
+아래 박스 참조 
+Dim Fso "변수를 생성 
+Set Fso = Server.CreateObject("Scripting.FileSystemObject") "FileSystemObject 객체를 생성
+.....Fso를 이용한 처리
+....
+Set Fso = nothing "객체제거
+
+밑에 예제는 "C:Temp"라는 폴더(디렉토리)의 존재 여부를 검사해서 존재하지 않으면 폴더를 생성하고, 존재하면 "폴더가 존재합니다"라는 메시지를 출력하는 것을 보여주고 있습니다..
+
+<%
+Dim Fso, strDir 
+
+strDir = "C:Temp"
+Set Fso = Server.CreateObject("Scripting.FileSystemObject") "파일객체 생성 
+
+If Not Fso.FolderExists(strDir) Then "C:Temp폴더가 존재하지 않으면
+strDir = Fso.CreateFolder(strDir) "C:Temp폴더를 생성
+Response.Write strDir & " 폴더 생성에 성공하였습니다."
+Else
+Response.Write strDir & " 폴더가 존재합니다."
+End If
+Set Fso = nothing
+%>
+ 
+작성자: 다자래(mfcchang@naver.com) 
+웹제작 토탈 커뮤니티 http://www.webmadang.net

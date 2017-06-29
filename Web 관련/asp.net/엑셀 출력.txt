@@ -1,0 +1,128 @@
+#region 엑셀 출력
+		public ActionResult ExportExcelH(string Html, string Count, string Search, string Title, string ID) //,string Count
+		{
+			//string sGridView = Html.Trim();
+			//string sHeaderCount = Count.Trim();
+			//string sSearch = Search.Trim();
+			//string sTitle = Title.Trim();
+
+			string sGridView = TempData["Html"].ToString().Trim();
+			string sHeaderCount = TempData["Count"].ToString().Trim();
+			string sSearch = TempData["Search"].ToString().Trim();
+			string sTitle = TempData["Title"].ToString().Trim();
+
+
+			//제목출력
+			string strTitle = "";
+			strTitle += "<table>";
+			strTitle += "<tr>";
+			strTitle += "<td colspan='" + sHeaderCount + "' height='100px' style='font-size:14pt' align='center'><b>" + sTitle;
+			strTitle += "</b></td>";
+			strTitle += "</tr>";
+			strTitle += "</table>";
+
+			string strSearch = "";
+
+			//출력자, 출력 일시
+			string strUserName = "";
+			strUserName += "<table>";
+			strUserName += "<tr>";
+			strUserName += "<td align='right' colspan='" + sHeaderCount + "' height='100px'><b>" + "출력자 : " + TempData["ID"];
+			strUserName += "</b></td>";
+			strUserName += "</tr>";
+			strUserName += "<tr>";
+			strUserName += "<td align='right' colspan='" + sHeaderCount + "' height='100px'><b>" + "출력일시 : " + DateTime.Now.ToString();
+			strUserName += "</b></td>";
+			strUserName += "</tr>";
+			strUserName += "<tr><td style='height:5.0pt'>&nbsp;</td></tr>";
+			strUserName += "</table>";
+
+
+			string sHTML = "";
+			sHTML = "<html>\r\n" +
+					"<head>\r\n" +
+					"<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n" +
+					"<title>" + sTitle + "</title>\r\n" +
+					"<STYLE type='text/css'>\r\n" +
+					".TBL {border:#A4B2CD solid 0.5pt;}\r\n" +
+					".HDR {background-color:bisque;font-weight:bold;border:#A4B2CD solid 0.5pt;}\r\n" +
+					".TCL {border:#A4B2CD solid 0.5pt; mso-number-format:'\\@'; }\r\n" +
+					".ar {text-align: right;border:#A4B2CD solid 0.5pt; mso-number-format:'\\@';}\r\n" +
+					".al {text-align: left;border:#A4B2CD solid 0.5pt; mso-number-format:'\\@';}\r\n" +
+					".ac {text-align: center;border:#A4B2CD solid 0.5pt; mso-number-format:'\\@';}\r\n" +
+					" #tblList1 th {border-top:1px solid #cccccc;border-right:1px solid #cccccc;border-:1px solid #cccccc;height:26px;color:#ffffff; background: #6e7a81; background-repeat: repeat-x; mso-number-format:'\\@';}\r\n" +
+					" #tblList1 td {border:1px solid #cccccc;border-left:0;text-align:center;font-size:11px;height:27px; mso-number-format:'\\@';}\r\n" +
+					"</STYLE>\r\n" +
+					"</head>\r\n" +
+					"<body>\r\n" +
+					"[TITLE]\r\n" +
+					"[SEARCH]\r\n" +
+					"[USERNAME]\r\n" +
+					"[CONTENT]\r\n" +
+					"</body>\r\n" +
+					"</html>";
+
+			string sCONTENT = "";
+
+			System.Web.HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + System.Web.HttpContext.Current.Server.UrlEncode(sTitle.Replace(' ', '_')) + "_" + String.Format("{0:yyyyMMddhhmmsss}", System.DateTime.Now) + ".xls");
+			string encoding = System.Web.HttpContext.Current.Request.ContentEncoding.HeaderName;
+			System.Web.HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
+			//HttpContext.Current.Response.ContentType = "application/unknown";
+
+
+			System.Web.HttpContext.Current.Response.Write("<meta http-equiv='Content-Type' content='application/vnd.ms-excel; charset=" + encoding + "'>");
+			//HttpContext.Current.Response.Write("<meta http-equiv='Content-Type' content='text/html; charset=" + encoding + "'>");
+			System.Web.HttpContext.Current.Response.Buffer = true;
+
+			//Regex regx = new Regex(ClassPattern, RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+			//sCONTENT = regx.Replace(sGridView, string.Empty);
+
+			sCONTENT = sGridView.Replace("<TABLE ", "<TABLE class=\"TBL\" ");
+			sCONTENT = sCONTENT.Replace("<TH ", "<TH class=\"HDR\" ");
+			sCONTENT = sCONTENT.Replace("<TH>", "<TH class=\"HDR\"> ");
+			sCONTENT = sCONTENT.Replace("<TD ", "<TD class=\"TCL\" ");
+			sCONTENT = sCONTENT.Replace("<TD>", "<TD class=\"TCL\"> ");
+
+
+
+			// <a></a> 삭제
+			int searchIdx;
+			int searchIdx2;
+			while (true)
+			{
+				searchIdx = sCONTENT.IndexOf("<A");
+				if (searchIdx > 0)
+				{
+					searchIdx2 = sCONTENT.IndexOf(">", searchIdx + 1);
+					string searchStr = sCONTENT.Substring(searchIdx, searchIdx2 - searchIdx + 1);
+					// <a 가 있다면
+					sCONTENT = sCONTENT.Replace(searchStr, "");
+				}
+				else
+				{
+					break;
+				}
+			}
+			sCONTENT = sCONTENT.Replace("</A>", "");
+
+			//sCONTENT = sCONTENT.Replace("onclick=\"fn_GridClick(this, 'ctl00_ContentArea_GridView1');\"", "");
+
+			sHTML = sHTML.Replace("[TITLE]", strTitle);
+			sHTML = sHTML.Replace("[SEARCH]", strSearch);
+			sHTML = sHTML.Replace("[USERNAME]", strUserName);
+			sHTML = sHTML.Replace("[CONTENT]", sCONTENT);
+
+			string stRender = sHTML;
+
+
+
+			Response.Clear();
+			Response.Write(stRender);
+			Response.End();
+
+
+
+			return View();
+
+		}
+		#endregion

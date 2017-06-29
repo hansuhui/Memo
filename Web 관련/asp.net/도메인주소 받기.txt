@@ -1,0 +1,2 @@
+Request.Url.ToString();
+Request.Url.Host.ToString();

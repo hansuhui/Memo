@@ -1,0 +1,46 @@
+http://blog.danggun.net/4147
+
+node.js를 쓸 일이 있을까?
+라는 생각을 하던 시절이 있었는데.....
+앵귤러JS(AngulraJS)가 2버전으로 올라가면서 'Node.js'를 쓰게 되면서 이제는 정말 'Node.js'를 배워야 할 때가 왔습니다.
+ㅎㅎㅎㅎ
+ 
+
+'Node.js'를 활용하려면 NPM(Node Packaged Modules)도 있어야 하니 같이 설치하고 세팅해 보겠습니다.
+NPM은 Node에서 사용하는 모듈을 모아둔 패키지 입니다.
+(참고 : nodejs.org - Node.js 소개 )
+https://nodejs.org/en/about/
+
+
+
+
+1. Node.js 설치
+노드js의 윈도우 버전은 인스톨러(Windows Installer, .msi)를 제공하기 때문에 원터치로 설치가 가능합니다!
+
+노드js 홈페이지로 가서 설치하려는 윈도우 버전에 맞게 설치 파일을 다운받습니다.
+참고 : nodejs.org - Downloads
+https://nodejs.org/en/download/
+
+
+설치가 끝나면 명령 프롬프트나 파워셀(PowerSell)을 열어 아래 명령어를 이용하여 버전을 확인해 봅시다.
+node - v
+
+
+그리고 별문제 없이 노드js가 설치되었다면 아래 명령어를 통해 'npm'의 버전도 확인할 수 있습니다.
+npm -v
+
+
+2.업데이트 하기
+
+명령 프롬프트나 파워셀을 관리자 모드로 열어서 업데이트를 진행해야 합니다.
+
+다음 명령을 순서대로 실행합니다.
+
+#이걸 입력해야 업그레이드가 됩니다.
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+
+npm install --global --production npm-windows-upgrade
+npm-windows-upgrade
+
+
+그러면 메뉴가 뜨는데 화살표 키로 버전 선택할 수 있습니다.

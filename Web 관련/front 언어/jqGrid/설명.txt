@@ -1,0 +1,49 @@
+require(["/Scripts/jquery.jqGrid.min.js"], function (jqGrid) {
+				this.jqGrid = jqGrid;
+				$("#tblList1").jqGrid({
+					url: searchURL,
+					datatype: "json",
+					colNames: ['입/출고일', '관리번호', '인쇄소', '재고유형', '관리부서', '입고수량', '사용량', '현재고'],
+					colModel: [
+						{ name: 'ORDERDATE', index: 'ORDERDATE', width: 70, align: "center", summaryTpl: '({0}) Totol' },
+						{ name: 'ORDERCODE', index: 'ORDERCODE', width: 100, align: "center" },
+						{ name: 'COMNAME', index: 'COMNAME', width: 170, align: "left" },
+						{ name: 'MAKETYPE', index: 'MAKETYPE', width: 50, align: "center" },
+						{ name: 'REQDEPTCODE', index: 'REQDEPTCODE', width: 60, align: "center" },
+						{
+							name: 'State1Qty', index: 'State1Qty', width: 60, formatter: 'number', sorttype: 'number', align: "right", summaryType: 'sum'
+						, formatoptions: { thousandsSeparator: "," }, summaryTpl: '합계'
+						},
+						{ name: 'State2Qty', index: 'State2Qty', width: 60, formatter: 'number', sorttype: 'number', align: "right", summaryType: 'sum', formatoptions: { thousandsSeparator: "," }, summaryTpl: '합계' },
+						{ name: 'AllQty', index: 'AllQty', width: 60, formatter: 'number', sorttype: 'number', align: "right", summaryType: 'sum', formatoptions: { thousandsSeparator: "," }, summaryTpl: '합계' },
+					],
+					height: $(".resize-grid").height(),
+					rowNum: 1000000,
+					rownumbers: true,
+					autowidth: true,
+					viewrecords: true,
+					loadonce: true,
+					mtype: "POST",
+					emptyrecords: "데이터가 없습니다.",
+					postData: $("#formSearch").serializeArray(),
+						
+					loadComplete: function (data) {
+						
+						var AllQtysum = $("#tblList1").jqGrid('getCol', 'AllQty', false, 'sum');
+						var State1Qtysum = $("#tblList1").jqGrid('getCol', 'State1Qty', false, 'sum');
+						var State2Qtysum = $("#tblList1").jqGrid('getCol', 'State2Qty', false, 'sum');
+						var Sumany = { ORDERDATE: "합계", ORDERCODE: "", COMNAME: "", MAKETYPE: "", REQDEPTCODE: "", State1Qty: State1Qtysum, State2Qty: State2Qtysum, AllQty: AllQtysum }
+						jQuery("#tblList1").jqGrid('addRowData', 1, Sumany);
+					}
+				});
+
+			});
+
+
+
+//검색
+
+function DoJsonSearch() {
+	jQuery("#tblList1").jqGrid('setGridParam', { datatype: 'json', page: 1 });
+	jQuery("#tblList1").jqGrid('setGridParam', { url: searchURL, postData: $("#formSearch").serializeArray() }).trigger("reloadGrid");
+}

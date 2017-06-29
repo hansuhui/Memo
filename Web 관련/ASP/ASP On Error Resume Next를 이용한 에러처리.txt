@@ -1,0 +1,39 @@
+[ASP On Error Resume Next를 이용한 에러처리]
+
+
+On Error Resume Next에 대해서 짧게 작성된 예제입니다.
+
+On Error Resume Next 구문은 에러가 발생해도 에러부분을 무시하고 넘기라는 
+명령문이며 에러발생시의 처리 루틴이 빠져있다면 화면에 아무런 에러메시지도 출력안하게 됩니다. 
+그럼 일단 개발자는 아래와 같은 소스에서는 DB연결 에러를 파악할수가 없게 됩니다. 
+
+결국 On Error Resume Next 구문은 발생할 수 있는 에러에 대한 예외처리 구문이라고 할 수 있습니다.
+쓰시게 될때는 에러처리 부분과 꼭 함께 사용하셔야 합니다.
+
+
+<%
+"On Error Resume Next 구문은 에러가 발생해도 일단 에러부분을 무시하고 넘기게 됩니다.
+On Error Resume next
+
+Dim strConnect, dbCon, rs
+strConnect="DSN=test;uid=sa;pwd=1234;"
+
+SET dbCon=server.CreateObject("ADODB.Connection")
+dbCon.Open strConnect
+
+SET rs = dbCon.execute("select uid, name, addr from TestTable where uid =""& uid &""")
+"Error 발생했을때 처리하게 되는 루틴입니다.
+IF Err.Number <> 0 Then
+Response.Write "<h2>DB연결에 실패하였습니다.</h2>" 
+Err.Clear
+Response.end
+Else
+rs.Close
+Set rs = nothing
+dbCon.Close
+Set dbCon = nothing
+Response.Write "<h2>DB연결에 성공하였습니다.</h2>"
+End If
+
+
+%>

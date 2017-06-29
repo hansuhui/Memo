@@ -1,0 +1,18 @@
+쿠키 생성
+HttpCookie aCookie = new HttpCookie("reUrl");
+aCookie.Value = filterContext.HttpContext.Request.Url.LocalPath;
+aCookie.Expires = DateTime.Now.AddHours(1);
+Response.Cookies.Add(aCookie);
+
+
+삭제 
+Response.Cookies.Remove(aCookie);
+
+주의점 이미 클라이언트 측에 추가가 되었다면 지워지지 않음 
+그럴때는 제한시간을 현재보다 이전으로 하여서 추가하면 지워짐
+
+HttpCookie aCookie = new HttpCookie("reUrl");
+aCookie.Value = filterContext.HttpContext.Request.Url.LocalPath;
+aCookie.Expires = DateTime.Now.AddHours(-1);
+Response.Cookies.Add(aCookie);
+

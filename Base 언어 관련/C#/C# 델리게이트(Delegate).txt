@@ -1,0 +1,216 @@
+http://mrw0119.tistory.com/19
+
+[C# µ¨¸®°ÔÀÌÆ®(Delegate)]
+
+ÇØ¼®ÇÏ¸é '´ë¸®ÀÎ'ÀÌ¶ó´Â ¶æÀÇ µ¨¸®°ÔÀÌÆ®´Â ¸Ş¼Òµå¸¦ ÂüÁ¶ÇÏ´Â º¯¼öÀÌ´Ù.
+
+C++ÀÇ ÇÔ¼ö Æ÷ÀÎÅÍ¿Í ºñ½ÁÇÏ°Ô ¶§¹®¿¡ C++À» °øºÎÇÑ »ç¶÷ÀÌ¶ó¸é ¾î·ÆÁö ¾Ê°Ô ÀÌÇØÇÏ°ÚÁö¸¸,
+±×·¸Áö ¾ÊÀº »ç¶÷µéÀ» À§ÇØ °£´ÜÈ÷ °³³äÀ» ¼³¸íÇØº»´Ù.
+
+´ë¸®¶ó´Â ¸»Àº º¸Åë ³»°¡ ÇØ¾ßÇÒ ÀÏÀ» ´Ù¸¥ ´©±º°¡¿¡ À§ÀÓÇÏ´Â °ÍÀ» ¸»ÇÑ´Ù.
+³ª¸¦ ´ë¸®ÇÒ »ç¶÷ÀÌ ÀÖ´Ù¸é , ±×·Î½á ¿ì¸®´Â ¸¹Àº ¼ö°í¸¦ ´úÀ» ¼ö ÀÖ´Ù.
+
+ÇÁ·Î±×·¡¹Ö¿¡¼­µµ ÀÌ·± ´ë¸®ÀÎÀÇ ¿ªÇÒÀ» ÇØÁÖ´Â º¯¼ö°¡ Á¸ÀçÇÏ´Âµ¥,
+±×°ÍÀÌ ¹Ù·Î µ¨¸®°ÔÀÌÆ®(Delegate)ÀÌ´Ù.
+
+µ¨¸®°ÔÀÌÆ®´Â ¸Å¼Òµå¸¦ ´ë½ÅÇØ¼­ È£ÃâÇÏ´Â ¿ªÇÒÀ» ÇÑ´Ù.(¸Ş¼ÒµåÀÇ ´ë¸®ÀÎ)
+Áö±İ±îÁö´Â Æ¯Á¤ ¸Ş¼Òµå¸¦ Ã³¸®ÇÒ ¶§ ±× ¸Ş¼Òµå¸¦ Á÷Á¢ È£ÃâÇØ¼­ ½ÇÇà½ÃÄÑ¾ß ÇßÁö¸¸,
+µ¨¸®°ÔÀÌÆ®¸¦ »ç¿ëÇÏ¸é ±× ¸Ş¼Òµå¸¦ ´ë½ÅÇÏ¿© È£ÃâÇÒ ¼ö ÀÖ´Ù.
+
+±×·³ ÀÌÁ¦ µ¨¸®°ÔÀÌÆ®°¡ ÄÚµå»ó¿¡¼­ ¾î¶»°Ô ¾²ÀÌ´ÂÁö ±¸Ã¼ÀûÀ¸·Î »ìÆìº¸ÀÚ.
+
+==================================================================
+
+[µ¨¸®°ÔÀÌÆ® ¼±¾ğ°ú ÂüÁ¶]
+
+µ¨¸®°ÔÀÌÆ®·Î Æ¯Á¤ ¸Ş¼Òµå¸¦ ´ë½Å È£ÃâÇÏ±â À§ÇØ¼­´Â
+
+(1) ¿ì¼± ±× ¸Ş¼Òµå¿Í µ¿ÀÏÇÑ Å¸ÀÔÀÇ µ¨¸®°ÔÀÌÆ®¸¦ ¼±¾ğÇØ¾ß ÇÑ´Ù.
+
+delegate void typeA(void); //void funcA(void)
+
+delegate void typeB(int); //void funcB(int)
+
+delegate float typeC(float); //void funcC(float)
+
+delegate string typeD(int); //void funcD(int)
+
+¸Ş¼Òµå Å¸ÀÔÀº ¸Å°³º¯¼ö¿Í ¹İÈ¯Å¸ÀÔ¿¡ ÀÇÇØ °áÁ¤µÇ±â ¶§¹®¿¡,
+µ¨¸®°ÔÀÌÆ® Å¸ÀÔµµ ±× ¸Ş¼Òµå¿Í µ¿ÀÏÇÑ ¸Å°³º¯¼ö, ¹İÈ¯Å¸ÀÔÀ¸·Î ¼±¾ğÇØÁÖ¸é µÈ´Ù.
+
+(2) ±×¸®°í ¼±¾ğÇÑ µ¨¸®°ÔÀÌÆ® Å¸ÀÔÀ¸·Î µ¨¸®°ÔÀÌÆ® º¯¼ö¸¦ »ı¼ºÇÏ°í,
+    »ı¼ºÇÑ µ¨¸®°ÔÀÌÆ® º¯¼ö¿¡ ÇØ´ç ¸Ş¼Òµå¸¦ ÂüÁ¶½ÃÅ²´Ù.
+
+»ı¼ºÇÑ µ¨¸®°ÔÀÌÆ® º¯¼ö¿¡ ÇØ´ç ¸Ş¼Òµå¸¦ ÂüÁ¶½ÃÅ²´Ù.
+
+//delegate º¯¼ö »ı¼º
+typeA delegate0;
+typeB delegate1;
+typeC delegate2;
+typeD delegate3;
+
+//¸Ş¼Òµå ÂüÁ¶
+delegate0 = new typeA(funcA);
+delegate1 = new typeB(funcB);
+delegate2 = new typeC(funcC);
+delegate3 = new typeD(funcD);
+
+¿©±â±îÁöÇÏ¸é ÀÌÁ¦ µ¨¸®°ÔÀÌÆ® º¯¼ö·Î ÇØ´ç ÇÔ¼ö¸¦ È£ÃâÇÒ ¼ö ÀÖ°Ô µÈ´Ù.
+
+- ¿¹Á¦ -
+
+
+using System;
+using System.Collections.Generic;
+
+namespace Console1
+{
+    delegate int MyDelegate(int a, int b);
+    class DeleteGate_Ex
+    {
+        public static int Plus(int a, int b) { return a + b; }
+        public static int Minus(int a, int b) { return a - b; }
+        public void Main() {
+            MyDelegate s; 
+             s = new MyDelegate(Plus);
+            Console.WriteLine(s(11, 22));
+
+            s = new MyDelegate(Minus);
+            Console.WriteLine(s(22,11 ));
+        }
+    }
+}
+
+
+
+
+==================================================================
+
+[Äİ¹é¸Ş¼­µå]
+
+»ç½Ç À§ÀÇ ¿¹Á¦¿Í °°ÀÌ µ¨¸®°ÔÀÌÆ®¸¦ ¾²´Â°ÍÀº Å« ÀÇ¹Ì°¡ ¾ø´Ù.
+¸Ş¼Òµå¸¦ Á÷Á¢ È£­ŒÇÏ¸é µÇÁö, ±»ÀÌ µ¨¸®°ÔÀÌÆ®·Î ÂüÁ¶ÇØ¼­ ¾µ ÇÊ¿ä°¡ ¾ø±â ¶§¹®ÀÌ´Ù.
+
+µ¨¸®°ÔÀÌÆ®ÀÇ ÁøÁ¤ÇÑ °¡Ä¡´Â Äİ¹é¸Ş¼­µå¸¦ ±¸ÇöÇÒ ¶§¿¡ ³ªÅ¸³­´Ù.
+Äİ¹é(Callback)ÀÌ¶õ A¶ó´Â ¸Ş¼­µå¸¦ È£ÃâÇÒ ¶§¿¡ B¶ó´Â ¸Ş¼­µå¸¦ ³Ñ°ÜÁÖ¾î
+
+A ¸Ş¼Òµå·Î ÇÏ¿©±İ B ¸Ş¼­µå¸¦ È£­ŒÇÏµµ·Ï ÇÏ´Â °ÍÀ» ¸»ÇÏ¸ç,
+
+ÀÌ¶§ÀÇ A ¸Ş¼­µå¸¦ Äİ¹é¸Ş¼­µå¶ó ÇÑ´Ù.
+
+ÀÌ °úÁ¤¿¡¼­ µ¨¸®°ÔÀÌÆ®´Â B¸Ş¼­µå¸¦ ÂüÁ¶ÇÏ´Â º¯¼ö·Î½á A ¸Ş¼­µå¿¡°Ô ³Ñ°ÜÁö´Â ¸Å°³º¯¼ö°¡ µÇ°í,
+A¸Ş¼­µå´Â ¸Å°³º¯¼ö·Î ¹ŞÀº µ¨¸®°ÔÀÌÆ®·Î B ¸Ş¼­µå¸¦ È£ÃâÇÑ´Ù.
+
+- ¿¹Á¦ -
+
+using System;
+
+namespace Console1
+{
+    delegate int MyDelegate2(int a, int b);
+    class DeleteGate_Ex2
+    {
+        public static void Calc(int a , int b , MyDelegate2 dele) {
+            Console.WriteLine(dele(a, b));
+        }
+        public static int Plus(int a, int b) { return a + b; }
+        public static int Minus(int a, int b) { return a - b; }
+        public static int Multiply(int a, int b) { return a * b; }
+        public void Main() {
+            MyDelegate2 s = new MyDelegate2(Plus);
+            MyDelegate2 s2 = new MyDelegate2(Minus);
+            MyDelegate2 s3 = new MyDelegate2(Multiply);
+
+            Calc(11, 22, s);  //´õÇÏ±â
+            Calc(33, 22, s2); //»©±â
+            Calc(11, 22, s3); //°öÇÏ±â
+        }
+    }
+}
+
+
+À§ÀÇ ¿¹Á¦¸¦ º¸¸é °è»ê±â ÇÔ¼ö¸¦ È£ÃâÇÒ ¶§¸¶´Ù ¿øÇÏ´Â ¿¬»ê(¸Ş¼Òµå)¸¦ ³Ñ°ÜÁÖ¾î
+°è»ê±â°¡ ÇØ´ç ±â´ÉÀ» ÇÏµµ·Ï ÇÏ°í ÀÖ´Ù.
+
+ÀÌ·¸°Ô Æ¯Á¤ ÇÔ¼ö°¡ ±×¶§±×¶§¸¶´Ù ÁöÁ¤µÈ ±â´ÉÀ» ÇÏµµ·Ï ÇÏ´Â °Í.
+ÀÌ°ÍÀÌ Äİ¹é ¸Ş¼ÒµåÀÇ ¾Æ¸§´Ù¿òÀÌ¸ç, ÀÌ´Â µ¨¸®°ÔÀÌÆ®°¡ ÀÖ±â¿¡ °¡´ÉÇÑ °ÍÀÌ¤¿¤§.
+
+
+==================================================================
+
+[ÀÏ¹İÈ­ µ¨¸®°ÔÀÌÆ®]
+
+- ¿¹Á¦ -
+
+
+using System;
+
+namespace Console1
+{
+    delegate T MyDelegate3<T>(T a, T b);
+    class DeleteGateT_Ex
+    {
+        public static void Calc<T>(T a , T b , MyDelegate3<T> dele) {
+            Console.WriteLine(dele(a, b));
+        }
+        public static int Plus(int a, int b) { return a + b; }
+        public static float Minus(float a, float b) { return a - b; }
+        public static double Multiply(double a, double b) { return a * b; }
+        public void Main() {
+            MyDelegate3<int> s = new MyDelegate3<int>(Plus);
+            MyDelegate3<float> s2 = new MyDelegate3<float>(Minus);
+            MyDelegate3<double> s3 = new MyDelegate3<double>(Multiply);
+
+            Calc(11, 22, s);  //´õÇÏ±â
+            Calc(3.3f, 4.4f, s2); //»©±â
+            Calc(5.5, 6.6, s3); //°öÇÏ±â
+        }
+    }
+}
+
+
+==================================================================
+
+[µ¨¸®°ÔÀÌÆ® Ã¼ÀÎ]
+
+Áö±İ±îÁöÀÇ µ¨¸®°ÔÀÌÆ®´Â ÇÏ³ªÀÇ µ¨¸®°ÔÀÌÆ®¿¡ ÇÏ³ªÀÇ ¸Ş¼Òµå¸¸À» ÂüÁ¶ÇÏ¿´´Ù.
+ÇÏÁö¸¸ µ¨¸®°ÔÀÌÆ®´Â ³î¶ø°Ôµµ ¿©·¯°³ÀÇ ¸Ş¼Òµå¸¦ ÂüÁ¶ÇÒ ¼ö ÀÖ´Â ´É·ÂÀÚÀÌ´Ù.
+
+µ¨¸®°ÔÀÌÆ®°¡ ¿©·¯°³ÀÇ ¸Ş¼Òµå¸¦ ÂüÁ¶ÇÏ°Ô ÇÏ´Â ¹æ¹ıÀº ¾ÆÁÖ °£´ÜÇÏ´Ù.
+´ÙÀ½°ú °°ÀÌ +,+=·Î »õ·Î¿î ¸Ş¼Òµå¸¦ Ãß°¡¸¸ ÇØÁÖ¸é µÈ´Ù.
+
+MyDelegate del;
+del = new MyDelegate(func0);
+del += func1;
+del += func2;
+
+ÀÌÁ¦ µ¨¸®°ÔÀÌÆ®¸¦ È£ÃâÇÏ¸é ÂüÁ¶µÈ ¸Ş¼ÒµåµéÀº Â÷·Ê´ë·Î È£ÃâÇÏ°Ô µÈ´Ù.
+ÀÌ·¸°Ô ÇÏ³ªÀÇ µ¨¸®°ÔÀÌÆ®¿¡ ¿©·¯°³ÀÇ ¸Ş¼Òµå¸¦ ¿¬°á½ÃÅ°´Â °ÍÀ» µ¨¸®°ÔÀÌÆ® Ã¼ÀÎÀÌ¶ó ÇÑ´Ù.
+±×¸®°í µ¨¸®°ÔÀÌÆ®¿¡ ¿¬°áµÈ ¸Ş¼Òµå¸¦ ²÷±â ¿øÇÑ´Ù¸é ¹İ´ë·Î -= ¸¦ ÇØÁÖ¸é µÈ´Ù.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

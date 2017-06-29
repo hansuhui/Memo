@@ -1,0 +1,13 @@
+http://87nyunseng.tistory.com/entry/asp-cookie
+
+
+"TestCook" 이란 이름으로 쿠키 생성
+response.cookies("TestCook")= "값입니다"
+
+
+"만료일" 설정
+response.cookies("TestCook").expires=now() + 20
+
+"TestCook" 쿠키 값 가져오기
+TestCook= request.cookies("TestCook") & "<BR>"
+response.write "TestCook=" & TestCook & "<BR>"

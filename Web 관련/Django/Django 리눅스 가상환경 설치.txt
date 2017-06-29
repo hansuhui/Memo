@@ -1,0 +1,21 @@
+https://devops.profitbricks.com/tutorials/deploy-django-with-virtualenv-on-centos-7/
+
+
+sudo rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-2.noarch.rpm
+
+
+sudo yum -y install python-virtualenvwrapper
+
+export WORKON_HOME=~/.virtualenvs
+source /usr/bin/virtualenvwrapper.sh
+
+mkvirtualenv myapp
+
+deactivate
+
+workon myapp
+
+sudo yum -y install python-pip
+
+
+pip install django

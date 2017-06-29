@@ -1,0 +1,13 @@
+Alt + 왼쪽 화살표 = 이전 페이지
+Alt + 오른쪽 화살표 = 다음 페이지
+Alt + F4  = 창 닫기
+Alt + D  =  wnthckd
+Ctrl + R = 새로고침
+Ctrl + B = 북마크 폴더로 이동
+Ctrl + d = 북마크  추가
+Ctrl + N = 새로운 창 만들기
+Ctrl + O = 새로운 주소 입력 창 열기
+Ctrl + W = 현재 브라우저 창 닫기
+F5 = 새로 고침
+Esc = 중지
+Ctrl + Tab = 탭이동

@@ -1,0 +1,69 @@
+https://ionicframework.com/docs/api/components/checkbox/Checkbox/
+
+[Checkbox]
+
+
+[ion-checkbox]
+
+The Checkbox is a simple component styled based on the mode. 
+It can be placed in an ion-item or used as a stand-alone checkbox.
+
+See the Angular 2 Docs for more info on forms and inputs.
+
+==================================================================
+[Usage]
+
+<ion-list>
+
+  <ion-item>
+    <ion-label>Pepperoni</ion-label>
+    <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Sausage</ion-label>
+    <ion-checkbox [(ngModel)]="sausage" disabled="true"></ion-checkbox>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Mushrooms</ion-label>
+    <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+  </ion-item>
+
+</ion-list>
+
+==================================================================
+
+[Input Properties]
+
+Attr  /  Type  / Details
+
+checked / boolean / If true, the element is selected.
+
+disablesd / boolean / If true, the user cannot interact with this element.
+
+==================================================================
+
+[Output Events]
+
+Attr / Details
+
+ionChange / Emitted when the checkbox value changes.
+	   (체크 박스 값이 변경되면 생성됩니다.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

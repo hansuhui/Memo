@@ -1,0 +1,170 @@
+http://naiyumie.tistory.com/928
+
+Javascript 뒤로가기 방지, 새로고침 방지, 복사 방지   Javascript / WEB  
+2012/04/26 08:56
+http://blog.naver.com/kpetera/70136836778
+ // 뒤로가기 방지
+window.history.forward(1);
+
+// 우클릭방지
+oncontextmenu='return false' 
+
+ // 드래그 방지
+ondragstart='return false'
+
+// 선택복사 방지
+onselectstart='return false'
+
+//새로고침, 뒤로가기 막기
+document.onkeydown = function(e) {
+ key = (e) ? e.keyCode : event.keyCode;
+ if(key==8 || key==116) {
+  if(e) {
+   e.preventDefault();
+  } else {
+   event.keyCode = 0;
+   event.returnValue = false;
+  }
+ }
+}
+//오른쪽마우스 막기
+document.oncontextmenu = function(e){
+ if(e){
+  e.preventDefault();
+ }
+ else{
+  event.keyCode = 0;
+  event.returnValue = false;
+ }
+}
+[출처] Javascript 뒤로가기 방지, 새로고침 방지, 복사 방지|작성자 니키아
+
+
+
+location.replace("이동할 새로운 URL");
+이런식으로 페이지를 이동하면 history.length가 0 이됩니다.
+아래소스는 특수키를 막는 겁니다. 링크의 키코드표와 함께 응용하여 사용하세요.
+--***********************
+   특수키 Key Protection 
+***********************--
+function lockKey() {
+  if (event.srcElement=="INPUT" || event.srcElement=="TEXTAREA") {
+   // INPUT나 TextArea에서 입력가능하게 함.
+   // Backspace
+   if(event.keyCode == 8) {
+    event.keyCode = 0;
+    return false;
+   }
+  }
+  --***********************
+    새로고침.. F5 번키.. 막음. 
+  ***********************--
+  if(event.keyCode == 116) {
+   event.keyCode = 0;
+   return false;
+  }
+  if(event.keyCode == 0) {
+   event.keyCode = 0;
+   return false;
+  }
+  --***********************
+    ESC Key 막음. 
+  ***********************--
+  if (event.keyCode == 27) { 
+   event.keyCode = 0;
+   //alert("특수 키는 사용하실 수 없습니다.");
+   return false;
+  }
+  --***********************
+    CTRL + N 즉 새로 고침을 막음. 
+  ***********************--
+  else if ((event.keyCode == 78) && (event.ctrlKey == true)) {
+   event.keyCode = 0;
+   return false;
+  }
+  --***********************
+     
+  ***********************--
+  else if (event.keyCode >= 112 && event.keyCode <= 123) {
+   event.keyCode = 0;
+   alert("특수 키는 사용하실 수 없습니다.");
+   return false;
+  }
+  --***********************
+     
+  ***********************--
+  else if (event.keyCode == 92 || event.keyCode == 93) {
+   event.keyCode = 0;
+   alert("특수 키는 사용하실 수 없습니다.");
+   return false;
+  }
+  --***********************
+     
+  ***********************--
+  else if (event.keyCode == 166 || event.keyCode == 17 ||
+     event.keyCode == 18 || event.keyCode == 168) {
+   event.keyCode = 0;
+   alert("특수 키는 사용하실 수 없습니다.");
+   return false;
+  }
+  --***********************
+     
+  ***********************--
+  else if ((event.altKey)||(event.ctrlKey)) {
+   event.keyCode = 0;
+   alert("특수 키는 사용하실 수 없습니다.");
+   return false;
+  }
+}
+--***********************
+     
+ ***********************--
+if (window.Event) {
+  document.captureEvents(Event.KEYDOWN)
+}
+window.document.onkeydown = lockKey;
+출처:브라우저에서 뒤로 가기 막기와 펑션키(function key) 막기
+
+
+
+<?php
+  header("Progma:no-cache");
+  header("Cache-Control:no-cache,must-revalidate");
+
+  if($_SERVER["HTTP_REFERER"]){
+    echo$_SERVER["HTTP_REFERER"];
+  }else
+  {
+    echo "리퍼러가 없습니다.";
+  }
+?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<title>Untitled Page</title>
+<script type = "text/javascript" >
+function changeHashOnLoad() {
+     window.location.href += "#";
+     setTimeout("changeHashAgain()", "50"); 
+}
+
+function changeHashAgain() {
+  window.location.href += "1";
+}
+
+var storedHash = window.location.hash;
+window.setInterval(function () {
+    if (window.location.hash != storedHash) {
+         window.location.hash = storedHash;
+    }
+}, 50);
+
+
+</script>
+</head>
+<body onload="changeHashOnLoad(); ">
+Try to hit the back button!
+</body>
+</html>

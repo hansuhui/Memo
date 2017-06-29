@@ -1,0 +1,3 @@
+msql 비번확일 Query
+
+select count(*) from boardMaster where bmidx = {0} and strPwd = '{1}'

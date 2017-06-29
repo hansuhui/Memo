@@ -1,0 +1,43 @@
+[.has()]
+
+
+.has()를 이용하면 특정 선택자를 가진 요소의 상위 요소를 선택할 수 있습니다. 
+CSS 선택자로는 불편했던 작업을 쉽게 할 수 있습니다.
+
+
+.has( selector )
+
+예를 들어 ul 태그를 가진 li 태그를 선택하려면 다음과 같이 합니다.
+
+$( 'li' ).has( 'ul' )
+
+- 예제 -
+
+ul 요소를 가진 li 요소의 글자색을 빨간색으로 만드는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .has()</title>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'li' ).has( 'ul' ).css( 'color', 'red' );
+      } );
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>Lorem</li>
+      <li>Ipsum
+        <ul>
+          <li>Sit</li>
+          <li>Amet</li>
+        </ul>
+      </li>
+      <li>Dolor</li>
+    </ul>
+  </body>
+</html>

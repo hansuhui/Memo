@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>getCurrentPosition</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript">
+    function getLocation_cord()
+    {
+    if (navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(showPosition1);
+        }
+        else
+        {
+            $("#setPosition").html("Geolocation is not supported by this browser.");
+        }
+    }
+    function showPosition1(position)
+    {
+        $("#setPosition").html("Latitude: " + position.coords.latitude + ", <br> Longitude: " + position.coords.longitude);
+    }
+    </script>
+</head>
+<body>
+    <p id="setPosition"></p>
+    <button onclick="getLocation_cord()">Get Position</button>
+</body>
+</html>

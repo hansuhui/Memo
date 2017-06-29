@@ -1,0 +1,218 @@
+==========================[Class]==========================
+
+  class Country
+    {
+        public int Area { get; set; }
+        public string Name { get; set; }
+        public int Population { get; set; }
+
+
+    }
+
+
+
+
+
+==========================[select]==========================
+
+   List<Country> countries = new List<Country> {
+                new Country { Area = 10000 }, new Country { Name = "하나" }
+        };
+
+            IEnumerable<Country> sortedQuery =
+                from country in countries
+                orderby country.Area
+                select country;
+
+            foreach (var Result in sortedQuery)
+            {
+                Console.WriteLine(Result.Area);
+            }
+
+
+            var queryNameAndPop =
+              from country in countries
+              select new { Name = country.Name, Pop = country.Population }; //다른이름 지정 가능
+
+
+
+
+
+==========================[Join]==========================
+
+
+            List<Country> countries = new List<Country> {
+                new Country { Population = 1000000 }, new Country { Population =150000 }
+        };
+
+
+            List<Country> countries2 = new List<Country> {
+                new Country { Population = 1000000 ,Name ="TEST" }, new Country { Population =150000 }
+        };
+
+            var categoryQuery =
+               from cat in countries
+               join prod in countries2 on cat.Population equals prod.Population
+               select new { Category = cat, Name = prod.Name };
+
+            foreach (var Result in categoryQuery)
+            {
+                Console.WriteLine(Result.Category.Population);
+                Console.WriteLine(Result.Name);
+            }
+
+
+
+
+==========================[Group]==========================
+
+   List<Country> countries = new List<Country> {
+                new Country { Name = "하나" }, new Country { Name = "하나" }
+                , new Country { Name = "둘" }, new Country { Name = "둘" }
+                , new Country { Name = "셋" }, new Country { Name = "셋" }
+        };
+
+
+
+
+
+
+            var countryAreaQuery = from country in countries group country by country.Name[0];
+
+
+            foreach (var Result in countryAreaQuery)
+            {
+                Console.WriteLine(Result);
+            }
+
+
+
+
+==========================[where]==========================
+
+
+	 List<Country> countries = new List<Country> {
+                new Country { Population = 1000000 }, new Country { Population =150000 }
+        };
+
+            IEnumerable<Country> queryMajorCitiesA =
+                from city in countries
+                where city.Population > 100000
+                select city;
+
+
+     List<Country> countries = new List<Country> {
+                new Country { Population = 1000000 }, new Country { Population =150000 }
+        };
+
+            IEnumerable<Country> queryCityPop =
+                from city in countries
+                where city.Population < 200000 && city.Population > 100000
+                select city;
+
+
+
+==========================[lat]==========================
+
+            string[] PhoneNum = { "010-4617-0000", "011-1234-4321", "012-2222-1111" };
+            IEnumerable<string> queryFirstNum =
+               from ph in PhoneNum
+               let firstNum = ph.Split(new char[] { '-' })[0]
+               select firstNum;
+
+            IEnumerable<string> queryFirstNum2 =
+               from ph in PhoneNum
+               let firstNum = ph.Replace('-', '_')
+               select firstNum;
+
+
+
+==========================[orderby]==========================
+
+      List<Country> countries = new List<Country> {
+                new Country { Name = "a" }, new Country { Name = "a" }
+                , new Country { Name = "b" }, new Country { Name = "b" }
+                , new Country { Name = "c" }, new Country { Name = "c" }
+        };
+
+
+            var countryAreaQuery = from country in countries
+                                   orderby country.Name //descending
+                                   select country; ;
+
+
+            foreach (var Result in countryAreaQuery)
+            {
+                Console.WriteLine(Result.Name);
+            }
+
+
+
+
+
+
+
+==========================[Test]==========================
+
+
+        void QueryTest1()
+        {
+            int[] scores = { 71, 81, 90, 32, 85, 93, 100 };
+            IEnumerable<int> Test = from score in scores where score > 80 orderby score descending select score;
+
+            foreach (int Result in Test)
+            {
+                Console.WriteLine(Result);
+            }
+
+            Console.WriteLine("======== 테스트2 ========");
+
+
+            IEnumerable<string> Test2 =
+               from score2 in scores
+               where score2 > 80
+               orderby score2 descending
+               select string.Format("점수 {0}", score2);
+
+            foreach (string Result in Test2)
+            {
+                Console.WriteLine(Result);
+            }
+
+
+            Console.WriteLine("======== Count : {0} ========", Test2.Count());
+
+        }
+        void QueryTest2()
+        {
+
+            List<Country> countries = new List<Country> { new Country { Area = 6000000 }, new Country { Area = 0 } };
+
+
+            IEnumerable<Country> countryAreaQuery =
+                from country in countries
+                where country.Area > 500000
+                select country;
+
+            List<Country> Val = countryAreaQuery.ToList();
+
+            foreach (var Result in Val)
+            {
+                Console.WriteLine(Result.Area);
+            }
+        }
+        void QueryTest()
+        {
+            int[] scores = { 90, 71, 82, 93, 75, 85 };
+            IEnumerable<int> scoreQuery =
+              from score in scores
+              where score > 85
+              orderby score descending
+              select score;
+
+            foreach (int Result in scoreQuery)
+            {
+                Console.WriteLine(Result);
+            }
+        }
+

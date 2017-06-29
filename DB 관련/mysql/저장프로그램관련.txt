@@ -1,0 +1,45 @@
+[뷰 사용]
+
+CREATE VIEW 뷰명 AS 쿼리
+
+[프로시져]
+
+CREATE PROCEDURE 프로시져명 (파라미터 타입)
+BEGIN
+
+쿼리1;
+쿼리2;
+
+END;
+
+CALL 프로시져명();
+
+[저장 함수]
+
+CREATE FUNCTION 함수명 (파라미터 타입)
+RETURN type
+routine_stmt
+
+CREATE FUNCTION 함수명 (파라미터 타입)
+RETURN type
+BEGIN
+
+END
+
+SELECT 함수명(파라미터);
+
+
+[트리거]
+
+CREATE TRIGGER 트리검명
+{BEFORE | AFTER } 트리거 활성화 될때
+{INSERT | UPDATE | DELETE} 활성화 질의문
+ON 테이블명
+FOR EACH ROW trigge_stme 트리거하는일
+
+CREATE TRIGGER 트리거명 
+BEFORE INSERT ON 테이블명
+FOR EACH ROW 
+BEGIN
+쿼리 
+END

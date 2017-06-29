@@ -1,0 +1,63 @@
+[.prop()]
+
+.prop()는 지정한 선택자를 가진 첫번째 요소의 속성값을 가져오거나 속성값을 추가합니다. 
+주의할 점은 HTML 입장에서의 속성(attribute)이 아닌 
+JavaScript 입장에서의 속성(property)이라는 것입니다.
+
+속성값을 가져올 때는 다음과 같이 합니다.
+
+.prop( propertyName )
+
+속성값을 추가할 때는 다음과 같이 합니다.
+
+.prop( propertyName, value )
+
+a 요소의 href 속성값을 .attr()과 .prop()로 가져와서 출력하는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .prop()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  </head>
+  <body>
+    <p><a href="#">Link</a></p>
+    <p>
+      <script>
+        document.write( $( 'a' ).attr( 'href' ) );
+        document.write( '<br>' );
+        document.write( $( 'a' ).prop( 'href' ) );
+      </script>
+    </p>
+  </body>
+</html>
+
+제일 위의 체크박스를 체크하거나 체크 해제를 하면 아래의 
+모든 체크박스가 체크되거나 체크 해제 되는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .prop()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( '.check-all' ).click( function() {
+          $( '.ab' ).prop( 'checked', this.checked );
+        } );
+      } );
+    </script>
+  </head>
+  <body>
+    <form>
+      <p><input type="checkbox" name="all" class="check-all"> <label>Check ALL</label></p>
+      <hr>
+      <p><input type="checkbox" name="cb1" class="ab"> <label>Checkbox 1</label></p>
+      <p><input type="checkbox" name="cb2" class="ab"> <label>Checkbox 2</label></p>
+    </form>
+  </body>
+</html>

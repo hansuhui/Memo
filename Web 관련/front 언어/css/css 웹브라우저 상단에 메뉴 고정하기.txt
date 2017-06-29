@@ -1,0 +1,75 @@
+[웹브라우저 상단에 메뉴 고정하기]
+
+웹사이트의 메뉴는 보통 상단에 있습니다.
+페이지가 길다면 스크롤할수록 메뉴는 점점 멀어집니다.
+그래서 글을 다 읽고 다시 메뉴를 선택하려면 스크롤해서 맨 위로 올라가야 하는 불편이 있습니다.
+
+이런 불편을 해소하는 방법 중의 하나가 메뉴를 상단에 고정시키는 것입니다. 
+즉, 스크롤해서 밑으로 내려가도 메뉴는 그대로 있는 것이죠.
+
+메뉴를 고정하는 방법은 여러가지가 있으나, 
+여기서는 CSS의 position 속성으로 간단히 구현해보도록 하겠습니다.
+아래는 상단에 메뉴가 있는 간단한 페이지입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips | Fixed Menu</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      #fixed-menu {
+        width: 100%;
+        background-color: #ffffff;
+      }
+      #main-content {
+        width: 100%;
+      }
+      #fixed-menu li {
+        display: inline-block;
+        margin-right: 30px;
+      }
+      img {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fixed-menu">
+      <h1>CMSFactory.NET</h1>
+      <ul>
+        <li>Lorem</li>
+        <li>Ipsum</li>
+        <li>Dolor</li>
+      </ul>
+    </div>
+    <div id="main-content">
+      <img src="slider.png">
+    </div>
+  </body>
+</html>
+
+
+메뉴를 고정하기 위해서 메뉴를 감싸고 있는 fixed-menu 아이디에 position, top, left 속성을 추가합니다.
+
+#fixed-menu {
+  width: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+
+#main-content {
+  width: 100%;
+  margin-top: 120px;
+}
+
+
+
+
+

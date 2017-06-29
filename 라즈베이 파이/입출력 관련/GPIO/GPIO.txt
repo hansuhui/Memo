@@ -1,0 +1,114 @@
+http://studymake.tistory.com/497
+
+[다용도 입출력 포트]
+
+
+
+
+T-Cobbler 케이블은 라즈베이 파이에 GPIO에 연결이 되고
+그 케이블로 브레드 보드에 연결해서 전기를 흘리는 요소이다
+그래서 중간중간 원하는 요소를 넣고 마지막엔 39핀 Ground에 흘린다!!
+
+
+[라즈베리파이의 GPIO핀 개요]
+
+1번 핀 : 3.3V (3.3볼트)
+
+2번 핀 : 5V (5.0볼트)
+
+3번 핀 : GPIO 2 (SDA1)
+
+4번 핀 : 5V (5.0볼트)
+
+5번 핀 : GPIO 3 (SCL1)
+
+6번 핀 : GROUND
+
+7번 핀 : GPIO 4
+
+8번 핀 : GPIO 14 (TxD)
+
+9번 핀 : GROUND
+
+10번 핀 : GPIO 15 (RxD)
+
+11번 핀 : GPIO 17
+
+12번 핀 : GPIO 18
+
+13번 핀 : GPIO 27
+
+14번 핀 : GROUND
+
+15번 핀 : GPIO 22
+
+16번 핀 : GPIO 23
+
+17번 핀 : 33V (3.3볼트)
+
+18번 핀 : GPIO 24 
+  
+19번 핀 : GPIO 10 (MOSI)
+
+20번 핀 : GROUND
+
+21번 핀 : GPIO 9(MISO)
+  
+22번 핀 : GPIO 25
+
+23번 핀 : GPIO 11 (SCLK)
+ 
+24번 핀 : GPIO 8 (CE0)
+
+25번 핀 : GROUND
+
+26번 핀 : GPIO 7(CE1)
+
+27번 핀 : GPIO 0 (SDA0) 
+
+28번 핀 : GPIO1 (SCL0)
+
+29번 핀 : GPIO 5
+
+30번 핀 : GROUND
+
+31번 핀 : GPIO 6
+
+32번 핀 : GPIO 12
+
+33번 핀 : GPIO 13
+
+34번 핀 : GROUND
+
+35번 핀 : GPIO 19
+
+36번 핀 : GPIO 16
+
+37번 핀 : GPIO 26
+
+38번 핀 : GPIO 20
+
+39번 핀 : GROUND
+
+40번 핀 : GPIO 21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

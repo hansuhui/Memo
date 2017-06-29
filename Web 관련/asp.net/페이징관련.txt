@@ -1,0 +1,9 @@
+			// ÆäÀÌÂ¡ °ü·Ã
+			int totalRecords = bd.GetDefaultCount(boardSearch);
+			int totalPages = (totalRecords / boardSearch.pageSize);
+			if ((totalRecords % boardSearch.pageSize) > 0)
+				totalPages++;
+
+			ViewBag.totalRecords = totalRecords;
+			ViewBag.totalPages = totalPages;
+			ViewBag.listNumber = ViewBag.totalRecords - ((boardSearch.page - 1) * boardSearch.pageSize);

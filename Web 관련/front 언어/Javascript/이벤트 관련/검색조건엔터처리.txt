@@ -1,0 +1,6 @@
+// 검색조건 엔터처리
+			$("#formSearch input").keypress(function () {
+				if (event.keyCode == 13) {
+					$("#formSearch").submit();
+				}
+			});

@@ -1,0 +1,16 @@
+2016년 1워에 등록된 이미지를 선택
+
+img[src^="/images/201601"] 
+
+
+확장자가 jpg 인 이미지를 선택
+img[src$=".jpg"]
+
+
+input:radio[name=이름][value="02"]+span{
+
+}
+
+div[data-mode="regist"]input[data-mode="edit"]{
+
+}

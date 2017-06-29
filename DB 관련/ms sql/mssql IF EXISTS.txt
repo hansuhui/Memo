@@ -1,0 +1,25 @@
+MSSQL 프로시져의 쿼리문 중 IF문을 사용한 예제입니다.
+
+SELECT문을 사용한 쿼리를 실행한 후 결과값이 존재하면 A동작
+
+결과 값이 존재하지 않으면 B동작 수행을 하는 구문입니다.
+
+여기서 중요한 부분은 EXISTS 입니다.
+
+
+
+IF EXISTS(
+                SELECT SEQ FROM TABLE_A
+                WHERE SEQ = @P_SEQ
+         )
+    BEGIN    //SELECT문의 결과값이 존재할  경우 실행
+         UPDATE TABLE_A
+            SET USERNAME = @P_NAME
+          WHERE SEQ = @P_SEQ
+    END    
+ELSE
+    BEGIN    //SELECT문의 결과값이 없을 경우 실행
+        INSERT INTO TABLE_A(SEQ, USERNAME)
+        VALUES(@P_SEQ, @P_NAME)
+    END
+END

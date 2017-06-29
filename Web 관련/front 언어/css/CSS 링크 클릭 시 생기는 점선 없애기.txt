@@ -1,0 +1,7 @@
+
+https://www.cmsfactory.net/node/10160
+
+
+ 링크 클릭 시 생기는 점선 없애기
+
+a {outline: none;}

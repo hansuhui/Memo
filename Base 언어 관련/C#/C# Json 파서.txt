@@ -1,0 +1,18 @@
+
+
+using Newtonsoft.Json;
+
+var postData =
+            new
+            {
+                data = new
+                {
+                    title = title,
+                    body = message,
+                },
+                // FCM allows 1000 connections in parallel.
+                to = Token
+            };
+
+            //Linq to json
+            string contentMsg = JsonConvert.SerializeObject(postData);

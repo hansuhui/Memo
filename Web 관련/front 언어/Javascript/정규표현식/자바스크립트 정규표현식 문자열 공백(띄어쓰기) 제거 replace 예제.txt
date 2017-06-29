@@ -1,0 +1,28 @@
+자바스크립트 정규표현식 문자열 공백(띄어쓰기) 제거 replace 예제
+ 
+
+실행결과 :  [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+       <script type='text/javascript'>
+           var str = "jo gun    de  sign"    
+           // \s (공란)을 g 플래그로 문자열 전체를 체크하여 '' 로  전부 replace 합니다. 
+           var regExp = /\s/g;
+           var result = str.replace(regExp,'');
+           document.write(result);    
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+replace?  - 첫번째 인자를 두번째 인자로 대체 합니다. ( String 객체 메소드 )

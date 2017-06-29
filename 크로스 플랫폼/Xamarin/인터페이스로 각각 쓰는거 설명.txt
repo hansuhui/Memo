@@ -1,0 +1,145 @@
+일단 메인 프로젝트에 인터페이를 만들고
+
+
+interface IDialer
+    {
+    bool Dial(string number);
+}
+
+각각 프로젝트 인터페이를 상속 받는 걸 넣는다.
+
+
+
+
+================================================================================ㅍ
+안드로이드는 프로젝트 속성에서 메니페스트에서 권한을 추가해야함
+
+
+using Android.Content;
+using Android.Telephony;
+
+using Xamarin_App1.Android;
+using Xamarin_App1.interfaces;
+using System.Linq;
+using Xamarin.Forms;
+using Uri = Android.Net.Uri;
+[assembly: Dependency(typeof(PhoneDialer))]
+namespace Xamarin_App1.Android
+{
+    public class PhoneDialer : IDialer
+    {
+        public bool Dial(string number)
+        {
+            var context = Forms.Context;
+            if (context == null)
+                return false;
+
+            var intent = new Intent(Intent.ActionCall);
+            intent.SetData(Uri.Parse("tel:" + number));
+
+            if (IsIntentAvailable(context, intent))
+            {
+                context.StartActivity(intent);
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsIntentAvailable(Context context, Intent intent)
+        {
+            var packageManager = context.PackageManager;
+
+            var list = packageManager.QueryIntentServices(intent, 0)
+                .Union(packageManager.QueryIntentActivities(intent, 0));
+
+            if (list.Any())
+                return true;
+
+            var manager = TelephonyManager.FromContext(context);
+            return manager.PhoneType != PhoneType.None;
+        }
+    }
+}
+
+
+=====================================
+
+
+
+using Foundation;
+using UIKit;
+
+namespace Xamarin_App1.iOS
+{
+	[Register("AppDelegate")]
+	public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+	{
+		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+		{
+			global::Xamarin.Forms.Forms.Init();
+			LoadApplication(new App());
+
+			return base.FinishedLaunching(app, options);
+		}
+	}
+}
+
+
+
+
+
+
+
+============================
+
+UWP는  Mobile Extensions for the UWP 참조 해야하고 
+Package.appxmanifest 에서 전화거는 권한을 줘야함
+
+
+using Xamarin_App1.UWP;
+using Xamarin_App1.interfaces;
+using System;
+using System.Threading.Tasks;
+using Windows.ApplicationModel.Calls;
+using Windows.UI.Popups;
+using Xamarin.Forms;
+
+[assembly: Dependency(typeof(PhoneDialer))]
+namespace Xamarin_App1.UWP
+{
+    public class PhoneDialer : IDialer
+    {
+        bool dialled = false;
+
+        public bool Dial(string number)
+        {
+            DialNumber(number);
+            return dialled;
+        }
+
+        async void DialNumber(string number)
+        {
+            var phoneLine = await GetDefaultPhoneLineAsync();
+            if (phoneLine != null)
+            {
+                phoneLine.Dial(number, number);
+                dialled = true;
+            }
+            else
+            {
+                var dialog = new MessageDialog("No line found to place the call");
+                await dialog.ShowAsync();
+                dialled = false;
+            }
+        }
+
+        async Task<PhoneLine> GetDefaultPhoneLineAsync()
+        {
+            var phoneCallStore = await PhoneCallManager.RequestStoreAsync();
+            var lineId = await phoneCallStore.GetDefaultLineAsync();
+            return await PhoneLine.FromIdAsync(lineId);
+        }
+    }
+}
+

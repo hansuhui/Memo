@@ -1,0 +1,15 @@
+예외처리 관련 
+
+
+try{}catch{} 문은 무거운 처리라서 발생하지 않도록 하는 것이 기본이다.
+
+최대한 쓰지 않는것이 좋다. 변환관련  TryParse 메서드를 사용한다.
+
+
+
+string[] ar = {"abc","가나다","언어","123"};
+foreach(var item in ar){
+    int t = 0;
+   if(int.TryParse(item,out t));
+}
+

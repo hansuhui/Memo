@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="EF4._14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ibatis.apache.org/mapping">
+  <alias>
+    <typeAlias alias="product"  type="hanyoung.Models.Model" />
+  </alias>
+  <statements>
+
+    <!--매뉴얼 목록조회 -->
+    <select id="selectNoticeList" resultClass="notice">
+      SELECT
+      *
+      FROM
+      Notice
+      WHERE
+      Site_ID
+      = 'HANYOUNG'
+      ORDER BY
+      REGDATE DESC
+    </select>
+
+  </statements>
+</sqlMap>

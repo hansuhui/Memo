@@ -1,0 +1,372 @@
+mssql 에서 날짜형식을 변환하는 함수를 만들어 보았습니다.
+
+
+
+
+하단의 함수 생성 코드를 실행하시면 함수가 생성되어, 바로 사용하실 수 있습니다.
+
+
+
+
+사용방식은 다음과 같습니다.
+
+
+
+
+현재 문자열 날짜인 '2011-11-12 03:10:22' 를 '2011.11.12 03:10:22' 형식과 같이
+
+
+
+
+변형하고 싶다면, 쿼리에서 다음과 같이 함수를 호출하시면 됩니다.
+
+
+
+
+FNDateFormat('2011-11-12 03:10:22', 'yyyy.mm.dd hh:mi:ss')
+
+
+
+
+위와 같이 쿼리에서 호출하시면, '2011.11.12 03:10:22' 와같은 결과값을 반환하게 됩니다.
+
+
+
+
+단점은 datetime 형식의 데이터를 받아서 처리하지는 못합니다.
+
+
+
+
+문자열 형식의 날짜데이터를 받아서 처리하기 때문입니다.
+
+
+
+
+datetime 데이터를 받는 부분을 처리하고 싶다면, 함수를 하나 새로 만드셔서,
+
+
+
+
+return FNDateFormat( convert(varchar, datetime데이터, 120) , 'yyyy.mm.dd hh:mi:ss')
+
+
+
+
+위와 같은 형식으로 함수내부에서, 현재 함수를 호출하시면 datetime 형식의 데이터도
+
+
+
+
+간단하게 처리하실 수 있을 것입니다.
+
+
+
+
+
+
+
+함수생성쿼리는 다음과 같습니다.
+
+
+
+
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+/*
+
+ @p_format : 'yyyymmddhhmiss', 'yymmddhhmiss'
+
+ @p_date : 년도가 네자리이면 @p_format에는 반드시 yyyy 이어야 하고, 
+
+     년도가 두자리이면 @p_format에는 반드시 yy 이어야 함.
+
+*/
+
+CREATE FUNCTION [FNDateFormat]
+
+(
+
+ @p_date varchar(30),
+
+ @p_format varchar(30)
+
+)
+
+RETURNS varchar(30)
+
+AS
+
+BEGIN
+
+ declare @v_result varchar(30)
+
+ declare @v_idx int
+
+ declare @v_yyyy varchar(4)
+
+ declare @v_yy varchar(2)
+
+ declare @v_mm varchar(2)
+
+ declare @v_dd varchar(2)
+
+ declare @v_hh varchar(2)
+
+ declare @v_mi varchar(2)
+
+ declare @v_ss varchar(2)
+
+
+
+
+ set @p_date = ltrim(@p_date)
+
+ set @p_date = rtrim(@p_date)
+
+
+
+
+ set @p_format = ltrim(@p_format)
+
+ set @p_format = rtrim(@p_format)
+
+ set @p_format = lower(@p_format)
+
+
+
+
+ set @p_date = replace(@p_date, ' ', '')
+
+ set @p_date = replace(@p_date, '-', '')
+
+ set @p_date = replace(@p_date, ':', '')
+
+ set @p_date = replace(@p_date, '.', '')
+
+
+
+
+ if @p_date is null or @p_date='' or @p_format is null or @p_format='' begin
+
+  return ''
+
+ end
+
+
+
+
+ if charindex('yyyy',@p_format) <> 0 begin
+
+  set @v_idx = 4
+
+
+
+
+  if len(@p_date) >= @v_idx begin
+
+   set @v_yyyy = left(@p_date,@v_idx)
+
+  end
+
+ end
+
+
+
+
+
+ if charindex('yyyy',@p_format) = 0 and charindex('yy',@p_format) <> 0 begin
+
+  set @v_idx = 2
+
+
+
+
+  if len(@p_date) >= @v_idx begin
+
+   set @v_yy = left(@p_date,@v_idx)
+
+  end
+
+ end else begin
+
+  set @v_idx = 4
+
+
+
+
+  if len(@p_date) >= @v_idx begin
+
+   set @v_yyyy = left(@p_date,@v_idx)
+
+  end
+
+ end
+
+
+
+
+
+
+
+ if len(@p_date) >= (@v_idx+2) begin
+
+  set @v_mm = substring(@p_date,(@v_idx+1),2)
+
+ end
+
+ set @v_idx = @v_idx + 2
+
+
+
+
+ if len(@p_date) >= (@v_idx+2) begin
+
+  set @v_dd = substring(@p_date,(@v_idx+1),2)
+
+ end
+
+ set @v_idx = @v_idx + 2
+
+
+
+
+ if len(@p_date) >= (@v_idx+2) begin
+
+  set @v_hh = substring(@p_date,(@v_idx+1),2)
+
+ end
+
+ set @v_idx = @v_idx + 2
+
+
+
+
+ if len(@p_date) >= (@v_idx+2) begin
+
+  set @v_mi = substring(@p_date,(@v_idx+1),2)
+
+ end
+
+ set @v_idx = @v_idx + 2
+
+
+
+
+ if len(@p_date) >= (@v_idx+2) begin
+
+  set @v_ss = substring(@p_date,(@v_idx+1),2)
+
+ end
+
+ set @v_idx = @v_idx + 2
+
+
+
+
+ set @v_result = @p_format
+
+ set @v_result = replace(@v_result, 'yyyy', isnull(@v_yyyy,''))
+
+ set @v_result = replace(@v_result, 'yy', isnull(@v_yy,''))
+
+ set @v_result = replace(@v_result, 'mm', isnull(@v_mm,''))
+
+ set @v_result = replace(@v_result, 'dd', isnull(@v_dd,''))
+
+ set @v_result = replace(@v_result, 'hh', isnull(@v_hh,''))
+
+ set @v_result = replace(@v_result, 'mi', isnull(@v_mi,''))
+
+ set @v_result = replace(@v_result, 'ss', isnull(@v_ss,''))
+
+
+
+
+ set @v_result = replace(@v_result, '..', '')
+
+ set @v_result = replace(@v_result, '--', '')
+
+ set @v_result = replace(@v_result, '::', '')
+
+
+
+
+ return ltrim(rtrim(@v_result))
+
+
+
+
+END
+
+
+
+
+
+
+
+
+
+
+
+datetime 형식의 날짜데이터를 받아서, 위의 함수와 같은 역할을 하는 함수입니다.
+
+
+
+
+위의 함수를 이용하여 값을 반환합니다.
+
+
+
+
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+/*
+
+ @p_format : datetime 형식의 날짜데이터
+
+ @p_date : 년도가 네자리이면 @p_format에는 반드시 yyyy 이어야 하고, 
+
+     년도가 두자리이면 @p_format에는 반드시 yy 이어야 함.
+
+*/
+
+ALTER FUNCTION [dbo].[FNDate2Str]
+
+(
+
+ @p_date datetime,
+
+ @p_format varchar(30)
+
+)
+
+RETURNS varchar(30)
+
+AS
+
+BEGIN
+
+
+
+
+ return dbo.FNDateFormat( convert(varchar, @p_date, 120) , @p_format)
+
+
+
+
+END
+
+[출처] mssql - 날짜형식을 변환하는 함수|작성자 프쟁이

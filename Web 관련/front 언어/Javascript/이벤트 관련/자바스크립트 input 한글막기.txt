@@ -1,0 +1,33 @@
+input 입력
+
+<input type="text" style="ime-mode:active;">한글모드
+
+<input type="text" style="ime-mode:inactive;">영문모드
+
+<input type='text' style="ime-mode:auto;"> 한글/영문 입력가능
+
+<input type='text' style="ime-mode:disabled;"> 영문만 입력가능
+
+<input type='text' style='ime-mode:disabled;'>  한글 입력 방지
+
+onclick stype="cursor:hand"
+
+
+//////input 숫자만 입력하기 ///////////
+
+<script language="javascript">
+<!--
+function NumObj(obj){
+ if(event.keyCode){
+  if(escape(event.keyCode)>=48&& escape(event.keyCode)<=57{
+  return true;;
+  }else{
+  event.returnValue=false;
+  }
+ }
+}
+//-->
+</script>
+<form name="formname">
+<input type="text" name="name" style="ime-mode:disabled;" OnkeyPress="NumObj(this)"/>
+</form>

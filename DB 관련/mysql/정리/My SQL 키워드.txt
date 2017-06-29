@@ -1,0 +1,12 @@
+
+DISTINCT - 중복 제거
+
+SHOW DATABASES;
+
+SHOW TABLES FROM 디비명;(임시 테이블은 나오지 않음)
+
+SHOW COLUMNS FROM 테이블명;
+
+SHOW INDEX FORM 테이블명;
+
+SHOW TABLE STATUS FROM 디비명;

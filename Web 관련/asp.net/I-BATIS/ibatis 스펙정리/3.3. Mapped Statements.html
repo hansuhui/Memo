@@ -1,0 +1,499 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.3. Mapped Statements</title><link rel="stylesheet" href="html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"><link rel="start" href="index.html" title="iBATIS.NET - DataMapper Application Framework"><link rel="up" href="ch03.html" title="Chapter 3. Working with Data Maps"><link rel="prev" href="ch03s02.html" title="3.2. What's in a Data Map definition file, anyway?"><link rel="next" href="ch03s04.html" title="3.4. Parameter Maps and Inline Parameters"><link rel="copyright" href="ln-id368653.html" title="Legal Notice"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.3. Mapped Statements</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Working with Data Maps</th><td width="20%" align="right"> <a accesskey="n" href="ch03s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id378527"></a>3.3. Mapped Statements</h2></div></div></div><p>Mapped Statements can hold any SQL statement and can use Parameter
+    Maps and Result Maps for input and output. (A stored procedure is a
+    specialized form of a statement. See section 3.3.1 and 3.3.2 for more
+    information.)</p><p>If the case is simple, the Mapped Statement can reference the
+    parameter and result classes directly. Mapped Statements support caching
+    through reference to a Cache Model element. The following example shows
+    the syntax for a statement element. </p><div class="example"><a name="id378547"></a><p class="title"><b>Example 3.3. Statement element syntax</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="<span class="blue">statement.name</span>"
+  [parameterMap="<span class="blue">parameterMap.name</span>"]
+  [parameterClass="<span class="blue">alias</span>"]
+  [resultMap="<span class="blue">resultMap.name</span>"]
+  [resultClass="<span class="blue">class.name|alias</span>"]
+  [listClass="<span class="blue">class.name|alias</span>"]
+  [cacheModel="<span class="blue">cache.name</span>"]
+  [extends="<span class="blue">statement.name</span>"]
+&gt;
+
+  select * from Products where Product_Id = [?|#propertyName#]
+  order by [$simpleDynamic$]
+
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><p>In Example 3.3, the [bracketed] parts are optional, and some options
+    are mutually exclusive. It is perfectly legal to have a Mapped Statement
+    as simple as shown by Example 3.4.</p><div class="example"><a name="id378612"></a><p class="title"><b>Example 3.4. A simplistic Mapped Statement</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="InsertTestProduct" &gt;
+  insert into Products (Product_Id, Product_Description) values (1, "Shih Tzu")
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><p>Example 3.4 is obviously unlikely, unless you are running a test.
+    But it does shows that you can use iBATIS to execute arbitrary SQL
+    statements. More likely, you will use the object mapping features with
+    Parameter Maps (Section 3.4) and Result Maps (Section 3.5) since that's
+    where the magic happens.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id378637"></a>3.3.1. Statement Types</h3></div></div></div><p>The &lt;statement&gt; element is a general "catch all" element
+      that can be used for any type of SQL statement. Generally it is a good
+      idea to use one of the more specific statement-type elements. The more
+      specific elements provided better error-checking and even more
+      functionality. (For example, the insert statement can return a
+      database-generated key.) Table 3.1 summarizes the statement-type
+      elements and their supported attributes and features.</p><div class="table"><a name="id378666"></a><p class="title"><b>Table 3.1. The six statement-type elements</b></p><div class="table-contents"><table summary="The six statement-type elements" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>Statement Element</th><th>Attributes</th><th>Child Elements</th><th>Methods</th></tr></thead><tbody><tr><td>&lt;statement&gt;</td><td><pre class="programlisting">id 
+parameterClass 
+resultClass 
+listClass
+parameterMap 
+resultMap 
+cacheModel</pre></td><td><pre class="programlisting">All dynamic elements</pre></td><td><pre class="programlisting">Insert 
+Update 
+Delete 
+All query methods</pre></td></tr><tr><td>&lt;insert&gt;</td><td><pre class="programlisting">id 
+parameterClass 
+parameterMap</pre></td><td><pre class="programlisting">All dynamic elements
+&lt;selectKey&gt; 
+&lt;generate&gt;</pre></td><td><pre class="programlisting">Insert 
+Update 
+Delete </pre></td></tr><tr><td>&lt;update&gt;</td><td><pre class="programlisting">id 
+parameterClass 
+parameterMap
+extends</pre></td><td><pre class="programlisting">All dynamic elements 
+&lt;generate&gt;</pre></td><td><pre class="programlisting">Insert 
+Update 
+Delete</pre></td></tr><tr><td>&lt;delete&gt;</td><td><pre class="programlisting">id 
+parameterClass 
+parameterMap
+extends</pre></td><td><pre class="programlisting">All dynamic elements 
+&lt;generate&gt;</pre></td><td><pre class="programlisting">Insert 
+Update 
+Delete</pre></td></tr><tr><td>&lt;select&gt;</td><td><pre class="programlisting">id 
+parameterClass 
+resultClass 
+listClass
+parameterMap 
+resultMap 
+cacheModel
+extends</pre></td><td><pre class="programlisting">All dynamic elements 
+&lt;generate&gt;</pre></td><td><pre class="programlisting">All query methods</pre></td></tr><tr><td>&lt;procedure&gt;</td><td><pre class="programlisting">id 
+parameterMap 
+resultClass 
+resultMap
+cacheModel</pre></td><td><pre class="programlisting">All dynamic elements </pre></td><td><pre class="programlisting">Insert 
+Update 
+Delete 
+All query methods</pre></td></tr></tbody></table></div></div><p><br class="table-break">The various attributes used by statement-type elements are
+      covered in Section 3.3.4.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id379094"></a>3.3.2. Stored Procedures</h3></div></div></div><p>iBATIS DataMapper treats stored procedures as yet another
+      statement type. Example 3.5 shows a simple Data Map hosting a stored
+      procedure. </p><div class="example"><a name="id379105"></a><p class="title"><b>Example 3.5. A Data Map using a stored procedure</b></p><div class="example-contents"><pre class="programlisting"><span class="comment">&lt;!-- Microsot SQL Server --&gt;</span>
+&lt;procedure id="SwapEmailAddresses" parameterMap="swap-params"&gt;
+  ps_swap_email_address
+&lt;/procedure&gt;
+... 
+&lt;parameterMap id="swap-params"&gt;
+  &lt;parameter property="email1" column="First_Email" /&gt;
+  &lt;parameter property="email2" column="Second_Email" /&gt;
+&lt;/parameterMap&gt;
+
+<span class="comment">&lt;!-- Oracle with MS OracleClient provider --&gt;</span>
+&lt;procedure id="InsertCategory" parameterMap="insert-params"&gt;
+ prc_InsertCategory
+&lt;/procedure&gt;
+... 
+&lt;parameterMap id="insert-params"&gt;
+ &lt;parameter property="Name"       column="p_Category_Name"/&gt;
+ &lt;parameter property="GuidString" column="p_Category_Guid" dbType="VarChar"/&gt;
+ &lt;parameter property="Id"         column="p_Category_Id"   dbType="Int32"   type="Int"/&gt;
+&lt;/parameterMap&gt;
+
+<span class="comment">&lt;!-- Oracle with ODP.NET 10g provider --&gt;</span>
+&lt;statement id="InsertAccount" parameterMap="insert-params"&gt;
+ prc_InsertAccount
+&lt;/statement&gt;
+... 
+&lt;parameterMap id="insert-params"&gt;
+ &lt;parameter property="Id"           dbType="Int32"/&gt;
+ &lt;parameter property="FirstName"    dbType="VarChar2" size="32"/&gt;
+ &lt;parameter property="LastName"     dbType="VarChar2" size="32"/&gt;
+ &lt;parameter property="EmailAddress" dbType="VarChar2" size="128"/&gt;
+&lt;/parameterMap&gt;
+</pre></div></div><p><br class="example-break">The idea behind Example 3.5 is that calling the stored
+      procedure <span class="database">SwapEmailAddresses</span> would exchange two
+      email addresses between two columns in a database table and also in the
+      parameter object (a <code class="classname">HashTable</code>). The parameter
+      object is only modified if the parameter mappings mode attribute is set
+      to <em class="parameter"><code>InputOutput</code></em> or <em class="parameter"><code>Output</code></em>.
+      Otherwise they are left unchanged. Of course, immutable parameter
+      objects (e.g. <code class="classname">String</code>) cannot be modified.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>For .NET, the parameterMap attribute is required. The DBType,
+          parameter direction, size, precision, and scale are usually
+          auto-discovered by the framework (via the CommandBuilder) depending
+          on your provider.</p><p>If your stored procedure have no parmeters, the parameterMap attribute on the procedure tag is optionnal.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id379211"></a>3.3.3. The SQL</h3></div></div></div><p>If you are not using stored procedures, the most important part of
+      a statement-type element is the SQL. You can use any SQL statement that
+      is valid for your database system. Since iBATIS passes the SQL through
+      to the standard libraries ( ADO.NET), you can use any statement with
+      iBATIS that you could use without iBATIS. You can use whatever functions
+      your database system supports, and even send multiple statements, so
+      long as your driver or provider supports them.</p><p>If standard, static SQL isn't enough, iBATIS can help you build a
+      dynamic SQL statement. See Section 3.9 for more about Dynamic
+      SQL.</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379227"></a>3.3.3.1. Reusing SQL Fragments</h4></div></div></div><p>When writing SqlMaps, you often encounter duplicate fragments of SQL, for example a FROM-clause or
+		constraint-statement. iBATIS offers a simple yet powerful tag to reuse them. For the sake of simplicity, let's
+		assume we want to get some items and we want to do a count on them. Normally, you would write
+		something like this :
+		
+		</p><div class="example"><a name="id379236"></a><p class="title"><b>Example 3.6. Reusing SQL Fragments (Before)</b></p><div class="example-contents"><pre class="programlisting">&lt;select id="SelectItemCount" resultClass="int"&gt;
+SELECT COUNT(*) AS total
+FROM items
+WHERE parentid = 6
+&lt;/select&gt;
+
+&lt;select id="SelectItems" resultClass="Item"&gt;
+SELECT id, name
+FROM items
+WHERE parentid = 6
+&lt;/select&gt;</pre></div></div><p><br class="example-break">
+
+		  To eliminate this duplication, we use the tags &lt;sql&gt; and &lt;include&gt;. The &lt;sql&gt; tag contains the fragment to reuse, the &lt;include&gt; tag includes such a fragment in a statement. For example:
+		
+			</p><div class="example"><a name="id379257"></a><p class="title"><b>Example 3.7. Reusing SQL Fragments (After)</b></p><div class="example-contents"><pre class="programlisting">&lt;sql id="selectItem_fragment"&gt;
+FROM items
+WHERE parentid = 6
+&lt;/sql&gt;
+
+&lt;select id="selectItemCount" resultClass="int"&gt;
+SELECT COUNT(*) AS total
+&lt;include refid="selectItem_fragment"/&gt;
+&lt;/select&gt;
+
+&lt;select id="selectItems" resultClass="Item"&gt;
+SELECT id, name
+&lt;include refid="selectItem_fragment"/&gt;
+&lt;/select&gt;</pre></div></div><p><br class="example-break">
+
+		  The &lt;include&gt; tag is namespace aware so you can refer to fragments even when they are located in another map (however, due to the way iBATIS loads the SqlMaps, the included fragment should be loaded before the including statement).
+		  The fragments are included and processed on query-execution so parameters can be used too :
+		</p><pre class="programlisting">&lt;sql id="selectItem_fragment"&gt;
+FROM items
+WHERE parentid = #value#
+&lt;/sql&gt;
+
+&lt;select id="selectItemCount" parameterClass="int" resultClass="int"&gt;
+SELECT COUNT(*) AS total
+&lt;include refid="selectItem_fragment"/&gt;
+&lt;/select&gt;
+
+&lt;select id="selectItems" parameterClass="int" resultClass="Item"&gt;
+SELECT id, name
+&lt;include refid="selectItem_fragment"/&gt;
+&lt;/select&gt;</pre><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>In many case, you can also use the <span class="comment">extends</span> attribute on statement tag to achieve the same goal.</p></td></tr></table></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379314"></a>3.3.3.2. Escaping XML symbols</h4></div></div></div><p>Because you are combining SQL and XML in a single document,
+        conflicts can occur. The most common conflict is the greater-than and
+        less-than symbols (&gt;&lt;). SQL statements use these symbols as
+        operators, but they are reserved symbols in XML. A simple solution is
+        to <span class="emphasis"><em>escape</em></span> the SQL statements that uses XML
+        reserved symbols within a CDATA element. Example 3.6 demonstrates
+        this.</p><div class="example"><a name="id379334"></a><p class="title"><b>Example 3.8. Using CDATA to "escape" SQL code</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="SelectPersonsByAge" parameterClass="int" resultClass="Person"&gt;
+  <span class="comment">&lt;![CDATA[</span> 
+     SELECT * FROM PERSON WHERE AGE &gt; #value# <span class="comment">
+  ]]&gt;</span>
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379361"></a>3.3.3.3. Auto-Generated Keys</h4></div></div></div><p>Many database systems support auto-generation of primary key
+        fields, as a vendor extension. Some vendors pre-generate keys (e.g.
+        Oracle), some vendors post-generate keys (e.g. MS-SQL Server and
+        MySQL). In either case, you can obtain a pre-generated key using a
+        &lt;selectKey&gt; stanza within an &lt;insert&gt; element. Example 3.7
+        shows an &lt;insert&gt; statement for either approach.</p><div class="example"><a name="id379380"></a><p class="title"><b>Example 3.9. &lt;insert&gt; statements using &lt;selectKey&gt;
+            stanzas</b></p><div class="example-contents"><pre class="programlisting"><span class="comment">&lt;!&#8212;Oracle SEQUENCE Example using .NET 1.1 System.Data.OracleClient --&gt;</span> 
+&lt;insert id="insertProduct-ORACLE" parameterClass="product"&gt; 
+  &lt;selectKey resultClass="int" type="pre" property="Id" &gt; 
+     <span class="blue">SELECT STOCKIDSEQUENCE.NEXTVAL AS VALUE FROM DUAL</span>
+  &lt;/selectKey&gt; 
+  insert into PRODUCT (PRD_ID,PRD_DESCRIPTION) values (#id#,#description#) 
+&lt;/insert&gt;
+
+<span class="comment">&lt;!&#8212; Microsoft SQL Server IDENTITY Column Example --&gt;</span> 
+&lt;insert id="insertProduct-MS-SQL" parameterClass="product"&gt; 
+  insert into PRODUCT (PRD_DESCRIPTION)
+  values (#description#) 
+ &lt;selectKey resultClass="int" type="post" property="id" &gt; 
+   <span class="blue">select @@IDENTITY as value</span>
+ &lt;/selectKey&gt;
+&lt;/insert&gt;
+
+<span class="comment">&lt;!-- MySQL Example --&gt;</span>
+&lt;insert id="insertProduct-MYSQL" parameterClass="product"&gt; 
+  insert into PRODUCT (PRD_DESCRIPTION)
+  values (#description#) 
+ &lt;selectKey resultClass="int" type="post" property="id" &gt; 
+   <span class="blue">select LAST_INSERT_ID() as value</span>
+ &lt;/selectKey&gt;
+&lt;/insert&gt;</pre></div></div><p><br class="example-break"></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379453"></a>3.3.3.4. &lt;generate&gt; tag</h4></div></div></div><p>You can use iBATIS to execute any SQL statement your application
+        requires. When the requirements for a statement are simple and
+        obvious, you may not even need to write a SQL statement at all. The
+        &lt;generate&gt; tag can be used to create simple SQL statements
+        automatically, based on a &lt;parameterMap&gt; element. The four CRUD
+        statement types (insert, select, update, and delete) are supported.
+        For a select, you can select all or select by a key (or keys). Example
+        3.8 shows an example of generating the usual array of CRUD
+        statements.</p><div class="example"><a name="id379486"></a><p class="title"><b>Example 3.10. Creating the "usual suspects" with the &lt;generate&gt;
+          tag</b></p><div class="example-contents"><pre class="programlisting">
+&lt;parameterMaps&gt;
+  &lt;parameterMap id="insert-generate-params"&gt;
+    &lt;parameter property="Name" column="Category_Name"/&gt;
+    &lt;parameter property="Guid" column="Category_Guid" dbType="UniqueIdentifier"/&gt;    
+  &lt;/parameterMap&gt;
+
+  &lt;parameterMap id="update-generate-params" extends="insert-generate-params"&gt;
+    &lt;parameter property="Id" column="Category_Id" /&gt;
+  &lt;/parameterMap&gt;
+
+  &lt;parameterMap id="delete-generate-params"&gt;
+    &lt;parameter property="Id" column="Category_Id" /&gt;
+    &lt;parameter property="Name" column="Category_Name"/&gt;
+  &lt;/parameterMap&gt;
+
+  &lt;parameterMap id="select-generate-params"&gt;
+    &lt;parameter property="Id" column="Category_Id" /&gt;
+    &lt;parameter property="Name" column="Category_Name"/&gt;
+    &lt;parameter property="Guid" column="Category_Guid" dbType="UniqueIdentifier"/&gt;
+  &lt;/parameterMap&gt;
+
+&lt;/parameterMaps&gt;
+
+&lt;statements&gt;
+
+  &lt;update id="UpdateCategoryGenerate" parameterMap="update-generate-params"&gt;
+    &lt;generate table="Categories" by="Category_Id"/&gt;
+  &lt;/update&gt;
+
+  &lt;delete id="DeleteCategoryGenerate" parameterMap="delete-generate-params"&gt;
+    &lt;generate table="Categories" by="Category_Id, Category_Name"/&gt;
+  &lt;/delete&gt;
+
+  &lt;select id="SelectByPKCategoryGenerate" resultClass="Category" parameterClass="Category" 
+          parameterMap="select-generate-params"&gt;
+    &lt;generate table="Categories" by="Category_Id"/&gt; 
+  &lt;/select&gt;
+
+  &lt;select id="SelectAllCategoryGenerate" resultClass="Category" 
+          parameterMap="select-generate-params"&gt;
+    &lt;generate table="Categories" /&gt; 
+  &lt;/select&gt;
+
+  &lt;insert id="InsertCategoryGenerate" parameterMap="insert-generate-params"&gt;
+    &lt;selectKey property="Id" type="post" resultClass="int"&gt;
+      select @@IDENTITY as value
+    &lt;/selectKey&gt;
+    &lt;generate table="Categories" /&gt;
+  &lt;/insert&gt;
+
+&lt;/statements&gt;</pre></div></div><br class="example-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>The SQL is generated when the DataMapper instance is built,
+            so there is no performance impact at execution time.</p></td></tr></table></div><p>The tag generates ANSI SQL, which should work with any
+        compliant database. Special types, such as blobs, are not supported,
+        and vendor-specific types are also not supported. But, the generate
+        tag does keep the simple things simple.</p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="images/important.png"></td><th align="left">Important</th></tr><tr><td align="left" valign="top"><p>The intended use of the &lt;generate&gt; tag is to save
+          developers the trouble of coding mundane SQL statements (and only
+          mundane statements). It is not meant as a object-to-relational
+          mapping tool. There are many frameworks that provide extensive
+          object-to-relational mapping features. The &lt;generate&gt; tag is
+          not a replacement for any of those. When the &lt;generate&gt; tag
+          does not suit your needs, use a conventional statement
+          instead.</p></td></tr></table></div><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="id379571"></a>3.3.3.4.1. &lt;generate&gt; tag attributes</h5></div></div></div><p>The generate tag supports two attributes :</p><div class="table"><a name="id379583"></a><p class="title"><b>Table 3.2. &lt;generate&gt; attributes</b></p><div class="table-contents"><table summary="&lt;generate&gt; attributes" border="1"><colgroup><col><col><col></colgroup><thead><tr><th>Attribute</th><th>Description</th><th>Required</th></tr></thead><tbody><tr><td>table</td><td>specifies the table name to use in the SQL
+                  statement.</td><td>yes</td></tr><tr><td>by</td><td>specifies the columns to use in a WHERE
+                  clause</td><td>no</td></tr></tbody></table></div></div><br class="table-break"></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id379721"></a>3.3.4. Statement-type Element Attributes</h3></div></div></div><p>The six statement-type elements take various attributes. See
+      Section 3.3.1 for a table itemizing which attributes each element-type
+      accepts. The individual attributes are described in the sections that
+      follow.</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379735"></a>3.3.4.1. id</h4></div></div></div><p>The required <em class="parameter"><code>id</code></em> attribute provides a name
+        for this statement, which must be unique within this
+        &lt;SqlMap&gt;.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379753"></a>3.3.4.2. parameterMap</h4></div></div></div><p>A Parameter Map defines an ordered list of values that match up
+        with the "<em class="parameter"><code>?</code></em>" placeholders of a standard,
+        parameterized query statement. Example 3.9 shows a
+        &lt;parameterMap&gt; and a corresponding &lt;statement&gt;.</p><div class="example"><a name="id379770"></a><p class="title"><b>Example 3.11. A parameterMap and corresponding statement</b></p><div class="example-contents"><pre class="programlisting">&lt;parameterMap id="<span class="blue">insert-product-param</span>" class="Product"&gt;
+  &lt;parameter property="id"/&gt;
+  &lt;parameter property="description"/&gt;
+&lt;/parameterMap&gt;
+
+&lt;statement id="insertProduct" parameterMap="<span class="blue">insert-product-param</span>"&gt;
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION) values (?,?);
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><p>In Example 3.9, the Parameter Map describes two parameters that
+        will match, in order, two placeholders in the SQL statement. The first
+        "<em class="parameter"><code>?</code></em>" is replaced by the value of the
+        <span class="property">id</span> property. The second is replaced with the
+        <span class="property">description</span> property.</p><p>iBATIS also supports named, inline parameters, which most
+        developers seem to prefer. However, Parameter Maps are useful when the
+        SQL must be kept in a standard form or when extra information needs to
+        be provided. For more about Parameter Maps see Section 3.4.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379829"></a>3.3.4.3. parameterClass</h4></div></div></div><p>If a parameterMap attribute is not specified, you may specify a
+        parameterClass instead and use inline parameters (see Section 3.4.3 ).
+        The value of the parameterClass attribute can be a Type Alias or the
+        fully qualified name of a class. Example 3.10 shows a statement using
+        a fully-qualified name versus an alias.</p><div class="example"><a name="id379844"></a><p class="title"><b>Example 3.12. Ways to specify a parameterClass</b></p><div class="example-contents"><pre class="programlisting"><span class="comment">&lt;!-- fully qualified classname --&gt;</span>
+&lt;statement id="statementName" parameterClass="<span class="blue">Examples.Domain.Product, Examples.Domain</span>"&gt;
+  insert into PRODUCT values (#id#, #description#, #price#)
+&lt;/statement&gt;
+
+<span class="comment">&lt;!-- typeAlias (defined elsewhere) --&gt;</span>
+&lt;statement id="statementName" parameterClass="<span class="blue">Product</span>"&gt;
+  insert into PRODUCT values (#id#, #description#, #price#)
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379890"></a>3.3.4.4. resultMap</h4></div></div></div><p>A Result Map lets you control how data is extracted from the
+        result of a query, and how the columns are mapped to object
+        properties. Example 3.11 shows a &lt;resultMap&gt; element and a
+        corresponding &lt;statement&gt; element.</p><div class="example"><a name="id379909"></a><p class="title"><b>Example 3.13. A &lt;resultMap&gt; and corresponding
+            &lt;statement&gt;</b></p><div class="example-contents"><pre class="programlisting">&lt;resultMap id="<span class="blue">select-product-result</span>" class="product"&gt;
+  &lt;result property="id" column="PRD_ID"/&gt;
+  &lt;result property="description" column="PRD_DESCRIPTION"/&gt;
+&lt;/resultMap&gt;
+
+&lt;statement id="selectProduct" resultMap="<span class="blue">select-product-result</span>"&gt;
+  select * from PRODUCT
+&lt;/statement&gt;</pre><p>In Example 3.11, the result of the SQL query will be mapped
+            to an instance of the Product class using the
+            "select-product-result" &lt;resultMap&gt;. The &lt;resultMap&gt;
+            says to populate the <span class="property">id</span> property from the
+            <span class="database">PRD_ID</span> column, and to populate the
+            <em class="parameter"><code>description</code></em> property from the
+            <span class="database">PRD_DESCRIPTION</span> column. </p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td align="left" valign="top"><p>In Example 3.11, note that using "<span class="database"> select *
+                </span>" is supported. If you want all the columns, you
+                don't need to map them all individually. (Though many
+                developers consider it a good practice to always specify the
+                columns expected.)</p></td></tr></table></div><p>For more about Result Maps, see Section 3.5.</p></div></div><p><br class="example-break"></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id379987"></a>3.3.4.5. resultClass</h4></div></div></div><p>If a resultMap is not specified, you may specify a resultClass
+        instead. The value of the resultClass attribute can be a Type Alias or
+        the fully qualified name of a class. The class specified will be
+        automatically mapped to the columns in the result, based on the result
+        metadata. The following example shows a &lt;statement&gt; element with
+        a resultClass attribute.</p><div class="example"><a name="id380010"></a><p class="title"><b>Example 3.14. A &lt;statement &gt;element with resultClass
+            attribute</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="SelectPerson" parameterClass="int" resultClass="<span class="blue">Person</span>"&gt;
+  SELECT
+  PER_ID as <span class="blue">Id</span>,
+  PER_FIRST_NAME as <span class="blue">FirstName</span>,
+  PER_LAST_NAME as <span class="blue">LastName</span>,
+  PER_BIRTH_DATE as <span class="blue">BirthDate</span>,
+  PER_WEIGHT_KG as <span class="blue">WeightInKilograms</span>,
+  PER_HEIGHT_M as <span class="blue">HeightInMeters</span>
+  FROM PERSON
+  WHERE PER_ID = #value#
+&lt;/statement&gt;</pre></div></div><p><br class="example-break">In Example 3.12, the <code class="classname">Person</code> class
+        has properties including: <span class="property">Id</span>,
+        <span class="property">FirstName</span>, <span class="property">LastName</span>,
+        <span class="property">BirthDate</span>,
+        <span class="property">WeightInKilograms</span>, and
+        <span class="property">HeightInMeters</span>. Each of these corresponds with
+        the column aliases described by the SQL select statement using the
+        "<span class="database">as</span>" keyword &#8211;a standard SQL feature. When
+        executed, a <code class="classname">Person</code> object is instantiated and
+        populated by matching the object property names to the (aliased)
+        column names from the query.</p><p>Using SQL aliases to map columns to properties saves defining a
+        &lt;resultMap&gt; element, but there are limitations. There is no way
+        to specify the types of the output columns (if needed), there is no
+        way to automatically load related data such as complex properties, and
+        there is a slight performance consequence from accessing the result
+        metadata. Architecturally, using aliases this way mixes
+        <span class="emphasis"><em>database logic</em></span> with <span class="emphasis"><em>reporting
+        logic</em></span>, making the query harder to read and maintain. You
+        can overcome these limitations with an explicit Result Map (Section
+        3.5).</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380148"></a>3.3.4.6. listClass</h4></div></div></div><p>In addition to providing the ability to return an IList of
+        objects, the DataMapper supports the use of a strongly-typed custom
+        collection: a class that implements the
+        System.Collections.CollectionBase abstract class. The following is an
+        example of a CollectionBase class that can be used with the
+        DataMapper.</p><div class="example"><a name="id380165"></a><p class="title"><b>Example 3.15. A System.Collections.CollectionBase implementation</b></p><div class="example-contents"><pre class="programlisting">using System;
+using System.Collections;
+
+namespace WebShop.Domain 
+{
+ public class AccountCollection : CollectionBase 
+ {
+  public AccountCollection() {}
+
+  public Account this[int index] 
+  {
+   get { return (Account)List[index]; }
+   set { List[index] = value; }
+  }
+
+  public int Add(Account value) 
+  {
+   return List.Add(value);
+  }
+
+  public void AddRange(Account[] value) 
+  {
+   for (int i = 0; i &lt; value.Length; i++) 
+   {
+    Add(value[i]);
+   }
+  }
+
+  public void AddRange(AccountCollection value) 
+  {
+   for (int i = 0; i &lt; value.Count; i++) 
+   {
+    Add(value[i]);
+   }
+  }
+
+  public bool Contains(Account value) 
+  {
+   return List.Contains(value);
+  }
+
+  public void CopyTo(Account[] array, int index) 
+  {
+   List.CopyTo(array, index);
+  }
+
+  public int IndexOf(Account value) 
+  {
+   return List.IndexOf(value);
+  }
+  
+  public void Insert(int index, Account value) 
+  {
+   Account.Insert(index, value);
+  }
+  
+  public void Remove(Account value) 
+  {
+   Account.Remove(value);
+  }
+ }
+}</pre></div></div><p><br class="example-break"></p><p>A CollectionBase class can be specified for a select statement
+        through the listClass attribute. The value of the listClass attribute
+        can be a Type Alias or the fully qualified name of a class. The
+        statement should also indicate the resultClass so that the DataMapper
+        knows how to handle the type of objects in the collection. The
+        resultClass specified will be automatically mapped to the columns in
+        the result, based on the result metadata. The following example shows
+        a &lt;statement&gt; element with a listClass attribute.</p><div class="example"><a name="id380239"></a><p class="title"><b>Example 3.16. A &lt;statement &gt;element with listClass
+            attribute</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="GetAllAccounts"
+ <span class="blue">listClass="AccountCollection"</span>
+ <span class="blue">resultClass="Account"</span>&gt;
+   select
+   Account_ID as Id,
+   Account_FirstName as FirstName,
+   Account_LastName as LastName,
+   Account_Email as EmailAddress
+   from Accounts
+   order by Account_LastName, Account_FirstName
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380275"></a>3.3.4.7. cacheModel</h4></div></div></div><p>If you want to cache the result of a query, you can specify a
+        Cache Model as part of the &lt;statement&gt; element. Example 3.15
+        shows a &lt;cacheModel&gt; element and a corresponding
+        &lt;statement&gt;.</p><div class="example"><a name="id380293"></a><p class="title"><b>Example 3.17. A &lt;cacheModel&gt; element with its corresponding
+            &lt;statement&gt;</b></p><div class="example-contents"><pre class="programlisting">&lt;cacheModel id="<span class="blue">product-cache</span>" implementation="LRU"&gt;
+  &lt;flushInterval hours="24"/&gt;
+  &lt;flushOnExecute statement="insertProduct"/&gt;
+  &lt;flushOnExecute statement="updateProduct"/&gt;
+  &lt;flushOnExecute statement="deleteProduct"/&gt;
+  &lt;property name="size" value="1000" /&gt;
+&lt;/cacheModel&gt;
+
+&lt;statement id="selectProductList" parameterClass="int" cacheModel="<span class="blue">product-cache</span>"&gt;
+  select * from PRODUCT where PRD_CAT_ID = #value#
+&lt;/statement&gt;</pre><p>In Example 3.15, a cache is defined for products that uses a
+            LRU reference type and flushes every 24 hours or whenever
+            associated update statements are executed. For more about Cache
+            Models, see Section 3.8.</p></div></div><p><br class="example-break"></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380340"></a>3.3.4.8. extends</h4></div></div></div><p>When writing Sql, you often encounter duplicate fragments of
+        SQL. iBATIS offers a simple yet powerful attribute to reuse
+        them.</p><pre class="programlisting">
+&lt;select id="<span class="blue">GetAllAccounts</span>"
+  resultMap="indexed-account-result"&gt;
+select
+  Account_ID,
+  Account_FirstName,
+  Account_LastName,
+  Account_Email
+from Accounts
+&lt;/select&gt;
+		
+&lt;select id="GetAllAccountsOrderByName"
+  extends="<span class="blue">GetAllAccounts</span>"
+  resultMap="indexed-account-result"&gt;
+    order by Account_FirstName
+&lt;/select&gt;</pre></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.2. What's in a Data Map definition file, anyway? </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.4. Parameter Maps and Inline Parameters</td></tr></table></div></body></html>

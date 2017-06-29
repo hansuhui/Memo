@@ -1,0 +1,27 @@
+
+해당 함수를 넘기면 된다
+
+
+HCom.frAjaxSubmit = function (url,parameter,callback) {
+    
+
+    $.ajax({
+        dataType: "json",
+        type: "POST",
+        url: url,
+        async: true,
+        data: parameter
+       , success: function (GetData) {
+           callback(GetData);
+       }
+        , error: function (data) {
+            alert("시스템 오류가 발생했습니다.");
+            location.reload();
+        }
+    });
+
+
+}
+
+HCom.frAjaxSubmit("url",$("#frm").serialize(),Test)
+function Test(){alert("테스트");}

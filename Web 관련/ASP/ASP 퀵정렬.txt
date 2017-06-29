@@ -1,0 +1,44 @@
+ASP - 퀵정렬예제
+<%
+Sub QuickSort(vec,loBound,hiBound)
+  Dim pivot,loSwap,hiSwap,temp
+  if hiBound - loBound = 1 then
+    if vec(loBound) > vec(hiBound) then
+      temp=vec(loBound)
+      vec(loBound) = vec(hiBound)
+      vec(hiBound) = temp
+    End If
+  End If
+  pivot = vec(int((loBound + hiBound) / 2))
+  vec(int((loBound + hiBound) / 2)) = vec(loBound)
+  vec(loBound) = pivot
+  loSwap = loBound + 1
+  hiSwap = hiBound
+  
+  do
+    while loSwap < hiSwap and vec(loSwap) <= pivot
+      loSwap = loSwap + 1
+    wend
+    while vec(hiSwap) > pivot
+      hiSwap = hiSwap - 1
+    wend
+    if loSwap < hiSwap then
+      temp = vec(loSwap)
+      vec(loSwap) = vec(hiSwap)
+      vec(hiSwap) = temp
+    End If
+  loop while loSwap < hiSwap
+  
+  vec(loBound) = vec(hiSwap)
+  vec(hiSwap) = pivot
+  
+  if loBound < (hiSwap - 1) then Call QuickSort(vec,loBound,hiSwap-1)
+  if hiSwap + 1 < hibound then Call QuickSort(vec,hiSwap+1,hiBound)
+End Sub
+Dim x
+x = Array("1","31","72","11","26","43","74","23","35","55","77")
+Call QuickSort(x,1,10)
+for i = 0 to Ubound(x,1)
+ response.write x(i) &"&nbsp;&nbsp;" 
+next 
+%>

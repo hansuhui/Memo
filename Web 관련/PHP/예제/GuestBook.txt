@@ -1,0 +1,257 @@
++----------+-------------+------+-----+---------+----------------+ 
+| id       | int(11)     |      | PRI | 0       | 각글의 고유번호| 
+| name     | varchar(20) | YES  |     | NULL    | 글쓴이         | 
+| home     | varchar(40) | YES  |     | NULL    | 홈페이지       | 
+| email    | varchar(35) | YES  |     | NULL    | Email          | 
+| comment  | text        | YES  |     | NULL    | 내용           | 
+| ip       | varchar(17) | YES  |     | NULL    | 글쓴이 IP      | 
+| reg_date | datetime    | YES  |     | NULL    | 글쓴 날자/시간 |
++----------+-------------+------+-----+---------+----------------+
+
+
+<HTML>
+<HEAD>
+<TITLE>GuestBook</TITLE>
+</HEAD>
+
+
+<BODY BGCOLOR="#006699" LINK="#99CCFF" VLINK="#99CCCC" TEXT="#FFFFFF">
+<p>
+<CENTER><IMG src='./img/gb_title.jpg' width='268' height='46' border='0' alt='방명록 타이틀입니다'></CENTER>
+<p>
+<?php
+
+//=====================================
+//  DB 접속 에 필요한  사항을 설정합니다.
+// user_id , passwd, USER_DB 부분을 고치세요
+
+$connect=mysql_connect( "localhost", "mysql", "") or  die( "  SQL server에 연결할 수 없습니다."); 
+mysql_select_db("LOVEME",$connect);
+
+$scale=  5  ; // 1페이지당 자료수
+$admin_ip = '203.226.0.174' ;  // 삭제시 필요한  관리자 IP
+//=====================================
+
+
+
+
+
+
+
+
+
+//==================
+// 글 지우기
+//==================
+
+if($mode=='del')
+{
+   if($REMOTE_ADDR != $admin_ip)
+    {   echo(" <script>
+                  window.alert('관리자만 지울 수 있습니다.')
+				   </script>
+               ");
+        echo("  <meta http-equiv='Refresh' content='0; URL=$PHP_SELF'>  ");
+			   exit;
+    }
+	else
+	{
+       $que1=" delete from guestbook where id=$id " ; 
+
+       $result = mysql_query($que1,$connect );
+
+	}
+
+
+}
+
+
+//============================
+//   새글 올리기
+//============================
+if($mode=='up')
+{
+   if(!$name || !$comment )
+    {   echo(" <script>
+                  window.alert('이름과 남기실 말씀을 적어 주세요')
+                  history.go(-1)
+                 </script>
+               "); exit;
+    }
+   
+   $name =  addslashes($name) ;
+   $home =  addslashes($home) ;
+   $email =  addslashes($email) ;
+   $comment =  addslashes($comment) ;
+
+   $que1="  insert into guestbook values('','$name','$home','$email',
+            '$comment','$REMOTE_ADDR',now() )   " ; 
+
+   $result = mysql_query($que1,$connect );
+   if($result)
+   {
+    echo("  <meta http-equiv='Refresh' content='0; URL=$PHP_SELF'>  ");
+   }
+   else
+   {
+     echo(" <script>
+                  window.alert('DB 오류가 발생하였습니다.')
+                  history.go(-1)
+                 </script>
+               "); exit;
+   }
+   
+
+
+}
+
+
+//===================
+//    새글 쓰기 폼
+//===================
+if($mode=='new') 
+{
+
+echo("<FORM name='form' method='post' action='$PHP_SELF'>
+	<TABLE border='0' cellspacing='1' >
+	<TR>
+	<TD width='109' bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>이름</FONT></TD>
+	<TD width='541'><P>&nbsp;<INPUT type='text' name='name' SIZE=6 MAXLENGTHTH='20'></TD>
+	</TR>
+	<TR>
+	<TD  bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>HOMEPAGE</FONT></TD>
+	<TD ><P>&nbsp;http://<INPUT type='text' name='home' maxlength='40'></TD>
+	</TR>
+		<TR>
+	<TD  bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>Email 주소</FONT></TD>
+	<TD ><P>&nbsp;<INPUT type='text' name='email' size=20  maxlength='40'></TD>
+	</TR><TR>
+	<TD  bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>남기실 말씀</FONT></TD>
+	<TD ><P><TEXTAREA name='comment' rows='4' cols='35'></TEXTAREA></TD>
+	</TR>
+	
+	<TR>
+	<TD><P>&nbsp;</TD>
+	<TD><P>&nbsp;<INPUT type='submit' name='submit' value='글올리기'></TD>
+	</TR>
+	</TABLE>
+	<input type=hidden name=mode value='up'>
+	</FORM>");
+
+}
+ 
+
+
+
+//====================
+// 내용보여주기  
+//====================
+if(!$mode || $result) 
+{
+
+  if(!$start){ $start= 0 ;}
+
+
+  $que1="select DATE_FORMAT(reg_date,'Y.m.d'), id, comment, name, home ,email, ip
+         from guestbook
+         order by id DESC " ; 
+
+  $result = mysql_query($que1,$connect );
+  $total = mysql_affected_rows();
+   
+
+
+  if($start)
+  {  $n=$total-$start;
+  }
+else
+  {  $n=$total;
+  }
+
+echo("<FONT face='Arial' size='2' color='#CDDAE4'>전체 $total 건 </FONT>");  
+
+for($i=$start ; $i< $start+$scale ; $i++)  //  start 에서 scale 까지 만
+
+ {
+
+   if($i< $total ) // 전체 자료 개수까지만 출력 
+
+   { 
+
+     mysql_data_seek($result,$i);
+     $row=mysql_fetch_array($result);
+      
+     $row[comment] = stripslashes($row[comment]) ;
+
+ 
+
+     echo("<TABLE border='0' cellspacing='1' >
+			<TR>
+			<TD width='109' bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'><a href=$PHP_SELF?mode=del&id=$row[id]><IMG src='./img/del.gif' width='22' height='13' border='0' alt='지우기'></a></FONT></TD>
+			<TD width='541'><P><FONT face='굴림' size='2' color='#FAF1C7'>$row[0] from $row[ip]</FONT></TD>
+            </TR>
+			
+			<TR>
+			<TD width='109' bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>Name</FONT></TD>
+			<TD width='541'><P><FONT face='굴림' size='2' color='#E7EEF5'>$row[name]</FONT></TD>
+			</TR>
+			
+			<TR>
+			<TD width='109' bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>Home / Email</FONT></TD>
+			<TD width='541'><P><FONT face='굴림' size='2' color='#E7EEF5'>&nbsp;</FONT><A href='mailto:$row[email]'><FONT face='굴림' size='2' color='#E7EEF5'><IMG SRC=./img/mail.gif BORDER=0 ALT='편지쓰기'>$row[email]</FONT></A><FONT face='굴림' size='2' color='#E7EEF5'> &nbsp;");
+			
+			if($row[home]) echo("<a href=http://$row[home]><IMG SRC=./img/home.gif BORDER=0 ALT='홈페이지'>http://$row[home]</a>");
+			
+			echo("</FONT></TD>
+			</TR>
+			
+			<TR>
+			<TD width='109' bgcolor='#5485B6'><P align='center'><FONT face='Arial' size='2' color='#CDDAE4'>Comment&nbsp;</FONT></TD>
+			<TD width='541'><P><FONT face='굴림' 
+			size='2' color='#E7EEF5'>$row[comment]</FONT></TD>
+			</TR>
+			<TR>
+			<TD width='109'><P><HR size='1' noshade></TD>
+			<TD width='541'><P><HR size='1' noshade></TD>
+			</TR></TABLE>");
+     }
+ }
+  
+						
+}
+//===================== 내용보여주기 끝 ===========
+
+
+
+
+if(!$mode || $result)  // ==================== 하단 버튼 ==============
+{
+	echo("<center>
+	<a href=$PHP_SELF?mode=new><IMG HEIGHT=30 WIDTH=30 SRC='./img/write.gif' VSPACE=0 HSPACE=0 ALIGN='TOP' 
+	BORDER=0 alt='방명록에 글쓰기'></a> ");
+
+	$p_p=$start- $scale ;
+	$n_p=$start+ $scale ;
+
+	if($p_p>=0 && $mode!='new')
+    { echo("<a href='$PHP_SELF?start=$p_p'><IMG HEIGHT=30 WIDTH=30 SRC='./img/p-doc.gif' VSPACE=0 HSPACE=0 ALIGN='TOP'
+	BORDER=0 alt='이전 페이지'></a> ");
+    }
+
+	if($n_p<$total && $mode != 'new')
+     { echo("<a href='$PHP_SELF?start=$n_p'><IMG HEIGHT=30 WIDTH=30 SRC='./img/n-doc.gif' VSPACE=0 HSPACE=0 ALIGN='TOP' 
+	BORDER=0 alt='다음 페이지'></a></center>");
+     }
+     
+}
+
+
+
+?>
+							 
+							 
+							 
+
+ </BODY>
+</HTML>
+ 

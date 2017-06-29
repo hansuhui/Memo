@@ -1,0 +1,17 @@
+ - MSSQL FOREIGN KEY 란?
+   FOREIGN KEY 는 제약조건의 하나로 외래키라고 부릅니다.
+   외래키는 다른 테이블의 레코드를 참조하기 위한 키값으로 사용되며, 해당 레코드를 대표하는 기본키가 외래키로 설정될 수 있습니다.
+
+? 
+ - 테이블 생성시 FOREIGN KEY 가 설정된 컬럼을 포함하는 방법
+   CREATE TABLE [테이블명] (
+       [컬럼명] [데이터형식] FOREIGN KEY REFERENCES [테이블명] ([컬럼명])
+   )
+
+ - 컬럼에 FOREIGN KEY 추가방법
+   ALTER TABLE [테이블명] ADD CONSTRAINT [FOREIGN KEY명] FOREIGN KEY ([컬럼명]) REFERENCES [테이블명] ([컬럼명])
+
+ - 컬럼에 FOREIGN KEY 삭제방법 
+   ALTER TABLE [테이블명] DROP CONSTRAINT [FOREIGN KEY명]
+
+ 

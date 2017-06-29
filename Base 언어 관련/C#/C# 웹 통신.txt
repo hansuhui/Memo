@@ -1,0 +1,88 @@
+http://stackoverflow.com/questions/8020537/passing-credentials-to-webproxy
+
+
+
+class RequestClass
+{
+    private CookieContainer cookieJar;
+    private WebProxy proxy = null;
+
+    public RequestClass()
+    {
+        this.cookieJar = new CookieContainer();
+    }
+
+    public RequestClass(String proxyURL, int port)
+    {
+        this.proxy = new WebProxy(proxyURL, port);
+    }
+
+    public RequestClass(String proxyURL, int port, String username, String password)
+    {
+        this.proxy = new WebProxy(proxyURL, port);
+        // Need to set them here
+    }
+
+    // HTTP Get Request
+    public HttpWebResponse getRequest(String url, NameValueCollection headers)
+    {
+        HttpWebRequest getRequest = (HttpWebRequest)WebRequest.Create(url);
+        getRequest.Method = "GET";
+        getRequest.CookieContainer = cookieJar;
+
+        foreach (String key in headers.Keys)
+        {
+            getRequest.Headers.Add(key, headers[key]);
+        }
+
+        return (HttpWebResponse)getRequest.GetResponse();
+    }
+
+    // HTTP Post Request
+    public HttpWebResponse postRequest(String url, String postData, NameValueCollection headers)
+    {
+        byte[] postBytes = Encoding.ASCII.GetBytes(postData);
+
+        HttpWebRequest postRequest = (HttpWebRequest)WebRequest.Create(url);
+        postRequest.Method = "POST";
+        postRequest.CookieContainer = cookieJar;
+        postRequest.ContentLength = postBytes.Length;
+        postRequest.ProtocolVersion = HttpVersion.Version10;
+
+        foreach(String key in headers.Keys)
+        {
+            postRequest.Headers.Add(key, headers[key]);
+        }
+
+        Stream postRequestStream = postRequest.GetRequestStream();
+
+        postRequestStream.Write(postBytes, 0, postBytes.Length);
+        postRequestStream.Close();
+
+        return (HttpWebResponse)postRequest.GetResponse();
+    }
+}
+
+
+
+
+====================================================================
+
+
+     public static string HttpPost(string URI, string Parameters)
+        {
+            System.Net.WebRequest req = WebRequest.Create(URI);
+            //Add these, as we're doing a POST
+            req.ContentType = "application/x-www-form-urlencoded";
+            req.Method = "POST";
+            //We need to count how many bytes we're sending. Post'ed Faked Forms should be name=value&
+            byte[] bytes = Encoding.ASCII.GetBytes(Parameters);
+            req.ContentLength = bytes.Length;
+            Stream os = req.GetRequestStream();
+            os.Write(bytes, 0, bytes.Length); //Push it out there
+            os.Close();
+            WebResponse resp = req.GetResponse();
+            if (resp == null) return null;
+            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            return sr.ReadToEnd().Trim();
+        }

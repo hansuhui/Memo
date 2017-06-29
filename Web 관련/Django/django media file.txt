@@ -1,0 +1,11 @@
+[settings.py]
+
+MEDIA_URL = '/upload_data/'
+MEDIA_ROOT = '/JSGlobal/Django/JsMember/upload_data'
+
+
+[urls.py]
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

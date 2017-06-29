@@ -1,0 +1,236 @@
+php > 내가 만들어 쓰는 함수 > 이미지에 워터마크 처리하기1
+
+이전까지는 이미지 복사, 이미지 리사이즈, 이미지 크롭등을 다뤄보았습니다.
+이번에는 이미지에 워터마크 처리하는 것을 다뤄 보도록 하겠습니다.
+
+워터마크 처리과정을 살펴보기 이전에 처리과정에 필요한 
+내장함수 imagecopymerge 에 대해서 알아보도록 하겠습니다.
+
+imagecopymerge ( resource $src_im , resource $mark_im , int $src_x , int $src_y , int $mark_x , int $mark_y , int $mark_w , int $mark_h , int $pct )
+설명 : 워터마크 처리시와 같이 두개의 이미지를 합칠때(겹쳐서 보여줄때) 사용합니다. 합치기 성공시 true를 반환, 실패시 false를 반환
+
+인자 :
+resource $src_im 원본이미지의 리소스
+resource $mark_im 워터마크에 사용될 이미지의 리소스
+int $src_x 원본에 워터마크가 겹쳐질 기준점의 x 좌표, 양의 정수만 사용
+int $src_y 원본에 워터마크가 겹쳐질 기준점의 y 좌표, 양의 정수만 사용
+int $mark_x 워터마크에 사용될 이미지의 복사 기준점의 x좌표, 양의 정수만 사용
+int $mark_y 워터마크에 사용될 이미지의 복사 기준점의 y좌표, 양의 정수만 사용
+int $mark_w 워터마크에 사용될 이미지의 복사영역의 너비, 양의 정수만 사용
+int $mark_h 워터마크에 사용될 이미지의 복사영역의 높이, 양의 정수만 사용
+int $pct 선명도, 0 에서 100 까지의 양의 정수만 사용, 100 이면 원본 그대로이고 숫자가 작아질수록 투명도가 증가
+※ imagecopymerge 함수의 설명을 좀 더 풀어서 설명하자면,
+원 본이미지에 워터마크에 사용될 이미지를 복사하여 겹치는데, 인자로 받은 원본의 기준점 좌표에 워터마크에 사용될 이미지의 인자로 받은 복사기준점으로 부터 인자로 받은 복사영역을 복사하여 원본에 인자로 주어진 선명도에 따라 덮는다는 의미 입니다.
+
+
+다음 예제를 통해, 원본의 왼쪽 꼭지점을 기준으로 선명도 60으로 워터마크 처리를 살펴봅니다.
+예제로 사용된 php.png은 첨부파일에서 다운받아 sample_image 속에 넣도록 합니다.
+
+예제1 : test10.php
+<?php
+
+//이미지 처리 함수 인클루드
+include_once 'lib/image_proc.function.php';
+
+$path_file = 'sample_image/test.jpg';//원본파일
+$path_mark_file ='sample_image/php.png';//워터마크에 사용할 파일
+$path_save_file = 'sample_image/watermak.jpg';//워터마크 처리한 것을 저장할 파일
+
+//원본의 이미지 리소스를 받아온다.
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_file);
+if (empty($src)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//워터마크에 사용될 이미지 리소스를 받아온다.
+list($mark, $mark_w, $mark_h) = get_image_resource_from_file ($path_mark_file);
+if (empty($mark)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//원본의 왼쪽 꼭지점을 기준점으로 선명도 60으로 워터마크 처리
+$result_watermark = imagecopymerge($src, $mark, 0, 0, 0, 0, $mark_w, $mark_h, 60);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src, $path_save_file);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($mark);
+@imagedestroy($src);
+
+//성공하였다면 이미지 출력
+
+?>
+원본 이미지 <br />
+<img src='<?=$path_file?>'> <br />
+
+워터마크에 사용할 이미지 <br />
+<img src='<?=$path_mark_file?>'> <br />
+
+워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_file?>'> <br />
+
+
+문제1>
+원본 test.jpg 를 5분의 1로 축소하고, php.png 를 사용하여,
+상단 왼쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_top_left.jpg
+상단 오른쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_top_right.jpg
+하단 왼쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_bottom_left.jpg
+하단 오른쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_bottom_right.jpg
+가운데 중앙을 기준으로 선명도 70으로 워터마크 처리하여 watermark_middle_center.jpg
+로 각각 저장하세요.
+
+처리힌트>
+원본의 기준점을 구하는 것이 포인트입니다.
+이전의 다ㅤㄹㅝㅅ던 크롭의 기준점을 구하는 방법을 응용하여 풀어나갑니다.
+상단 왼쪽은 생각할것도 없이 0, 0
+상단 오른쪽은 원본을 5 분의 1로 축소한 이미지의 너비 - 워터마크이미지의 너비, 0
+하단 왼쪽은 0, 원본을 5 분의 1로 축소한 이미지의 높이 - 워터마크이미지의 높이
+하단 오른쪽은 원본을 5 분의 1로 축소한 이미지의 너비 - 워터마크이미지의 너비, 원본을 5 분의 1로 축소한 이미지의 높이 - 워터마크이미지의 높이
+가운데 중앙을 (원본을 5 분의 1로 축소한 이미지의 너비 - 워터마크이미지의 너비) / 2, (원본을 5 분의 1로 축소한 이미지의 높이 - 워터마크이미지의 높이) / 2
+로 기준점을 구할수 있습니다.
+
+처리과정>
+1. 원본과 워터마크에 사용될 이미지의 리소스를 생성합니다.
+2. 원본을 5 분의 1로 축소합니다.
+3. 각 조건에 따라 축소한 원본 의 기준점을 구합니다.
+4. imagecopymerge 를 통해 각각의 워터마크 처리를 합니다.
+5. 각각의 파일명으로 저장합니다.
+
+
+예제2 : test11.php
+<?php
+
+//이미지 처리 함수 인클루드
+include_once 'lib/image_proc.function.php';
+
+$path_file = 'sample_image/test.jpg';//원본파일
+$path_mark_file ='sample_image/php.png';//워터마크에 사용할 파일
+
+$path_save_top_left_file = 'sample_image/watermak_top_left.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_top_right_file = 'sample_image/watermak_top_right.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_bottom_left_file = 'sample_image/watermak_bottom_left.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_bottom_right_file = 'sample_image/watermak_bottom_right.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_middle_center_file = 'sample_image/watermak_middle_center.jpg';//워터마크 처리한 것을 저장할 파일
+
+//원본의 이미지 리소스를 받아온다.
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_file);
+if (empty($src)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//워터마크에 사용될 이미지 리소스를 받아온다.
+list($mark, $mark_w, $mark_h) = get_image_resource_from_file ($path_mark_file);
+if (empty($mark)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//원본을 5 분의 1로 축소한 너비와 높이를 구한다.
+$src_w_small = ceil($src_w / 5);
+settype($src_w_small, 'int');//ceil의 결과값은 int형이 아니라 float 형이기 때문에 강제 형변환을 해준다. http://kr2.php.net/manual/kr/function.ceil.php 참고
+$src_h_small = get_size_by_rule($src_w, $src_h, $src_w_small);
+
+//원본의 상단 왼쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+$src2_x = 0;
+$src2_y = 0;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_top_left_file);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 상단 오른쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = $src_w_small - $mark_w;
+$src2_y = 0;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_top_right_file);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 하단 왼쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = 0;
+$src2_y = $src_h_small - $mark_h;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_bottom_left_file);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 하단 오른쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = $src_w_small - $mark_w;
+$src2_y = $src_h_small - $mark_h;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_bottom_right_file);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 가운데 중앙을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = ceil(($src_w_small - $mark_w) / 2);
+$src2_y = ceil(($src_h_small - $mark_h) / 2);
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_middle_center_file);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+@imagedestroy($src);
+@imagedestroy($mark);
+
+
+//성공하였다면 이미지 출력
+
+?>
+원본 이미지 <br />
+<img src='<?=$path_file?>'> <br />
+
+워터마크에 사용할 이미지 <br />
+<img src='<?=$path_mark_file?>'> <br />
+
+상단 왼쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_top_left_file?>'> <br />
+
+상단 오른쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_top_right_file?>'> <br />
+
+하단 왼쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_bottom_left_file?>'> <br />
+
+하단 오른쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_bottom_right_file?>'> <br />
+
+가운데 중앙 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_middle_center_file?>'> <br />
+
+
+위 예제에서
+$src_w_small = ceil($src_w / 5);
+settype($src_w_small, 'int');
+와 같이 처리한 이유는 ceil 함수의 반환값이 정수형(int)이 아니라 실수형(float) 이기 때문입니다. 우리가 만든 get_size_by_rule 나 get_bigsize_by_rule 함수는 인자를 반듯이 정수로 받기 때문에 그렇게 처리하였습니다.

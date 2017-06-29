@@ -1,0 +1,14 @@
+Git 리포지터리의 코드를 사용하려면 , Git를 다운로드한 후 
+git clone 명령을 사용해 파일들을 가져와야 한다.
+
+Git는 소스 코드 버전 관리 시스템이다. 설치하려면 다음 명령을 사용한다.
+
+sudo apt-get install git
+
+Git를 한 번 설치하면 , git clone 명령을 통해 원하는 소스 코드 파일을 얻을 수 있다.
+이때 해당 디렉터리에 쓰기 권한이 있다면 슈퍼유저 권한을 필요없다.
+
+예를 들어 다음 명령을 사용하면 이 책의 소스 코드를 얻을 수 있다.
+
+git clone https://github.com/simonmonk/raspberrypi_cookbook.git
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>HTML5 Input Attributes</title>
+</head>
+
+<body>
+
+	<h1>list 속성을 이용한 datalist 요소</h1>
+
+	<form action="/examples/media/request.php">
+		<input list="lectures" name="lecture">
+			<datalist id="lectures">
+				<option value="HTML">
+				<option value="CSS">
+				<option value="JAVA">
+				<option value="C++">
+			</datalist>
+		<input type="submit" value="전송">
+	</form>
+
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+
+Error: Could not find gradle wrapper within Android SDK. Might need to update your Android SDK.
+Looked here: C:\Users\Han\AppData\Local\Android\sdk\tools\templates\gradle\wrapper
+
+cordova platform update android@6.2.1 
+

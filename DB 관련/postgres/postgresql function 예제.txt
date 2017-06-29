@@ -1,0 +1,12 @@
+   CREATE  FUNCTION  logfunc2(text,text,text)  RETURNS  datetime 
+   AS ' 
+       DECLARE  logtxt1  ALIAS  FOR  $1;
+                logtxt2  ALIAS  FOR  $2;
+                logtxt2  ALIAS  FOR  $3;
+                curtime  datetime;
+       BEGIN
+          curtime :=''now'';
+          INSERT  INTO  logtable  VALUES (logtxt1,logtxt2,logtxt3,curtime);
+          RETURN  curtime;
+       END;
+  ' LANGUAGE 'plpgsql';

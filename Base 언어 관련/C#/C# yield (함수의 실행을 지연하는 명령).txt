@@ -1,0 +1,19 @@
+
+
+ IEnumerator RecoverCandy() {
+        counter = RecoverySeconds;
+
+        //1초씩 카운트를 진행한다
+        while (counter > 0) {
+            yield return new WaitForSeconds(1.0f);
+            counter--;
+
+        }
+        candy++;
+    }
+
+
+IEnumerator 형의 정의를 하고 있는 부분이 코 루틴 부분이다. 코 루틴의 내부에서는 yield라는 
+특수한 선언을 이용한다. yield는 함수의 실행을 일정 시간(또는 프레임) 동안 지연하는 명령이다.
+yield는 일종의 return 문으로서 return은 그 이후의 모든 처리를 무시하지만, yield는 return 한 후
+지정한 시간(또는 프레임)후에 그 이후의 문장이 다시 실행한다.

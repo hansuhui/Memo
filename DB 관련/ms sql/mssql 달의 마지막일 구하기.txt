@@ -1,0 +1,20 @@
+
+
+select dateadd(day, -1,dateadd(month, 원하는 달 ,datename(year,getdate())  + '0101'))
+
+select dateadd(day, -1,dateadd(month, 4,datename(year,getdate())  + '0101'))
+
+
+첫날 구하기
+
+
+select dateadd(day, 0,dateadd(month, 원하는달의 전달,datename(year,getdate())  + '0101'))
+
+
+
+달의 첫날
+convert(varchar(10), dateadd(day, 0,dateadd(month, (MONTH(getDate())-1),datename(year,getdate())  + '0101')),120)
+	
+	
+달의 마지막일
+convert(varchar(10), dateadd(day, -1,dateadd(month, (MONTH(getDate())),datename(year,getdate())  + '0101')),120)

@@ -1,0 +1,5 @@
+select * from(select top 20 * ,row_number() over(order by bmidx) as r from boardMaster)boardMaster where r between 1 and 5
+
+
+
+괄호 안에서 select top 가져올 글의수 *(칼럼 전부), row_number() over(oreder by 칼럼)[해당 칼럼에 대한 차순정리]

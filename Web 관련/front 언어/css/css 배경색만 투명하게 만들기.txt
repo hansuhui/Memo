@@ -1,0 +1,65 @@
+[배경색만 투명하게 만들기]
+
+CSS의 opacity 속성으로 요소의 투명도를 정할 수 있습니다. 
+선택한 요소의 배경과 내용 모두를 투명하게 만듭니다.
+
+간단한 예제는 다음과 같습니다
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips</title>
+    <style>
+      div {
+        padding: 30px;
+        background-image: url( "lego-300x200.png" );
+      }
+      p {
+        padding: 30px;
+        font-size: 50px;
+        font-weight: bold;
+        text-align: center;
+        background-color: #ffffff;
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>Lorem</p>
+    </div>
+  </body>
+</html>
+
+문단의 배경과 글자 모두가 투명해집니다.
+
+만약 배경만 투명하게 하고 글자는 투명하지 않게 하려면 
+opacity 속성을 쓰지 말고 배경색에 RGBA 색상을 사용합니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips</title>
+    <style>
+      div {
+        padding: 30px;
+        background-image: url( "lego-300x200.png" );
+      }
+      p {
+        padding: 30px;
+        font-size: 50px;
+        font-weight: bold;
+        text-align: center;
+        background-color: rgba( 255, 255, 255, 0.5 );
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>Lorem</p>
+    </div>
+  </body>
+</html>

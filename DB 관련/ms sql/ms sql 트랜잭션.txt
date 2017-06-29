@@ -1,0 +1,27 @@
+
+begin try  --예외처리
+   begin tran  -- 트랜잭션 시작
+
+sql 문
+
+  commit tran  -- 성공하면 커밋
+end try
+begin catch
+   rollback tran --에러나면 롤백
+end catch
+
+
+
+
+--------------------------------
+
+begin try  
+   begin tran 
+
+sql 문
+
+  commit tran  
+end try
+begin catch
+   rollback tran 
+end catch

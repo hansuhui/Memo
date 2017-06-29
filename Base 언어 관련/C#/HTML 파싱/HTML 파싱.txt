@@ -1,0 +1,29 @@
+
+
+using HtmlAgilityPack;
+
+
+       Uri url = new Uri("http://info.finance.naver.com/marketindex/exchangeList.nhn");
+            //HttpWebRequest WebRequestObject = (HttpWebRequest)HttpWebRequest.Create("http://info.finance.naver.com/marketindex/exchangeDailyQuote.nhn?marketindexCd=FX_CNYKRW");
+            HttpWebRequest WebRequestObject = (HttpWebRequest)HttpWebRequest.Create(url);
+            WebRequestObject.Referer = "http://www.naver.com";
+            WebResponse Response = WebRequestObject.GetResponse();
+            Stream WebStream = Response.GetResponseStream();
+            StreamReader Reader = new StreamReader(WebStream);
+            string PageContent = Reader.ReadToEnd();
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(PageContent);
+            var tr = doc.DocumentNode.Element("html").Element("body").Element("div").Element("table").Element("tbody").Elements("tr").ToList();
+
+
+            foreach (var s in tr) {
+                string text = s.Element("td").InnerText;
+                if (text.IndexOf("CNY") != -1) {
+                     var td =s.Elements("td").ToList();
+                    Console.WriteLine(td[1].InnerText.Trim()) ;
+                    Console.WriteLine(td[6].InnerText.Trim());
+                    break;
+                }
+
+            }

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+  <canvas id="myCanvas" width="200" height="100"
+	style="border:1px solid #000000;">
+	</canvas>
+
+		<canvas id="myCanvas2" width="200" height="100"
+	style="border:1px solid #000000;">
+	</canvas>
+
+	<canvas id="myCanvas3" width="200" height="100"
+	style="border:1px solid #000000;">
+	</canvas>
+
+  <script>
+
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "30px Arial";
+ctx.fillText("Hello World",10,50);
+
+
+
+var canvas2 = document.getElementById("myCanvas2");
+var ctx = canvas2.getContext("2d");
+ctx.font = "30px Arial";
+ctx.strokeText("Hello World",10,50);
+
+
+var canvas3 = document.getElementById("myCanvas3");
+var ctx = canvas3.getContext("2d");
+ctx.font = "30px Comic Sans MS";
+ctx.fillStyle = "red";
+ctx.textAlign = "center";
+ctx.fillText("Hello World", canvas.width/2, canvas.height/2); 
+
+
+
+  </script>
+ </body>
+</html>

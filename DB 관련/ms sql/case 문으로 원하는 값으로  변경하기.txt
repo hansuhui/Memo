@@ -1,0 +1,1 @@
+(case when A.RETNTYPE = '40' then '10' else A.RETNTYPE end ) as RETNTYPE

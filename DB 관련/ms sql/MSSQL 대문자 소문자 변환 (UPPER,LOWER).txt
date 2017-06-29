@@ -1,0 +1,9 @@
+ - UPPER / LOWER 란? 
+   UPPER는 영문자를 모두 대문자로 변경하는 함수이며,
+   LOWER는 영문자를 모두 소문자로 변경하는 함수입니다.
+
+ - MSSQL UPPER / LOWER 사용방법 
+   UPPER('[영어 문자열]')
+   LOWER('[영어 문자열]')
+?
+ 

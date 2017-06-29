@@ -1,0 +1,26 @@
+<insert id="CarInsert" parameterClass="CargoTrade">
+      begin try
+      begin tran
+      DECLARE @newKeyTbl Table (newKey INT);
+      insert into CAR_TRADE (CAR_MAKER,CAR_TON,CAR_GENRE,CAR_TYPE,CAR_NAME,CAR_USE
+      ,CARGO_BOX_LENGTH,CARGO_BOX_WIDTH,CARGO_BOX_HEIGHT,CAR_YEAR,CAR_MONTH,CAR_PRICE
+      ,MILEAGE,SALE_SIDO,SALE_GUGUN,CAR_COLOR,ETC_MSG,BASIC_OPTION,ETC_OPTION,REG_DATE)
+      OUTPUT INSERTED.SEQ into @newKeyTbl
+      values(#CAR_MAKER#,#CAR_TON#,#CAR_GENRE#,#CAR_TYPE#,#CAR_NAME#,#CAR_USE#
+      ,#CARGO_BOX_LENGTH#,#CARGO_BOX_WIDTH#,#CARGO_BOX_HEIGHT#,#CAR_YEAR#,#CAR_MONTH#,#CAR_PRICE#
+      ,#MILEAGE#,#SALE_SIDO#,#SALE_GUGUN#,#CAR_COLOR#,#ETC_MSG#,#BASIC_OPTION#,#ETC_OPTION#,convert(varchar(19),getdate(),120));
+
+      insert into  CAR_TRADE_TRAN (CAR_SEQ,SM_SEQ,SALE_SDATE,SALE_CONDITION,REG_DATE)
+      SELECT newKey,#SM_SEQ#,convert(varchar(19),getdate(),120),0,convert(varchar(19),getdate(),120) FROM @newKeyTbl;
+      
+      <selectKey resultClass="int" type="post" keyProperty="seq">
+        SELECT newKey FROM @newKeyTbl
+      </selectKey>
+      
+      commit tran
+      end try
+      begin catch
+      rollback tran
+      end catch
+
+    </insert>

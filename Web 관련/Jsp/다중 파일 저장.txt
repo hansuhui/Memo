@@ -1,0 +1,8 @@
+		Enumeration Test= multi.getFileNames();
+		int i = 0;
+		while(Test.hasMoreElements())
+		{
+			i++;
+			String fileName2 = multi.getFilesystemName(Test.nextElement().toString());
+			System.out.println(fileName2);
+		}

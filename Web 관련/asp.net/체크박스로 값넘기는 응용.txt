@@ -1,0 +1,33 @@
+
+
+체크박스에 담아서 값을 넘긴후
+
+
+<td class="ac" style="padding:0;"><input type="checkbox" name="strVal" value="@item.SaleCode|@item.GiftNo|@item.Pimg" /></td>
+
+
+
+적용하는 작업
+			if (strVal.Length > 0)
+			{
+				SendRepository db = new SendRepository();
+
+
+				for (int i = 0; i < strVal.Length; i++)
+				{
+					val = strVal[i].Split('|');
+
+					sms.DataVal = val[0];
+					sms.GiftNo = val[1];
+					string img = val[2];
+
+
+
+					sms.FileName = Server.MapPath(img);
+					// 저장
+
+
+					db.InsertSMS(sms);
+
+				}
+			}

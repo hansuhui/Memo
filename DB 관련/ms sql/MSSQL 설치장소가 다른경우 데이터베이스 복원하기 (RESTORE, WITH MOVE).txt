@@ -1,0 +1,64 @@
+ - 기본 데이터베이스 설치장소 확인방법
+    SELECT filename FROM sys.sysdatabases WHERE name = 'master'
+?
+   sys.sysdatabases의 master DB의 filename을 보면 기본적으로 mssql이 설치된 곳을 확인할 수 있습니다.
+   (단, DB관리자가 기본설치장소가 아닌 곳에 DB를 생성할 수도 있으니 master 외에 추가로 설치된 DB도 확인해보시기 바랍니다.)
+ 
+ 
+ - 예제 1 
+   master DB의 설치장소를 조회하시오.
+ 
+ 
+ - 예제 1 쿼리 
+   SELECT filename FROM sys.sysdatabases WHERE name = 'master'
+?
+ 
+filename / D:\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\master.mdf
+ 
+ - 백업본의 데이터베이스 설치장소 확인방법
+   RESTORE FILELISTONLY FROM DISK = '[복원파일 위치 및 복원 파일명]'
+?
+ 
+ - 예제 2
+    학생정보.bak 파일정보를 확인하시오.
+ 
+ 
+ - 예제 2 쿼리
+    RESTORE FILELISTONLY FROM DISK = 'C:\학생정보.bak'
+?
+ 
+LogicalName / PhysicalName / Type
+
+학생정보  /  C:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\학생정보.mdf  / D
+
+학생정보_log /  C:\Program Files\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\학생정보_log.ldf / L
+
+ 
+ - 설치장소가 다른 경우 데이터베이스 복원방법
+ 
+   RESTORE DATABASE [백업할 DB명] FROM DISK = '[복원파일 위치 및 복원 파일명]'
+   WITH MOVE '[MDF파일명]' TO '[MDF파일위치 및 MDF파일명]'
+   WITH MOVE '[LDF파일명]' TO '[LDF파일위치 및 LDF파일명]'
+?
+ 
+ - 예제 3
+ 
+   학생정보.bak 파일을 D:\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA에 복원하시오.
+ 
+ 
+ - 예제 3 쿼리
+ 
+   RESTORE DATABASE [백업할 DB명] FROM DISK = 'C:\학생정보.bak'
+   WITH MOVE '학생정보' TO 'D:\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\학생정보.mdf'
+   WITH MOVE '학생정보_log' TO 'D:\Microsoft SQL Server\MSSQL10.SQLEXPRESS\MSSQL\DATA\학생정보_log.ldf'
+?
+ 
+메세지
+ 파일 1에서 데이터베이스 '학생정보', 파일 '학생정보'에 대해 176개의 페이지를 처리했습니다 .
+ 파일 1에서 데이터베이스 '학생정보', 파일 '학생정보_log'에 대해 5개의 페이지를 처리했습니다 .
+ RESTORE DATABASE이(가) 181개의 페이지를 0.089초 동안 처리했습니다(15.888MB/초).
+ 
+ - 결과 확인 
+   SELECT * FROM dbo.성적
+ 
+ 

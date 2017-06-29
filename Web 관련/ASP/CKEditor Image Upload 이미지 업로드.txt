@@ -1,0 +1,21 @@
+1. CKEditor 다운
+http://ckeditor.com/download
+ 
+2. 압축 풀어서 웹서버로 복사
+ 
+3.  Uploader.ashx(파일 업로드할때 쓸 소스 - 파일 업로드될 경로 수정해야함)
+ 
+4. ckeditor\samples\readonly.html 수정
+(테스트로 저파일을 쓰는거에요~)
+아래 소스의 Uploader 경로는 알맞게 수정
+<script>
+    CKEDITOR.replace('editor1',
+        {
+            toolbar: 'Full',
+            uiColor: '#9AB8F3',
+            filebrowserUploadUrl: '/Service/Upload/Uploader.ashx?type=Files',
+            filebrowserImageUploadUrl: '/Service/Upload/Uploader.ashx?type=Images',
+            filebrowserFlashUploadUrl: '/Service/Upload/Uploader.ashx?type=Flash'
+        }
+    );
+</script>

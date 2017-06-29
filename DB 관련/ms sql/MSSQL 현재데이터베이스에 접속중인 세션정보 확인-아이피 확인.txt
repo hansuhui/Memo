@@ -1,0 +1,58 @@
+- MSSQL 현재 데이터베이스에 접속중인 세션정보 / 아이피 확인방법
+ 
+   SELECT P.spid, P.login_time, P.last_batch, P.status, P.program_name, P.cmd, C.client_net_address
+   FROM sys.sysprocesses AS P INNER JOIN sys.dm_exec_connections AS C
+   ON P.spid = C.session_id
+?
+ 
+ - sys.sysprocesses 
+?   SQL Server 인스턴스에서 실행 중인 프로세스에 대한 정보를 표시하는 뷰입니다.
+?
+ 
+ - sys.sysprocesses에서 참조한 컬럼 안내
+컬럼 /속성
+ spid / SQL Server 세션 아이디
+ loginame / 로그인 이름
+ login_time /  클라이언트 프로세스가 서버에 로그인한 시간
+last_batch / 클라이언트 프로세스가 원격 저장 프로시저 호출 또는 EXECUTE 문을 마지막으로 실행한 시간
+ status / 프로세스 아이디 상태 
+   - status가 갖을 수 있는 값
+  dormant = SQL Server에서 세션을 다시 설정하는 상태
+  running = 세션에서 일괄 처리를 하나 이상 실행하는 상태
+  background = 세션에서 백그라운드 태스크를 실행하는 상태
+  rollback = 세션에서 트랜잭션 롤백을 진행하는 상태
+  pending = 세션이 작업자 스레드를 사용할 수 있을 때까지 기다리는 상태
+  runnable = 세션이 실행중인 상태
+  sleeping = 세션이 작업을 기다리고 있는 상태
+  spinloop = 세션이 스핀락에 걸려 있는 상태
+  suspended = 세션이 이벤트가 발생할 때까지 대기하고 있는 상태
+
+ program_name / 응용 프로그램의 이름
+ cmd / 현재 실행 중인 명령
+ 
+ - sys.dm_exec_connections
+    SQL Server 인스턴스에 대해 설정된 연결에 대한 정보와 각 연결에 대한 세부 정보를 표시하는 뷰입니다.
+?
+
+ - sys.dm_exec_connections 에서 참조한 컬럼 안내
+컬럼 /속성
+ session_id / SQL Server 세션 아이디
+ client_net_address  / 서버에 연결된 클라이언트의 호스트 주소 (아이피)
+ 
+[참고사항] 접속중인 세션정보를 확인하기 위해 sys.sysprocesses와 sys.dm_exec_connections를 조인하는 이유
+?   sys.sysprocesses는 SQL Server 인스턴스에서 실행 중인 프로세스에 대한 정보를 표시하기 때문에 현재 접속중인 세션정보를
+   확인하기 위해 반듯이 필요하나 클라이언트 프로세스와 시스템 프로세스 모두를 포함하고 있습니다.
+   때문에 클라이언트 프로세스만을 갖고 있는 sys.dm_exec_connections를 조인하여 클라이언트 프로세스의 접속정보를 표시할 수
+   있도록 만들어주어야 합니다.
+?
+ 
+ - 예제
+   현재 접속중인 세션아이디, 로그인시간, 마지막 실행시간, 아이피를 표시하시오.
+ 
+ 
+ - 예제 쿼리 실행
+   SELECT P.spid, P.login_time, P.last_batch, C.client_net_address
+   FROM sys.sysprocesses AS P INNER JOIN sys.dm_exec_connections AS C
+   ON P.spid = C.session_id
+  
+[출처] MSSQL 현재 데이터베이스에 접속중인 세션정보 확인 / 아이피 확인|작성자 창공

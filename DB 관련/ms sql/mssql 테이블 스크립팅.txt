@@ -1,0 +1,22 @@
+디비 같은 데이블 만들기
+
+테이블 선택 오른쪽 마우스 
+
+테이블 스크립팅
+
+create 선택 하고 
+
+CREATE TABLE [dbo].[zipcode](
+	[ZIPCODE] [nvarchar](255) NULL,
+	[SIDO] [nvarchar](255) NULL,
+	[GUGUN] [nvarchar](255) NULL,
+	[DONG] [nvarchar](255) NULL,
+	[RI] [nvarchar](255) NULL,
+	[ST_BUNJI] [nvarchar](255) NULL,
+	[ED_BUNJI] [nvarchar](255) NULL,
+	[SEQ] [float] NULL
+) ON [PRIMARY]
+
+
+
+잘라서 입력

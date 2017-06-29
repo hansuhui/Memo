@@ -1,0 +1,20 @@
+http://87nyunseng.tistory.com/entry/asp-roolback
+
+
+ sQuery1 ="update Äõ¸®~"
+ oCn.Execute sQuery
+ 
+sQuery2 ="update Äõ¸®~"
+oCn.Execute sQuery oCn.Execute sQuery
+ 
+
+ oCn.begintrans 
+  oCn.Execute sQuery1
+  oCn.Execute sQuery2
+
+ 
+ if oCn.errors.count = 0 then
+  oCn.committrans
+ else
+  oCn.rollbacktrans
+ end if

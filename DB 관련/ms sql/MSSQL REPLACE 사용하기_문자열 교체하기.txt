@@ -1,0 +1,45 @@
+
+ - REPLACE 이란?
+   REPLACE() 함수는 문자열중 조건에 맞는 문자열을 다른 문자열로 변경하여 리턴하는 함수입니다.
+?
+ 
+ - MSSQL REPLACE 사용방법
+   REPLACE([컬럼명], '[변경할 문자열 패턴]', '[새로운 문자열]')
+?
+ - 테이블 생성 
+   CREATE TABLE dbo.주소록(
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       주소 varchar(30) NOT NULL
+   )
+?
+ 
+ - 데이터 입력 
+   INSERT INTO dbo.주소록 (일련번호, 이름, 주소) VALUES (1, '홍길동', '서울시 중구 회현동')
+   INSERT INTO dbo.주소록 (일련번호, 이름, 주소) VALUES (2, '일지매', '서울시 종로구 인사동')
+   INSERT INTO dbo.주소록 (일련번호, 이름, 주소) VALUES (3, '임꺽정', '서울시 용산구 이태원동')
+ 
+ 
+ - 테이블 입력 결과 확인? 
+   SELECT * FROM dbo.주소록
+ 
+
+ - 예제 1
+   주소록을 조회하되 주소의 서울시를 서울특별시로 바꾸어 표기하시오.
+ 
+ 
+ - 예제 1 쿼리
+   SELECT 일련번호, 이름, REPLACE(주소, '서울시', '서울특별시') AS 주소 FROM dbo.주소록
+?
+?
+ - 예제 2 
+   주소록의 주소컬럼을 서울시를 제외한 나머지 주소만 남도록 업데이트 하시오.
+ 
+ 
+ - 예제 2 쿼리
+   UPDATE dbo.주소록 SET 주소 = REPLACE(주소, '서울시', '')
+?
+?
+ - 테이블 수정 결과 확인?
+    SELECT * FROM dbo.주소록
+ 

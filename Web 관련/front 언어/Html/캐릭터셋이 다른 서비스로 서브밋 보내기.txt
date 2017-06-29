@@ -1,0 +1,6 @@
+
+form еб╠в
+accept-charset="euc-kr"
+
+
+ document.charset = "euc-kr"; 

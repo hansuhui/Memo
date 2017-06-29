@@ -1,0 +1,44 @@
+[모바일 우선(Mobile First) VS 데스크톱 우선(Desktop First)]
+
+
+CSS3의 미디어 쿼리(media query)를 이용하면 웹브라우저 가로폭에 따라 다른 모양으로 스타일링할 수 있습니다.
+
+이때, 작은 가로폭부터 큰 가로폭 순서로 만드는 것을 모바일 우선(Mobile First), 
+큰 가로폭부터 작은 가로폭 순서로 만드는 것을 데스크톱 우선(Desktop First)이라고 합니다.
+
+
+- 모바일 우선(Mobile First) -
+
+작은 가로폭부터 큰 가로폭으로 가므로 min-width를 이용합니다.
+
+A
+@media ( min-width: 768px ) {
+  B
+}
+@media ( min-width: 1024px ) {
+  C
+}
+
+
+기본 모양은 A, 768px 이상일 때는 B, 1024px 이상일 때는 C가 적용됩니다.
+
+Bootstrap 등 대부분의 프레임워크는 모바일 우선으로 만들어져 있습니다.
+
+
+- 데스크톱 우선(Desktop First) -
+
+큰 가로폭부터 작은 가로폭으로 가므로 max-width를 이용합니다.
+
+
+A
+@media ( max-width: 1023px ) {
+  B
+}
+@media ( max-width: 767px ) {
+  C
+}
+
+
+기본 모양은 A, 1023px 이하일 때는 B, 767px 이하일 때는 C가 적용됩니다.
+
+

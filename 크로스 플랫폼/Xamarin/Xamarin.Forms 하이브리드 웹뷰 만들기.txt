@@ -1,0 +1,264 @@
+https://developer.xamarin.com/guides/xamarin-forms/application-fundamentals/custom-renderer/hybridwebview/
+
+
+==============================================================================================================
+
+[Creating the HybridWebView]
+
+using System;
+using Xamarin.Forms;
+
+  public class HybridWebView : View
+    {
+        Action<string> action;
+        public static readonly BindableProperty UriProperty = BindableProperty.Create(
+          propertyName: "Uri",
+          returnType: typeof(string),
+          declaringType: typeof(HybridWebView),
+          defaultValue: default(string));
+
+        public string Uri
+        {
+            get { return (string)GetValue(UriProperty); }
+            set { SetValue(UriProperty, value); }
+        }
+
+        public void RegisterAction(Action<string> callback)
+        {
+            action = callback;
+        }
+
+        public void Cleanup()
+        {
+            action = null;
+        }
+
+        public void InvokeAction(string data)
+        {
+            if (action == null || data == null)
+            {
+                return;
+            }
+            action.Invoke(data);
+        }
+    }
+
+
+
+==============================================================================================================
+
+[Consuming the HybridWebView]
+
+<ContentPage ...
+             xmlns:local="clr-namespace:CustomRenderer;assembly=CustomRenderer"
+             x:Class="CustomRenderer.HybridWebViewPage"
+             Padding="0,20,0,0">
+    <ContentPage.Content>
+        <local:HybridWebView x:Name="hybridWebView" Uri="index.html"
+          HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+    </ContentPage.Content>
+</ContentPage>
+
+
+==============================================================================================================
+
+[C# CODE Render]
+
+public class HybridWebViewPageCS : ContentPage
+{
+  public HybridWebViewPageCS ()
+  {
+    var hybridWebView = new HybridWebView {
+      Uri = "index.html",
+      HorizontalOptions = LayoutOptions.FillAndExpand,
+      VerticalOptions = LayoutOptions.FillAndExpand
+    };
+    ...
+    Padding = new Thickness (0, 20, 0, 0);
+    Content = hybridWebView;
+  }
+}
+
+
+
+public partial class HybridWebViewPage : ContentPage
+{
+  public HybridWebViewPage ()
+  {
+    ...
+    hybridWebView.RegisterAction (data => DisplayAlert ("Alert", "Hello " + data, "OK"));
+  }
+}
+
+
+==============================================================================================================
+
+[Creating the Custom Renderer on iOS]
+
+
+
+[assembly: ExportRenderer (typeof(HybridWebView), typeof(HybridWebViewRenderer))]
+namespace CustomRenderer.iOS
+{
+    public class HybridWebViewRenderer : ViewRenderer<HybridWebView, WKWebView>, IWKScriptMessageHandler
+    {
+        const string JavaScriptFunction = "function invokeCSharpAction(data){window.webkit.messageHandlers.invokeAction.postMessage(data);}";
+        WKUserContentController userController;
+
+        protected override void OnElementChanged (ElementChangedEventArgs<HybridWebView> e)
+        {
+            base.OnElementChanged (e);
+
+            if (Control == null) {
+                userController = new WKUserContentController ();
+                var script = new WKUserScript (new NSString (JavaScriptFunction), WKUserScriptInjectionTime.AtDocumentEnd, false);
+                userController.AddUserScript (script);
+                userController.AddScriptMessageHandler (this, "invokeAction");
+
+                var config = new WKWebViewConfiguration { UserContentController = userController };
+                var webView = new WKWebView (Frame, config);
+                SetNativeControl (webView);
+            }
+            if (e.OldElement != null) {
+                userController.RemoveAllUserScripts ();
+                userController.RemoveScriptMessageHandler ("invokeAction");
+                var hybridWebView = e.OldElement as HybridWebView;
+                hybridWebView.Cleanup ();
+            }
+            if (e.NewElement != null) {
+                string fileName = Path.Combine (NSBundle.MainBundle.BundlePath, string.Format ("Content/{0}", Element.Uri));
+                Control.LoadRequest (new NSUrlRequest (new NSUrl (fileName, false)));
+            }
+        }
+
+        public void DidReceiveScriptMessage (WKUserContentController userContentController, WKScriptMessage message)
+        {
+            Element.InvokeAction (message.Body.ToString ());
+        }
+    }
+}
+
+
+
+==============================================================================================================
+
+[Creating the Custom Renderer on Android]
+
+
+[assembly: ExportRenderer (typeof(HybridWebView), typeof(HybridWebViewRenderer))]
+namespace CustomRenderer.Droid
+{
+    public class HybridWebViewRenderer : ViewRenderer<HybridWebView, Android.Webkit.WebView>
+    {
+        const string JavaScriptFunction = "function invokeCSharpAction(data){jsBridge.invokeAction(data);}";
+
+        protected override void OnElementChanged (ElementChangedEventArgs<HybridWebView> e)
+        {
+            base.OnElementChanged (e);
+
+            if (Control == null) {
+                var webView = new Android.Webkit.WebView (Forms.Context);
+                webView.Settings.JavaScriptEnabled = true;
+                SetNativeControl (webView);
+            }
+            if (e.OldElement != null) {
+                Control.RemoveJavascriptInterface ("jsBridge");
+                var hybridWebView = e.OldElement as HybridWebView;
+                hybridWebView.Cleanup ();
+            }
+            if (e.NewElement != null) {
+                Control.AddJavascriptInterface (new JSBridge (this), "jsBridge");
+                Control.LoadUrl (string.Format ("file:///android_asset/Content/{0}", Element.Uri));
+                InjectJS (JavaScriptFunction);
+            }
+        }
+
+        void InjectJS (string script)
+        {
+            if (Control != null) {
+                Control.LoadUrl (string.Format ("javascript: {0}", script));
+            }
+        }
+    }
+}
+
+
+
+
+-----------------
+
+
+public class JSBridge : Java.Lang.Object
+{
+  readonly WeakReference<HybridWebViewRenderer> hybridWebViewRenderer;
+
+  public JSBridge (HybridWebViewRenderer hybridRenderer)
+  {
+    hybridWebViewRenderer = new WeakReference <HybridWebViewRenderer> (hybridRenderer);
+  }
+
+  [JavascriptInterface]
+  [Export ("invokeAction")]
+  public void InvokeAction (string data)
+  {
+    HybridWebViewRenderer hybridRenderer;
+
+    if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget (out hybridRenderer)) {
+      hybridRenderer.Element.InvokeAction (data);
+    }
+  }
+}
+
+
+==============================================================================================================
+
+[Creating the Custom Renderer on Windows Phone and UWP]
+
+
+[assembly: ExportRenderer(typeof(HybridWebView), typeof(HybridWebViewRenderer))]
+namespace CustomRenderer.WinPhone81
+{
+    public class HybridWebViewRenderer : ViewRenderer<HybridWebView, Windows.UI.Xaml.Controls.WebView>
+    {
+        const string JavaScriptFunction = "function invokeCSharpAction(data){window.external.notify(data);}";
+
+        protected override void OnElementChanged(ElementChangedEventArgs<HybridWebView> e)
+        {
+            base.OnElementChanged(e);
+
+            if (Control == null)
+            {
+                SetNativeControl(new Windows.UI.Xaml.Controls.WebView());
+            }
+            if (e.OldElement != null)
+            {
+                Control.NavigationCompleted -= OnWebViewNavigationCompleted;
+                Control.ScriptNotify -= OnWebViewScriptNotify;
+            }
+            if (e.NewElement != null)
+            {
+                Control.NavigationCompleted += OnWebViewNavigationCompleted;
+                Control.ScriptNotify += OnWebViewScriptNotify;
+                Control.Source = new Uri(string.Format("ms-appx-web:///Content//{0}", Element.Uri));
+            }
+        }
+
+        async void OnWebViewNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            if (args.IsSuccess)
+            {
+                // Inject JS script
+                await Control.InvokeScriptAsync("eval", new[] { JavaScriptFunction });
+            }
+        }
+
+        void OnWebViewScriptNotify(object sender, NotifyEventArgs e)
+        {
+            Element.InvokeAction(e.Value);
+        }
+    }
+}
+
+
+==============================================================================================================
+

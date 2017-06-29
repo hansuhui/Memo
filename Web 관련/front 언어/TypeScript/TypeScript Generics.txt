@@ -1,0 +1,24 @@
+https://www.typescriptlang.org/docs/handbook/generics.html
+
+[Generics]
+
+
+function identity(arg: number): number {
+    return arg;
+}
+
+
+
+function identity(arg: any): any {
+    return arg;
+}
+
+
+function identity<T>(arg: T): T {
+    return arg;
+}
+
+let output = identity<string>("myString");  // type of output will be 'string'
+
+
+let output = identity("myString");  // type of output will be 'string'

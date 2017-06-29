@@ -1,0 +1,8 @@
+CSS 긴글 자르기 (...표시)
+
+< div style="width:200; text-overflow:ellipsis; overflow:hidden;">
+     <nobr>길다 길다 길다길다 길어 너무 실다</nobr>
+< /div>
+ 
+출력 : 길다길다...
+ 

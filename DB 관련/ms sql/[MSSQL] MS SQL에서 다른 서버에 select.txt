@@ -1,0 +1,40 @@
+
+참조 사이트 http://egloos.zum.com/scblood/v/4483594
+
+
+.select * from [서버ip].디비명.사용자명.테이블명 이렇게 합니다.
+ex)  select * from [database].baseball.dbo.game
+
+그런데 서버가 링크가 안걸려 있으면 
+
+서버: 메시지 7202, 수준 11, 상태 2, 줄 1
+sysservers에서 '222.111.3.1' 서버를 찾을 수 없습니다. sp_addlinkedserver를 실행하여 sysservers에 서버를 추가하십시오.
+
+이런메시지 뜹니다.
+
+sp_addlinkedserver를 이용하여 해당 서버를 링크를 걸어주어야 한다.
+ex)  sp_addlinkedserver database
+
+
+EXEC sp_addlinkedserver  
+       @server='real_server',  -- 앞으로 사용할 링크드 서버이름입니다.
+       @srvproduct = '', -- 공백처리 합니다.
+       @provider = 'SQLOLEDB', -- SQL 서버이면 그대로 씁니다.
+       @datasrc = 'AAA.BBB.CCC.DDD', -- 아이피 적어 줍니다.        
+       @provstr='',   -- 공백처리 합니다.
+       @catalog='DB'   -- 특정 카다로그 즉 데이터 베이스 이름을 적습니다.
+GO
+
+다음 서버 로그인을 만듭니다.
+ 
+EXEC sp_addlinkedsrvlogin 'real_server', 'false', NULL, 'id', 'password'
+현재 로그인한 서버와 연결하고자 하는 서버 id, password가 동일하면 위 작업은 생략해도 됩니다.
+ 
+ 
+연결 후에는 아래와 같이 쿼리를 실행합니다.
+ 
+SELECT * FROM real_server.DB.소유자.테이블
+
+SELECT * FROM real_server.DB.dbo.테이블
+
+

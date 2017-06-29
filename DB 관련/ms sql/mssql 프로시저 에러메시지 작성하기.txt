@@ -1,0 +1,22 @@
+
+
+declare	@error			int
+declare	@rowCount		int
+
+select @error = @@error, @rowcount = @@rowcount
+if @error <> 0 begin
+	set @errorCode = 3008
+	set @errorText = 'ino_pointLog 입력시 에러 발생'
+	goto transFail
+end
+
+
+
+transFail:
+	if @@tranCount > @origin_tranCount rollback tran
+	set @errorText = convert(varchar(11), @errorCode) + ' : ' + @errorText
+	raiserror (@errorText, 16, 1)
+	return @errorCode 
+
+
+

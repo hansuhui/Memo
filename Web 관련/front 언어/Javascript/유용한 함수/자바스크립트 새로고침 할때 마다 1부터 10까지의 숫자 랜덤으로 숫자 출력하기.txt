@@ -1,0 +1,33 @@
+자바스크립트 접속/새로고침 할때 마다 1부터 10까지의 숫자 랜덤으로 숫자 출력하기 - random 예제
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+       <script type='text/javascript'>
+            // 0 ~ 1 까지의 난수를 생성하는 Math 객체의 random 메소드를 사용합니다.
+            var sum = Math.random();
+             // random 메소드로 생성된 난수에 ( 예: 0.335435 ) 10 을 곱해줍니다.
+            var result = sum * 10;
+             // 10을 곱한 난수를 ceil 메소드를 사용하여 올림 값으로 변경합니다.
+             var resultUp = Math.ceil(result);
+             document.write(resultUp);
+        </script> 
+  </head>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+random  - 랜덤으로 난수를 생성합니다. ( Math 객체 메소드 )
+ceil  - 소수점 값을 올림 해줍니다. ( Math 객체 메소드 )
+ 

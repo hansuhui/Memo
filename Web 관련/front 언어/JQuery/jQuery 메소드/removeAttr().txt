@@ -1,0 +1,7 @@
+[.removeAttr()]
+
+.removeAttr()은 선택한 요소의 특정 속성을 제거합니다.
+
+예를 들어 h1 요소의 title 속성을 제거하려면 다음과 같이 합니다.
+
+$( 'h1' ).removeAttr( 'title' );

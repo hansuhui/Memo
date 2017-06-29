@@ -1,0 +1,3 @@
+	var list3 = from row in Settinglist
+	 orderby row.GiftNo
+	 select row;

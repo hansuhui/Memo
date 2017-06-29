@@ -1,0 +1,15 @@
+  $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: "http://maps.googleapis.com/maps/api/geocode/json",
+                async: false,
+                data: { language: "ko", address: address } //사용할 파라미터값 넘기기
+            }).done(function (data) {
+                if (data != null) {
+                    if (data.status == "OK") {
+                        $("#LOAD_LAT").val(data.results[0].geometry.location.lat);
+                        $("#LOAD_LNG").val(data.results[0].geometry.location.lng);
+                    }
+                }
+                
+            });

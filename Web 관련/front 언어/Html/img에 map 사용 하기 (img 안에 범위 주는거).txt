@@ -1,0 +1,5 @@
+<img src="/images/popup/InpayPop.jpg"  usemap="#imagemap" />
+<map name="imagemap">
+ <area alt="Inpay" shape="rect" coords="120,351,493,397" href="http://member.inpay.co.kr/Account/Login" 
+   title="Inpay" target="_blank"style="color:red;" />
+</map>

@@ -1,0 +1,87 @@
+https://support.microsoft.com/ko-kr/kb/262499
+
+
+==============================================================	
+
+	Declare @sql NVARCHAR(100) , @Count int;
+	DECLARE @ParmDefinition NVARCHAR(500)
+	set @sql = N'select @CounOUT = Count(*)  from Board'
+	set @ParmDefinition  = N'@CounOUT int OUTPUT'
+	 
+	EXEC sp_executesql @sql,@ParmDefinition ,@CounOUT = @Count output ;
+	select @Count
+
+
+
+==============================================================
+	
+
+
+요약
+Sp_executesql 시스템 저장 프로시저를 여러 번 다시 사용할 수 있는 T SQL 문을 실행 하거나 
+T SQL 문을 동적으로 작성 된 실행에 사용 됩니다. 입력으로 매개 변수 T SQL 문 또는 
+일괄 처리를 처리 하기 위해 사용 합니다. 출력 매개 변수를 (이 SQL Server 온라인 설명서에 설명 되어 있지 않습니다) 
+하지만 T SQL 문에서 생성 된 출력을 저장할 수 있도록 지정할 수도 있습니다.
+
+출력 매개 변수는 sp_executesql 을 사용 하 여 유용할 수 있는 두 가지 시나리오는 다음과 같습니다.
+Sp_executesql 유용한 출력을 생성 하는 경우이 출력 하는 출력 매개 변수를 저장 이후의 
+쿼리에 대 한 매개 변수를 사용 하 여 호출한 일괄 처리 수 있습니다.
+Sp_executesql 저장된 프로시저 출력 매개 변수를 사용 하 여 정의 된
+ 실행 될 경우 sp_executesql 에 대 한 출력 매개 변수가 저장된 프로시저에서 생성 되는 출력을 사용할 수 있습니다.
+
+
+
+추가 정보
+다음 두 예제에서는 sp_executesql을 사용 하 여 출력 매개 변수를 사용 하는 방법을 보여 줍니다.
+
+[예제 1]
+
+DECLARE @SQLString NVARCHAR(500)
+DECLARE @ParmDefinition NVARCHAR(500)
+DECLARE @IntVariable INT
+DECLARE @Lastlname varchar(30)
+SET @SQLString = N'SELECT @LastlnameOUT = max(lname)
+                   FROM pubs.dbo.employee WHERE job_lvl = @level'
+SET @ParmDefinition = N'@level tinyint,
+                        @LastlnameOUT varchar(30) OUTPUT'
+SET @IntVariable = 35
+EXECUTE sp_executesql
+@SQLString,
+@ParmDefinition,
+@level = @IntVariable,
+@LastlnameOUT=@Lastlname OUTPUT
+SELECT @Lastlname
+	
+			
+[예제 2]
+
+
+CREATE PROCEDURE Myproc
+    @parm varchar(10),
+    @parm1OUT varchar(30) OUTPUT,
+    @parm2OUT varchar(30) OUTPUT
+    AS
+      SELECT @parm1OUT='parm 1' + @parm
+     SELECT @parm2OUT='parm 2' + @parm
+GO
+DECLARE @SQLString NVARCHAR(500)
+DECLARE @ParmDefinition NVARCHAR(500)
+DECLARE @parmIN VARCHAR(10)
+DECLARE @parmRET1 VARCHAR(30)
+DECLARE @parmRET2 VARCHAR(30)
+SET @parmIN=' returned'
+SET @SQLString=N'EXEC Myproc @parm,
+                             @parm1OUT OUTPUT, @parm2OUT OUTPUT'
+SET @ParmDefinition=N'@parm varchar(10),
+                      @parm1OUT varchar(30) OUTPUT,
+                      @parm2OUT varchar(30) OUTPUT'
+
+EXECUTE sp_executesql
+    @SQLString,
+    @ParmDefinition,
+    @parm=@parmIN,
+    @parm1OUT=@parmRET1 OUTPUT,@parm2OUT=@parmRET2 OUTPUT
+
+SELECT @parmRET1 AS "parameter 1", @parmRET2 AS "parameter 2"
+go
+drop procedure Myproc

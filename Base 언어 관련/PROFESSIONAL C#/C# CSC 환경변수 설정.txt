@@ -1,0 +1,7 @@
+C:\Windows\Microsoft.NET\Framework\csc파일이 있는 폴더를 시스템 환경변수
+Path에 경로를 추가해야됨 기존에 Path가 있다면 끝에 ; 을 찍고 
+경로 추가 
+
+주의할점은 콘솔을 끄고 시도 해야함
+
+csc C# 컴파일러

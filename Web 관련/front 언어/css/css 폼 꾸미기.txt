@@ -1,0 +1,77 @@
+[테두리, 크기]
+
+HTML 요소 중 input , textarea 등 폼 (Form)을 꾸미는 것이 상당히 어렵습니다.
+웹브라우저마다 기본 스타일이 다르고 , PC 브라우저와 모바일 브라우저 사이에서도 
+차이점이 있기 떄문입니다.
+
+이번 포스트에서는 폼의 테두리리와 크기를 꾸밀 떄 알아야 할 것을 정리해보겠습니다.
+
+
+- 테두리 - 
+
+다음은 input을 사용한 간단한 폼 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Tips | Form Styling</title>
+  </head>
+  <body>
+    <form>
+      <input type="text">
+      <input type="submit" value="submit">
+    </form>
+  </body>
+</html>
+
+input {
+  border: 1px solid #bcbcbc;
+  border-radius: 0px;
+}
+
+
+
+모바일에서 테두리 색은 변하지만 폼 안에 그림자가 있거나 모서리가 
+둥글게 되어 있는 것은 변하지 않습니다. 이를 해결하는 방법은 -webkit-appearance: none;를 추가하는 것입니다.
+
+input {
+  border: 1px solid #bcbcbc;
+  border-radius: 0px;
+  -webkit-appearance: none;
+?}
+
+- 크기 -
+
+
+테두리에 속성을 부여하면 웹브라우저의 기본 스타일이 적용되지 않으면서 크기에 문제가 생깁니다. 
+특히 세로 크기가 맞지 않습니다.
+
+세로 크기를 맞추기 위해 height 속성을 넣어보겠습니다.
+
+input {
+  border: 1px solid #bcbcbc;
+  border-radius: 0px;
+  -webkit-appearance: none;
+  height: 30px;
+?}
+
+
+input의 type이 text일 때와 submit일 때 여백의 차이 때문에 세로 크기가 다르게 만들어집니다. 
+이를 해결하는 방법은 box-sizing 속성을 추가하는 것입니다.
+
+input {
+  border: 1px solid #bcbcbc;
+  border-radius: 0px;
+  -webkit-appearance: none;
+  height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+box-sizing 속성에 대한 자세한 내용은 http://www.cmsfactory.net/node/10574에 있습니다.
+
+
+

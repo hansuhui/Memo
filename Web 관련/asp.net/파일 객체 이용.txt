@@ -1,0 +1,163 @@
+namespace InnobileProject.Models
+{
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class boardFiles
+    {
+        public int bmIDX { get; set; }
+        public int bfIDX { get; set; }
+        public string bfFile { get; set; }
+        public int bfFileSize { get; set; }
+        public int bfDownCnt { get; set; }
+        public System.DateTime regDate { get; set; }
+        public string bfType { get; set; }
+    }
+}
+
+      #region 파일저장
+        private List<boardFiles> setBoardFile(string bmidx)
+        {
+            List<boardFiles> fileList = new List<boardFiles>();
+            HttpFileCollectionBase files = Request.Files;
+
+            string fileName = string.Empty;
+            string filePath = string.Empty;
+            string serverPath = Server.MapPath(string serverPath = Server.MapPath("~/Upload/CarImages");
+
+            foreach (string f in files)
+            {
+                if (files[f].ContentLength > 0)
+                {
+                    boardFiles bf = new boardFiles();
+                    bf.bmIDX = Convert.ToInt32(bmidx);
+                    bf.bfFile = TextUtil.GetFileName(serverPath, files[f].FileName);
+                    bf.bfFileSize = files[f].ContentLength;
+                    bf.bfType = Path.GetExtension(bf.bfFile);
+
+                    filePath = Path.Combine(serverPath, bf.bfFile);
+                    files[f].SaveAs(filePath);
+
+
+                    bf.bfFile = string.Format("{0}/{1}", "/Upload/CarImages/", bf.bfFile);
+                    fileList.Add(bf);
+                }
+            }
+
+            return fileList;
+        }
+
+        #endregion
+
+        #region 게시판 파일 등록
+        public void InsertBoardFile(List<boardFiles> boardFiles)
+        {
+            string sql = string.Empty;
+
+            if (boardFiles == null)
+                return;
+
+            foreach (var bf in boardFiles)
+            {
+                sql = string.Empty;
+                sql += " insert into boardFiles (bmIdx, bfFile, bfFileSize, bfType) values ";
+                sql += " ( ";
+                sql += "	{0} ";
+                sql += " ,	'{1}' ";
+                sql += " ,	{2} ";
+                sql += " ,	'{3}' ";
+                sql += " ) ";
+                sql = string.Format(sql, bf.bmIDX, bf.bfFile, bf.bfFileSize, bf.bfType);
+
+                try
+                {
+                    _db.ExecuteNonQuery(_db.GetSqlStringCommand(sql));
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+        #endregion
+
+
+		#region 게시판 파일 정보
+		public List<boardFiles> BoardFileInfo(string bmIdx)
+		{
+			string sql = string.Empty;
+			sql += string.Format(" select bfIdx, bfFile, bfFileSize, bfDownCnt, bfType from boardFiles where bmIdx = {0}", bmIdx);
+
+			List<boardFiles> fileList = new List<boardFiles>();
+
+			using (IDataReader reader = _db.ExecuteReader(_db.GetSqlStringCommand(sql)))
+			{
+				while(reader.Read())
+				{
+					boardFiles bf = new boardFiles();
+					bf.bfIDX = Convert.ToInt32(reader["bfIdx"]);
+					bf.bfFile = reader["bfFile"].ToString();
+					bf.bfFileSize = Convert.ToInt32(reader["bfFileSize"]);
+					bf.bfDownCnt = (reader["bfDownCnt"] != DBNull.Value) ? Convert.ToInt32(reader["bfDownCnt"]) : 0;
+					bf.bfType = reader["bfType"].ToString();
+
+					fileList.Add(bf);
+				}
+
+				return fileList;
+			}
+
+		}
+		#endregion
+
+
+		#region 게시판 파일 업데이트
+		public void UpdateBoardFile(List<boardFiles> boardFiles)
+		{
+			if (boardFiles == null)
+				return;
+
+			foreach (var bf in boardFiles)
+			{
+				string sql = string.Empty;
+				sql += " update boardFiles set ";
+				sql += "	bfFile = '{0}' ";
+				sql += " ,	bfFileSize = {1} ";
+				sql += " ,	bfType = '"+ bf.bfType +"' ";
+				sql += " where bmIdx = {2} ";
+				sql = string.Format(sql, bf.bfFile, bf.bfFileSize, bf.bmIDX);
+
+				try
+				{
+					_db.ExecuteNonQuery(_db.GetSqlStringCommand(sql));
+				}
+				catch (Exception ex)
+				{
+					throw ex;
+				}
+			}
+		}
+		#endregion
+
+
+#region 파일 삭제
+		public void DeleteBoardFile(string bmidx, string bfidx = "")
+		{
+			string sql = string.Empty;
+			sql += " delete from boardFiles ";
+			sql += " where bmIdx = {0} ";
+			if (!string.IsNullOrEmpty(bfidx))
+				sql += " and bfidx = " + bfidx;
+
+			sql = string.Format(sql, bmidx);
+
+			try
+			{
+				_db.ExecuteNonQuery(_db.GetSqlStringCommand(sql));
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		} 
+		#endregion

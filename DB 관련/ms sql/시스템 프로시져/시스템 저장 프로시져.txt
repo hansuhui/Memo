@@ -1,0 +1,1822 @@
+https://msdn.microsoft.com/ko-kr/library/ms187961(v=sql.120).aspx
+
+====================================================================================
+-카탈로그 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms182764(v=sql.120).aspx
+====================================================================================
+
+exec sp_column_privileges  '테이블명' 
+현재 환경 내의 단일 테이블에 대한 열 권한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187765(v=sql.120).aspx
+
+
+exec sp_special_columns   '테이블명' 
+테이블의 행을 고유하게 식별하는 열의 최적 집합을 반환합니다. 
+또한 트랜잭션에 의해 행의 값이 업데이트될 때 자동으로 업데이트되는 열을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173810(v=sql.120).aspx
+
+
+exec sp_columns  '테이블명' 
+현재 환경에서 쿼리할 수 있는 지정된 개체에 대한 열 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176077(v=sql.120).aspx
+
+exec sp_sproc_columns '프로시저명 또는 함수' 
+현재 환경 내의 저장 프로시저 또는 사용자 정의 함수에 대한 열 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms182705(v=sql.120).aspx
+
+exec sp_databases
+SQL Server 인스턴스에 있거나 데이터베이스 게이트웨이를 통해 
+액세스할 수 있는 데이터베이스를 나열합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176070(v=sql.120).aspx
+
+
+exec sp_statistics  '테이블명'
+지정된 테이블 또는 인덱싱된 뷰에 대한 모든 인덱스 및 통계 목록을 반환합니다
+https://msdn.microsoft.com/ko-kr/library/ms173842(v=sql.120).aspx
+
+
+exec sp_pkeys  '테이블명'
+현재 환경의 단일 테이블에 대한 기본 키 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189813(v=sql.120).aspx
+
+exec sp_fkeys  '테이블명'
+현재 환경에 대한 논리적 외래 키 정보를 반환합니다. 이 프로시저는 사용할 수 없는 외래 키를 포함한 외래 키 관계를 보여 줍니다.
+https://msdn.microsoft.com/ko-kr/library/ms175090(v=sql.120).aspx
+
+exec sp_stored_procedures '함수나 프로시저명'
+현재 환경에서 저장 프로시저의 목록을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms190504(v=sql.120).aspx
+
+
+exec sp_server_info
+SQL Server, 데이터베이스 게이트웨이 또는 기본 데이터 원본에 대해 특성 이름의 목록과 특성 값을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176094(v=sql.120).aspx
+
+
+exec sp_tables 
+exec sp_tables null,'dbo'
+현재 환경에서 쿼리할 수 있는 개체의 목록을 반환합니다. 즉, 동의어 개체를 제외한 테이블 또는 보기입니다.
+https://msdn.microsoft.com/ko-kr/library/ms186250(v=sql.120).aspx
+
+
+exec sp_table_privileges '테이블명'
+지정한 테이블에 대한 INSERT, DELETE, UPDATE, SELECT, REFERENCES와 같은 테이블 사용 권한의 목록을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173835(v=sql.120).aspx
+
+
+
+====================================================================================
+-변경 데이터 캡처 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/bb500244(v=sql.120).aspx
+====================================================================================
+
+
+sys.sp_cdc_add_job
+현재 데이터베이스의 변경 데이터 캡처 정리 또는 캡처 작업을 만듭니다.
+https://msdn.microsoft.com/ko-kr/library/bb510626(v=sql.120).aspx
+
+
+sys.sp_cdc_generate_wrapper_function
+SQL Server에서 사용할 수 있는 변경 데이터 캡처 쿼리 함수에 대한 래퍼 함수를 만드는 스크립트를 생성합니다. 
+생성된 래퍼에서 지원되는 API를 사용하면 쿼리 간격을 날짜/시간 간격으로 지정할 수 있습니다. 
+이렇게 하면 변경 데이터 캡처 기술을 사용하여 증분 로드를 결정하는 
+Integration Services 패키지 디자이너가 개발하는 웨어하우징 응용 프로그램을 비롯한 많은 웨어하우징 응용 프로그램에서 함수 사용이 용이해집니다.
+https://msdn.microsoft.com/ko-kr/library/cc280643(v=sql.120).aspx
+
+
+sys.sp_cdc_change_job
+현재 데이터베이스의 변경 데이터 캡처 정리 또는 캡처 작업의 구성을 수정합니다. 
+작업의 현재 구성을 보려면 dbo.cdc_jobs 테이블을 쿼리하거나 sp_cdc_help_jobs를 사용하십시오.
+https://msdn.microsoft.com/ko-kr/library/bb510748(v=sql.120).aspx
+
+
+sys.sp_cdc_get_captured_columns
+지정한 캡처 인스턴스에서 추적한 캡처된 원본 열에 대한 변경 데이터 캡처 메타데이터 정보를 반환합니다. 
+변경 데이터 캡처는 일부 Microsoft SQL Server 버전에서 사용할 수 없습니다. 
+SQL Server 버전에서 지원하는 기능 목록을 보려면 SQL Server 2014 버전에서 지원하는 기능을 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/bb510701(v=sql.120).aspx
+
+
+sys.sp_cdc_cleanup_change_table
+지정된 low_water_mark 값을 바탕으로 현재 데이터베이스의 변경 테이블에서 행을 제거합니다. 
+이 저장 프로시저는 변경 테이블 정리 프로세스를 직접 관리하려는 사용자를 위해 제공됩니다. 
+이 프로시저는 변경 테이블에 있는 데이터의 모든 소비자에게 영향을 주므로 사용할 때 주의해야 합니다.
+https://msdn.microsoft.com/ko-kr/library/bb510449(v=sql.120).aspx
+
+
+
+sys.sp_cdc_get_ddl_history
+지정한 캡처 인스턴스에 대해 변경 데이터 캡처를 사용하도록 설정한 시점부터의 캡처 인스턴스 관련 DDL(데이터 정의 언어) 변경 기록을 반환합니다. 
+변경 데이터 캡처는 일부 Microsoft SQL Server 버전에서 사용할 수 없습니다. 
+https://msdn.microsoft.com/ko-kr/library/bb522553(v=sql.120).aspx
+
+
+sys.sp_cdc_disable_db
+현재 데이터베이스에 대해 변경 데이터 캡처를 비활성화합니다. 
+변경 데이터 캡처는 일부 Microsoft SQL Server 버전에서 사용할 수 없습니다.
+https://msdn.microsoft.com/ko-kr/library/bb522508(v=sql.120).aspx
+
+
+sys.sp_cdc_help_change_data_capture
+현재 데이터베이스에서 변경 데이터 캡처가 활성화된 각 테이블에 대한 변경 데이터 캡처 구성을 반환합니다. 
+각 원본 테이블당 최대 두 개의 열, 각 캡처 인스턴스당 한 개의 열을 반환할 수 있습니다. 
+변경 데이터 캡처는 일부 Microsoft SQL Server 버전에서 사용할 수 없습니다
+https://msdn.microsoft.com/ko-kr/library/bb500302(v=sql.120).aspx
+
+
+
+sys.sp_cdc_disable_table
+현재 데이터베이스의 지정된 원본 테이블 및 캡처 인스턴스에 대한 변경 데이터 캡처를 비활성화합니다. 
+변경 데이터 캡처는 일부 Microsoft SQL Server 버전에서 사용할 수 없습니다
+https://msdn.microsoft.com/ko-kr/library/bb510702(v=sql.120).aspx
+
+
+sys.sp_cdc_help_jobs
+현재 데이터베이스의 모든 변경 데이터 캡처 정리 또는 캡처 작업에 대한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/bb500303(v=sql.120).aspx
+
+sys.sp_cdc_drop_job
+msdb에서 현재 데이터베이스의 변경 데이터 캡처 정리 또는 캡처 작업을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/bb510746(v=sql.120).aspx
+
+
+sys.sp_cdc_scan
+변경 데이터 캡처 로그 검색 작업을 실행합니다.
+https://msdn.microsoft.com/ko-kr/library/bb522547(v=sql.120).aspx
+
+
+sys.sp_cdc_enable_db
+현재 데이터베이스에 대해 변경 데이터 캡처를 활성화합니다. 
+데이터베이스의 테이블에서 변경 데이터 캡처를 사용할 수 있도록 설정하려면 먼저 해당 
+데이터베이스에 대해 이 프로시저를 실행해야 합니다. 변경 데이터 캡처는 설정된 테이블에 
+적용된 삽입, 업데이트 및 삭제 작업을 기록하고 변경 내용의 세부 정보를 쉽게 사용할 수 있는
+ 관계형 형식으로 만듭니다. 추적된 원본 테이블의 열 구조를 미러하는 열 정보가 대상 환경에 
+변경 내용을 적용하는 데 필요한 메타데이터와 함께 수정된 행에 대해 캡처됩니다.
+https://msdn.microsoft.com/ko-kr/library/bb510486(v=sql.120).aspx
+
+
+sys.sp_cdc_start_job
+현재 데이터베이스의 변경 데이터 캡처 정리 또는 캡처 작업을 시작합니다.
+https://msdn.microsoft.com/ko-kr/library/bb510685(v=sql.120).aspx
+
+
+sys.sp_cdc_enable_table
+현재 데이터베이스에서 지정된 원본 테이블에 대해 변경 데이터 캡처를 활성화합니다. 
+테이블에서 변경 데이터 캡처를 사용할 수 있도록 설정하면 해당 테이블에 적용된 각 
+DML(데이터 조작 언어) 작업의 레코드가 트랜잭션 로그에 기록됩니다. 변경 데이터 
+캡처 프로세스는 로그에서 이 정보를 검색하고 일련의 함수를 사용하여 액세스하는 변경 테이블에 이 정보를 기록합니다.
+변경 데이터 캡처는 일부 Microsoft SQL Server 버전에서 사용할 수 없습니다.
+https://msdn.microsoft.com/ko-kr/library/bb522475(v=sql.120).aspx
+
+
+sys.sp_cdc_stop_job
+현재 데이터베이스의 변경 데이터 캡처 정리 또는 캡처 작업을 중지합니다.
+https://msdn.microsoft.com/ko-kr/library/bb522509(v=sql.120).aspx
+
+
+
+====================================================================================
+커서 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms187801(v=sql.120).aspx
+====================================================================================
+
+
+sp_cursor_list
+현재 연결에 대해 열려 있는 서버 커서의 특성을 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186256(v=sql.120).aspx
+
+
+
+sp_cursorprepare
+커서 문이나 일괄 처리를 실행 계획으로 컴파일하되 커서를 만들지는 않습니다. 
+컴파일된 문은 나중에 sp_cursorexecute에서 사용할 수 있습니다. 
+이 프로시저는 sp_cursorexecute와 결합되어 sp_cursoropen과 동일한 기능을 제공하지만 두 단계로 분리됩니다. 
+sp_cursorprepare는 TDS(Tabular Data Stream) 패킷에서 ID = 3을 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848767(v=sql.120).aspx
+
+
+sp_cursor
+현재 위치 업데이트를 요청합니다. 
+이 프로시저는 커서의 인출 버퍼 내에서 하나 이상의 행에 대해 작업을 수행합니다. 
+sp_cursor는 TDS(Tabular Data Stream) 패킷에서 ID = 1을 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848759(v=sql.120).aspx
+
+
+sp_cursorprepexec
+출된 커서 문이나 일괄 처리에 대한 실행 계획을 컴파일한 다음 커서를 만들고 채웁니다. 
+sp_cursorprepexec는 sp_cursorprepare와 sp_cursorexecute의 기능을 결합합니다. 
+이 프로시저는 TDS(Tabular Data Stream) 패킷에서 ID = 5를 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848775(v=sql.120).aspx
+
+
+sp_cursorclose
+커서를 닫고 할당 취소하며 모든 관련 리소스를 해제합니다. 
+즉, KEYSET 또는 STATIC cursor를 지원하기 위해 사용되는 임시 테이블을 삭제합니다. 
+sp_cursorclose는 TDS(Tabular Data Stream) 패킷에서 ID = 9를 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848800(v=sql.120).aspx
+
+
+sp_cursorunprepare
+sp_cursorprepare 저장 프로시저에서 개발된 실행 계획을 삭제합니다. 
+sp_cursorunprepare는 TDS(Tabular Data Stream) 패킷에서 ID = 6을 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848792(v=sql.120).aspx
+
+
+
+sp_cursorexecute
+sp_cursorprepare가 만든 실행 계획을 기반으로 커서를 만들고 채웁니다. 
+이 프로시저는 sp_cursorprepare와 결합되어 sp_cursoropen과 동일한 기능을 제공하지만 두 단계로 분리됩니다. 
+sp_cursorexecute는 TDS(Tabular Data Stream) 패킷에서 ID = 4를 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848771(v=sql.120).aspx
+
+
+sp_describe_cursor
+서버 커서의 특성을 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173806(v=sql.120).aspx
+
+
+sp_cursorfetch
+데이터베이스에서 하나 이상의 행 버퍼를 인출합니다. 
+이 버퍼의 행 그룹을 커서의 인출 버퍼라고 합니다. sp_cursorfetch는 TDS(Tabular Data Stream) 패킷에서 ID = 7을 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848736(v=sql.120).aspx
+
+
+sp_describe_cursor_columns
+서버 커서의 결과 집합에 있는 열의 특성을 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms182755(v=sql.120).aspx
+
+
+sp_cursoropen
+커서를 엽니다. sp_cursoropen은 커서 옵션 및 커서와 연결된 SQL문을 정의한 다음 커서를 채웁니다. 
+sp_cursoropen은Transact-SQL 문 DECLARE_CURSOR 및 OPEN의 조합에 해당합니다. 이 프로시저는 TDS(Tabular Data Stream) 패킷에서 ID =2를 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848737(v=sql.120).aspx
+
+
+
+sp_cursoroption
+sp_cursoropen 저장 프로시저에서 만든 커서 정보를 반환하거나 커서 옵션을 설정합니다. 
+sp_cursoroption은 TDS(Tabular Data Stream) 패킷에서 ID = 8을 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848779(v=sql.120).aspx
+
+
+
+====================================================================================
+데이터 수집기 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/bb630262(v=sql.120).aspx
+====================================================================================
+
+
+sp_syscollector_create_collection_item
+사용자 정의 컬렉션 집합에 컬렉션 항목을 만듭니다. 
+컬렉션 항목은 수집할 데이터와 데이터를 수집할 빈도를 정의합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677286(v=sql.120).aspx
+
+
+sp_syscollector_set_cache_window
+실패한 데이터 업로드의 시도 횟수를 설정합니다. 
+오류가 발생 시 업로드를 다시 시도하면 수집된 데이터의 손실 위험을 완화할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/bb677287(v=sql.120).aspx
+
+
+sp_syscollector_create_collection_set
+새 컬렉션 집합을 만듭니다. 
+이 저장 프로시저를 사용하여 데이터 컬렉션용 사용자 지정 컬렉션 집합을 만들 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/bb677291(v=sql.120).aspx
+
+
+
+sp_syscollector_set_warehouse_database_name
+관리 데이터 웨어하우스에 연결하는 데 사용되는 연결 문자열에 정의되는 데이터베이스 이름을 지정합니다.
+https://msdn.microsoft.com/ko-kr/library/bb630292(v=sql.120).aspx
+
+
+
+sp_syscollector_create_collector_type
+데이터 수집기에 사용할 수집기 유형을 만듭니다. 
+수집기 유형은 데이터를 수집하고 관리 데이터 웨어하우스에 이를 업로드하는 실제 메커니즘을 제공하는 SSIS 패키지에 대한 논리적 래퍼입니다.
+https://msdn.microsoft.com/ko-kr/library/bb677273(v=sql.120).aspx
+
+
+
+
+sp_syscollector_set_warehouse_instance_name
+관리 데이터 웨어하우스에 연결하는 데 사용되는 연결 문자열의 인스턴스 이름을 지정합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677271(v=sql.120).aspx
+
+
+sp_syscollector_delete_collection_item
+컬렉션 집합에서 컬렉션 항목을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/bb630259(v=sql.120).aspx
+
+
+sp_syscollector_start_collection_set
+수집기가 이미 활성화되어 있고 컬렉션 집합이 실행 중이 아니면 컬렉션 집합을 시작합니다. 
+수집기가 활성화되어 있지 않으면 sp_syscollector_enable_collector를 실행하여 
+수집기를 활성화한 다음 이 저장 프로시저를 사용하여 컬렉션 집합을 시작하십시오.
+https://msdn.microsoft.com/ko-kr/library/bb630366(v=sql.120).aspx
+
+
+
+sp_syscollector_delete_collection_set
+사용자 정의 컬렉션 집합과 이 집합의 모든 컬렉션 항목을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677221(v=sql.120).aspx
+
+
+sp_syscollector_stop_collection_set
+컬렉션 집합을 중지합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677258(v=sql.120).aspx
+
+
+sp_syscollector_delete_collector_type
+수집기 형식의 정의를 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677245(v=sql.120).aspx
+
+
+sp_syscollector_run_collection_set
+수집기가 이미 활성화되어 있고 컬렉션 집합이 캐시되지 않는 
+컬렉션 모드로 구성된 경우 컬렉션 집합을 시작합니다.
+https://msdn.microsoft.com/ko-kr/library/bb895279(v=sql.120).aspx
+
+
+sp_syscollector_delete_execution_log_tree
+하나의 컬렉션 집합 실행에 대한 모든 로그 항목을 삭제합니다. 
+또한 이러한 실행에 대한 SSIS 테이블의 로그 항목도 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677186(v=sql.120).aspx
+
+
+sp_syscollector_update_collection_item
+사용자 정의 컬렉션 항목의 속성을 수정하거나 사용자 정의 컬렉션 항목의 이름을 바꾸는 데 사용합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677323(v=sql.120).aspx
+
+
+sp_syscollector_disable_collector
+데이터 수집기를 사용하지 않도록 설정합니다. 
+데이터 수집기는 서버마다 하나뿐이므로 매개 변수가 필요하지 않습니다.
+https://msdn.microsoft.com/ko-kr/library/bb630264(v=sql.120).aspx
+
+
+
+sp_syscollector_update_collection_set
+사용자 정의 컬렉션 집합의 속성을 수정하거나 사용자 정의 컬렉션 집합의 이름을 바꾸는 데 사용합니다.
+https://msdn.microsoft.com/ko-kr/library/bb677238(v=sql.120).aspx
+
+
+
+sp_syscollector_enable_collector
+데이터 수집기를 사용하도록 설정합니다. 
+데이터 수집기는 서버마다 하나뿐이므로 매개 변수가 필요하지 않습니다.
+https://msdn.microsoft.com/ko-kr/library/bb677272(v=sql.120).aspx
+
+
+sp_syscollector_update_collector_type
+컬렉션 항목에 대한 수집기 형식을 업데이트합니다. 
+수집기 형식의 이름과 GUID가 지정되면 컬렉션 및 업로드 패키지, 
+매개 변수 스키마, 매개 변수 포맷터 스키마 등의 수집기 형식 구성을 업데이트합니다.
+https://msdn.microsoft.com/ko-kr/library/cc280480(v=sql.120).aspx
+
+
+
+sp_syscollector_set_cache_directory
+수집된 데이터를 관리 데이터 웨어하우스에 업로드하기 전에 저장할 디렉터리를 지정합니다.
+https://msdn.microsoft.com/ko-kr/library/bb630379(v=sql.120).aspx
+
+
+
+sp_syscollector_upload_collection_set
+컬렉션 집합이 활성화되어 있으면 컬렉션 집합 데이터의 업로드를 시작합니다.
+https://msdn.microsoft.com/ko-kr/library/bb630386(v=sql.120).aspx
+
+
+
+====================================================================================
+데이터베이스 엔진 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms176007(v=sql.120).aspx
+====================================================================================
+
+
+sp_add_data_file_recover_suspect_db
+파일 그룹의 공간 부족(1105 오류)으로 인해 데이터베이스를 완벽하게 복구하지 못했을 때 파일 그룹에 데이터 파일을 추가합니다. 
+파일이 추가된 다음에는 이 저장 프로시저가 주의 대상 설정을 해제하고 데이터베이스를 완벽하게 복구합니다. 
+매개 변수는 ALTER DATABASE database_name ADD FILE의 매개 변수와 동일합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188065(v=sql.120).aspx
+
+
+sp_executesql
+여러 번 사용할 수 있거나 동적으로 빌드된 Transact-SQL 문이나 일괄 처리를 실행합니다. 
+Transact-SQL 문 또는 일괄 처리는 포함 매개 변수를 포함할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms188001(v=sql.120).aspx
+
+
+sp_add_log_file_recover_suspect_db
+로그 공간 부족(9002 오류)으로 인해 데이터베이스를 완벽하게 복구하지 못했을 때 파일 그룹에 로그 파일을 추가합니다.
+ 파일이 추가된 다음에는 sp_add_log_file_recover_suspect_db가 주의 대상 설정을 해제하고 데이터베이스를 완벽하게 복구합니다. 
+매개 변수는 ALTER DATABASE database_name ADD LOG FILE의 매개 변수와 동일합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188052(v=sql.120).aspx
+
+
+sp_getapplock
+응용 프로그램 리소스에 잠금을 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189823(v=sql.120).aspx
+
+
+sp_addextendedproc
+Microsoft SQL Server에 새 확장 저장 프로시저의 이름을 등록합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188379(v=sql.120).aspx
+
+
+sp_getbindtoken
+트랜잭션에 대한 고유한 식별자를 반환합니다. 
+이 고유 식별자는 sp_bindsession을 사용하여 세션을 바인딩하는 데 필요한 문자열입니다.
+https://msdn.microsoft.com/ko-kr/library/ms180061(v=sql.120).aspx
+
+
+sp_addextendedproperty
+데이터베이스 개체에 새 확장 속성을 추가합니다.
+https://msdn.microsoft.com/ko-kr/library/ms180047(v=sql.120).aspx
+
+
+sp_help
+데이터베이스 개체(sys.sysobjects 호환성 뷰에 나열된 개체),
+사용자 정의 데이터 형식 또는 데이터 형식에 대한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187335(v=sql.120).aspx
+
+
+sp_addmessage
+새 사용자 정의 오류 메시지를 SQL Server 데이터베이스 엔진 인스턴스에 저장합니다. 
+sp_addmessage를 사용하여 저장한 메시지는 sys.messages 카탈로그 뷰를 사용하여 볼 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms178649(v=sql.120).aspx
+
+
+sp_helpconstraint
+모든 제약 조건의 유형, 제약 조건의 사용자 정의 또는 시스템 제공 이름, 
+제약 조건 유형을 정의한 열 및 제약 조건을 정의한 식(DEFAULT 및 CHECK 제약 조건만)의 목록을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176038(v=sql.120).aspx
+
+
+sp_addtype
+별칭 데이터 형식을 만듭니다.
+https://msdn.microsoft.com/ko-kr/library/ms189784(v=sql.120).aspx
+
+
+sp_helpdb
+지정된 데이터베이스 또는 모든 데이터베이스에 관한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178568(v=sql.120).aspx
+
+
+sp_addumpdevice
+SQL Server의 인스턴스에 백업 장치를 추가합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188409(v=sql.120).aspx
+
+
+sp_helpdevice
+Microsoft® SQL Server™ 백업 장치에 대한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174966(v=sql.120).aspx
+
+
+sp_altermessage
+SQL Server 데이터베이스 엔진 인스턴스에서 사용자 정의 메시지 또는 시스템 메시지의 상태를 변경합니다. 
+사용자 정의 메시지는 sys.messages 카탈로그 뷰를 사용하여 볼 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms175094(v=sql.120).aspx
+
+
+sp_helpextendedproc
+현재 정의되어 있는 확장 저장 프로시저와 프로시저(함수)가 속한 DLL(동적 링크 라이브러리)의 이름을 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186854(v=sql.120).aspx
+
+
+sp_attach_db
+서버에 데이터베이스를 연결합니다.
+https://msdn.microsoft.com/ko-kr/library/ms179877(v=sql.120).aspx
+
+sp_helpfile
+현재 데이터베이스와 연결된 파일의 물리적 이름 및 특성을 반환합니다. 
+서버에 첨부하거나 서버에서 분리할 파일의 이름을 결정하는 데 이 저장 프로시저를 사용합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174307(v=sql.120).aspx
+
+
+
+sp_attach_single_file_db
+데이터 파일이 한 개만 있는 데이터베이스를 현재 서버에 연결합니다. 
+sp_attach_single_file_db는 여러 데이터 파일에서 사용할 수 없습니다.
+https://msdn.microsoft.com/ko-kr/library/ms174385(v=sql.120).aspx
+
+
+sp_helpfilegroup
+현재 데이터베이스와 연관된 파일 그룹의 이름과 특성을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms181454(v=sql.120).aspx
+
+
+
+sp_autostats
+인덱스, 통계 개체, 테이블 또는 인덱싱된 뷰에 대한 자동 통계 업데이트 옵션 AUTO_UPDATE_STATISTICS를 표시하거나 변경합니다.
+AUTO_UPDATE_STATISTICS 옵션에 대한 자세한 내용은 ALTER DATABASE SET 옵션(Transact-SQL) 및 통계을 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/ms188775(v=sql.120).aspx
+
+
+
+sp_helpindex
+테이블 또는 뷰의 인덱스에 관한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188771(v=sql.120).aspx
+
+
+sp_bindefault
+열 또는 별칭 데이터 형식에 기본값을 바인딩합니다.
+https://msdn.microsoft.com/ko-kr/library/ms177503(v=sql.120).aspx
+
+
+sp_helplanguage
+SQL Server 2014의 특정 대체 언어 또는 모든 언어에 관한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187357(v=sql.120).aspx
+
+
+sp_bindrule
+열 또는 별칭 데이터 형식에 규칙을 바인딩합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176063(v=sql.120).aspx
+
+
+sp_helpserver
+특정 원격 또는 복제 서버나 두 유형의 서버 모두에 관한 정보를 보고합니다. 
+서버 이름, 서버의 네트워크 이름, 서버의 복제 상태, 서버의 ID, 데이터 정렬 이름을 제공합니다. 
+연결된 서버 연결 또는 쿼리 제한 시간 값도 제공합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189804(v=sql.120).aspx
+
+
+sp_bindsession
+세션을 같은 SQL Server 데이터베이스 엔진 인스턴스의 다른 세션에 바인딩 또는 바인딩 해제합니다. 
+세션을 바인딩하면 두 개 이상의 세션이 같은 트랜잭션에 참가할 수 있으며 
+ROLLBACK TRANSACTION 또는 COMMIT TRANSACTION이 실행될 때까지 잠금을 공유할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms174403(v=sql.120).aspx
+
+
+
+sp_helpsort
+SQL Server 인스턴스에 대한 정렬 순서와 문자 집합을 표시합니다.
+https://msdn.microsoft.com/ko-kr/library/ms175986(v=sql.120).aspx
+
+
+sp_certify_removable
+이동식 미디어에 배포할 수 있도록 데이터베이스가 
+제대로 구성되었는지 확인하고 사용자에게 발생한 모든 문제를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188785(v=sql.120).aspx
+
+
+
+sp_helpstats
+지정된 테이블의 열과 인덱스에 대한 통계 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173416(v=sql.120).aspx
+
+
+sp_clean_db_file_free_space
+SQL Server의 데이터 수정 루틴 때문에 데이터베이스 페이지에 남겨진 정보를 제거합니다. 
+sp_clean_db_file_free_space는 데이터베이스의 파일 하나에서만 모든 페이지를 정리합니다.
+https://msdn.microsoft.com/ko-kr/library/dd408731(v=sql.120).aspx
+
+
+sp_helptext
+사용자 정의 규칙, 기본값, 암호화되지 않은 Transact-SQL 저장 프로시저, 
+사용자 정의 Transact-SQL 함수, 트리거, 계산 열, CHECK 제약 조건, 뷰 또는 시스템 저장 프로시저와 같은 시스템 개체의 정의를 표시합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176112(v=sql.120).aspx
+
+
+sp_clean_db_free_space
+SQL Server의 데이터 수정 루틴 때문에 데이터베이스 페이지에 남겨진 정보를 제거합니다. 
+sp_clean_db_free_space는 데이터베이스의 모든 파일에서 모든 페이지를 정리합니다.
+https://msdn.microsoft.com/ko-kr/library/dd408732(v=sql.120).aspx
+
+
+
+sp_helptrigger
+현재 데이터베이스의 지정된 테이블에 정의된 DML 트리거의 유형을 반환합니다. 
+sp_helptrigger는 DDL 트리거와 함께 사용할 수 없습니다. 대신 시스템 저장 프로시저 카탈로그 뷰를 쿼리하십시오.
+
+
+
+sp_configure
+현재 서버에 대한 전역 구성 설정을 표시하거나 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188787(v=sql.120).aspx
+
+
+sp_indexoption
+용자 정의 클러스터형 및 비클러스터형 인덱스 또는 클러스터형 인덱스가 없는 테이블에 대한 잠금 옵션 값을 설정합니다.
+SQL Server 데이터베이스 엔진은 자동으로 페이지, 행 또는 테이블 수준의 잠금을 선택합니다. 이러한 옵션을 수동으로 설정할 필요는 없습니다. 
+sp_indexoption은 어떤 유형의 잠금이 적절한지 확실히 알고 있는 전문가를 위한 것입니다.
+https://msdn.microsoft.com/ko-kr/library/ms186253(v=sql.120).aspx
+
+
+
+sp_control_plan_guide
+계획 지침을 삭제하거나 활성화하거나 비활성화합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188733(v=sql.120).aspx
+
+
+sp_invalidate_textptr
+트랜잭션에서 지정한 행 내부 텍스트 포인터 또는 모든 행 내부 텍스트 포인터를 무효화합니다.
+ sp_invalidate_textptr은 text in row 옵션이 설정된 테이블에서 온 행 내부 텍스트 포인터에서만 사용할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms189468(v=sql.120).aspx
+
+
+sp_create_plan_guide
+쿼리 힌트 또는 실제 쿼리 계획을 데이터베이스의 쿼리와 연결하기 위한 
+계획 지침을 만듭니다. 계획 지침에 대한 자세한 내용은 계획 지침를 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/ms179880(v=sql.120).aspx
+
+
+
+sp_lock
+잠금에 대한 정보를 보고합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187749(v=sql.120).aspx
+
+
+
+sp_create_plan_guide_from_handle
+계획 캐시의 쿼리 계획에서 한 개 이상의 계획 지침을 만듭니다. 
+이 저장 프로시저를 사용하여 쿼리 최적화 프로그램이 항상 지정한 쿼리에 
+특정 쿼리 계획을 사용하도록 할 수 있습니다. 계획 지침에 대한 자세한 내용은 계획 지침를 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/bb964726(v=sql.120).aspx
+
+
+sp_monitor
+Microsoft SQL Server에 대한 통계를 표시합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188912(v=sql.120).aspx
+
+
+sp_create_removable
+이동식 미디어 데이터베이스를 작성합니다. 3개 이상(시스템 카탈로그 테이블용으로 하나, 
+트랜잭션 로그용으로 하나 및 데이터 테이블용으로 하나 이상)의 파일을 작성하고 이러한 파일에 데이터베이스를 놓습니다.
+https://msdn.microsoft.com/ko-kr/library/ms173585(v=sql.120).aspx
+
+
+
+sp_prepare
+매개 변수가 있는 Transact-SQL 문을 준비하고 실행을 위해 문 핸들을 반환합니다. 
+sp_prepare는 TDS(Tabular Data Stream) 패킷에서 ID = 11을 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848808(v=sql.120).aspx
+
+
+
+sp_createstats
+CREATE STATISTICS 문을 호출하여 통계 개체의 첫 번째 열이 아닌 열에 대한 단일 열 통계를 만듭니다. 
+단일 열 통계를 만들면 히스토그램의 수가 늘어나며 이에 따라 카디널리티 예상치, 쿼리 계획 및 쿼리 성능이 향상될 수 있습니다. 
+히스토그램은 통계 개체의 첫 번째 열에 있으며 다른 열에는 없습니다.
+sp_createstats는 쿼리 실행 시간이 중요하며 쿼리 최적화 프로그램에서 단일 열 통계를 생성할 때까지 
+기다릴 수 없는 경우, 즉 벤치마킹 등과 같은 응용 프로그램에 유용합니다. 대부분의 경우에는 
+sp_createstats를 사용할 필요가 없습니다. AUTO_CREATE_STATISTICS 옵션을 설정하면 쿼리 
+최적화 프로그램에서 필요 시 단일 열 통계를 생성하여 쿼리 계획을 향상시킵니다.
+통계에 대한 자세한 내용은 통계을 참조하십시오. 단일 열 통계 생성에 대한 자세한 내용은 
+ALTER DATABASE SET 옵션(Transact-SQL)의 AUTO_CREATE_STATISTICS 옵션을 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/ms186834(v=sql.120).aspx
+
+
+
+sp_prepexec
+매개 변수가 있는 Transact-SQL 문을 준비 및 실행합니다. 
+sp_prepexec는 sp_prepare와 sp_execute의 기능을 결합합니다. TDS(Tabular Data Stream) 패킷에서 ID =13을 사용하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848812(v=sql.120).aspx
+
+
+
+sp_cycle_errorlog
+현재의 오류 로그 파일을 닫고 서버를 다시 시작하는 것처럼 오류 로그 확장 번호를 순환시킵니다. 
+새 오류 로그는 버전, 저작권에 관한 정보 및 새 로그가 작성되었음을 표시하는 행을 포함합니다.
+https://msdn.microsoft.com/ko-kr/library/ms182512(v=sql.120).aspx
+
+
+
+sp_prepexecrpc
+RPC 식별자를 사용하여 지정된 매개 변수가 있는 저장 프로시저 호출을 준비 및 실행합니다. 
+sp_prepexecrpc에서는 TDS(Tabular Data Stream) 패킷에서 ID = 14를 사용하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848753(v=sql.120).aspx
+
+
+sp_datatype_info
+현재 환경에서 지원되는 데이터 형식에 대한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173819(v=sql.120).aspx
+
+
+sp_procoption
+저장 프로시저의 자동 실행을 설정하거나 해제합니다. 
+자동으로 실행되도록 설정된 저장 프로시저는 SQL Server가 시작될 때마다 실행됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms181720(v=sql.120).aspx
+
+
+sp_db_increased_partitions
+지정된 데이터베이스에 대해 최대 15,000개의 파티션을 지원하도록 설정 또는 해제합니다.
+https://msdn.microsoft.com/ko-kr/library/hh204563(v=sql.120).aspx
+
+
+sp_recompile
+저장 프로시저 및 트리거가 다음에 실행될 때 다시 컴파일되게 합니다. 
+프로시저나 트리거가 다음에 실행될 때 기존 계획을 프로시저 캐시에서 삭제하고 
+새 계획이 생성되도록 하여 이 작업을 수행합니다. 
+SQL Server 프로파일러 컬렉션에서는 SP:Recompile 이벤트 대신 SP:CacheInsert 이벤트가 로깅됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms181647(v=sql.120).aspx
+
+
+
+sp_dbcmptlevel
+특정 데이터베이스 동작이 지정된 버전의 SQL Server와 호환되도록 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178653(v=sql.120).aspx
+
+
+sp_refreshview
+비스키마 바운드 뷰에 대한 메타데이터를 업데이트합니다. 
+뷰가 종속된 기본 개체가 변경되면 뷰의 영구 메타데이터가 최신 상태를 유지하지 못할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms187821(v=sql.120).aspx
+
+
+sp_dbmmonitoraddmonitoring
+서버 인스턴스의 모든 미러된 데이터베이스에 대한 
+미러링 상태를 정기적으로 업데이트하는 데이터베이스 미러링 모니터 작업을 만듭니다.
+https://msdn.microsoft.com/ko-kr/library/ms403582(v=sql.120).aspx
+
+
+sp_releaseapplock
+응용 프로그램 리소스에서 잠금을 해제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178602(v=sql.120).aspx'
+
+
+
+sp_dbmmonitorchangealert
+지정한 미러링 성능 메트릭에 대해 경고 임계값을 추가하거나 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms365376(v=sql.120).aspx
+
+
+sp_rename
+현재 데이터베이스에 있는 사용자가 만든 개체의 이름을 변경합니다. 
+이 개체는 테이블, 인덱스, 열, 별칭 데이터 형식 또는 Microsoft .NET Framework CLR(공용 언어 런타임) 사용자 정의 형식일 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms188351(v=sql.120).aspx
+
+sp_dbmmonitorchangemonitoring
+데이터베이스 미러링 모니터링 매개 변수의 값을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms365375(v=sql.120).aspx
+
+
+
+sp_renamedb
+데이터베이스의 이름을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186217(v=sql.120).aspx
+
+
+sp_dbmmonitordropalert
+임계값을 NULL로 설정하여 지정한 성능 메트릭에 대한 경고를 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms366341(v=sql.120).aspx
+
+
+
+sp_resetstatus
+주의 대상 데이터베이스의 상태를 다시 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188424(v=sql.120).aspx
+
+
+sp_dbmmonitordropmonitoring
+서버 인스턴스의 모든 데이터베이스에 대한 미러링 모니터 작업을 중지하고 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms365810(v=sql.120).aspx
+
+
+sp_sequence_get_range
+시퀀스 개체에서 시퀀스 값의 범위를 반환합니다. 
+시퀀스 개체는 요청한 값의 수를 생성 및 실행하고 
+범위와 관련된 메타데이터를 응용 프로그램에 제공합니다.
+시퀀스 번호에 대한 자세한 내용은 시퀀스 번호을 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/ff878352(v=sql.120).aspx
+
+
+sp_dbmmonitorhelpalert
+여러 가지 주요 데이터베이스 미러링 모니터 성능 메트릭 중 하나 또는 모두에 대한 경고 임계값 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms365405(v=sql.120).aspx
+
+
+
+sp_serveroption
+원격 서버 및 연결된 서버용 서버 옵션을 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178532(v=sql.120).aspx
+
+
+
+sp_dbmmonitorhelpmonitoring
+현재 업데이트 기간을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms403828(v=sql.120).aspx
+
+
+
+sp_setnetname
+ys.servers의 네트워크 이름을 SQL Server의 원격 인스턴스에 대한 실제 네트워크 컴퓨터 이름으로 설정합니다. 
+이 프로시저를 사용하여 잘못된 SQL Server 식별자를 포함하는 네트워크 이름을 가진 컴퓨터에 원격 저장 프로시저 호출을 실행할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms190318(v=sql.120).aspx
+
+
+
+sp_dbmmonitorresults
+데이터베이스 미러링 모니터링 기록이 저장된 상태 테이블에서 모니터링된 
+데이터베이스에 대한 상태 행을 반환하고 프로시저에서 최신 상태를 미리 가져올지 여부를 선택할 수 있도록 합니다.
+https://msdn.microsoft.com/ko-kr/library/ms366320(v=sql.120).aspx
+
+
+sp_settriggerorder
+첫 번째 또는 마지막으로 실행되는 AFTER 트리거를 지정합니다. 
+첫 번째와 마지막 트리거 사이에 실행되는 AFTER 트리거는 정의되지 않은 순서로 실행됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms186762(v=sql.120).aspx
+
+
+sp_delete_backuphistory
+지정한 날짜보다 오래된 백업 세트의 항목을 삭제하여 백업 및 복원 기록 테이블의 크기를 줄입니다. 
+각 백업 또는 복원 작업을 수행하면 백업 및 복원 기록 테이블에 새 행이 추가되므로 정기적으로 sp_delete_backuphistory를 실행하는 것이 좋습니다.
+https://msdn.microsoft.com/ko-kr/library/ms188328(v=sql.120).aspx
+
+
+sp_spaceused
+행의 수, 예약된 디스크 공간 및 현재 데이터베이스의 테이블, 인덱싱된 뷰 또는 
+Service Broker에서 사용하는 디스크 공간을 표시하거나, 전체 데이터베이스가 예약하여 사용하는 디스크 공간을 표시합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188776(v=sql.120).aspx
+
+
+sp_depends
+테이블 또는 뷰에 종속되는 뷰 및 프로시저, 뷰 또는 프로시저에 종속되는 
+테이블 및 뷰와 같은 데이터베이스 개체 종속성에 대한 정보를 표시합니다. 
+현재 데이터베이스 외부의 개체에 대한 참조는 보고되지 않습니다.
+https://msdn.microsoft.com/ko-kr/library/ms189487(v=sql.120).aspx
+
+
+sp_tableoption
+사용자 정의 테이블의 옵션 값을 설정합니다. sp_tableoption을 사용하여 varchar(max), nvarchar(max),
+ varbinary(max), xml, text, ntext, image 또는 큰 사용자 정의 형식 열이 있는 테이블의 행 내부 동작을 제어할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms173530(v=sql.120).aspx
+
+
+
+sp_describe_first_result_set
+Transact-SQL 일괄 처리의 가능한 첫 번째 결과 집합에 대한 메타데이터를 반환합니다. 
+일괄 처리에서 아무 결과도 반환되지 않은 경우 빈 결과 집합을 반환합니다. 
+데이터베이스 엔진에서 정적 분석을 수행하여 실행할 첫 번째 쿼리에 대한 메타데이터를 확인할 수 없는 경우 오류가 발생합니다. 
+동적 관리 뷰 sys.dm_exec_describe_first_result_set(Transact-SQL)도 같은 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ff878602(v=sql.120).aspx
+
+
+
+sp_unbindefault
+현재 데이터베이스의 열에서 또는 별칭 데이터 형식에서 기본값의 바인딩을 해제(제거)합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188913(v=sql.120).aspx
+
+
+sp_describe_undeclared_parameters
+Transact-SQL 일괄 처리에서 선언되지 않은 매개 변수에 대한 
+메타데이터가 포함된 결과 집합을 반환합니다. @tsql 일괄 처리에 
+사용되지만 @params에 선언되지 않은 각 매개 변수를 검토합니다. 
+이러한 각 매개 변수에 대한 추론된 형식의 정보와 함께 해당 
+매개 변수에 대한 하나의 행이 포함된 결과 집합이 반환됩니다. 
+@tsql 입력 일괄 처리에 @params에 선언된 매개 변수만 있는 경우 이 프로시저는 빈 결과 집합을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ff878260(v=sql.120).aspx
+
+
+
+sp_unbindrule
+현재 데이터베이스의 열에서 또는 별칭 데이터 형식에서 규칙을 바인딩 해제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms190354(v=sql.120).aspx
+
+
+sp_detach_db
+서버 인스턴스에서 현재 사용하지 않는 데이터베이스를 분리하고, 
+필요한 경우 분리하기 전에 모든 테이블에서 UPDATE STATISTICS를 실행합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188031(v=sql.120).aspx
+
+
+sp_updateextendedproperty
+기존 확장 속성의 값을 업데이트합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186885(v=sql.120).aspx
+
+
+sp_dropdevice
+master.dbo.sysdevices에서 항목을 삭제하여 
+SQL Server 2005 데이터베이스 엔진 인스턴스에서 데이터베이스 장치 또는 백업 장치를 삭제합니다
+https://msdn.microsoft.com/ko-kr/library/ms188903(v=sql.120).aspx
+
+
+sp_updatestats
+현재 데이터베이스의 모든 사용자 정의 및 내부 테이블에 대해 UPDATE STATISTICS를 실행합니다.
+UPDATE STATISTICS에 대한 자세한 내용은 UPDATE STATISTICS(Transact-SQL)를 참조하십시오. 통계에 대한 자세한 내용은 통계을 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/ms173804(v=sql.120).aspx
+
+
+
+sp_dropextendedproc
+확장 저장 프로시저를 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189506(v=sql.120).aspx
+
+
+sp_unprepare
+sp_unprepare 저장 프로시저에서 생성한 실행 계획을 삭제합니다. 
+sp_unprepare는 TDS(Tabular Data Stream) 패킷에서 ID = 15를 지정하여 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848735(v=sql.120).aspx
+
+
+
+sp_dropextendedproperty
+기존의 확장 속성을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178595(v=sql.120).aspx
+
+
+
+sp_validname
+유효한 SQL Server 식별자 이름을 확인합니다. 
+이진수가 아니고 0이 아니며 nchar, nvarchar 또는 ntext 데이터 
+형식으로 저장할 수 있는 유니코드 데이터가 있는 모든 데이터는 식별자 이름으로 사용할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms189525(v=sql.120).aspx
+
+
+sp_dropmessage
+SQL Server 데이터베이스 엔진 인스턴스에서 지정한 사용자 정의 오류 메시지를 삭제합니다. 
+사용자 정의 메시지는 sys.messages 카탈로그 뷰를 사용하여 볼 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms174369(v=sql.120).aspx
+
+
+sp_who
+Microsoft SQL Server 데이터베이스 엔진 인스턴스의 현재 사용자, 
+세션 및 프로세스에 대한 정보를 제공합니다. 유휴 상태가 아닌 프로세스, 
+특정 사용자에게 속한 프로세스 또는 특정 세션에 속하는 프로세스만 반환하도록 이 정보를 필터링할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms174313(v=sql.120).aspx
+
+
+sp_droptype
+systypes에서 별칭 데이터 형식을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189765(v=sql.120).aspx
+
+
+
+sys.sp_xtp_control_proc_exec_stats
+인스턴스의 고유하게 컴파일된 저장 프로시저에 대한 통계 수집을 설정합니다.
+고유하게 컴파일된 저장 프로시저에 대해 쿼리 수준에서 통계 컬렉션을 설정하려면 sys.sp_xtp_control_query_exec_stats(Transact-SQL)를 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/dn435918(v=sql.120).aspx
+
+
+
+sys.sp_flush_log
+현재 데이터베이스의 트랜잭션 로그를 디스크에 플러시하면 이전에 커밋한 지연된 영구 트랜잭션이 모두 강화됩니다.
+성능상의 이점 때문에 지연된 트랜잭션 영속성을 사용하도록 선택하지만 
+서버 충돌이나 장애 조치(Failover) 시 손실되는 데이터 양에 대한 보장 
+한도도 필요한 경우 정기적으로 sys.sp_flush_log를 실행하십시오. 
+예를 들어, 손실되는 데이터를 x초 이하로 제한하려는 경우 x초마다 sp_flush_log를 실행합니다.
+https://msdn.microsoft.com/ko-kr/library/dn467645(v=sql.120).aspx
+
+
+
+sp_execute
+지정한 핸들 및 선택적 매개 변수 값을 사용하여 준비된 Transact-SQL 문을 실행합니다. 
+TDS(Tabular Data Stream) 패킷에서 ID = 12를 지정하여 sp_execute를 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ff848746(v=sql.120).aspx
+
+
+sys.sp_xtp_control_query_exec_stats
+인스턴스에 대해 고유하게 컴파일된 모든 저장 프로시저 또는 
+고유하게 컴파일된 특정 저장 프로시저에 대해 쿼리별 통계 컬렉션을 설정합니다.
+통계 컬렉션을 설정하면 성능이 저하됩니다. 한 개나 몇 개의 
+고유하게 컴파일된 저장 프로시저 문제만 해결하면 되는 경우에는 
+해당하는 몇 개의 고유하게 컴파일된 저장 프로시저에 대해서만 통계 컬렉션을 설정할 수 있습니다.
+고유하게 컴파일된 모든 저장 프로시저에 대해 프로시저 수준에서 
+통계 컬렉션을 설정하려면 sys.sp_xtp_control_proc_exec_stats(Transact-SQL)를 참조하십시오.
+https://msdn.microsoft.com/ko-kr/library/dn435917(v=sql.120).aspx
+
+
+
+sys.sp_xtp_bind_db_resource_pool
+지정된 리소스 풀에 지정된 메모리 내 OLTP 데이터베이스를 바인딩합니다. 
+sys.sp_xtp_bind_db_resource_pool 실행 전에 데이터베이스와 리소스 풀 모두 있어야 합니다.
+이 시스템 프로시저는 resource_pool_name으로 식별되는 리소스 관리자와 
+database_name으로 식별되는 데이터베이스 사이의 바인딩을 만듭니다. 
+바인딩 시 메모리 액세스에 최적화된 개체가 데이터베이스에 있을 필요는 없습니다. 
+메모리 액세스에 최적화된 개체가 없을 경우 리소스 풀에서 메모리를 가져오지 않습니다. 
+이 바인딩은 아래에 설명된 바와 같이 리소스 관리자가 메모리 내 OLTP 할당자에 의해 할당된 메모리를 관리하는 데 사용됩니다.
+지정된 데이터베이스를 위한 바인딩이 이미 있는 경우 절차에서 오류를 반환합니다. 데이터베이스에 활성 바인딩이 여러 개 있을 수 없습니다.
+https://msdn.microsoft.com/ko-kr/library/dn455094(v=sql.120).aspx
+
+
+
+sys.sp_xtp_checkpoint_force_garbage_collection
+병합 작업에서 사용되는 원본 파일을 원본 파일이 필요하지 않고 가비지 수집될 수 있기 전의 LSN(로그 시퀀스 번호)으로 표시합니다. 
+또한 연결된 LSN이 Filestream 가비지 수집에 대한 로그 잘림 지점보다 작은 파일을 이동합니다.
+https://msdn.microsoft.com/ko-kr/library/dn451428(v=sql.120).aspx
+
+
+
+sys.sp_xtp_unbind_db_resource_pool
+이 시스템 프로시저는 메모리 내 OLTP 메모리 사용량 추적을 위해 데이터베이스와 풀 리소스 간의 기존 바인딩을 제거합니다. 
+지정된 데이터베이스에 현재 바인딩된 풀이 없으면 성공이 반환됩니다. 
+데이터베이스가 바인딩 해제되면 메모리 액세스에 최적화된 개체에 대해 이전에 할당된 메모리가 이전 리소스 풀에 할당된 상태로 유지됩니다. 
+할당된 메모리를 해제하려면 데이터베이스를 다시 시작해야 합니다. 데이터베이스가 리소스 풀에서 바인딩 해제되면 DEFAULT 리소스 풀에 바인딩됩니다.
+https://msdn.microsoft.com/ko-kr/library/dn455093(v=sql.120).aspx
+
+
+
+sys.sp_xtp_merge_checkpoint_files
+sys.sp_xtp_merge_checkpoint_files는 지정된 트랜잭션 범위에 있는 모든 데이터 및 델타 파일을 병합합니다.
+https://msdn.microsoft.com/ko-kr/library/dn198330(v=sql.120).aspx
+
+
+
+
+
+
+====================================================================================
+데이터베이스 메일 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms177580(v=sql.120).aspx
+====================================================================================
+
+
+sp_send_dbmail
+지정된 수신자에게 전자 메일 메시지를 보냅니다. 이 메시지에는 쿼리 결과 집합, 첨부 파일 등이 포함될 수 있습니다. 
+메일이 성공적으로 데이터베이스 메일 큐에 배치되면 sp_send_dbmail은 메시지의 mailitem_id를 반환합니다. 이 저장 프로시저는 msdb 데이터베이스에 저장됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms190307(v=sql.120).aspx
+
+
+
+sysmail_help_configure_sp
+데이터베이스 메일의 구성 설정을 표시합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189771(v=sql.120).aspx
+
+
+sysmail_add_account_sp
+SMTP 계정에 대한 정보를 저장할 새로운 데이터베이스 메일 계정을 만듭니다.
+https://msdn.microsoft.com/ko-kr/library/ms182804(v=sql.120).aspx
+
+
+sysmail_help_principalprofile_sp
+데이터베이스 메일 프로필과 데이터베이스 보안 주체 간 연결에 대한 정보를 나열합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174410(v=sql.120).aspx
+
+
+
+sysmail_add_principalprofile_sp
+데이터베이스 메일 프로필을 사용하도록 데이터베이스 사용자 또는 역할의 사용 권한을 부여합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187911(v=sql.120).aspx
+
+
+
+sysmail_help_profile_sp
+하나 이상의 메일 프로필에 대한 정보를 표시합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189482(v=sql.120).aspx
+
+
+
+sysmail_add_profile_sp
+새 데이터베이스 메일 프로필을 만듭니다.
+https://msdn.microsoft.com/ko-kr/library/ms188058(v=sql.120).aspx
+
+
+
+sysmail_help_profileaccount_sp
+하나 이상의 데이터베이스 메일 프로필과 연관된 계정을 나열합니다.
+https://msdn.microsoft.com/ko-kr/library/ms177575(v=sql.120).aspx
+
+
+sysmail_add_profileaccount_sp
+데이터베이스 메일 프로필에 데이터베이스 메일 계정을 추가합니다. sysmail_add_account_sp(Transact-SQL) 로 
+데이터베이스 계정을 만들고 sysmail_add_profile_sp(Transact-SQL)로 데이터베이스 프로필을 만든 후 sysmail_add_profileaccount_sp를 실행하십시오.
+https://msdn.microsoft.com/ko-kr/library/ms186258(v=sql.120).aspx
+
+
+
+sysmail_help_queue_sp
+데이터베이스 메일에는 메일 큐와 상태 큐의 두 가지 큐가 있습니다. 
+메일 큐는 전송 대기 중인 메일 항목을 저장합니다. 상태 큐는 이미 전송된 항목의 상태를 저장합니다. 
+이 저장 프로시저를 사용하여 메일 또는 상태 큐의 상태를 볼 수 있습니다. 
+@queue_type 매개 변수를 지정하지 않은 경우 이 저장 프로시저는 각 큐당 한 개의 행을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187400(v=sql.120).aspx
+
+
+sysmail_configure_sp
+데이터베이스 메일의 구성 설정을 변경합니다. 
+sysmail_configure_sp로 지정한 구성 설정은 전체 SQL Server 인스턴스에 적용됩니다
+https://msdn.microsoft.com/ko-kr/library/ms186321(v=sql.120).aspx
+
+
+
+sysmail_help_status_sp
+데이터베이스 메일 큐의 상태를 표시합니다. 
+sysmail_start_sp를 사용하여 데이터베이스 메일 큐를 시작하고 
+sysmail_stop_sp를 사용하여 데이터베이스 메일 큐를 중지할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms187918(v=sql.120).aspx
+
+
+sysmail_delete_account_sp
+데이터베이스 메일 SMTP 계정을 삭제합니다. 
+데이터베이스 메일 구성 마법사를 사용하여 계정을 삭제할 수도 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms176086(v=sql.120).aspx
+
+
+sysmail_start_sp
+외부 프로그램이 사용하는 Service Broker 개체를 시작하여 데이터베이스 메일을 시작합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176087(v=sql.120).aspx
+
+
+sysmail_delete_log_sp
+데이터베이스 메일 로그에서 이벤트를 삭제합니다. 
+로그의 모든 이벤트를 삭제하거나 날짜나 유형 기준에 맞는 이벤트만을 삭제할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms189810(v=sql.120).aspx
+
+
+sysmail_stop_sp
+외부 프로그램이 사용하는 Service Broker 개체를 중지하여 데이터베이스 메일을 중지합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173412(v=sql.120).aspx
+
+
+sysmail_delete_mailitems_sp
+데이터베이스 메일의 내부 테이블에서 전자 메일 메시지를 영구 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms190293(v=sql.120).aspx
+
+
+sysmail_update_account_sp
+기존 데이터베이스 메일 계정의 정보를 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188381(v=sql.120).aspx
+
+
+sysmail_delete_principalprofile_sp
+공개 또는 개인 데이터베이스 메일 프로필을 사용하는 데이터베이스 사용자 또는 역할의 사용 권한을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187343(v=sql.120).aspx
+
+
+sysmail_update_principalprofile_sp
+보안 주체와 프로필 간 연결 정보를 업데이트합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187754(v=sql.120).aspx
+
+
+sysmail_delete_profile_sp
+데이터베이스 메일에서 사용하는 메일 프로필을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186303(v=sql.120).aspx
+
+
+
+sysmail_update_profile_sp
+데이터베이스 메일 프로필의 설명이나 이름을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189785(v=sql.120).aspx
+
+
+
+sysmail_delete_profileaccount_sp
+데이터베이스 메일 프로필에서 계정을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188380(v=sql.120).aspx
+
+
+sysmail_update_profileaccount_sp
+데이터베이스 메일 프로필 내에서 계정의 시퀀스 번호를 업데이트합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187321(v=sql.120).aspx
+
+
+sysmail_help_account_sp
+암호를 제외하고 데이터베이스 메일 계정에 대한 정보를 나열합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186718(v=sql.120).aspx
+
+
+
+
+====================================================================================
+데이터베이스 유지 관리 계획 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms190341(v=sql.120).aspx
+====================================================================================
+
+sp_add_maintenance_plan
+유지 관리 계획을 추가하고 계획 ID를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173478(v=sql.120).aspx
+
+
+sp_delete_maintenance_plan_db
+지정된 데이터베이스에서 지정된 유지 관리 계획을 분리합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188736(v=sql.120).aspx
+
+
+sp_add_maintenance_plan_db
+데이터베이스와 유지 관리 계획을 연결합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186314(v=sql.120).aspx
+
+
+sp_delete_maintenance_plan_job
+지정된 작업에서 지정된 유지 관리 계획을 분리합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174967(v=sql.120).aspx
+
+
+sp_add_maintenance_plan_job
+유지 관리 계획과 기존 작업을 연결합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186324(v=sql.120).aspx
+
+
+sp_help_maintenance_plan
+지정된 유지 관리 계획에 관한 정보를 반환합니다. 
+계획을 지정하지 않은 경우에는 저장 프로시저가 모든 유지 관리 계획에 관한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189816(v=sql.120).aspx
+
+
+sp_delete_maintenance_plan
+지정된 유지 관리 계획을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186296(v=sql.120).aspx
+
+
+
+
+====================================================================================
+분산 쿼리 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms174359(v=sql.120).aspx
+====================================================================================
+
+
+sp_addlinkedserver
+연결된 서버를 만듭니다. 연결된 서버를 만들면 OLE DB 데이터 원본과 유형이 다른 분산 쿼리에 액세스할 수 있습니다. 
+sp_addlinkedserver를 사용하여 연결된 서버를 만든 후 이 서버에 대해 분산 쿼리를 실행할 수 있습니다. 
+연결된 서버를 SQL Server 인스턴스로 정의한 경우에는 원격 저장 프로시저를 실행할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms190479(v=sql.120).aspx
+
+
+sp_indexes
+지정된 원격 테이블에 대한 인덱스 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176073(v=sql.120).aspx
+
+
+
+sp_addlinkedsrvlogin
+SQL Server 로컬 인스턴스의 로그인과 원격 서버 보안 계정 간의 매핑을 만들거나 업데이트합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189811(v=sql.120).aspx
+
+
+sp_linkedservers
+로컬 서버에 정의되어 있는 연결된 서버 목록을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189519(v=sql.120).aspx
+
+
+
+sp_catalogs
+지정되어 있는 연결된 서버의 카탈로그 목록을 반환합니다. 이것은 SQL Server의 데이터베이스와 동일합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189764(v=sql.120).aspx
+
+
+sp_primarykeys
+지정된 원격 테이블의 기본 키 열을 각 키 열당 한 개의 행으로 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174417(v=sql.120).aspx
+
+
+sp_column_privileges_ex
+지정한 연결된 서버에 있는 지정한 테이블에 대한 열 권한을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187767(v=sql.120).aspx
+
+
+sp_serveroption
+원격 서버 및 연결된 서버용 서버 옵션을 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178532(v=sql.120).aspx
+
+
+sp_columns_ex
+지정한 연결된 서버 테이블에 대해 각 열마다 한 행씩 열 정보를 반환합니다. 
+sp_columns_ex는 column이 지정된 경우에 지정된 열에 대해서만 열 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188330(v=sql.120).aspx
+
+
+
+sp_table_privileges_ex
+지정한 연결된 서버에서 지정한 테이블에 대한 권한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188327(v=sql.120).aspx
+
+
+
+sp_droplinkedsrvlogin	
+SQL Server가 실행되고 있는 로컬 서버의 로그인과 연결된 서버의 로그인 간의 기존 매핑을 제거합니다
+https://msdn.microsoft.com/ko-kr/library/ms186218(v=sql.120).aspx
+
+
+
+sp_tables_ex
+지정한 연결된 서버에서 테이블에 대한 테이블 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms176051(v=sql.120).aspx
+
+
+sp_dropserver
+로컬 SQL Server 인스턴스의 알려진 원격 서버 및 연결된 서버 목록에서 서버를 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174310(v=sql.120).aspx
+
+
+
+sp_testlinkedserver
+연결된 서버와의 연결을 테스트합니다. 
+테스트가 실패하는 경우 절차에서 오류 이유와 함께 예외가 발생합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189809(v=sql.120).aspx
+
+
+
+sp_foreignkeys
+연결된 서버의 테이블에서 기본 키를 참조하는 외래 키를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187337(v=sql.120).aspx
+
+
+
+
+====================================================================================
+Filestream 및 FileTable 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/gg492081(v=sql.120).aspx
+====================================================================================
+
+
+sp_filestream_force_garbage_collection
+FILESTREAM 가비지 수집기를 실행하고 불필요한 FILESTREAM 파일을 삭제합니다.
+가비지 수집기를 사용하여 FILESTREAM 컨테이너 안의 삭제된 파일을 모두 정리해야 해당 컨테이너를 제거할 수 있습니다. 
+FILESTREAM 가비지 수집기는 자동으로 실행됩니다. 그러나 가비지 수집기가 실행되기 전에 
+컨테이너를 제거해야 할 경우 sp_filestream_force_garbage_collection을 사용하여 가비지 수집기를 수동으로 실행할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/gg492195(v=sql.120).aspx
+
+
+sp_kill_filestream_non_transacted_handles
+FileTable 데이터에 대한 비트랜잭션 핸들 파일을 닫습니다.
+https://msdn.microsoft.com/ko-kr/library/ff929106(v=sql.120).aspx
+
+
+
+====================================================================================
+전체 텍스트 검색 및 의미 체계 검색 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms174394(v=sql.120).aspx
+====================================================================================
+
+[전체 텍스트 검색 저장 프로시저]
+
+
+sp_fulltext_catalog
+전체 텍스트 카탈로그를 만들고 삭제하며, 해당 카탈로그에 대한 인덱싱 
+동작을 시작하고 중지합니다.각 데이터베이스에 여러 개의 전체 텍스트 카탈로그를 만들 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms189801(v=sql.120).aspx
+
+
+sp_fulltext_column
+테이블의 특정 열을 전체 텍스트 인덱싱에 참여시킬지 여부를 지정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188053(v=sql.120).aspx
+
+
+sp_fulltext_database
+SQL Server 2008 이상 버전에서 전체 텍스트 카탈로그에 영향을 미치지 않으며 이전 버전과의 호환성을 위해서만 지원됩니다.
+sp_fulltext_database는 지정된 데이터베이스에 대한 전체 텍스트 엔진을 비활성화하지 않습니다.
+SQL Server 2014에서 사용자가 만든 모든 데이터베이스가 전체 텍스트 인덱스에 대해 항상 설정됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms190321(v=sql.120).aspx
+
+
+
+sp_fulltext_keymappings
+문서 ID(DocId)와 전체 텍스트 키 값 간의 매핑을 반환합니다. 
+DocId 열에는 전체 텍스트 인덱싱된 테이블의 특정 전체 텍스트 
+키 값에 매핑되는 bigint 정수 값이 포함됩니다. 검색 조건을 만족하는 DocId 값이 
+전체 텍스트 엔진에서 데이터베이스 엔진으로 전달되며 이러한 값은 쿼리할 기본 
+테이블에서 전체 텍스트 키 값에 매핑됩니다. 전체 텍스트 키 열은 테이블의 특정 열에 필요한 고유 인덱스입니다. 
+https://msdn.microsoft.com/ko-kr/library/cc645845(v=sql.120).aspx
+
+
+sp_fulltext_load_thesaurus_file
+서버 인스턴스에서 LCID가 지정된 언어에 해당하는 동의어 사전 파일의 데이터를 구문 분석하고 로드하게 합니다. 
+이 저장 프로시저는 동의어 사전 파일을 업데이트한 후에 유용합니다. 
+sp_fulltext_load_thesaurus_file을 실행하면 지정된 LCID의 동의어 사전 파일을 사용하는 전체 텍스트 쿼리가 다시 컴파일됩니다.
+https://msdn.microsoft.com/ko-kr/library/cc280598(v=sql.120).aspx
+
+
+sp_fulltext_pendingchanges
+변경 내용 추적을 사용하는 지정된 테이블에 대해 보류 중인 삽입, 업데이트, 삭제 등의 처리되지 않은 변경 내용을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms190482(v=sql.120).aspx
+
+
+sp_fulltext_service
+SQL Server의 전체 텍스트 검색의 서버 속성을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms175058(v=sql.120).aspx
+
+
+sp_fulltext_table
+테이블을 전체 텍스트 인덱싱에 표시하거나 표시하지 않습니다.
+https://msdn.microsoft.com/ko-kr/library/ms187960(v=sql.120).aspx
+
+
+sp_help_fulltext_catalog_components
+현재 데이터베이스의 모든 전체 텍스트 카탈로그에 사용된 필터, 단어 분리기, 프로토콜 처리기 등 모든 구성 요소의 목록을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms190481(v=sql.120).aspx
+
+
+sp_help_fulltext_catalogs
+지정된 전체 텍스트 카탈로그에 대해 전체 텍스트 인덱싱된 테이블의 ID, 이름, 루트 디렉터리, 상태 및 번호를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms175038(v=sql.120).aspx
+
+
+sp_help_fulltext_catalogs_cursor
+커서를 사용하여 지정된 전체 텍스트 카탈로그에 대해 전체 
+텍스트 인덱싱된 테이블의 ID, 이름, 루트 디렉터리, 상태 및 번호를 반환할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms189495(v=sql.120).aspx
+
+
+sp_help_fulltext_columns
+전체 텍스트 인덱싱하기 위해 지정한 열을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187312(v=sql.120).aspx
+
+
+sp_help_fulltext_columns_cursor
+커서를 사용하여 전체 텍스트 인덱싱에 등록된 열을 반환할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/ms175989(v=sql.120).aspx
+
+
+sp_help_fulltext_system_components
+등록된 단어 분리기, 필터 및 프로토콜 처리기에 대한 정보를 반환합니다. 
+sp_help_fulltext_system_components는 데이터베이스 식별자 목록 및 지정된 구성 요소를 사용한 전체 텍스트 카탈로그도 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187985(v=sql.120).aspx
+
+
+sp_help_fulltext_tables
+전체 텍스트 인덱싱용으로 등록된 테이블의 목록을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms186929(v=sql.120).aspx
+
+
+
+[의미 체계 검색 저장 프로시저]
+
+
+sp_fulltext_semantic_register_language_statistics_db
+SQL Server의 현재 인스턴스에서 미리 채워진 의미 체계 언어 통계 데이터베이스를 등록합니다.
+이 언어 의미 체계 데이터베이스를 연결하고 이 저장 프로시저를 사용하여 등록한 후에만 의미 
+체계 추출을 시작할 수 있습니다. 이 태스크는 SQL Server의 각 인스턴스에 대해 한 번씩만 수행하면 됩니다.
+https://msdn.microsoft.com/ko-kr/library/gg492230(v=sql.120).aspx
+
+
+sp_fulltext_semantic_unregister_language_statistics_db
+현재 SQL Server 인스턴스에서 기존 의미 체계 언어 통계 데이터베이스의 등록을 취소하고 연결된 모든 메타데이터를 삭제합니다.
+이 문은 데이터베이스를 분리하거나 파일 시스템에서 실제 데이터베이스 파일을 제거하지 않습니다. 
+데이터베이스의 등록을 취소한 후 실제 데이터베이스 파일을 분리 및 삭제할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/gg509106(v=sql.120).aspx
+
+
+
+====================================================================================
+로그 전달 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms177602(v=sql.120).aspx
+====================================================================================
+
+
+
+sp_add_log_shipping_alert_job
+이 저장 프로시저는 이 서버에서 경고 작업을 만들었는지 여부를 확인합니다. 
+경고 작업이 없을 경우 이 저장 프로시저는 경고 작업을 만들고 해당 작업 ID를 
+log_shipping_monitor_alert 테이블에 추가합니다. 경고 작업은 기본적으로 활성화되며 2분마다 한 번씩 실행됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms189509(v=sql.120).aspx
+
+
+
+sp_delete_log_shipping_secondary_database
+이 저장 프로시저는 보조 데이터베이스, 로컬 기록 및 원격 기록을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188928(v=sql.120).aspx
+
+
+sp_add_log_shipping_primary_database
+백업 작업, 로컬 모니터 레코드 및 원격 모니터 레코드를 포함하여 로그 전달 구성에 대한 주 데이터베이스를 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms182718(v=sql.120).aspx
+
+
+sp_delete_log_shipping_secondary_primary
+이 저장 프로시저는 보조 서버에서 지정된 주 서버에 대한 정보를 제거하고 보조 서버에서 복사 및 복원 작업을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178633(v=sql.120).aspx
+
+
+sp_add_log_shipping_primary_secondary
+이 저장 프로시저는 주 서버의 보조 데이터베이스에 대한 항목을 추가합니다.
+https://msdn.microsoft.com/ko-kr/library/ms175025(v=sql.120).aspx
+
+
+sp_help_log_shipping_alert_job
+이 저장 프로시저는 로그 전달 모니터에서 경고 작업의 작업 ID를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms178562(v=sql.120).aspx
+
+
+sp_add_log_shipping_secondary_database
+로그 전달을 위한 보조 데이터베이스를 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188916(v=sql.120).aspx
+
+
+
+sp_help_log_shipping_monitor
+주 서버, 보조 서버 또는 모니터 서버에 등록된 주 데이터베이스 
+및 보조 데이터베이스의 상태와 기타 정보를 포함하는 결과 집합을 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187820(v=sql.120).aspx
+
+
+sp_add_log_shipping_secondary_primary
+지정된 주 데이터베이스에 대한 보조 서버에서 주 정보를 설정하고, 
+로컬 및 원격 모니터 링크를 추가하며, 복사본을 만들고 작업을 복원합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188382(v=sql.120).aspx
+
+
+sp_help_log_shipping_monitor_primary
+모니터 테이블에서 주 데이터베이스에 관한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189441(v=sql.120).aspx
+
+
+
+sp_change_log_shipping_primary_database
+주 데이터베이스 설정을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187351(v=sql.120).aspx
+
+
+sp_help_log_shipping_monitor_secondary
+모니터 테이블에서 보조 데이터베이스에 대한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms177639(v=sql.120).aspx
+
+
+sp_change_log_shipping_secondary_database
+보조 데이터베이스 설정을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms177507(v=sql.120).aspx
+
+
+
+sp_help_log_shipping_primary_database
+주 데이터베이스 설정을 검색합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189761(v=sql.120).aspx
+
+
+
+sp_change_log_shipping_secondary_primary
+보조 데이터베이스 설정을 변경합니다.
+https://msdn.microsoft.com/ko-kr/library/ms180034(v=sql.120).aspx
+
+
+sp_help_log_shipping_primary_secondary
+이 저장 프로시저는 지정한 주 데이터베이스에 대해 모든 보조 데이터베이스에 관한 정보를 반환합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188352(v=sql.120).aspx
+
+
+
+sp_cleanup_log_shipping_history
+이 저장 프로시저는 보존 기간을 기준으로 로컬 및 모니터 서버에서 기록을 정리합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187374(v=sql.120).aspx
+
+
+
+sp_help_log_shipping_secondary_database
+이 저장 프로시저는 하나 이상의 보조 데이터베이스에 대한 설정을 검색합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174413(v=sql.120).aspx
+
+
+
+sp_delete_log_shipping_alert_job
+작업은 있지만 모니터링할 주 데이터베이스나 보조 데이터베이스가 
+더 이상 없는 경우 로그 전달 모니터 서버에서 경고 작업을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms179866(v=sql.120).aspx
+
+
+
+sp_help_log_shipping_secondary_primary
+이 저장 프로시저는 보조 서버에서 지정된 주 데이터베이스의 설정을 검색합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174376(v=sql.120).aspx
+
+
+
+sp_delete_log_shipping_primary_database
+이 저장 프로시저는 백업 작업과 로컬 및 원격 기록을 포함하여 주 데이터베이스의 로그 전달을 제거합니다. 
+sp_delete_log_shipping_primary_secondary를 사용하여 보조 데이터베이스를 제거한 후에만 이 저장 프로시저를 사용합니다.
+https://msdn.microsoft.com/ko-kr/library/ms188799(v=sql.120).aspx
+
+
+
+sp_refresh_log_shipping_monitor
+이 저장 프로시저는 지정된 로그 전달 에이전트에 대해 주어진 주 
+서버 또는 보조 서버에서 최신 정보로 원격 모니터 테이블을 새로 고칩니다. 이 프로시저는 주 서버나 보조 서버에서 호출됩니다.
+https://msdn.microsoft.com/ko-kr/library/ms189754(v=sql.120).aspx
+
+
+
+sp_delete_log_shipping_primary_secondary
+주 서버에서 보조 데이터베이스에 대한 항목을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/ms189467(v=sql.120).aspx
+
+
+
+
+====================================================================================
+OLE 자동화 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms190501(v=sql.120).aspx
+====================================================================================
+
+
+sp_OACreate
+OLE 개체의 인스턴스를 만듭니다.
+https://msdn.microsoft.com/ko-kr/library/ms189763(v=sql.120).aspx
+
+
+sp_OADestroy
+생성된 OLE 개체를 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/ms173866(v=sql.120).aspx
+
+
+
+sp_OAGetErrorInfo
+OLE 자동화 오류 정보를 얻습니다.
+https://msdn.microsoft.com/ko-kr/library/ms188742(v=sql.120).aspx
+
+
+
+sp_OAGetProperty
+OLE 개체의 속성 값을 구합니다.
+https://msdn.microsoft.com/ko-kr/library/ms175079(v=sql.120).aspx
+
+
+
+sp_OAMethod
+OLE 개체의 메서드를 호출합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174984(v=sql.120).aspx
+
+
+
+sp_OASetProperty
+OLE 개체의 속성을 새 값으로 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/ms174374(v=sql.120).aspx
+
+
+
+sp_OAStop
+서버 차원의 OLE 자동화 저장 프로시저 실행 환경을 중지합니다.
+https://msdn.microsoft.com/ko-kr/library/ms187915(v=sql.120).aspx
+
+
+개체 계층 구조 구문
+sp_OASetProperty 및 sp_OAGetProperty의 propertyname 매개 변수와 
+sp_OAMethod의 methodname 매개 변수는 Microsoft Visual Basic의 개체 
+계층 구조 구문과 비슷한 구문을 지원합니다. 이 특수 구문을 사용할 때 
+이러한 매개 변수는 다음과 같은 일반적인 형식을 갖습니다.
+https://msdn.microsoft.com/ko-kr/library/ms186730(v=sql.120).aspx
+
+
+
+====================================================================================
+정책 기반 관리 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/dd795289(v=sql.120).aspx
+====================================================================================
+
+
+sp_syspolicy_add_policy_category
+정책 기반 관리에 사용할 수 있는 정책 범주를 추가합니다. 
+정책 범주를 사용하면 정책을 구성하고 정책 범위를 설정할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/dd795282(v=sql.120).aspx
+
+
+
+sp_syspolicy_add_policy_category_subscription
+지정된 데이터베이스에 정책 범주 구독을 추가합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795273(v=sql.120).aspx
+
+
+
+sp_syspolicy_configure
+정책 기반 관리 사용 여부와 같은 정책 기반 관리에 대한 설정을 구성합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795280(v=sql.120).aspx
+
+
+sp_syspolicy_delete_policy_category
+정책 기반 관리의 정책 범주를 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795290(v=sql.120).aspx
+
+
+sp_syspolicy_delete_policy_category_subscription
+특정 데이터베이스의 정책 범주 구독을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795291(v=sql.120).aspx
+
+
+sp_syspolicy_delete_policy_execution_history
+정책 기반 관리에서 정책의 실행 기록을 삭제합니다. 
+이 저장 프로시저를 사용하여 특정 정책 또는 모든 정책의 
+실행 기록을 삭제하거나 특정 날짜 이전의 실행 기록을 삭제할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/dd795292(v=sql.120).aspx
+
+
+
+sp_syspolicy_purge_health_state
+정책 기반 관리의 정책 상태를 삭제합니다. 정책 상태는 개체 
+탐색기 내에 표시되는 시각적 표시기(빨강 "X"가 있는 스크롤 기호)로, 이를 통해 정책 평가에 실패한 노드를 쉽게 확인할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/dd795275(v=sql.120).aspx
+
+
+
+sp_syspolicy_purge_history
+기록 보존 간격 설정에 따라 정책 평가 기록을 제거합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795279(v=sql.120).aspx
+
+
+sp_syspolicy_rename_condition
+정책 기반 관리에 있는 기존 조건의 이름을 바꿉니다.
+https://msdn.microsoft.com/ko-kr/library/dd795286(v=sql.120).aspx
+
+
+
+sp_syspolicy_rename_policy
+정책 기반 관리에 있는 기존 정책의 이름을 바꿉니다.
+https://msdn.microsoft.com/ko-kr/library/dd795283(v=sql.120).aspx
+
+
+
+sp_syspolicy_rename_policy_category
+정책 기반 관리에 있는 기존 정책 범주의 이름을 바꿉니다.
+https://msdn.microsoft.com/ko-kr/library/dd795281(v=sql.120).aspx
+
+
+
+sp_syspolicy_repair_policy_automation
+정책 기반 관리에서 정책 자동화를 복구합니다. 
+예를 들어 이 저장 프로시저를 사용하면 "예약 시" 또는 "변경 시" 평가 모드를 사용하도록 구성되어 있는 정책에 연결된 트리거와 작업을 복구할 수 있습니다.
+https://msdn.microsoft.com/ko-kr/library/dd795285(v=sql.120).aspx
+
+
+
+sp_syspolicy_set_config_enabled
+정책 기반 관리를 사용하도록 또는 사용하지 않도록 설정합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795287(v=sql.120).aspx
+
+
+sp_syspolicy_set_config_history_retention
+정책 기반 관리에 대한 정책 평가 기록을 보존할 일 수를 지정합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795272(v=sql.120).aspx
+
+
+sp_syspolicy_set_log_on_success
+성공한 정책 평가가 정책 기반 관리의 정책 기록 로그에 로깅되는지 여부를 지정합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795277(v=sql.120).aspx
+
+
+
+sp_syspolicy_subscribe_to_policy_category
+지정된 데이터베이스에 대한 정책 범주 구독을 추가합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795288(v=sql.120).aspx
+
+
+
+sp_syspolicy_unsubscribe_from_policy_category
+현재 데이터베이스의 정책 범주 구독을 삭제합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795274(v=sql.120).aspx
+
+
+
+sp_syspolicy_update_policy_category
+데이터베이스 구독을 위임하도록 정책 범주가 설정되는지 여부를 업데이트합니다.
+구독이 위임되면 모든 데이터베이스에 정책 범주가 적용됩니다.
+https://msdn.microsoft.com/ko-kr/library/dd795278(v=sql.120).aspx
+
+
+sp_syspolicy_update_policy_category_subscription
+지정한 데이터베이스의 정책 범주 구독을 업데이트합니다.
+https://msdn.microsoft.com/ko-kr/library/dd795284(v=sql.120).aspx
+
+
+
+====================================================================================
+복제 저장 프로시저
+https://msdn.microsoft.com/ko-kr/library/ms174364(v=sql.120).aspx
+====================================================================================
+
+부터하기
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'테이블명'
+'테이블명'

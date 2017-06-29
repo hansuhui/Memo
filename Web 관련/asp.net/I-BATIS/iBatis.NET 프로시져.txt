@@ -1,0 +1,23 @@
+[SqlMap]
+
+
+<procedure id="프로시져아이디" parameterMap = "파라미터 아이디" resultClass="반환클래스">
+   프로시져명
+</procedure>
+
+
+<parameterMap id="파라미터 아이디">
+   <parameter property="속성값"/>
+</parameterMap>
+
+
+
+[C# code]
+
+
+public 반환값 RunMyProc (파라미터){
+   return QueryForObject<int>("프로시져아이디", new Hashtable{{"num",num}})
+}
+
+
+

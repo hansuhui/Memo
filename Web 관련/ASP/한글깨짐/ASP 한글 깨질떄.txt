@@ -1,0 +1,22 @@
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+
+
+<% @Language="VBScript" CODEPAGE="949" %>
+<%
+Response.CharSet="euc-kr"
+Session.codepage="949"
+Response.codepage="949"
+Response.ContentType="text/html;charset=euc-kr"
+%>
+
+<%@Language="VBScript" CODEPAGE="65001" %>
+<%
+Response.CharSet="utf-8"
+Session.codepage="65001"
+Response.codepage="65001"
+Response.ContentType="text/html;charset=utf-8"
+%>
+
+
+	위에 한대로 될겁니다. 만약 위와 같은 방법으로 안되면 디비로부터 값을 읽어온후 자
+바스크립트에서 escape, unescape로 해결하시면 됩니다.

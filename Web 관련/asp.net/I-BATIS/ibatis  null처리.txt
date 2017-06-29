@@ -1,0 +1,51 @@
+
+
+
+<select>
+
+
+<isNull property="orderColumn">
+                order by Seq desc
+                ) AND p.Price_Market <![CDATA[<>]]> 0 AND p.State = 9 OR (p.permission='user' AND p.userId = #userId#)
+                <isNotNull property="searchKeyword">
+                    AND $keywordType$ like '%$searchKeyword$%'
+                </isNotNull>
+                <isNotEmpty property="providerCode">
+                    AND PR.Seq = #providerCode#
+                </isNotEmpty>
+                order by Seq desc
+            </isNull>
+            
+            <isNotNull property="orderColumn">
+                ORDER BY $orderColumn$ $orderType$, p.Seq desc
+                )
+                <isNotNull property="searchKeyword">
+                    and $keywordType$ like '%$searchKeyword$%'
+                </isNotNull>
+                ORDER BY $orderColumn$ $orderType$, p.Seq desc
+            </isNotNull>
+
+
+<isNotEmpty prepend="AND" property="MAKER">
+            <![CDATA[	MAKER = #MAKER#  ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="CAR_TON">
+            <![CDATA[	CAR_TON = #CAR_TON#  ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="CAR_GENRE">
+            <![CDATA[	CAR_GENRE = #CAR_GENRE#  ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="CAR_TYPE">
+            <![CDATA[	CAR_TYPE = #CAR_TYPE#  ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="CAR_AREA">
+            <![CDATA[	CAR_AREA = #CAR_AREA#  ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="CAR_YEAR">
+            <![CDATA[	 #StartYear# >=CAR_YEAR <= #EndYesr#  ]]>
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="CAR_USE">
+            <![CDATA[	CAR_USE = #CAR_USE#  ]]>
+        </isNotEmpty>
+
+</select>

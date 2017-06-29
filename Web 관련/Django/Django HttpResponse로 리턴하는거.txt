@@ -1,0 +1,15 @@
+[Django HttpResponse로 리턴하는거]
+
+https://docs.djangoproject.com/en/1.11/ref/request-response/
+
+
+from django.http import HttpResponse
+
+
+def Test(request):
+	response = HttpResponse("<script>alert('Test');</script>", content_type="text/html")
+	return response
+
+
+
+

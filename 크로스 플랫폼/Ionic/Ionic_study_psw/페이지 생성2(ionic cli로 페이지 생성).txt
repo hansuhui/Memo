@@ -1,0 +1,3 @@
+cmd창에서 'ionic g page 페이지명' 입력하면 페이지 생성
+
+페이지 생성 후 app.module.ts 파일에서 import 하고 페이지 추가

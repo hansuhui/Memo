@@ -1,0 +1,70 @@
+TOAD 단축키
+
+테이블 정보 상세보기 
+F4 : Tabel,View,Proc,Funct,Package를 DESC (테이블명 위에 커서를 두고 누르기)
+
+자동완성
+
+Ctrl +. : Table Completion (매칭되는 테이블 목록 출력)
+Ctrl + T Columns Dropdown (해당 테이블의 컬럼 목록 표시) 
+
+SQL문 실행
+
+F5 : SQL Editor내의 모든 SQL문 실행
+Ctrl + Enter : 현재 커서의 SQL문 실행
+F9 : SQL문 실행 후 Grid에 출력
+
+히스토리 (과거 수행 SQL문 조회)
+F8 : 과거에 실행한 SQL문 HISTORY 목록
+Alt + UP : Histoy Up
+Alt + DOWN  : Histoy down
+
+텍스트 대/소문자 변환
+
+CTRL + L : 텍스트 소문자화
+CTRL + U : 텍스트 대문자화
+
+주석처리
+
+CTRL + B : 주석처리
+CTRL + Shift + B : 주석해제
+
+
+편집 창 전환(이동)
+
+F6 : SQL Editor와 결과창간의 이동
+F2 : SQL Editor창 전체화면 전환
+Shift + F2 : Grid Output창 전체화면 전환
+
+원도우 전환 (이동)
+
+ESC : 열린 원도우 닫기
+Ctrl + Tab : MID Chile 원도우간 전화
+
+기타 단축키
+
+F1 : 도움말
+F7 : 화면을 모두 CLEAR
+Ctrl + Shift + F : 쿼리문을 정렬
+Ctrl + F9 : SQL문 Validate (SQL문을 수행하지 않음)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

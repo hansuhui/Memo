@@ -1,0 +1,1016 @@
+http://addio3305.tistory.com/79
+
+이번글에서는 지난번 게시판 목록에 이은 게시판 상세 및 등록, 삭제에 대해서 작성을 합니다.
+이번글까지 해서 간단한 게시판이 되고, 그 이후 파일업-다운로드, 페이징 등의 기능을 통해
+어느정도 틀이잡힌 게시판을 만들어나가려고 합니다.
+여기서는 인터넷에서 쉽게 접하는 방식과는 다르게 진행되는 부분도 있습니다.
+
+처음에는 혼란스러울수도 있는데, 프로젝트를 진행해나가면 오히려 더 편하고 개발을 쉽게 할수
+있기 때문에, 소개하려고 합니다.
+
+글을 시작하기에 앞서, 기존 게시판 목록 에서 게시글 모록을 조회하는 쿼리를 변경해주세요.
+
+SELECT
+    IDX,
+    TITLE,
+    HIT_CNT,
+    CREA_DTM
+FROM
+    TB_BOARD
+WHERE
+    DEL_GB = 'N'    
+ORDER BY IDX DESC
+
+
+1. 스타일 및 공통기능 작성
+
+[스타일]
+
+지난번 글에서는 스타일이 없어서 너무 허전해보였다. 그래서 간단히 스타일을 추가하자.
+src/main/webapp 폴더 밑의 css 폴더 밑에 ui.css 파일을 생성하고 다음의 내용을 작성한다.
+
+
+@CHARSET "UTF-8";
+ 
+a:link, a:visited {text-decoration: none; color: #656565;}
+ 
+.board_list {width:100%;border-top:2px solid #252525;border-bottom:1px solid #ccc}
+.board_list thead th:first-child{background-image:none}
+.board_list thead th {border-bottom:1px solid #ccc;padding:12px 0 13px 0;color:#3b3a3a;vertical-align:middle}
+.board_list tbody td {border-top:1px solid #ccc;padding:10px 0;text-align:center;vertical-align:middle}
+.board_list tbody tr:first-child td {border:none}
+.board_list tbody td.title {text-align:left; padding-left:20px}
+.board_list tbody td a {display:inline-block}
+ 
+.board_view {width:50%;border-top:2px solid #252525;border-bottom:1px solid #ccc}
+.board_view tbody th {text-align:left;background:#f7f7f7;color:#3b3a3a}
+.board_view tbody th.list_tit {font-size:13px;color:#000;letter-spacing:0.1px}
+.board_view tbody .no_line_b th, .board_view tbody .no_line_b td {border-bottom:none}
+.board_view tbody th, .board_view tbody td {padding:15px 0 16px 16px;border-bottom:1px solid #ccc}
+.board_view tbody td.view_text {border-top:1px solid #ccc; border-bottom:1px solid #ccc;padding:45px 18px 45px 18px}
+.board_view tbody th.th_file {padding:0 0 0 15px; vertical-align:middle}
+ 
+.wdp_90 {width:90%}
+.btn {border-radius:3px;padding:5px 11px;color:#fff !important; display:inline-block; background-color:#6b9ab8; border:1px solid #56819d;vertical-align:middle}
+
+
+[자바스크립트 공통함수]
+
+가장 자주 사용되는 두가지 기능을 만들려고 한다. 첫번째는 널(null) 체크하는 함수고,
+두번째는 submit 기능을 하는 함수를 만드려고 한다.
+널 체크는 따로 설명하지 않아도 그 필요성을 알것이라고 생각한다.
+
+두번째인 submit 기능을 하는 함수는 의아하게 생각할수도 있을것이다.
+보통 전송기능인 submit은 form 과 <input type="submit"> 을 많이 사용한다.
+그렇지만 이는 파라미터의 동적 추가나 공통젖ㄱ인 파라미터 추가, 아무것도 없을때의
+화면이동이 불편한 경우가 많다. 따라서 숨겨둔 form을 하나 만들어 놓고,
+그 폼을 이용하여 페이지의 이동 및 입력값 전송을 하려고 한다.
+지금은 이게 무슨 소리인지 이해가 안갈수도 있겠지만, 먼저 여기서는 일단 만들어놓고, 
+나중에 화면에서 어떻게 사용하는지 다시 설명하도록 하겠다.
+
+src/main/webapp 밑의 js 폴더에 common.js를 만들고 다음의 내용을 작성하자.
+
+
+function gfn_isNull(str) {
+    if (str == null) return true;
+    if (str == "NaN") return true;
+    if (new String(str).valueOf() == "undefined") return true;    
+    var chkStr = new String(str);
+    if( chkStr.valueOf() == "undefined" ) return true;
+    if (chkStr == null) return true;    
+    if (chkStr.toString().length == 0 ) return true;   
+    return false; 
+}
+ 
+function ComSubmit(opt_formId) {
+    this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
+    this.url = "";
+     
+    if(this.formId == "commonForm"){
+        $("#commonForm")[0].reset();
+    }
+     
+    this.setUrl = function setUrl(url){
+        this.url = url;
+    };
+     
+    this.addParam = function addParam(key, value){
+        $("#"+this.formId).append($("<input type='hidden' name='"+key+"' id='"+key+"' value='"+value+"' >"));
+    };
+     
+    this.submit = function submit(){
+        var frm = $("#"+this.formId)[0];
+        frm.action = this.url;
+        frm.method = "post";
+        frm.submit();   
+    };
+
+}
+
+여기서는 순수한 자바스크립트가 아닌 jQuery를 이용하여 함수를 작성하였다. 이를 위해서는 jQuery를 
+추가 해야하는데, 바로 밑에서 설명하겠다.
+
+
+[공통으로 포함될 헤더(header) 및ㅍ 바디(body) 파일 작성]
+
+위에서 작성된 스타일 시트 및 자바스크립트는 어떤 페이지에서도 공통적으로 사용된다.
+이를 각 화면마다 똑같이 추가하는 것은 비효율적이기 때문에, 하나의 파일에
+모든 리소스를 선언하고 그 파일을 include 하게 되면, 공통적으로 쓰이는 모든 기능을
+쉽게 관리할 수 있다.
+
+[include-header.jspf 파일작성]
+
+먼저 화면 상단에 포함이 되어야할 리소스를 선언할 파일이다. 여기에는 화면의 메타정보, 
+스타일 시트 및 화면 호출이 완료되기 전에 가져와야하는 스크립트 등이 선언된다.
+WEB-INF 폴더 밑의 include 폴더 밑에 include-header.jspf 파일을 만들고 다음의
+내용을 작성한다.
+
+
+<%@ page pageEncoding="utf-8"%>
+ 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>first</title>
+ 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+ 
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/ui.css'/>" />
+ 
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<c:url value='/js/common.js'/>" charset="utf-8"></script>
+
+jspf 파일은 web.xml을 이용하여 모든 페이지에 자동으로 포함되도록 할수 있는데
+여기서는 그 기능은 사용하지 않고, jsp 페이지에서 include를 하는 방식으로 진행할 것이다.
+그렇게 때문에 꼭 jspf로 만들필요는 없고, jsp 파일로 만들어도 무관하다.
+
+
+[include-body.jspf 파일 작성]
+
+다음은 화면 하단에 포함될 리소스가 선언된 파일이다. 여기에는 화면의 하단에
+공통적으로 사용할 태그나 조금 늦게 호출될 자바스크립트 등이 포함된다.
+여기서는 위에서 작성한 common.js에 있는 submit 기능을 위한 숨김 폼 하나만 넣어둔다.
+만드는 방법은 include-header.jspf 와 동일하다.
+
+<%@ page pageEncoding="utf-8"%>
+<form id="commonForm" name="commonForm"></form>
+
+
+
+2. 등록 페이지
+
+이제 본격적인 게시판 등록 페이지를 만들어보자.
+
+[화면구성]
+
+먼저 boardWrite.jsp 페이지를 만들고, 다음과 같이 작성한다.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<%@ include file="/WEB-INF/include/include-header.jspf" %>
+</head>
+<body>
+    <form id="frm">
+        <table class="board_view">
+            <colgroup>
+                <col width="15%">
+                <col width="*"/>
+            </colgroup>
+            <caption>게시글 작성</caption>
+            <tbody>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td><input type="text" id="TITLE" name="TITLE" class="wdp_90"></input></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="view_text">
+                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+         
+        <a href="#this" class="btn" id="write" >작성하기</a>
+        <a href="#this" class="btn" id="list" >목록으로</a>
+    </form>
+     
+    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+                     
+        });
+    </script>
+</body>
+</html>
+
+
+위에서도 언급했듯이 필자가 전문 퍼블리셔가 아닌 관계로 웹표준과 접근성에 맞춘 HTML 태그는 아니다. 
+
+단지 화면을 단순하게 보여주려는 목적임을 잊으면 안된다.
+
+
+
+
+먼저 5번, 32번줄을 보자. 아까 우리가 위에서 작성한 
+include-header.jspf, include-body.jspf 파일이 include가 되어있는것을 볼 수 있다. 
+
+앞으로 어떠한 화면을 만들더라도, <body> 태그 안쪽의 내용만 바뀌고, 
+나머지는 항상 똑같이 작성될것이다. 
+
+만약 include를 따로 작성하지 않았다면, 똑같은 코드를 여러번 복사붙여넣기를 해야한다. 
+
+
+
+그 다음으로는 이 화면이 제대로 만들어졌는지 확인하자. 
+
+SampleController.java에 이 화면을 호출하는 주소를 등록하자.
+
+
+@RequestMapping(value="/sample/openBoardWrite.do")
+public ModelAndView openBoardWrite(CommandMap commandMap) throws Exception{
+    ModelAndView mv = new ModelAndView("/sample/boardWrite");
+     
+    return mv;
+}
+
+
+여기서 위의 소스가 이해가 안되는 사람은 없을거라고 생각한다. 
+
+만약 이해가 안되는 부분이 있다면 그 전의 포스팅을 쭉 읽어보기를 바란다. 
+
+이제, 화면이 제대로 만들어졌는지 확인하기 위해 서버를 실행시키고 위의 주소를 입력하자.
+
+
+
+2.글 작성 및 목록으로 이동 가능
+
+먼저 목록으로 버튼 기능을 먼저 작성하도록 하겠다.
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#list").on("click", function(e){
+            e.preventDefault();
+            fn_openBoardList();
+        });     
+    });
+     
+    function fn_openBoardList(){
+        var comSubmit = new ComSubmit();
+        comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+        comSubmit.submit();
+    }
+</script>
+
+
+
+위에서 작성한 boardWrite.jsp 파일의 33번 줄부터 작성하면 된다. 
+
+먼저, var comSubmit = new ComSubmit(); 부분은 자바스크립트 객체를 생성하는 부분이다. 
+
+우리가 자바에서 객체를 생성할때와 비슷한 방식임을 알 수 있다. 위에서 common.js 에 submit 기능을 하는 함수를 만들었는데,
+
+그것이 ComSubmit 객체이다. 
+
+
+
+
+그 다음으로 ComSubmit 객체내의 setUrl 함수를 이용하여 호출하고 싶은 주소를 입력하도록 하였다. 
+
+여기서 <c:url 태그는 JSTL 태그로, 이 태그를 이용하여 ContextPath를 자동으로 붙이도록 하였다. 만약 JSTL을 이용하지 않는다면, 
+
+comSubmit.setUrl("/first/sample/openBoardList.do"); 라고 작성하면 된다. 
+
+그렇지만 필자는 <c:url> 태그를 이용하기를 권장한다.
+
+
+
+
+마지막으로 ComSubmit 객체의 submit 함수를 이용하여 전송(submit)을 하였다. 
+
+
+
+
+많은 사람들이 폼(form)을 이용하여 전송을 할때는 다음과 같이 폼을 만든다.
+
+<form id="frm" name="frm" method="post" action="/first/sample/openBoardList.do"></form>
+
+그 후, <input type="submit" value="전송"/>와 같은 태그를 이용하여 전송(submit)을 한다. 
+
+그렇지만 이 경우, 폼을 만들필요가 없는 부분에서도 폼을 만들거나, 동일한 내용을 반복해서 작성해야 하는 불편함이 있다. 
+
+그래서 필자는 위와같이 submit 기능을 하는 객체를 만들어서 사용한다. 
+
+지금 여기서는 오히려 더 불편하게 생각할수도 있는데, 프로젝트를 진행하다보면 이렇게 하는 방식의 장점을 발견할 수 있다.
+
+
+이렇게 작성을 하고 버튼을 눌렀을 때, 목록화면으로 이동하면 "목록으로" 기능은 완료된 것이다.
+
+
+작성하기 버튼 기능
+
+작성하기 기능은 목록으로 이동하는것보다 할일이 조금 더 많다. 자바 스크립트에서 서버로 데이터를 넘겨주고, 
+
+서버에서는 그 결과를 DB에 저장한 후, 다시 게시글 목록으로 이동시켜야 한다.
+
+먼저 스크립트부터 작성해보자. 
+
+
+$(document).ready(function(){
+    $("#list").on("click", function(e){ //목록으로 버튼
+        e.preventDefault();
+        fn_openBoardList();
+    });
+     
+    $("#write").on("click", function(e){ //작성하기 버튼
+        e.preventDefault();
+        fn_insertBoard();
+    });
+});
+ 
+function fn_openBoardList(){
+    var comSubmit = new ComSubmit();
+    comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+    comSubmit.submit();
+}
+ 
+function fn_insertBoard(){
+    var comSubmit = new ComSubmit("frm");
+    comSubmit.setUrl("<c:url value='/sample/insertBoard.do' />");
+    comSubmit.submit();
+}
+
+
+"목록으로" 버튼과 비슷하다. 차이점은 ComSubmit 객체를 생성할때 form의 
+아이디인 frm을 인자값으로 넘겨주었다.
+
+ComSubmit 객체는 객체가 생성될 때, 폼의 아이디가 인자값으로 들어오면 그 폼을 전송하고,
+
+파라미터가 없으면 숨겨둔 폼을 이용하여 데이터를 전송하도록 구현하였다. 
+
+따라서 전송할 데이터가 있는 frm이라는 id를 가진 form을 이용하도록 id를 넘겨주었다.
+
+
+
+다음으로는 서버의 Controller, Service, DAO, 쿼리를 작성할 차례다. 
+
+insert는 간단하기 때문에 각 파일에 해당하는 소스만 작성한다. 
+
+
+SampleController.java
+
+@RequestMapping(value="/sample/insertBoard.do")
+public ModelAndView insertBoard(CommandMap commandMap) throws Exception{
+    ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+     
+    sampleService.insertBoard(commandMap.getMap());
+     
+    return mv;
+}
+
+
+SampleService.java
+
+
+public interface SampleService {
+ 
+    List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception;
+ 
+    void insertBoard(Map<String, Object> map) throws Exception;
+ 
+}
+
+SampleServiceImpl.java
+
+@Override
+public void insertBoard(Map<String, Object> map) throws Exception {
+    sampleDAO.insertBoard(map);
+}
+
+
+SampleDAO.java
+
+public void insertBoard(Map<String, Object> map) throws Exception{
+    insert("sample.insertBoard", map);
+}
+
+Sample_SQL.xml
+
+<insert id="insertBoard" parameterType="hashmap">
+    <![CDATA[
+        INSERT INTO TB_BOARD
+        (
+            IDX,
+            TITLE, 
+            CONTENTS, 
+            HIT_CNT, 
+            DEL_GB, 
+            CREA_DTM, 
+            CREA_ID
+        )
+        VALUES
+        (
+            SEQ_TB_BOARD_IDX.NEXTVAL, 
+            #{TITLE}, 
+            #{CONTENTS}, 
+            0, 
+            'N', 
+            SYSDATE, 
+            'Admin'
+        )
+    ]]>
+</insert>
+
+
+
+전체적으로 큰 어려움은 없을것이라고 생각한다. 
+
+하나 살펴볼것은 XML에 작성된 쿼리다. 위에 작성된 쿼리는 지난번 게시판 목록 글(http://addio3305.tistory.com/72)에서 
+
+사용된 쿼리와 거의 유사하지만, 제목과 내용이 들어갈 부분에 #{TITLE},
+ #{CONTENTS}라고 되어있는것을 볼 수 있다. 
+
+MyBatis에서는 변수 대입을 #{변수명}으로 사용한다. 
+
+여기서 사용된 TITLE, CONTENTS라는 변수명은 위의 HTML 파일에서 제목과 내용을 입력받았던, 
+
+<input type="text" id="TITLE" name="TITLE" class="wdp_90"></input> 와
+
+<textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS"> 태그의
+
+name과 같다는것을 기억하자. 
+
+JSP 내의 Tag에 입력된 값은 그 태그의 name을 키(key)로 데이터가 서버에 전송이 된다. 
+
+그럼 서버를 실행시켜서 제목과 내용을 입력하고 저장하기 
+버튼을 눌러서 게시글이 전송되는지 확인하자.
+
+먼저 게시글의 제목과 내용에 각각 게시글 제목, 게시글 내용이라고 입력하였다. 
+그 후, 저장하기를 누르면 다음과 같이 목록으로 이동하고, 방금 작성한 내용이 있는것을 볼 수 있다.
+
+마지막으로 여기까지의 과정이 로그로 찍혀있음을 확인하자.
+
+이클립스의 로그창에 다음과 같은 로그가 찍혀있을 것이다. 
+
+여기서 잘 살펴보면 프로그램의 흐름이 보인다. 
+
+START, END로 구분되어진것이 하나의 호출이다. 
+
+보면 총 3번의 Controller 호출이 일어난것을 볼 수 있다.
+
+첫번째로는 게시글 작성 페이지를 호출한 openBoardWrite.do가 호출되었다.
+
+그 다음으로 중요한 게시글 작성이다. 
+
+먼저 insertBoard.do가 호출되었고, sample.insertBoard라는 
+id를 가진 쿼리가 실행되었음을 알 수 있다. 
+
+또한, 실행된 쿼리는 어떤지도 보여지고 있다. 
+
+[상세페이지]
+
+그렇게 정상적으로 저장이 완료된 후, openBoardList.do가 호출되고, 게시글 목록을 조회해오는것을 볼 수 있다.
+
+이제 게시글 작성이 완료되었으니, 작성한 게시글을 볼 수 있는 상세페이지를 만들 차례이다. 
+
+먼저 게시글 목록페이지를 약간 수정해서, 게시글 제목을 클릭할 경우 그에 해당하는 상세페이지를 호출하도록 변경하자.
+
+boardList.jsp 파일을 다음과 같이 수정한다.
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<%@ include file="/WEB-INF/include/include-header.jspf" %>
+</head>
+<body>
+    <h2>게시판 목록</h2>
+    <table class="board_list">
+        <colgroup>
+            <col width="10%"/>
+            <col width="*"/>
+            <col width="15%"/>
+            <col width="20%"/>
+        </colgroup>
+        <thead>
+            <tr>
+                <th scope="col">글번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">조회수</th>
+                <th scope="col">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:choose>
+                <c:when test="${fn:length(list) > 0}">
+                    <c:forEach items="${list }" var="row">
+                        <tr>
+                            <td>${row.IDX }</td>
+                            <td class="title">
+                                <a href="#this" name="title">${row.TITLE }</a>
+                                <input type="hidden" id="IDX" value="${row.IDX }">
+                            </td>
+                            <td>${row.HIT_CNT }</td>
+                            <td>${row.CREA_DTM }</td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="4">조회된 결과가 없습니다.</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
+        </tbody>
+    </table>
+    <br/>
+    <a href="#this" class="btn" id="write">글쓰기</a>
+     
+    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#write").on("click", function(e){ //글쓰기 버튼
+                e.preventDefault();
+                fn_openBoardWrite();
+            }); 
+             
+            $("a[name='title']").on("click", function(e){ //제목 
+                e.preventDefault();
+                fn_openBoardDetail($(this));
+            });
+        });
+         
+         
+        function fn_openBoardWrite(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardWrite.do' />");
+            comSubmit.submit();
+        }
+         
+        function fn_openBoardDetail(obj){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardDetail.do' />");
+            comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
+            comSubmit.submit();
+        }
+    </script> 
+</body>
+</html>
+
+
+지난 글에서 작성했던 목록에서 약간 바뀌었다. 
+
+일단 위에서 설정한것처럼 include 파일을 포함시키고, 테이블의 제목에 <a> 태그를 이용하여 링크가 가능하도록
+
+수정하였다. 또한 각 게시글을 조회할 때 필요한 정보인 해당 게시글의 번호를 알기 위해서 <a> 태그와 더불어 
+
+<input type="hidden"> 태그를 이용하여 각 글번호를 숨겨두었다. 
+
+
+
+
+목록의 제목을 클릭 하였을때의 이벤트를 바인딩하는것은 58번째 줄 부터이다. 
+
+각 제목을 클릭하면 fn_openBoardDetail 이라는 함수가 실행된다. 
+
+이 함수가 실행될때 인자값으로 $(this)가 넘겨지는것을 볼 수 있다. 이는 jQuery 객체를 뜻하는데, 여기서는 게시글 제목인 <a> 태그를 의미한다. 
+
+fn_openBoardDetail에서는 기존과 달라진점은 addParam 이라는 함수를 사용한 점이다.
+
+위에서 ComSubmit 객체를 만든 이유중에 하나가 폼에 동적으로 값을 추가하는 기능을 편하게 사용하기 위함이라고 
+
+이야기 했었는데, addParam이라는 함수가 그 역할을 해준다. 
+addParam은 서버로 전송될 키(key)와 값(value)를 인자값으로 받는다. 
+
+obj.parent().find("#IDX").val()은 jQuery를 이용하여 선택된 <a> 태그의 부모 노드 내에서 
+IDX라는 값을 가진 태그를 찾아서,
+
+그 태그의 값을 가져오도록 한 것이다. 
+이 글에서는 jQuery에 대한 내용을 이야기하려는 것이 아니니, 이정도로 설명하고 넘어가겠다.
+
+
+
+그 다음으로는 상세화면 페이지를 먼저 작성하자.
+boardDetail.jsp를 생성하고 다음의 내용을 작성한다.
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<%@ include file="/WEB-INF/include/include-header.jspf" %>
+</head>
+<body>
+    <table class="board_view">
+        <colgroup>
+            <col width="15%"/>
+            <col width="35%"/>
+            <col width="15%"/>
+            <col width="35%"/>
+        </colgroup>
+        <caption>게시글 상세</caption>
+        <tbody>
+            <tr>
+                <th scope="row">글 번호</th>
+                <td>${map.TITLE }</td>
+                <th scope="row">조회수</th>
+                <td>${map.HIT_CNT }</td>
+            </tr>
+            <tr>
+                <th scope="row">작성자</th>
+                <td>${map.CREA_ID }</td>
+                <th scope="row">작성시간</th>
+                <td>${map.CREA_DTM }</td>
+            </tr>
+            <tr>
+                <th scope="row">제목</th>
+                <td colspan="3">${map.TITLE }</td>
+            </tr>
+            <tr>
+                <td colspan="4">${map.CONTENTS }</td>
+            </tr>
+        </tbody>
+    </table>
+     
+    <a href="#this" class="btn" id="list">목록으로</a>
+    <a href="#this" class="btn" id="update">수정하기</a>
+     
+    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#list").on("click", function(e){ //목록으로 버튼
+                e.preventDefault();
+                fn_openBoardList();
+            });
+             
+            $("#update").on("click", function(e){
+                e.preventDefault();
+                fn_openBoardUpdate();
+            });
+        });
+         
+        function fn_openBoardList(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+            comSubmit.submit();
+        }
+         
+        function fn_openBoardUpdate(){
+            var idx = "${map.IDX}";
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardUpdate.do' />");
+            comSubmit.addParam("IDX", idx);
+            comSubmit.submit();
+        }
+    </script>
+</body>
+</html>
+
+전체적으로 봤을 때, 게시글 작성과 많이 차이나지는 않는다.
+단지, 상세글이기 때문에 글 번호,조회수, 작성자, 작성시간을 추가로 보여주면서, 
+편집이 불가능하도록 input 태그를 사용하지 않았다.
+
+[Java]
+
+먼저 전체적으로 쭉 소스를 작성하고, 필요한 내용을 간단히 설명하려고 한다.
+
+SampleController.java
+
+@RequestMapping(value="/sample/openBoardDetail.do")
+public ModelAndView openBoardDetail(CommandMap commandMap) throws Exception{
+    ModelAndView mv = new ModelAndView("/sample/boardDetail");
+     
+    Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
+    mv.addObject("map", map);
+     
+    return mv;
+}
+
+
+SampleService.java
+
+Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception;
+
+SampleServiceImpl.java
+
+@Override
+public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception {
+    sampleDAO.updateHitCnt(map);
+    Map<String, Object> resultMap = sampleDAO.selectBoardDetail(map);
+    return resultMap;
+}
+
+
+SampleDAO.java
+
+
+public void updateHitCnt(Map<String, Object> map) throws Exception{
+    update("sample.updateHitCnt", map);
+}
+ 
+@SuppressWarnings("unchecked")
+public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception{
+    return (Map<String, Object>) selectOne("sample.selectBoardDetail", map);
+}
+
+전체적으로 여태까지 해왔던 부분에서 크게 다른점은 없다. 
+
+먼저 컨트롤러에서 방금 작성한 boardDetail를 호출할 주소를 등록하였다.
+
+그리고 게시판 상세 내용은 목록과는 다르게 단 하나의 행(reocrd)만 조회하기 때문에, 
+Map의 형태로 결과값을 받았다.
+
+SampleServiceImpl 에서는 기존과 다르게 2개의 DAO를 호출한다.
+여기서 굉장히 중요한점이 있다.
+
+게시글 셍사를 조회하기 위해서는 다음의 두가지의 동작이 필요하다.
+1) 해당 게시글의 조회수를 1 증가시킨다.
+2) 게시글의 상세 내용을 조회한다.
+
+즉,이 두가지 동작은 하나의 트랜잭션으로 처리가 되어야 하는 부분이다.
+실제 주소가 등록되는 Controller 에는 하나의 URL만 등록이 된다.
+앞에서 ServiceImpl 에는 하나의 페이지를 호출할 때 필요한 비지니스 로직을 묶어서
+처리하는 곳이라고 이야기하였다.
+
+여기서는 게시글의 조회하기 위해서 위의 2가지 동작을 수행하는 역할을 하고 있다.
+DAO는 단순히 DB에 접속하여 데이터를 조회하는 역할만 수행하는 클래스다.
+따라서 DAO에서 2개 이상의 동작을 수행하면 안된다.
+
+마지막으로 DAO에서는 위에서 설명한 두가지 동작에 대한 쿼리를 각각 호출하도록 하였다.
+updateHitCnt 라는 쿼리와 selectBaordDetail 이라는 쿼리를 각각 수행하는 것을 볼 수 있다.
+
+
+3. SQL
+마지막으로 쿼리를 볼 차례이다.
+쿼리는 특별히 어려운점이 없으니 소스만 보고 넘어가도록 하겠다.
+
+
+<update id="updateHitCnt" parameterType="hashmap">
+    <![CDATA[
+        UPDATE TB_BOARD 
+        SET
+            HIT_CNT = NVL(HIT_CNT, 0) + 1
+        WHERE
+            IDX = #{IDX}    
+    ]]>
+</update>
+ 
+<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+    <![CDATA[
+        SELECT
+            IDX,
+            HIT_CNT,
+            CREA_ID,
+            CREA_DTM,
+            TITLE,
+            CONTENTS
+        FROM
+            TB_BOARD
+        WHERE
+            IDX = #{IDX}        
+    ]]>
+</select>
+
+이렇게 작성을 완료하였으면 정확히 개발도었는지 확인해보자.
+먼저 목록 화면을 호출하자.
+
+스크린샷을 찍을때는 안나왔지만, 현재 2번 글인 게시글 제목 이라는 곳에 마우스를 올려놓았다.
+정상적으로 되었으면 마우스가 손 모양으로 바뀌었을 것이다.
+그러면서 하단 좌측 하단에 해당 글의 링크 주소를 보여주고 있는것도 확인한 후에, 제목을 클릭하자.
+
+위와 같이 게시글 상세 화면이 정상적으로 나오는것을 볼 수 있다.
+마지막으로 콘솔창의 로그를 확인해보자.
+
+로그에서 우리가 호출했던 두가지 쿼리, updateHitCnt와 selectBoardDetail이 각각 실행되었음을
+알 수 있다. 여기서 잘 보면 쿼리는 2개가 실행되었지만 단 하나의 START,END를 볼 수있다.
+(사실 현재까지에서는 트랜잭션 설정이 되어있지 않다. 여기서는 그걸 위해서 틀을 잡아놓았을
+뿐이고, 추후 트랙잭션 설정을 하면서 왜 이렇게 작성하는지 다시 한번 살펴보도록 할 예정이다.)
+
+[수정 페이지]
+
+1. JSP
+수정 페이지는 앞의 상세페이지와 다를게 거의 없다. 
+단지, 제목과 내용을 입력받을수 있도록 변경하고, 삭제하기 버튼이 추가되었다.
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<%@ include file="/WEB-INF/include/include-header.jspf" %>
+</head>
+<body>
+    <form id="frm">
+        <table class="board_view">
+            <colgroup>
+                <col width="15%"/>
+                <col width="35%"/>
+                <col width="15%"/>
+                <col width="35%"/>
+            </colgroup>
+            <caption>게시글 상세</caption>
+            <tbody>
+                <tr>
+                    <th scope="row">글 번호</th>
+                    <td>
+                        ${map.IDX }
+                        <input type="hidden" id="IDX" name="IDX" value="${map.IDX }">
+                    </td>
+                    <th scope="row">조회수</th>
+                    <td>${map.HIT_CNT }</td>
+                </tr>
+                <tr>
+                    <th scope="row">작성자</th>
+                    <td>${map.CREA_ID }</td>
+                    <th scope="row">작성시간</th>
+                    <td>${map.CREA_DTM }</td>
+                </tr>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td colspan="3">
+                        <input type="text" id="TITLE" name="TITLE" class="wdp_90" value="${map.TITLE }"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="view_text">
+                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS">${map.CONTENTS }</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+     
+    <a href="#this" class="btn" id="list">목록으로</a>
+    <a href="#this" class="btn" id="update">저장하기</a>
+    <a href="#this" class="btn" id="delete">삭제하기</a>
+     
+    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#list").on("click", function(e){ //목록으로 버튼
+                e.preventDefault();
+                fn_openBoardList();
+            });
+             
+            $("#update").on("click", function(e){ //저장하기 버튼
+                e.preventDefault();
+                fn_updateBoard();
+            });
+             
+            $("#delete").on("click", function(e){ //삭제하기 버튼
+                e.preventDefault();
+                fn_deleteBoard();
+            });
+        });
+         
+        function fn_openBoardList(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+            comSubmit.submit();
+        }
+         
+        function fn_updateBoard(){
+            var comSubmit = new ComSubmit("frm");
+            comSubmit.setUrl("<c:url value='/sample/updateBoard.do' />");
+            comSubmit.submit();
+        }
+         
+        function fn_deleteBoard(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/deleteBoard.do' />");
+            comSubmit.addParam("IDX", $("#IDX").val());
+            comSubmit.submit();
+             
+        }
+    </script>
+</body>
+</html>
+
+
+2. Java
+JSP 파일과 마찬가지로 별달리 언급할 내용이 없다. 소스에도 어려운 부분이 없다.
+
+SampleController.java
+
+
+@RequestMapping(value="/sample/openBoardUpdate.do")
+public ModelAndView openBoardUpdate(CommandMap commandMap) throws Exception{
+    ModelAndView mv = new ModelAndView("/sample/boardUpdate");
+     
+    Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
+    mv.addObject("map", map);
+     
+    return mv;
+}
+ 
+@RequestMapping(value="/sample/updateBoard.do")
+public ModelAndView updateBoard(CommandMap commandMap) throws Exception{
+    ModelAndView mv = new ModelAndView("redirect:/sample/openBoardDetail.do");
+     
+    sampleService.updateBoard(commandMap.getMap());
+     
+    mv.addObject("IDX", commandMap.get("IDX"));
+    return mv;
+}
+
+SampleService.java
+
+void updateBoard(Map<String, Object> map) throws Exception;
+
+SampleServiceImpl.java
+
+@Override
+public void updateBoard(Map<String, Object> map) throws Exception{
+    sampleDAO.updateBoard(map);
+}
+
+
+SampleDAO.java
+
+public void updateBoard(Map<String, Object> map) throws Exception{
+    update("sample.updateBoard", map);
+}
+
+SampleController 에서 게시글을 수정하고 나면, 해당 게시글의 셍사화면으로 이동하도록 하였다.
+따라서, 해당 게시글의 글 번호를 mv.addObject 메서드를 이용하여 다시 전송하도록 하였다.
+
+
+3.SEQ
+
+<update id="updateBoard" parameterType="hashmap">
+    <![CDATA[
+        UPDATE TB_BOARD 
+        SET
+            TITLE = #{TITLE},
+            CONTENTS = #{CONTENTS}
+        WHERE
+            IDX = #{IDX}    
+    ]]>
+</update>
+
+5. 게시글 삭제
+
+
+SampleController.java
+
+@RequestMapping(value="/sample/deleteBoard.do")
+public ModelAndView deleteBoard(CommandMap commandMap) throws Exception{
+    ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+     
+    sampleService.deleteBoard(commandMap.getMap());
+     
+    return mv;
+}
+
+SampleService.java
+
+void deleteBoard(Map<String, Object> map) throws Exception;
+
+SampleServiceImpl.java
+
+@Override
+public void deleteBoard(Map<String, Object> map) throws Exception {
+    sampleDAO.deleteBoard(map);
+}
+
+
+SampleDAO.java
+
+public void deleteBoard(Map<String, Object> map) throws Exception{
+    update("sample.deleteBoard", map);
+}
+
+
+여기서 살펴봐야 할것은 SampleDAO.java에서 update문을 호출하였다는 것이다. 
+
+좀있다 쿼리에서 볼수 있겠지만, delete문을 통해서 게시글을 삭제하기보다는 
+구분값을 변경하여 게시글의 삭제 여부를 변경하려고 한다.
+
+
+2. SQL
+
+<update id="deleteBoard" parameterType="hashmap">
+    <![CDATA[
+        UPDATE TB_BOARD
+        SET
+            DEL_GB = 'Y'
+        WHERE
+            IDX = #{IDX}
+    ]]>
+</update>
+
+
+쿼리의 id는 delete라고 붙였지만, 실제 실행되는것은 update인것을 유의하자.
+
+지난번 게시판 목록글에서 TB_BOARD 테이블에 DEL_GB 컬럼을 만들었다. 
+
+이 컬럼은 해당 게시글의 삭제여부를 저장하는 컬럼으로, DEL_GB = 'Y"이면 삭제가 된 글로 처리한다.
+
+만약 해당 게시글을 완전히 삭제시키려고 하면, update문 대신 delete문을 실행시키면 된다.
+
+
+이제 삭제하기의 결과를 확인할 차례다
+

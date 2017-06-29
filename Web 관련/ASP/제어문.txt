@@ -1,0 +1,96 @@
+[조건문]
+
+-if문
+
+if 조건 then
+ 코드
+end if
+
+
+if 조건 then
+ 코드
+Elseif 조건 then
+ 코드
+Else
+ 코드
+end if
+
+
+-Select Case 문
+
+Select Case (조건식 또는 변수)
+
+Case 값1
+    문장1
+Case 값2
+    문장2
+Case 값3
+    문장3
+Case Else
+    그 밖의
+End Select
+
+
+
+[반복문]
+
+- For ..Next 문
+[Exit For] = 걸리면 For문에서 빠져나옴
+
+For 변수 = 초기값 to 최종값 [step 증가치] 
+  문장들
+[Exit For] = 걸리면 For문에서 빠져나옴
+Next
+
+For k=0 to 1000 step 5
+ 문장 
+Next
+
+
+- For Each...Next 문
+[Exit For] = 걸리면 For문에서 빠져나옴
+
+For Each 요소 in 배열 (또는 컬렉션)
+	문장
+Next
+
+
+
+-Do While .. Loop 문
+[Exit Do] = 빠져나옴
+
+Do While (조건)
+ 문장
+ [Exit Do] = 빠져나옴
+Loop
+
+
+- Do Until...Loop
+
+Do Until (조건)
+  문장들
+  [Exit Do]
+  문장들
+Loop
+
+
+Do 
+  문장들
+  [Exit Do]
+  문장들
+Loop Until (조건)
+
+
+
+-While... Wend 문
+
+While (조건)
+  문장들
+Wend
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+http://zetawiki.com/wiki/CentOS_JDK_%EC%84%A4%EC%B9%98
+
+
+[자바 버전 확인]
+yum list java*jdk-devel
+
+
+[자바 설치]
+yum install java-1.7.0-openjdk-devel.x86_64
+
+[설치 확인]
+rpm -qa java*jdk-devel
+javac - verstion
+
+

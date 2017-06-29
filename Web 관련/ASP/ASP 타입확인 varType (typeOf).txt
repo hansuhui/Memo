@@ -1,0 +1,55 @@
+http://topboy.tistory.com/34
+
+
+
+ 변수의 타입을 검사하는 함수
+typeOf와 같은 함수이구요. 결과값은 아래와 같은 값을 뱉어 내는군요.
+ 
+ex)
+<% whatsubtype="This is 문자열" %> 
+<% =VarType(whatsubtype) %> 
+ 
+8 
+ 
+<% whatsubtype=1004 %> 
+<% =VarType(whatsubtype) %> 
+ 
+2
+
+
+
+CONSTANT/VALUE/DESCRIPTION
+
+VBEmpty/0/Uninitialized
+
+VBNull/1/Contains no valid data
+
+VBInteger/2/Integer subtype
+
+VBLong/3/Long subtype
+
+VBSingle/4/Single subtype
+
+VBDouble/5/Double subtype
+
+VBCurrency/6/Currency subtype
+
+VBDate/7/Date subtype
+
+VBString/8/String subtype
+
+VBObject/9/Object
+
+VBError/10/Error subtype
+
+VBBoolean/11/Boolean subtype
+
+VBVariant/12/Variant (only use for arrays of variants)
+
+VBDataObject/13/Data access object
+
+VBDecimal/14/Decimal subtype
+
+VBByte/17/Byte subtype
+
+VBArray/8192/Array

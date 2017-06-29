@@ -1,0 +1,134 @@
+참조 
+
+http://blog.naver.com/cburang/220297397036
+
+
+1.애니메이션
+
+.animate(properties [,duration][,easing][,complete])
+
+애니메이션 효과(어떤값을 얼만큼 [,시간동안][,어떤이징으로][,완료되었을땐?])
+
+
+예제
+!! 자리 움직이기 (요거는 크게 사용이 있을까 싶지만, hover 했을때 옆으로 빠져서 커져라 같은거 시킬수있겠음
+<script>
+$( "#right" ).click(function() {   $( ".block" ).animate({ "left": "+=50px", "fast" );});
+$( "#left" ).click(function(){    $( ".block" ).animate({ "left": "-=50px"}, "slow" );});
+</script>
+
+
+
+2.페이드인
+
+.fadeIn([duration][,complete])
+
+
+!!!바디에있는 어느거든 일단 클릭하면 (디스플레이 논으로 안보이던)div가 천천히 보여진다 --> 순서대로
+
+<script>
+$( document.body ).click(function() {  $( "div:hidden:first" ).fadeIn( "slow" );});
+</script> 
+
+!!! 하나만 쓰면 메뉴바 만들기
+<script>
+$( document.body ).click(function() {  $( "div" ).fadeToggle( "slow" );});
+</script>
+
+!!! 에이를 클릭하면 박스가 가리고 나서 완료되면 스팬의 글자가 서서히 나타난다
+<script>
+$( "a" ).click(function() {
+  $( "div" ).fadeIn( 3000, function() {$( "span" ).fadeIn( 100 );  });
+ return false;});
+ 
+</script>
+
+3.토글(쇼하이드)
+
+.toggle([duration][,complete])
+
+
+!!! 안보이는 아이랑 보이는 아이 번갈아가며 나오기
+<body>
+<button>Toggle</button>
+<p>Hello</p>
+<p style="display: none">Good Bye</p>
+<script>
+$( "button" ).click(function() {
+  $( "p" ).toggle();
+});
+</script>
+</body>
+
+!!! 버튼누르면 쇼하이드 번갈아가며 나타나라
+<body>
+<button>Toggle 'em</button>
+<p>Hiya</p>
+<p>Such interesting text, eh?</p>
+<script>
+$( "button" ).click(function() {
+  $( "p" ).toggle( "slow" );
+});
+</script>
+</body>
+
+!!! 영역을 클릭하면 디스플레이 논 되어있는 스판이 css가 보여지게했다가 페이드아웃되어라
+<head>
+<style>span{ display: none; } </style></head>
+<body>
+<p><input type="text"> <span>focus fire</span></p>
+<p><input type="password"> <span>focus fire</span></p>
+ <script>$( "input" ).focus(function() {  $( this ).next( "span" ).css( "display", "inline" ).fadeOut( 1000 );});</script>
+ </body> 
+
+4.슬라이드다운
+
+.slideDown([duration][,complete])
+
+!!! 만약 처음에 안보이면 누르면슬라이드다운, 또 누르면 가려라
+<style>div {    background: #de9a44;    margin: 3px;    width: 80px;    height: 40px;    display: none;    float: left;  }  </style>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+Click me!
+<div></div>
+<div></div>
+<div></div>
+ 
+<script>
+$( document.body ).click(function () {
+  if ( $( "div:first" ).is( ":hidden" ) ) {
+   $( "div" ).slideDown( "slow" );
+  } else {
+   $( "div" ).hide();
+  }
+});</script> 
+
+
+
+5.포지션값을 읽어라
+.position() 
+<style>
+div {    padding: 15px;  }
+p {    margin-left: 10px;  }
+</style>
+</head>
+<body>
+<div>
+<p>Hello</p>
+</div>
+<p></p>
+<script>
+var p = $( "p:first" );
+var position = p.position();
+$( "p:last" ).text( "left: " + position.left + ", top: " + position.top );
+</script>
+</body>
+
+
+
+
+
+
+

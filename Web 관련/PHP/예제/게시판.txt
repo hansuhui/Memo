@@ -1,0 +1,113 @@
+<?php
+require_once "common.php";    //common function
+require_once "mydb.php";    //db class
+class board
+{
+   var $db;
+   var $FNAME;
+   var $LIST_SIZE, $SQL_LIST;
+   var $TOTAL;
+   var $pagelist;
+   var $start;
+   function board($db)
+   {
+       $this->db=$db;
+       $this->FNAME=$_SERVER[PHP_SELF];
+   }
+   function config($totalsql, $listsql, $listsize)
+   {
+       $this->TOTAL=$this->db->qo($totalsql)+0;
+       $this->SQL_LIST=$listsql;
+       $this->LIST_SIZE=$listsize;
+   }
+   function blist($page, $add='', $pageline=10)
+   {
+       if(!$page) $page=1;
+       $this->pagelist=paging($this->FNAME, $page, $this->TOTAL, $this->LIST_SIZE, $pageline, $add, $start, $end);
+       if($start) $start--;
+       $sql=$this->SQL_LIST. " limit $start, ". $this->LIST_SIZE;
+       $data=$this->db->q($sql);
+       $this->start= $this->TOTAL - $start ;     //게시물의 번호를 얻기위한 변수
+       return $data;
+   }
+}
+?>
+
+
+
+=============================================================
+
+
+<?php
+class boardarr
+{
+   var $FNAME;
+   var $data;
+   function boardarr()
+   {
+       $this->FNAME=$_SERVER[PHP_SELF];
+   }
+   function config($data, $listsize)
+   {
+       $this->data=$data;
+       $this->LIST_SIZE=$listsize;
+   }
+   function blist($page, $add='', $pageline=10)
+   {
+       if(!$page) $page=1;
+       $total=count($this->data);
+       $this->pagelist=paging($this->FNAME, $page, $total, $this->LIST_SIZE, $pageline, $add, $start, $end);
+       if($start) $start--;
+       $data=array_slice($this->data, $start, $this->LIST_SIZE);
+               
+       $this->start= $this->TOTAL - $start ;
+       return $data;
+   }
+   function csort($array, $column, $ops=0)    // 디폴트 내림차순
+   {
+       foreach($array as $key => $val)
+       {
+           if($val[$column] != false)
+           {
+               $array2[]=$val;
+           }
+       }
+       for($i=0; $i<count($array2); $i++){
+               $sortarr[]=$array2[$i][$column];
+       }
+       $op = array(SORT_DESC, SORT_ASC);     // 내림차순 : 오름차순
+       @array_multisort($sortarr, $op[$ops], $array2);
+       return($array2);
+   }
+}
+?>
+
+
+
+======================================
+
+
+<?php
+require_once "boardarr.php";
+//예제 배열 데이타
+$data[0][no]=1;
+$data[1][no]=2;
+$data[2][no]=3;
+$data[3][no]=4;
+$data[0][title]="aaa";
+$data[1][title]="bbb";
+$data[2][title]="ccc";
+$data[3][title]="ddd";
+$page=$_REQUEST[page];    //현재 페이지를 받는다
+$board=new boardarr();    //클래스 생성
+$data=$board->csort($data, 'no');    //no 를 기준으로 배열을 정렬한다
+$board->config($data, 10);    //배열 데이타와 한페이지에 보여줄갯수를 설정한다
+$add="&age=$age&date=$date";     //검색후 페이지 이동시 추가정보
+$data=$board->blist($page, $add);    //현재 페이지와 페이지 이동시 추가적인 정보를 전달한다
+foreach($data as $key => $val)
+{
+   $no=$board->start - $key;    //현재 글의 번호를 만든다
+   echo "$no - $val[no] - $val[title]";    //글번호 - 번호 - 제목 을 출력한다
+}
+echo $pagelist;    //페이지 넘기는 부분[이전] [1] [2] [3] [다음] 출력 common.php 안에 참고
+?>

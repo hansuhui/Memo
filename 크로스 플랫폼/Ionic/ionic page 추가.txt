@@ -1,0 +1,9 @@
+https://devdactic.com/login-ionic-2/
+
+ionic2 page 추가 방법
+
+ionic g page register
+
+ionic g page login
+
+ionic g page 추가할 페이지명

@@ -1,0 +1,138 @@
+http://mrw0119.tistory.com/24
+
+[LINQ 란]
+
+LINQ(링크)는 Language Integrated Query의 약자로, 직역하면 '질의로 통합된 언어'이다
+그냥 쉽게 말해 '데이터에 대해 질문하는 언어'라고 볼 수있다.
+
+C#에서는 데이터에 대해 질문하는 LINQ(링크)라는 기능을 제공한다.
+LINQ의 역할은 데이터에 대해 질문하고 , 그 답에 해당하는 데이터를 찾는 것이다.
+
+이러한 LINQ의 질의 기능은 프로그램에서 데이터 검색을 겁나 편리하게 해준다.
+예를 들어 결혼정보업체에서 한국의 모든 사람에 대한 데이터를 가지고 있는데,
+그 중에 여자이면서 20세 이상 성인들의 데이터를 어린 나이 순으로 찾는다고 치자.
+
+그럼 데이터를 하나하나 검색하면서 이런 질문을 던질 수 있을 것이다.
+
+첫번째, 여자인가?
+두번째 (검색된 여자 중에서) 20세가 넘는 성인인가?
+세번째.(검색된 성인여자 중에서) 나이가 어린가?
+
+이렇게 세 질문을 거치면 성인 여자를 어린 나이 순으로 찾을 수 있다.
+위의 질문들을 LINQ 쿼리식으로 작성하면 다음과 같다.
+
+
+Woman [] wonamList = 
+{
+ new wonam() { name="이름" , name="24"},
+ new wonam() { name="이름" , name="24"},
+ new wonam() { name="이름" , name="24"}
+};
+
+var women = 
+         from   wonam in womanList // LIst 에서 여자인가
+         where  woman.age > 20     // 20세가 넘는 성인을
+         orderby wonam.age         //나이 순으로 정렬하여
+         select woman;		   //배열 데이터로 추출한다.
+
+
+만약 이를 LINQ 없이 코드로만 작성하면 매우 긴 코드가 나온다.
+
+
+[from]
+
+데이터를 검색하기 위해서는 우선적으로 데이터를 검색할 범위를 지정해 주어야 한다.
+그 역할을 해주는 것이 from 절이다.
+
+이제 from에서 범위를 지정해주면 그 범위 내에서 데이터 검색이 시작되기 때문에
+모든 LINQ 쿼리식(Query Expression)은 반드시 from으로 시작해야 한다.
+
+from절의 작성 형식은 foreach  문과 거의 비슷하다.
+
+Ex) foreach(var element in array)  == from element in array
+
+(
+ [foreach 문과 from 절의 element 변수의 차이점] 
+  foreach의 element 변수에는 실제로 array의 데이터가 저장된다.
+  하지만 LINQ에서는 element 변수에 데이터가 저장되지 않고,
+  단순히 'array에 존재하는 요소'라는 의미로만 사용된다.
+)
+
+from에서 사용가능한 타입은 IEnumerable<T> 인터페이스를 상속하는 타입이다.
+C#에서의 배열이나 컬렉션등은 모드 IEnumerable<T>을 상속하기 때문에
+배열이나 컬렉션 타입이라면 전부 사용가능하다.
+
+
+[where]
+
+from으로 검색 범위를 지정하였다면, where은 범위 내에서 데이터를 걸러내는 
+필터 역할을한다. 
+
+따라서 where 에서는 데이터를 걸러내기 위한 필터 조건을 작성해 주면 된다.
+그러면 해당 조건에 참이 되는 데이터만 걸러지게 된다.
+
+
+[orderby]
+
+orderby는 걸러진 데이터를 정렬해주는 연산자이다.
+기본값으로 오름차순 정렬을 사용하기 떄문에
+정렬 키워드 없이 정렬 기준만 제시하면, 그 기준에 따라 오름차순으로 정렬해준다.
+
+orderby wonam.age ascending (오름)
+orderby wonam.age descending (내림)
+
+가독성을 위해 올므차순 과 내림차순을 명시해주는 것이 좋다고 본다.
+
+
+[select]
+
+최종적으로 검색된 데이터를 추출하는 역할을 한다.
+추출된 데이터의 타입은 select절의 지정한 변수의 타입으로 결정되며,
+무명형식(타입)으로 만들어서 추출할 수도 있다.
+
+지금까지의 내용을 간단히 프로그램으로 작성해 보자.
+
+
+- 예제 -
+
+
+using System;
+using System.Linq;
+
+
+namespace Console1
+{
+    class Woman {
+        public string name { get; set; }
+        public int age { get; set; }
+    }
+    class LINQ_Ex
+    {
+        public void Main() {
+            Woman[] wonameList = {
+                new Woman() { name="아라",age=24 },
+                new Woman() { name="민희",age=20 },
+                new Woman() { name="현아",age=32 },
+                new Woman() { name="수지",age=20 }
+            };
+
+
+            var Women_arr = from woman in wonameList
+                        where woman.age > 20
+                        orderby woman.age ascending
+                        select new
+                        {
+                            title = "성인 여자",
+                            name = woman.name
+                        };
+
+            foreach (var i in Women_arr) {
+                Console.WriteLine("{0} : {1}", i.title, i.name);
+            }
+
+        }
+    }
+}
+
+
+

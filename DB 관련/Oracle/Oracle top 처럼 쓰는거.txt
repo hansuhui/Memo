@@ -1,0 +1,5 @@
+select * from
+(
+select  a.MOVECODE,a.JONGTITLE,a.JONTTYPETITLE,a.GIFTTITLE,GIFTNO,b.GENERALACCOUNT1,b.REGDATE
+from MOVEDTL a join MOVEMST b on (a.MOVECODE = b.MOVECODE)   order by b.REGDATE desc  
+) a where ROWNUM = 1

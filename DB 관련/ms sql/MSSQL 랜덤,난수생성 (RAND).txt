@@ -1,0 +1,7 @@
+- MSSQL RAND 란?
+  RAND 0부터 1사이의 랜덤한 숫자를 발생시키는 함수입니다.
+
+ - MSSQL RAND 사용방법
+   RAND()
+
+ 

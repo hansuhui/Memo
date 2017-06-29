@@ -1,0 +1,85 @@
+http://www.happyjung.com/bbs/board.php?bo_table=lecture&wr_id=82
+
+
+
+클루드는 웹서버에서 컴파일되어 실행되는 기능입니다 
+사용되는 웹프로그래밍 언어가 ASP이든 PHP이든 JSP이든 인클루드는 가능합니다 
+하지만 웹서버를 통하지 않고 Pulish되는 html문서 내에 있는 인클루드 파일은 컴파일이 되지 않으므로 인클루드 되지 않는것입니다 
+
+
+ ASP의 경우 
+<!--#include file="상대경로명"--> 
+<!--#include virtual="절대경로명"--> 
+
+
+ex) 사용예 :: happyjung.com/inc/menu.asp을  happyjung.com/about/aaa.asp 로 삽입할 경우 
+1. happyjung.com/inc/menu.asp 파일의 내용 
+안녕하세요~ 반갑습니다. 
+
+2. happyjung.com/about/aaa.asp 파일의 내용 
+<html> 
+<head> 
+<title></title> 
+</head> 
+
+<body> 
+<!--#include file="../inc/menu.asp"--><br> 
+<!--#include virtual="/inc/menu.asp"--> 
+</body> 
+</html> 
+
+3. 웹상에서 happyjung.com/about.asp 실행하면 아래와 같이 나타납니다. 
+안녕하세요~ 반갑습니다. 
+안녕하세요~ 반갑습니다.
+
+
+
+
+
+http://zeronica.tistory.com/12
+
+include file 과 virtual 차이점
+
+루트 /
+
+현위치  ./
+
+상위  ../
+
+ 
+
+file 상대경로
+
+현재 작업중인 파일 경로 http://www.naver.com/a/b/c/작업중.asp 라면
+
+현재 작업중인 폴더에 파일이 있을때 <!-- #include file="상대경로.asp" -->
+
+c폴더에 파일이 있을때 <!-- #include file="상대경로.asp" -->
+
+b폴더에 파일이 있을때 <!-- #include file="../상대경로.asp" -->
+
+a폴더에 파일이 있을때 <!-- #include file="../../상대경로.asp" -->
+
+ 
+
+virtual 절대경로
+
+현재 작업중인 파일 경로 http://www.naver.com/a/b/c/작업중.asp 라면
+
+현재 작업중인 폴더에 파일이 있을때 <!-- #include virtual="/a/b/c/절대경로.asp" -->
+
+c폴더에 파일이 있을때 <!-- #include virtual="/a/b/c/절대경로.asp" -->
+
+b폴더에 파일이 있을때 <!-- #include virtual="/a/b/절대경로.asp" -->
+
+a폴더에 파일이 있을때 <!-- #include virtual="/a/절대경로.asp" -->
+
+ 
+
+*include 사용할때 주의사항
+
+파일이 없을때 에러 메세지
+
+-URL을 처리하는 동안 서버에 오류가 발생했습니다. 시스템 관리자에게 문의하십시오.
+
+다른 에러일때도 있으니 참고만 하시기 바랍니다.

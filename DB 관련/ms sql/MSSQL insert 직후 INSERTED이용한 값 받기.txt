@@ -1,0 +1,3 @@
+ DECLARE @newKeyTbl Table (newKey INT);
+	insert into MEMBERS (STATE) OUTPUT INSERTED.SEQ into @newKeyTbl values(88);
+    SELECT newKey FROM @newKeyTbl;

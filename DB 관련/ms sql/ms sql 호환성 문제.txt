@@ -1,0 +1,5 @@
+호환성 수준 에러 날때 Level 어쩌고 할때 
+호환성 80일때 그런 발생 
+
+ select compatibility_level from sys.databases where name = '사용디비'
+ exec sp_dbcmptlevel '사용디비',100

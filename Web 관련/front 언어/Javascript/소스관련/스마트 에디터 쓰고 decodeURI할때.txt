@@ -1,0 +1,4 @@
+        window.onload = function () {
+            $("#CONTENT")[0].innerHTML = decodeURI($("#CONTENT")[0].innerHTML, "UTF-8");
+            $("#CONTENT").show();
+        }

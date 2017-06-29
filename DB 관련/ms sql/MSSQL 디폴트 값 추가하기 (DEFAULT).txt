@@ -1,0 +1,22 @@
+- DEFAULT란? 
+?  DEFAULT란 값을 입력하지 않았을 때 자동으로 지정한 값이 들어가도록 하는 설정을 말합니다. 
+?
+
+ALTER TABLE [테이블명] ADD CONSTRAINT [제약조건명] DEFAULT [값] FOR [컬럼명]
+
+
+CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       점수 int NOT NULL,
+       과목 varchar(4) NOT NULL
+   )
+?
+ 
+ - 디폴트 값 추가 
+   ALTER TABLE dbo.성적 ADD CONSTRAINT DF_성적_과목 DEFAULT '수학' FOR 과목
+
+
+
+[참고사항] 테이블 제약조건 확인방법 
+   SP_HELPCONSTRAINT [테이블명]

@@ -1,0 +1,648 @@
+http://addio3305.tistory.com/83
+
+
+1.SQL 
+
+
+
+CREATE TABLE TB_FILE
+(
+  IDX   NUMBER,
+  BOARD_IDX NUMBER NOT NULL,
+  ORIGINAL_FILE_NAME VARCHAR2(260 BYTE) NOT NULL,
+  STORED_FILE_NAME VARCHAR2(36 BYTE) NOT NULL,
+  FILE_SIZE NUMBER,
+  CREA_DTM  DATE DEFAULT SYSDATE NOT NULL,
+  CREA_ID   VARCHAR2(30 BYTE) NOT NULL,
+  DEL_GB    VARCHAR2(1 BYTE) DEFAULT 'N' NOT NULL,
+  PRIMARY KEY (IDX)
+);
+
+
+이 테이블은 첨부파일의 정보를 저장할 테이블이다.
+
+몇가지 컬럼을 살펴보자.
+BOARD_IDX 컬럼은 지난글인 게시글 목록(http://addio3305.tistory.com/72)에서 
+작성한 TB_BOARD에서 사용된 컬럼이다. 
+각 게시글마다 여러개의 파일을 저장할 수 있으니, 해당 파일이 어떤 게시글에 속해있는지를
+알기위한 컬럼으로 사용된다.
+
+그 다음으로 ORIGINAL_FILE_NAME과 STORED_FILE_NAME 컬럼은 각각 원본 파일 이름과
+변경된 파일 이름으로 저장한다.
+
+파일을 업로드하면 그 파일의 서버의 어딘가에 저장이 되어야하는데 만약 파일 이름이 같을 경우,
+저장 중 문제가 발생하거나 파일 이름이 변경될 수 있다.
+
+따라서 파일을 저장할때, 원본파일의 이름을 저장해놓고 서버에는 변경된 파일 이름으로
+파일을 저장한다. 나중에 파일 다운로드를 할떄에는, 파일의 이름을 통해서 해당 파일에
+접근하기 때문에 겹치지 않는 파일이름은 필수이다.
+여기서 ORIGINAL_FILE_NAME은 260byte , STORED_FILEE_NAME 36byte로 잡았는데,
+이유는 간단하다. 원본파일명은 windows에서는 최대 256글자 + 확장자인 260글자이고,
+STORED_FILE_NAME은 32글자 + 확장자로 저장할 계획이다.
+여기서는 32글자의 랜덤문자를 생성할건데, 변경되 파일 이름을 해당 날짜+시간 등으로 한다면
+그에 해당하는 길이로 잡으면 된다.
+
+마지막으로 DEL_GB는 해당 첨부파일이 삭제되었는지를 알려주는 컬럼이다.
+
+여기서 각 컬럼이 어떤 용도로 사용되는지 정확히 이해가 안될수도 있다.이후에도 다시 한번
+설명을 하도록 하겠다.
+
+
+2. 설정파일
+
+[Maven Dependency 추가]
+
+pom.xml을 열어서 다음의 dependency를 추가하자.
+
+
+<!-- MultipartHttpServletRequset -->
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.0.1</version>
+</dependency>
+ 
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>1.2.2</version>
+</dependency>
+
+그동안 필자의 글을 따라온 사람의 경우, 해당 라이브러리는 이미 추가되어 있다.
+현재 최신버전은 commons-io의 경우 2.4 , commons-fileupload는 1.3.1 이다.
+최신버전을 사용하더라도 큰문제는 없을 것으로 예상이 되지만,
+만약 문제나 다른점이 있을경우 이야기를 해주기를 바란다.
+
+[context-common.xml 파일 추가]
+
+src/main/resources 폴더 밑의 config > spring 폴더 밑에 context-common.xml 파일을 생성한다.
+context-common.xml에는 그 이름처럼 스프링의 공통적인 설정이 들어갈 예정이다.
+생성 후, 다음의 내용을 작성한다.
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                        http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+                         
+    <!-- MultipartResolver 설정 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000000" />
+        <property name="maxInMemorySize" value="100000000" />
+    </bean>
+</beans>
+
+위에서 보듯이 CommonsMultipartResolver를 등록하는 것이다. CommonsMultipartResolver 는
+스프링에서 파일업로드 기능을 구현해놓은 클래스다.
+
+나중에 보면 알겠지만, 이 Resolver 덕분에 우리가 실제로 작성해야할 부분은 많이 없다.
+value="100000000"이라고 되어있는데, 이는 서버에 업로드할 수 있는 첨부파일의 최대 
+크기를 의미한다.
+단위는 byte로 10,000,000 byte이기 떄문에 10MB로 설정이 되어있다.
+해당 크기 이상의 파일이 전송되면 에러가 발생한다. 이에 대한 에러처리는 나중에 다시
+이야기를 하도록 하겠다.
+
+이 외에도 몇가지 property들도 있고 저장경로를 명시해주는 기능도 있는데,
+필자의 경우 저장경로는 Local과 실서버의 OS가 다르기떄문에 properties로 따로 
+관리하고 있다.
+먼저 필자의 방법을 본 후, 다른사람들은 어떤식으로 구현을 했는지 비교해보는것도
+도움이 될 것이다.
+
+여기까지의 폴더 구조는 다음과 같다.
+여기까지 하면 설정은 완료된다. 다음은 구현 부분을 보도록 하자.
+
+3. 파일 업로드
+
+[JSP]
+
+지난번 게시판 등록페이지(http://addio3305.tistory.com/79)를 변경해서 
+첨부파일도 등록할 수 있도록 해보자.
+
+boardWrite.jsp를 다음과 같이 변경하자.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<%@ include file="/WEB-INF/include/include-header.jspf" %>
+</head>
+<body>
+    <form id="frm" name="frm" enctype="multipart/form-data">
+        <table class="board_view">
+            <colgroup>
+                <col width="15%">
+                <col width="*"/>
+            </colgroup>
+            <caption>게시글 작성</caption>
+            <tbody>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td><input type="text" id="TITLE" name="TITLE" class="wdp_90"></input></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="view_text">
+                        <textarea rows="20" cols="100" title="내용" id="CONTENTS" name="CONTENTS"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="file" name="file">
+        <br/><br/>
+         
+        <a href="#this" class="btn" id="write">작성하기</a>
+        <a href="#this" class="btn" id="list">목록으로</a>
+    </form>
+     
+    <%@ include file="/WEB-INF/include/include-body.jspf" %>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#list").on("click", function(e){ //목록으로 버튼
+                e.preventDefault();
+                fn_openBoardList();
+            });
+             
+            $("#write").on("click", function(e){ //작성하기 버튼
+                e.preventDefault();
+                fn_insertBoard();
+            });
+        });
+         
+        function fn_openBoardList(){
+            var comSubmit = new ComSubmit();
+            comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
+            comSubmit.submit();
+        }
+         
+        function fn_insertBoard(){
+            var comSubmit = new ComSubmit("frm");
+            comSubmit.setUrl("<c:url value='/sample/insertBoard.do' />");
+            comSubmit.submit();
+        }
+    </script>
+</body>
+</html>
+
+기존의 boardWrite.jsp에서 바뀐것은 <form>이 변경되고,
+<input type="file" name="file"> 태그가 추가된것이다.
+
+화면에서 볼수 있는것과 같이, 첨부파일을 올릴수 있는 <input type="file"> 태그를 추가하였다.
+여기서는 먼저 단일파일을 기준으로 설명을 하고, 그 후에 다중파일에 대해서 다시 설명하도록 
+하겠다.
+
+그 다음으로 중요한것은 <form> 태그이다.
+기존글에서는 <form id="frm"> 만 되어있었는데, 이번글에서는 form에 
+enctype="multipart/form-data" 라는것이 추가되었다.
+
+이것은 해당 폼을 Multipart 형식임을 알려주는데, 사진, 동영상 등 글자가 아닌 파일은 모두
+Multipart 형식의 데이터다.
+
+파일 관련된 개발을 하다보면 상당히 많은 에러가 나는데, 그중에서 가장 많은 경우가 form에
+enctype="multipart/form-data"가 선언되지 않는 경우다.
+따라서, enctype을 설정해주는것을 잊으면 안된다.
+
+
+[파일 업로드 확인]
+
+이제 화면에서는 파일을 서버로 전송하게 되었다. 이제 할일은 클라이언트(화면)에서 전송된 파일을
+받아서, 저장하는 작업이다.
+
+먼저 화면에서 전송해준 파일이 정상적으로 서버에 전송이 되었는지 확인해보고 그 방식에 대해서
+간단히 알아본 후 , 그 내용을 바탕으로 실제 구현을 어떻게 하는지 설명하도록 하겠다.
+
+먼저 Controller부터 수정을 하자.
+1)SampleController.java를 열어서 insertBoard를 다음과 같이 수정하자.
+
+@RequestMapping(value="/sample/insertBoard.do")
+public ModelAndView insertBoard(CommandMap commandMap, HttpServletRequest request) throws Exception{
+    ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+     
+    sampleService.insertBoard(commandMap.getMap(), request);
+     
+    return mv;
+}
+
+기존의 insertBoard와 변경된점은 파라미터로 HttpServletRequset를 추가로 받는다는 것이다.
+우리가 화면에서 전송한 모든 데이터는 HttpServletRequest에 담겨서 전송되고, 그것을
+HandlerMethodArgumentResolver를 이용하여 CommandMap에 담아주었다.
+
+그렇지만 첨부파일은 CommandMap에서 처리를 하지 않았기 때문에 HttpServletRequest를 추가로
+받도록 하였다. 이 HttpServletRequest에는 모든 텍스트 데이터 뿐만이 아니라 화면에서 전송된
+파일정보도 함께 담겨있다. 우리는 CommandMap을 이용하여 텍스트 데이터는 처리하기 떄문에,
+HttpServletRequest는 파일정보만 활용할 계획이다.
+
+
+
+
+
+지난글에서도 이야기했듯이 Controller는 단순히 웹 클라이언트에서 들어온 요청에 해당하는 
+비지니스 로직을 호출하고 응답을 해주는 Dispatcher 역할만 한다. ServiceImpl단에서 비지니스 
+로직을 처리하는 것을 잊지말자.
+ServiceImpl단에서 해당 데이터를 이용하기 위해서 request를 추가로 넘겨주었다.
+
+2) SampleServiceImpl.java
+
+SampleService.java를 열고 다음과 같이 수정한다.
+
+void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception;
+
+3)SampleServiceImpl.java
+
+먼저 HttpServletRequest에 화면에서 보내준 파일이 정상적으로 전송이되었는지 확인해보자.
+
+insertBoard를 다음과 같이 작성한다.
+
+@Override
+public void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception {
+    sampleDAO.insertBoard(map);
+     
+    MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+    Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+    MultipartFile multipartFile = null;
+    while(iterator.hasNext()){
+        multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+        if(multipartFile.isEmpty() == false){
+            log.debug("------------- file start -------------");
+            log.debug("name : "+multipartFile.getName());
+            log.debug("filename : "+multipartFile.getOriginalFilename());
+            log.debug("size : "+multipartFile.getSize());
+            log.debug("-------------- file end --------------\n");
+        }
+    }
+}
+
+생소한 코드가 많아 보인다.
+해당 코드에 대한 설명은 잠시 후에 하고, 어떤 결과가 나오는지 먼저 확인을 해보자.
+서버를 실행시키고 파일을 전송해보자.
+
+이제 위의 소스에 대해서 간단히 살펴보자.
+먼저 5번째 줄 
+MultipartHttpServletRequest multipartHttpServletRequest = (MutipartHttpServletRequest)request;
+부분이다.
+위에서 첨부파일은 Multipart 형식의 데이터이며, HttpServletRequest에 담겨서 서버로 
+전송된다고 이야기하였다.
+
+HttpServletRequest 그 자체로는 Multipart 형식의 데이터를 조작하는데 어려움이 있기 때문에 ,
+MultipartHttpServletRequest 형식으로 형변환을 하였다.
+
+그 다음 6번째 줄 Iterator<String> iterator = multipartHttpServletRequest.getFileNames(); 부분이다.
+
+이터레이터(Iterator) 패턴을 이용하여 request에 전송된 모든 name을 이용하려고 하는 부분이다. Iterator는 어떤 데이터들의 집합체에서 컬렉션(Collection)으로부터 정보를 얻어올 수 있는 인터페이스다. Iterator를 사용하면 집합체와 개별원소들을 분리시켜서 생각할 수가 있는데, 그 집합체가 어떤 클래스의 인스턴스인지 신경쓰지 않아도 되는 장점이 있다. 
+
+예를 들어 List나 배열에서는 순차적으로 데이터의 접근이 가능하지만, Map.Set 등의 클래스들은
+순차적인 접근을 할수가 없다.
+
+Map에서 데이터를 가져오려면 그 Map에 있는 키(Key)를 알아야 접근이 가능하다거나,
+for문 등의 반복문을 사용할수가 없는것을 생각하면 된다.
+
+여기서는 Iterator를 이용하여 Map에 있는 데이터를 while문을 이용하여 순차적으로 접근하려고 한다.
+아까 JSP에서 <input type="file" name="file"> 이라는 태그를 추가했었다. 여기서 name="file"을
+봐야한다. JSP 내에서 작성된 데이터가 서버로 전송될 떄에는 태그의 name값을 키(key)로 해서
+값이 전송된다. 
+즉, request에 값이 전달될때에도 Map과 마찬가지로 key,value 쌍의 형식으로 데이터가 저장된다.
+위의 태그에서 name은 file 이라는 값이었고, request에서 file 이라는 키를 통해서 데이터를
+가져올수 있는데, 이 경우 우리는 file 이라는 키를 알고 있지만, 실제로 개발을 하면 ,
+name 값은 여러가지 다른 이름으로 넘어올 수 있다. 따라서 Iterator를 통해서 모든 name값을 
+알아서 가져오게 하면, 개발자는 name이 무엇인지를 몰라도, 쉽게 그 값을 사용할 수 있다.
+Iterator를 통해서 모든 name값을 알아서 가져오게 하면, 개발자는 name이 무엇인지를 몰라도,
+쉽게 그 값을 사용할 수 있다. Iterator에 대한 자세한 설명은 추후 따라 포스팅을 할 예정이다.
+
+그 다음으로 8번째줄 while(iterator.hasNext()) 부분이다.
+Iterator 인터페이스의 hasNext 메서드를 통해서 Iterator에 다음 값이 있는 동안 반복해서
+다른 작업을 수행한다.
+
+그 다음 9번째줄 multipartFile = multipartHttpServletRequest.getFile(iterator.next()); 부분이다.
+MultipartFile 객체에 request에서 파일 객체를 가져오는 부분이다. multipartHttpServletRequest의
+getFile() 메서드는 request에 저장된 파일의 name을 인자로 받는다.
+그런데 우리는 이 name을 iterator 내에 그 다음 데이터의 존재 유무를 알려주고, next() 메서드는
+Iterator 내의 데이터를 가져온 후, 커서를 다음위치로 이동시킨다.
+
+그 다음으로 multipartFile.isEmpty()를 통해서 실제 파일정보가 있는지 검사한 후에,getName(),
+getOriginalFilename(), getSize() 메서드 등을 통해서 파일의 정보를 출력하고 있다.
+
+여기까지 설명이 꽤 길어져서 복잡할 수 있는데, 소스를 다시한번 천천히 살펴보면 쉽게
+이해할 수 있을것이다.
+
+multipartFile에는 파일에 관련된 여러가지 메서드들이 있으니 그런 메서드들도 한번 살펴보길 
+바란다.
+
+
+3.FileUtils 클래스 생성
+
+이제 위에서 설명한 내용을 바탕으로 실제로 파일을 저장하고, DB에 데이터를 저장하는 것을
+살펴보자.
+
+먼저 첨부파일의 정보를 이용하여 여러가지 조작을 할 클래스를 하나 만들자.
+src/main/java 밑의 first > common  패키지 밑의 util 이라는 패키지를 만든 후,
+FileUtils,CommonUtils 라는 클래스를 생성하자.
+
+먼저 CommonUtils.java에 다음의 내용을 작성하자.
+
+
+package first.common.util;
+ 
+import java.util.UUID;
+ 
+public class CommonUtils {
+     
+    public static String getRandomString(){
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+}
+
+
+위에서 DB를 생성할 때 서버에 저장될 파일면은 32글자로 한다고 이야기 했었다.
+getRandomString() 메서드는 32글자의 랜덤한 문자열(숫자포함)을 만들어서 반환해주는 기능을 한다.
+지금은 파일이름의 랜덤생성에만 사용되기 때문에 굳이 CommonUtils 클래스를 따로 만들어줄 필요는
+없지만, 추후에도 사용이 되고, 앞으로 여러가지 다른 기능도 추가하기 위해서 먼저 CommonUtils
+클래스로 분리하였다.
+
+다음은 FileUtils.java에 다음의 내용을 작성하자.
+
+
+package first.common.util;
+ 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+ 
+import javax.servlet.http.HttpServletRequest;
+ 
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+ 
+@Component("fileUtils")
+public class FileUtils {
+    private static final String filePath = "C:\\dev\\file\\";
+     
+    public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) throws Exception{
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+        Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+         
+        MultipartFile multipartFile = null;
+        String originalFileName = null;
+        String originalFileExtension = null;
+        String storedFileName = null;
+         
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        Map<String, Object> listMap = null; 
+         
+        String boardIdx = (String)map.get("IDX");
+         
+        File file = new File(filePath);
+        if(file.exists() == false){
+            file.mkdirs();
+        }
+         
+        while(iterator.hasNext()){
+            multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+            if(multipartFile.isEmpty() == false){
+                originalFileName = multipartFile.getOriginalFilename();
+                originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                storedFileName = CommonUtils.getRandomString() + originalFileExtension;
+                 
+                file = new File(filePath + storedFileName);
+                multipartFile.transferTo(file);
+                 
+                listMap = new HashMap<String,Object>();
+                listMap.put("BOARD_IDX", boardIdx);
+                listMap.put("ORIGINAL_FILE_NAME", originalFileName);
+                listMap.put("STORED_FILE_NAME", storedFileName);
+                listMap.put("FILE_SIZE", multipartFile.getSize());
+                list.add(listMap);
+            }
+        }
+        return list;
+    }
+}
+
+
+아까 위에서 설명을 했던 내용을 기반으로 파일을 특정 폴더에 저장하고 DB에 입력될 정보를 
+반환하도록 구성하였다.
+
+
+천천히 소스를 살펴보자.
+먼저 16번째 줄의 @Component("fileUtils") 부분이다.
+@Component 어노테이션을 이용하여 이 객체의 관리를 스프링이 담당하도록 할 계획이다.
+
+그 다음 18번째 줄 private static final String filePath = "경로";  부분은 파일이 저장될
+위치를 선언해주었다.
+
+지근은 로컬에서만 하기 때문에 저장위치를 소스에 명시하였는데, 나중에 이 부분은
+properties를 이용하여 로컬과 서버의 저장위치를 따로따로 관리할 예정이다.
+
+그 다음으로 29번째 줄 List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+부분은 클라이언트에서 전송된 파일 정보를 담아서 반환을 해줄 List이다. 여태까지는 단 하나의
+파일만 전송을 하였지만, 다중 파일 전송을 하도록 수정할 계획이기 떄문에 미리 그에 맞도록
+구성하였다.
+
+32번째 줄은 ServiceImpl 영역에서 전달해준 map에서 신규 생성되는 게시글의 번호를 받아오도록 
+하였다. 이 부분의 ServiceImpl 구현은 잠시후에 살펴보자.
+
+34~37번째 줄은 파일을 저장할 경로에 해당폴더가 없으면 폴더를 생성하도록 하였다.
+
+다음 42~44번째 줄은 파일의 정보를 받아서 새ㅐ로운 이름으로 변경하는 부분이다.
+먼저 파일의 원본이름을 받아와서 해당 파일의 확장자를 알아낸 후, 아까 CommonUtils 클래스에
+만들었던 getRandomString() 메서드를 이용하여 32자리의 랜덤한 파일이름을 생성하고 원본파일의
+확장자를 다시 붙여주었다.
+
+그리고 46~47번째 줄이 서버에 실제 파일을 저장하는 부분이다.
+multipartFile.transferTo() 메서드를 이용하여 지정된 경로에 파일을 생성하는 것을 알수 있다.
+
+그리고 49~54번째 줄은 위에서 만든 정보를 list에 추가하는 부분이다.
+
+이렇게 FileUtils를 구현하였다. 이제 ServiceImpl 영역과 쿼리를 살펴보자.
+
+
+[SerieImpl 영역]
+
+먼저 SampleServiceImpl 영역을 다음과 같이 수정하자.
+
+package first.sample.service;
+ 
+import java.util.List;
+import java.util.Map;
+ 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+ 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+ 
+import first.common.util.FileUtils;
+import first.sample.dao.SampleDAO;
+ 
+@Service("sampleService")
+public class SampleServiceImpl implements SampleService{
+    Logger log = Logger.getLogger(this.getClass());
+     
+    @Resource(name="fileUtils")
+    private FileUtils fileUtils;
+     
+    @Resource(name="sampleDAO")
+    private SampleDAO sampleDAO;
+     
+    @Override
+    public List<Map<String, Object>> selectBoardList(Map<String, Object> map) throws Exception {
+        return sampleDAO.selectBoardList(map);
+         
+    }
+ 
+    @Override
+    public void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception {
+        sampleDAO.insertBoard(map);
+         
+        List<Map<String,Object>> list = fileUtils.parseInsertFileInfo(map, request);
+        for(int i=0, size=list.size(); i<size; i++){
+            sampleDAO.insertFile(list.get(i));
+        }
+    }
+ 
+    @Override
+    public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception {
+        sampleDAO.updateHitCnt(map);
+        Map<String, Object> resultMap = sampleDAO.selectBoardDetail(map);
+        return resultMap;
+    }
+ 
+    @Override
+    public void updateBoard(Map<String, Object> map) throws Exception{
+        sampleDAO.updateBoard(map);
+    }
+ 
+    @Override
+    public void deleteBoard(Map<String, Object> map) throws Exception {
+        sampleDAO.deleteBoard(map);
+    }
+ 
+}
+
+
+위의 소스는 기존글에서 계속 작성해왔던 SampleServiceImpl을 수정한 것이다.
+먼저 살펴봐야 하는것은 19~20번째 줄이다.
+앞에서 FileUtils 클래스를 만들 때 , @Component 어노테이션을 이용하여 객체의 관리를
+스프링에 맡긴다고 이야기를 하였다.
+따라서 클래스를 사용할 때 new 를 사용하여 객체를 만드는것이 아니라, 위에서 보는것과 같이
+@Resource 어노테이션을 이용하여 객체의 선언만 해주면 된다.
+그렇게 되면 객체의 생성 및 정리는 스프링에서 알아서 처리를 해준다.
+
+그 다음으로 35~38번째 줄이 FileUtils 클래스를 이용하여 파일을 저장하고 그 데이터를 가져온 후,
+DB에 저장하는 부분이다.
+
+현재 insertFile() 메서드는 아직 구현하지 않았기에 에러가 날 것이다.
+나중에 다른 포스팅으로 이야기를 하겠지만, MyBatis에서는 Batch 기능을 제공하기 떄문에 저렇게
+for문을 이용하여 하나씩 insert를 할 필요는 없다.
+다음 여기서는 아직까지 batch 설정을 하지 않았기때문에, 임시로 하나씩 insert를 하도록 하였다.
+
+
+[DAO 영역]
+
+SampleDAO에 다음의 메서드를 추가하자.
+
+
+<insert id="insertFile" parameterType="hashmap">
+    <![CDATA[
+        INSERT INTO TB_FILE
+        (
+            IDX,
+            BOARD_IDX,
+            ORIGINAL_FILE_NAME,
+            STORED_FILE_NAME,
+            FILE_SIZE,
+            CREA_ID
+        )
+        VALUES
+        (
+            SEQ_TB_FILE_IDX.NEXTVAL,
+            #{BOARD_IDX},
+            #{ORIGINAL_FILE_NAME},
+            #{STORED_FILE_NAME},
+            #{FILE_SIZE},
+            'Admin'
+        )
+    ]]>
+</insert>
+
+아까 만든 TB_FILE에 데이터를 저장하는 쿼리이다. 특별한 부분은 없다.
+
+그런데 여기까지 작성을 하게되면 끝일꺼 같은데 아직 문제점이 남아있다.
+
+아직 해결 안된 문제는 BOARD_IDX 부분이다.
+아까 FileUtils를 만들 때 , 게시글의 번호를 받아오는 부분이 있었다. 
+String boardidx = (String)map.get("IDX"); 그래서 게시글 번호를 DB에 저장하도록 했는데,
+문제는 저 IDX를 받아노는 부분이 없다는 것이다.
+SampleServiceImpl을 다시한번 보면 sampleDAO.insertBoard(map);를 통해서 단순히 insert만 
+하기때문에, 신규등록된 게시글의 번호를 알 수가 없다.
+이를 해결하기 위해서 Sample_SQL.xml의 insertBoard 쿼리를 다음과 같이 수정하자.
+
+<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+    <selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+        SELECT SEQ_TB_BOARD_IDX.NEXTVAL FROM DUAL
+    </selectKey>
+    <![CDATA[
+         
+        INSERT INTO TB_BOARD
+        (
+            IDX,
+            TITLE, 
+            CONTENTS, 
+            HIT_CNT, 
+            DEL_GB, 
+            CREA_DTM, 
+            CREA_ID
+        )
+        VALUES
+        (
+            #{IDX}, 
+            #{TITLE}, 
+            #{CONTENTS}, 
+            0, 
+            'N', 
+            SYSDATE, 
+            'Admin'
+        )
+    ]]>
+</insert>
+
+기존글에서 작성한 insertBoard 쿼리와 비교하였을 때 , 바뀐점이 무엇인지 한번 살펴보자.
+먼저 <insert> 태그에서 useGeneratedKeys , keyProperty 라는 속성이 추가되었다.
+
+먼저 useGeneratedKeys는 MyBatis에서 제공하는 기능으로 DB에 입력(insert ,update)시 
+데이터베이스에서 자동적으로 증가되는 키를 받는 JDBC의 getGeneratoedKeys() 메서드를 
+사용하도록 하는것이다. 여기서 자동적으로 증가가 되는 키는 MySql 이나 MSSQL의 Auto Increment가
+설정된 컬럼을 의미한다.
+
+그 다음으로는 keyProperty는 getGeneratedKeys() 메서드나 insert 구문의 selectKey에 의해
+선택된 키를 셋팅하는 속성이다.
+
+사실 MySql 이나 MsSql 처럼 자동생성키 컬럼을 지원하는 DB에서는 이 두가지만 사용하면 되지만,
+Oracle과 같이 자동생성키 기능이 없는 경우는 추가적인 작업을 해야한다.
+
+그것이 <selectKey> 부분이다.
+먼저 쿼리를 보면 기존에 insert 문에서 사용되던 시퀀스를 따로 빼서 값을 사용하는것을 볼 수 있다.
+그 리고 기준의 insert 구문에서는 시퀸스를 바로 사용하는 것이 아니라 #{IDX}라고 변수형태로 
+바뀐것을 볼 수 있다.
+
+<seletKey> 구문을 통해서 다음 게시글 번호를 가져온 후 , 그 값은 파라미터에 다시 저장된다.
+
+우리가 DAO에서 쿼리를 호출할 때, insert("sample.insertBoard",map); 이렇게 호출을 했었는데, 
+여기서 map에 selectKey로 가져온 IDX값이 다시 입력이 되도록 되어있다.
+
+이렇게 되면 insert를 할때 먼저 SELECT SEQ_TB_BOARD_IDX.NEXTVAL FROM DUAL 쿼리가 먼저 실행되고
+(order 속성이 BEFORE로 되어있기 때문에) 그 값이 MAP에 IDX라는 키로 저장된다. 
+그 후 , insert 쿼리가 실행이 되고 IDX 값이 담긴 map이 그대로 ServiceImpl 영역까지 전달이 된다.
+
+즉, insert를 수행하고 난 후에는 파라미터였던 map에 IDX 값이 담겨있게 된다.
+그렇기 때문에 FileUtils 클래스에서 방금 insert가 되었던 IDX값을 사용할 수 있다.
+

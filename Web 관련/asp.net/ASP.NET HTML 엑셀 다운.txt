@@ -1,0 +1,156 @@
+html로 엑셀 그리기 
+
+
+===============================================================================================
+
+public string GetExcelString(DataTable dt)
+        {
+            string stRender = "";
+            string sHeaderCount = "10";
+            string sTitle = "매출용 엑셀";
+            
+            //제목출력
+            string strTitle = "";
+            strTitle += "<table style='border:1px solid black;'>";
+            strTitle += "<tr>";
+            strTitle += "<td colspan='" + sHeaderCount + "' height='100px' style='font-size:14pt' align='center'><b>" + sTitle;
+            strTitle += "</b></td>";
+            strTitle += "</tr>";
+            strTitle += "<tr><td>&nbsp;</td></tr>";
+            strTitle += "</table>";
+
+            //출력자, 출력 일시
+            string strUserName = "";
+            strUserName += "<table>";
+            strUserName += "<tr>";
+            strUserName += "<td align='right' colspan='" + sHeaderCount + "' height='100px'><b>" + "출력일시 : " + DateTime.Now.ToString();
+            strUserName += "</b></td>";
+            strUserName += "</tr>";
+            strUserName += "<tr><td style='height:5.0pt'>&nbsp;</td></tr>";
+            strUserName += "</table>";
+
+
+            string sHTML = "";
+            sHTML = "<html>\r\n" +
+                    "<head>\r\n" +
+                    "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n" +
+                    "<title>" + sTitle + "</title>\r\n" +
+                    "<STYLE type='text/css'>\r\n" +
+                    ".TBL {border:#A4B2CD solid 0.5pt;}\r\n" +
+                    ".HDR {background-color:bisque;font-weight:bold;border:#A4B2CD solid 0.5pt;}\r\n" +
+                    ".TCL {border:#A4B2CD solid 0.5pt; mso-number-format:'\\@'; }\r\n" +
+                    ".ar {text-align: right;border:#A4B2CD solid 0.5pt; mso-number-format:'\\@';}\r\n" +
+                    ".al {text-align: left;border:#A4B2CD solid 0.5pt; mso-number-format:'\\@';}\r\n" +
+                    ".ac {text-align: center;border:#A4B2CD solid 0.5pt; mso-number-format:'\\@';}\r\n" +
+                    " #tblList1 th {border-top:1px solid #cccccc;border-right:1px solid #cccccc;border-:1px solid #cccccc;height:26px;color:#ffffff;background: #6e7a81; background-repeat: repeat-x; mso-number-format:'\\@';}\r\n" +
+                    " #tblList1 td {border:1px solid #cccccc;border-left:0;text-align:center;font-size:11px;height:27px; mso-number-format:'\\@';}\r\n" +
+                    "</STYLE>\r\n" +
+                    "</head>\r\n" +
+                    "<body>\r\n" +
+                    "[TITLE]\r\n" +
+                    "[USERNAME]\r\n" +
+                    "[CONTENT]\r\n" +
+                    "</body>\r\n" +
+                    "</html>";
+
+            string sCONTENT = "";
+
+            System.Web.HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + System.Web.HttpContext.Current.Server.UrlEncode(sTitle.Replace(' ', '_')) + "_" + String.Format("{0:yyyyMMdd}", System.DateTime.Now) + ".xls");
+            string encoding = System.Web.HttpContext.Current.Request.ContentEncoding.HeaderName;
+            System.Web.HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
+            //HttpContext.Current.Response.ContentType = "application/unknown";
+
+
+            System.Web.HttpContext.Current.Response.Write("<meta http-equiv='Content-Type' content='application/vnd.ms-excel; charset=" + encoding + "'>");
+            System.Web.HttpContext.Current.Response.Buffer = true;
+
+
+            sCONTENT = "<TABLE ID='tblList1'>";
+            sCONTENT += "<TH CLASS='ac'>번호</TH>";
+            sCONTENT += "<TH CLASS='ac'>주문일시</TH>";
+            sCONTENT += "<TH CLASS='ac'>주문번호</TH>";
+            sCONTENT += "<TH CLASS='ac'>상품명</TH>";
+            sCONTENT += "<TH CLASS='ac'>상품가격</TH>";
+            sCONTENT += "<TH CLASS='ac'>PV</TH>";
+            sCONTENT += "<TH CLASS='ac'>상품수량</TH>";
+            sCONTENT += "<TH CLASS='ac'>총 가격</TH>";
+            sCONTENT += "<TH CLASS='ac'>총 PV</TH>";
+            sCONTENT += "<TH CLASS='ac'>카드번호</TH>";
+
+            int i = 0;
+
+            foreach (var list in dt.Rows) {
+                System.Data.DataRow row = (System.Data.DataRow)list;
+
+                i++;
+                string card_no = row["card_no"].ToString();
+                card_no = card_no.Substring(0, 4) + "-" + card_no.Substring(4, 4) + "-" + card_no.Substring(8, 4) + "-" + card_no.Substring(12, 4);
+
+
+                sCONTENT += "<TR>";
+                sCONTENT += "<TD  CLASS='ac'>" + i + "</TD>";
+                sCONTENT += "<TD  CLASS='ac'>"+ row["odDate"].ToString() +"</TD>";
+                sCONTENT += "<TD  CLASS='ac'>" + row["odCode"].ToString() + "</TD>";
+                sCONTENT += "<TD  CLASS='ac'>" + row["pdtTitle"].ToString() + "</TD>";
+                sCONTENT += "<TD  CLASS='ar'>" + string.Format("{0:N0}", row["pdtSalePrice"].ToString())  + "</TD>";
+                sCONTENT += "<TD  CLASS='ar'>" + string.Format("{0:N0}", row["total_pv"].ToString()) + "</TD>";
+                sCONTENT += "<TD  CLASS='ar'>" + string.Format("{0:N0}", row["pdtQty"].ToString()) + "</TD>";
+                sCONTENT += "<TD  CLASS='ar'>" + string.Format("{0:N0}", row["total_amt"].ToString()) + "</TD>";
+                sCONTENT += "<TD  CLASS='ar'>" + string.Format("{0:N0}", row["pv"].ToString()) + "</TD>";
+                sCONTENT += "<TD  CLASS='ac'>" + card_no + "</TD>";
+                sCONTENT += "</TR>";
+
+            }
+
+
+            sCONTENT += "<TABLE>";
+
+            sCONTENT = sCONTENT.Replace("<TABLE ", "<TABLE class=\"TBL\" ");
+            sCONTENT = sCONTENT.Replace("<TH ", "<TH class=\"HDR\" ");
+            sCONTENT = sCONTENT.Replace("<TH>", "<TH class=\"HDR\"> ");
+            sCONTENT = sCONTENT.Replace("<TD ", "<TD class=\"TCL\" ");
+            sCONTENT = sCONTENT.Replace("<TD>", "<TD class=\"TCL\"> ");
+         
+
+            sHTML = sHTML.Replace("[TITLE]", strTitle);
+            sHTML = sHTML.Replace("[USERNAME]", strUserName);
+            sHTML = sHTML.Replace("[CONTENT]", sCONTENT);
+
+            stRender = sHTML;
+
+            return stRender;
+
+        }
+
+
+컨트롤러 !!!
+
+Response.Clear();
+Response.Write(stRender);
+Response.End();
+
+
+
+===============================================================================================
+
+
+아이프레임을 그려서 작성
+
+ // report용
+        function fn_GetExcel() {
+
+            var excelUrl = "/SAdmin/Order/SaleExcelDown";
+            var iFrmExcel = "<iframe id='ifrExcel' style='width:1024px; height:768px;display:;'></iframe>";
+            $("body").append(iFrmExcel);
+            try {
+                document.getElementById('ifrExcel').contentWindow.document.write("<script> function fn_ExcelSubmit(){ document.all('excelForm').submit(); } <\/script>");
+                document.getElementById('ifrExcel').contentWindow.document.write("<form action='" + excelUrl + "' id='excelForm' method='post' >");
+                document.getElementById('ifrExcel').contentWindow.document.write("<input type='button' name='btnExcel' id='btnExcel' onclick='fn_ExcelSubmit();' />");
+                document.getElementById('ifrExcel').contentWindow.document.write("</form>");
+                document.getElementById('ifrExcel').contentWindow.document.getElementById('btnExcel').click();
+                //$("#ifrExcel").remove();
+            } catch (e) {
+
+            }
+
+        }

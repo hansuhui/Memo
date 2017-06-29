@@ -1,0 +1,43 @@
+body {
+  background-color: #333; }
+
+.contatiner {
+  width: 100%; }
+
+article[role="main"] {
+  float: left;
+  width: 62.5%; }
+
+aside[role="complementary"] {
+  float: right;
+  width: 31.25%; }
+
+button {
+  background: #2ecc71;
+  border-radius: 3px;
+  box-shadow: 0px 5px 0px #25a25a;
+  border: 0;
+  color: white;
+  font-size: 17px;
+  padding: 10px 30px;
+  display: inline-block;
+  outline: 0; }
+  button:hover {
+    background: #25a25a;
+    box-shadow: 0px 5px 0px #1b7943; }
+  button:active {
+    box-shadow: none;
+    margin-top: 5px; }
+
+.container {
+  width: 100%; }
+  .container h1 {
+    color: red; }
+
+a {
+  color: black; }
+  a:hover {
+    text-decoration: underline;
+    color: gray; }
+  a:visited {
+    color: purple; }

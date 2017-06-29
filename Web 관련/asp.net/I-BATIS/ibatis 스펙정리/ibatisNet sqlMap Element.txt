@@ -1,0 +1,21 @@
+Specifying sqlMap locations
+<!-- Relative path from the project root directory using a property variable -->
+<sqlMaps>
+  <sqlMap resource="${root}Maps/Account.xml"/>
+  <sqlMap resource="${root}Maps/Category.xml"/>
+  <sqlMap resource="${root}Maps/Product.xml"/>
+</sqlMaps>
+
+<!-- Embedded resources using [extendednamespace.]filename, assemblyname -->
+<sqlMaps>
+  <sqlMap embedded="Maps.Account.xml, MyApp.Data"/>
+  <sqlMap embedded="Maps.Category.xml, MyApp.Data"/>
+  <sqlMap embedded="Maps.Product.xml, MyApp.Data"/>
+</sqlMaps>
+
+<!-- Full URL with a property variable -->
+<sqlMaps>
+  <sqlMap url="C:/${projectdir}/MyApp/Maps/Account.xml"/>
+  <sqlMap url="C:/${projectdir}/MyApp/Maps/Category.xml"/>
+  <sqlMap url="C:/${projectdir}/MyApp/Maps/Product.xml"/>
+</sqlMaps>

@@ -1,0 +1,6 @@
+mssql 변수 선언
+
+
+declare @변수명 타입 = 값
+
+declare @xml xml  = '<NewDataSet><Table1><Seq>1</Seq><Jong>030</Jong><Qty>5</Qty><PCode>10000001</PCode></Table1></NewDataSet>'

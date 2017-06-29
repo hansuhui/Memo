@@ -1,0 +1,329 @@
+1. 대소문자의 구분
+
+  asp 에서는 다른 언어와는 달리 대소문자의 구분이 없다. 그냥 단지 알아보기 쉽게 하기 위해서 대소문자를 사용하는 것이다.
+
+  예) dim strname 는 Dim strName 과 같은 구문이다. 
+
+
+2. 변수 선언
+
+- 변수나 배열의 변수 선언에는 dim 을 사용한다.
+
+- Option Explicit 를 asp 맨 앞에 사용하여 변수를 꼭 선언하도록 하였으면 모든 변수는 
+
+   dim 으로 선언하여 사용하여야한다.
+
+예) 변수 선언 : dim strName, strEmail
+
+     배열 선언 : dim monthArry(11)
+
+- Redim : 배열 크기의 재선언에 사용한다.
+
+           redim 의 사용은 처음 배열 선언시에 배열의 크기를 정해 주지 않았을 때에만 가능하다.
+
+- Preserve : 데이터를 저장한 채로 배열의 크기를 늘려준다. 즉, 기존의 들어가 있는 데이터는 그대로 아직 존재한다. 
+
+
+
+
+3. 구분자
+- 구분자로는 :(콜론) 이 쓰인다.
+- 구분자는 실행할 문장을 한줄단위로 구분짓는 역할을 한다.
+예) dim strName : strName = "mshout77" : response.write "
+strName = " & strName
+
+
+
+
+
+4. 연결연산자
+- &
+- &가 문자열에 쓰이면 문장과 문장을 연결해서 한 문장으로 만들어준다.
+- &가 변수에 쓰이면 변수의 값을 & 다음의 값과 이어준다.
+- 예) dim strName, strFName, all
+
+       strName = "77"
+
+       strFName = "mshout"
+
+       all = strName&strFName
+
+       
+
+       response.write all
+
+       결과값은 mshout77 이라고 출력된다.
+
+
+
+
+
+5. 주석
+- ASP에서 주석처리에는 '(작은 따옴표) 가 쓰인다.
+- 행에서 ' 다음의 내용은 주석처리되어 해석이 되지 않는다.
+
+
+
+
+6. 함수
+1) cdbl(문자열) - 문자열을 소수점이하까지도 출력(큰 숫자에 사용한다)
+
+
+2) round(숫자,반올림할 위치) - 지정한 소수점 자리에서 반올림한 값을 리턴
+
+
+3) asc(문자열) - 문자열에서 첫번째 문자에 대한 ansi 코드 번호를 리턴
+
+
+4) chr(아스키코드번호) - 지정된 번호와 일치하는 ansi 문자로 구성된 문자열을 리턴
+
+
+5) hex(숫자) - 숫자의 16진수값을 나탸내는 문자열을 리턴
+
+
+6) fix(숫자) - 숫자의 정수(전체)부분을 리턴 / 음수일때 숫자보다 크거나 같은 첫번째 음의 정수 리턴
+
+
+7) int(숫자) - 숫자의 정수(전체)부분을 리턴 / 음수일때 숫자보다 작거나 같은 첫번째 음의 정수 리턴
+
+
+8) sgn(숫자) - 숫자의 부호를 나타내는 정수를 리턴
+
+
+9) cdate(숫자) - 날짜 형식의 인자값 리턴( 예:cdate(36890) , cdate("2001년 12월 10일") )
+
+
+10) Clng(숫자) - Long 형식의 문자열 리턴
+
+
+11) Cstr(숫자) - String 형식의 문자열 리턴
+
+
+12) Csng(숫자) - Single 형식의 문자열 리턴
+
+
+13) formatcurrency(숫자) - 숫자를 화폐형식으로 전환
+
+
+14) formatdatetime(date,1) - date 함수의 표시형태를 바꿈
+     - formatdatetime(date,2)
+     - formatdatetime(date,3)
+
+
+15) formatpercent(숫자) - 숫자를 백분율로 표시
+
+
+16) strConv - 지정한대로 문자를 변환, strConv(문자열,conversion [,LCID])
+    conversion 에 가능한 값
+     - vbUpperCase 1 문자열을 대문자로 변환
+     - vbLowerCase 2 문자열을 소문자로 변환
+     - vbPropercase 3 문자열 단어의 첫글자를 대문자로 변환
+     - vbWide 4 1바이트문자를 2바이트 문자로 변환
+     - vbNarrow 5 2바이트문자를 1바이트문자로 변환
+     - vbUnicode 6 시스템의 기본 코드 페이지를 사용하여 문자열을 unicode 로 변환
+     - vbFromUnicode 128 unicode 문자열을 시스템의 기본 코드 페이지로 변환
+
+
+17) Randomize - 난수 발생기를 초기화
+    - 난수값 = Int((상한값 - 하한값) + 1) * Rnd + 하한값
+    - 예로 1부터 100사이의 난수를 가져오려면, 난수값 = Int(100 - 1 + 1) * Rnd + 1
+
+
+18) Atn() - 숫자의 아크 탄젠트 값을 리턴
+
+
+19) Cos() - 각도의 코사인값을 리턴
+
+
+20) Exp() - e(자연 로그의 밑)의 인자만큼의 제곱을 리턴
+
+
+21) Log() - 숫자의 자연로그를 리턴
+
+
+22) Sin() - 각도의 사인값을 리턴
+
+
+23) Tan() - 각도의 탄젠트값을 리턴
+
+24) InStr("문자열","찾을 문자") - 문자열의 위치 반환 
+
+
+25) InStrRev("문자열","찾을 문자") - 문자열의 위치를 뒤에서 부터 검색해서 반환
+
+
+26) Lcase("문자열") - 문자열을 소문자로
+
+
+27) Ucase("문자열") - 문자열을 대문자로
+
+28) Len("문자열") -문자열의 길이 반환
+
+29) Left("문자열",잘라낼 갯수) - 문자열을 왼쪽에서 지정한 갯수만큼 잘라냄
+
+
+30) Right("문자열",잘라낼 갯수) - 문자열을 오른쪽에서 지정한 갯수만큼 잘라냄
+
+31) Mid("문자열",시작위치,뽑아낼 갯수) - 문자열의 어느 부위를 뽑아냄
+
+
+32) Yrim("문자열") - 문자열의 양쪽 공백을 제거
+
+
+33) Ltrim("문자열") - 문자열의 왼쪽 공백을 제거
+
+
+34) Rtrim("문자열") - 문자열의 오른쪽 공백을 제거
+
+35) Split("문자열","분리자") - 분리자를 기준으로 문자열을 나눔
+
+36) StrReverse("문자열") - 문자열을 뒤집음
+
+37) IsArray() - 변수가 배열인지의 여부를 나타내는 Boolean 값을 리턴
+
+
+38) IsDate() - 날짜로 변환될 수 있는지의 여부를 나타내는 Boolean 값을 리턴
+
+
+39) IsEmpty() - 변수가 초기화 될 수 있는지의 여부를 나타내는 Boolean 값을 리턴
+
+
+40) IsNull() - 유효한 데이터를 포함하고 있는지의 여부를 리턴
+
+
+41) IsNumeric() - 숫자로 평가될 수 있는지의 여부를 리턴
+
+
+42) IsObject() - 유효한 ActiveX혹은 OLE 자동화 개체를 참조하는지의 여부를 리턴
+
+
+43) Vartype() - 변수의 하위 형식을 나타내는 숫자를 리턴한다.
+
+
+44) now - 시스템의 시간과 날짜
+
+
+45) date - 시스템의 날짜
+
+
+46) time - 시스템의 시간
+
+
+47) year(now) - 현재의 년도
+
+
+48) month(now) - 현재의 월
+
+
+
+49) day(now) - 현재의 일
+
+
+50) weekday(now) - 현재의 요일
+
+
+
+51) hour(now) - 현재의 시
+
+
+52) minute(now) - 현재의 분
+
+
+53) second(now) - 현재의 초
+
+
+54) DateAdd - 지정된 날짜에 시간을 추가하거나 뺀 새로운 날짜를 반환
+   사용법) DateAdd(interval, number, date) 
+           - interval : 필수적인 인수로 interval을 추가한 날짜를 나타내는 문자식
+
+                     yyyy 년, q 분기, m 월, y 일(일년 기준), d 일, w 요일, ww 주(일년 기준), h 시, n 분, s 초
+
+
+           - number : 필수적인 인수로 추가할 간격 수의 수식
+                     수식에서 양수는 미래의 날짜, 음수는 과거의 날짜이다. 
+
+
+           - date : 필수적인 인수로 interval을 추가한 날짜를 나타내는 Variant 또는 리터럴
+
+
+   예) DateAdd("m",3,Date)  <-- 현재의 날짜에서 3개월을 더함
+       DateAdd("m",-3,Date)  <-- 현재의 날짜에서 3개월을 뺌
+
+
+55) DateDiff - 주어지는 두 날짜의 간격을 반환
+   사용법) DateDiff(interval, date1, date2 [,firstdayofweek[, firstweekofyear]]) 
+           - interval : 필수적인 인수로 날짜1과 날짜2 사이의 차이를 계산하는 데 사용할 interval의 문자식
+
+                     yyyy 년, q 분기, m 월, y 일(일년 기준), d 일, w 요일, ww 주(일년 기준), h 시, n 분, s 초                 
+
+
+           - date1, date2 : 필수적인 인수로 날짜식에서 계산에 사용할 두 날짜
+
+
+           - firstdayofweek : 선택적인 인수로 요일을 지정하는 상수로 지정하지 않으면 일요일로 간주
+
+                            vbUseSystem 0 NLS(National Language Support) API 설정 사용 
+                            vbSunday 1 일요일(기본값) 
+                            vbMonday 2 월요일 
+                            vbTuesday 3 화요일 
+                            vbWednesday 4 수요일 
+                            vbThursday 5 목요일 
+                            vbFriday 6 금요일 
+                            vbSaturday 7 토요일 
+
+           - firstweekofyear : 선택적인 인수로 연도를 기준으로 한 첫째 주를 지정하는 상수
+                            지정하지 않으면 1월 1일을 포함하는 주를 첫째 주로 간주한다. 
+                            vbUseSystem 0 NLS(National Language Support) API 설정 사용 
+                            vbFirstJan1 1 1월 1일을 포함하는 주에서 시작(기본값) 
+                            vbFirstFourDays 2 새해의 처음 4일을 포함하는 주에서 시작 
+                            vbFirstFullWeek 3 새해의 처음 한 주일(7일)을 포함하는 주에서 시작
+   
+
+   예) DateDiff("h", "2001년 12월 30일", Date) 
+       DateDiff("n", "2001년 12월 30일 09:30:00", now) 
+       DateDiff("s", "2001년 12월 30일 09:30:00", now) 
+
+56) DatePart - 주어진 날짜의 지정된 부분을 반환한다. 
+   사용법) DatePart(interval, date[, firstdayofweek[, firstweekofyear]]) 
+           - interval : 필수적인 인수로 반환할 시간 간격의 문자식이다.
+
+                     yyyy 년, q 분기, m 월, y 일(일년 기준), d 일, w 요일, ww 주(일년 기준), h 시, n 분, s 초
+
+
+           - date : 필수적인 인수로 계산할 날짜식
+
+
+
+           - firstdayof week : 선택적인 인수로 요일을 지정하는 상수로서 지정하지 않으면 일요일로 간주
+
+                            vbUseSystem 0 NLS(National Language Support) API 설정 사용 
+                            vbSunday 1 일요일(기본값) 
+                            vbMonday 2 월요일 
+                            vbTuesday 3 화요일 
+                            vbWednesday 4 수요일 
+                            vbThursday 5 목요일 
+                            vbFriday 6 금요일 
+                            vbSaturday 7 토요일
+
+
+           - firstweekofyear : 선택적인 인수로 연도를 기준으로 한 첫째 주를 지정하는 상수
+                            지정하지 않으면 1월 1일을 포함하는 주를 첫째 주로 간주한다. 
+                            vbUseSystem 0 NLS(National Language Support) API 설정 사용 
+                            vbFirstJan1 1 1월 1일을 포함하는 주에서 시작(기본값) 
+                            vbFirstFourDays 2 새해의 처음 4일을 포함하는 주에서 시작 
+                            vbFirstFullWeek 3 새해의 처음 한 주일(7일)을 포함하는 주에서 시작
+
+   예) DatePart("q", now)
+
+57) DateSerial - 지정된 년, 월, 일의 Date 하위 형식인 Variant를 반환한다. 
+               즉, 임의의 숫자를 입력받아 날짜 형식으로 반환하는 함수이다. 
+   사용법) DateSerial(year, month, day) 
+           year : 100에서 9999까지의 수 또는 수식 
+           month : 모든 수식 
+           day : 모든 수식 
+   예) DateSerial(2001, 12, 25) 
+
+58) DateValue - Date 하위 형식의 Variant를 반환한다. 
+   사용법) DateValue(date)
+
+   예) DateValue("2000년 12월 25일")

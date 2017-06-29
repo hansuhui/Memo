@@ -1,0 +1,92 @@
+CONCAT(문자열,'문자열',문자열) - 문자열을 합친다.
+
+RAND() - 랜덤 숫자를 리턴한다.
+
+YEAR('2106-05-05')  - 년 리턴
+
+MONTH('2106-05-05') - 월 리턴
+
+DAYOFMONTH('2106-05-05') - 일 리턴
+
+TO_DAYS('2106-05-23') - 일수를 알려준다
+
+COUNT() - 카운트
+
+MIN() - 최소값
+
+MAX() - 최대값
+
+AVG() - 평균
+
+SUM() - 합계
+
+IFNULL(비교값,'녈일때 값')
+
+CAST : MS랑 같음
+
+FORMAT : 금액형?
+
+ADDDATE(DATA,INTERVAL 1 YEAR);
+
+ADDTIME('06:20:00.5','12:20:00.5');
+
+CURDATE() > '2016-09-30'
+
+CURRENT_DATE() = CURDATE()
+
+CURTIME() : 현재시간
+
+DATE('2016-05-05') : 형변환
+
+DATE_ADD(DATATIME,INTERVAL 1 YEAR);
+
+DATE_FORMAT(DATE,보여줄 형식)
+
+DATE_FORMAT(DATE,'%m %f')
+
+지정자 / 의미
+
+%f / 여섯 자릿수 형태의 마이크로초
+
+%S ,%s / 두 자릿수 초
+
+%i / 두 자릿수 분
+
+%H / 두 자릿수 24시 형태 시간
+
+%h , %l / 12시 형태 시간
+
+%k / 24시 형태 시간
+
+%T / 24시 형태 시간 (hh:mm:ss)
+
+%r / 12시 형태 시간 (hh:mm:ss AM)
+
+%p / AM OR PM
+
+%W / 요일명
+
+%a / 약식 형태 요일명
+
+%d / 두 자리 형태의 월의 날
+
+%e / 수치 형태로 된 월의날
+
+%D / 영어 접비사가 붙은 월의날
+
+%w / 수치 형태 요일 0 = 일요일
+
+%m / 두자리 달
+
+%c / 수치로된 달
+
+%Y / 네자리 연도
+
+%y / 두자리 연도
+
+
+DATE_SUB() : 년도 빼기 ADD랑 비슷
+
+DATEDIFE(날짜,날짜) : 두 날짜의 일수 차이
+
+

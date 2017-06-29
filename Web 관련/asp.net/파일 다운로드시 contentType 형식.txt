@@ -1,0 +1,41 @@
+#region 파일 다운로드시 형식
+
+        public string MineTypeByFileExtension(string fName)
+        {
+            string ext = string.Empty;
+
+            string contentType = "application/unkown";
+
+            if (fName.IndexOf(".") != -1)
+            {
+                ext = fName.Substring(fName.LastIndexOf(".") + 1);
+            }
+            switch (ext.ToLower())
+            {
+                case "jpg":
+                    contentType = "image/bmp";
+                    break;
+                case "gif":
+                    contentType = "image/gif";
+                    break;
+                case "pdf":
+                    contentType = "application/pdf";
+                    break;
+                case "txt":
+                    contentType = "text/plain";
+                    break;
+                case "xlsx":
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    break;
+                case "pptx":
+                    contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+                    break;
+                case "docx":
+                    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    break;
+            }
+            return contentType;
+        }
+
+
+        #endregion

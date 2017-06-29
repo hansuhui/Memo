@@ -1,0 +1,77 @@
+http://egloos.zum.com/tenny/v/1104572
+
+
+tomcat ROOT 설정 방법
+
+
+
+웹 상에서 버전 별로 여러 방법을 소개하고 있지만,
+톰켓6.0 에서는 아래의 방법이 적용이 되니 참고가 됐으면 좋겠습니다.
+
+
+여러 방법이 있을 수 있겠지만, 손쉬운 방법으로는 conf/server.xml 중,
+
+대략 96줄에 있는 <Host> 태그의 appBase를 변경해주거나,
+
+<Host> 태그 내에 <Context> 태그를 추가해주면 됩니다.
+
+---------------------------------------------------------------------------
+
+말은 쉬우나, 따라하는 것은 쉽지 않기 때문에 예를 들어보면,
+
+우선 톰켓이 기본적으로 보고 있는 루트 컨텍스트는 webapps/ROOT 입니다.
+
+96:  <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+
+appBase는 ${catalina-home} 밑의 상대경로를 인자로 받으며,
+기본적으로 보안과 context의 통일적인 적용을 이유로 컨텍스트의 루트는 ROOT 디렉토리 밑이 됩니다.
+
+따라서, 톰켓이 설치가 되면 웹루트는 ${catalina-home}/webapps/ROOT 가 되는 것이지요...
+
+보다 쉬운 이해를 위해 이를 3가지 별로 변경을 해봅시다.
+
+1. webapp 자체를 웹루트 디렉토리로 만들고 싶을 때,
+
+    단지, <Host> 태그 내에 아래와 같은 컨텍스트를 추가하면 됩니다.
+    <Context path="" docBase="." reloadable="true"/>
+
+   사실 컨텍스트는 더 많은 옵션이 있으나 여기는 최소한의 사항만 적었습니다. 실서버에 적용할 때는 log 부분도 신경을 써주셔야 합니다. 더 자세한 사항은 웹을 검색해 보시기 바랍니다.
+
+2. webapp/test/ROOT를 웹루트 디렉토리로 만들고 싶을 때,
+
+96:  <Host name="localhost"  appBase="webapps/test"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+
+3. d:/env/home/my 를 웹루트 디렉토리로 만들고 싶을 때,
+
+96:  <Host name="localhost"  appBase="d:/env/home/my"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+
+    <Context path="" docBase="." reloadable="true"/>
+    </Host>
+
+     또는, 
+
+96:  <Host name="localhost"  appBase="d:/env/home/"
+            unpackWARs="true" autoDeploy="true"
+            xmlValidation="false" xmlNamespaceAware="false">
+
+    <Context path="" docBase="my" reloadable="true"/>
+    </Host>
+
+   두 설정의 차이를 꼭 잘 알고 계셔야 하며, 
+   말이 조금 헛갈리기는 하지만,  Context 를 빼먹으면 ROOT를 자동으로 웹루트로 쓴다는 것을 기억하셔야 합니다.
+
+    
+
+
+p.s.> 톰켓 5.0부터 추가적인 context는 server.xml에 추가하지 않고,
+각 웹어플리케이션 디렉토리 별로 META-INF 밑에 context.xml을 추가하게 됩니다.
+
+웹루트를 appBase와 같이 하려면 이의 설정을 server.xml에서 설정해도 무방한 것 같습니다만,
+webapps를 루트로 쓰는 것은 특별한 경우가 아니면 지양하는 게 좋으며,
+꼭 필요하다면 apache의 redirect를 쓰는 방법 등으로 해결할 수도 있습니다.

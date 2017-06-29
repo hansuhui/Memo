@@ -1,0 +1,41 @@
+ASP에서 페이지의 환경변수(IP,URI,PORT....) 알아내기
+
+SP에서 Request객체의 ServerVariables 컬렉션을 이용해서 가져올 수 있는 환경변수들에는 현재 페이지의 uri 
+( url이 아님 ), ip, 서버ip, 이전페이지, 도메인네임 등등 ... 종류가 다양합니다.
+원칙은 Request.ServerVariables(값)와 같이 써야하나, ASP 자체가 뒤에 컬렉션은 생략해도 무방하므로 
+Request(값)과 같이 써도 무방합니다.
+<%
+'HTTP 요청을 한 클라이언트의 아이피(IP)
+ip=Request.ServerVariables("REMOTE_ADDR")
+'HTTP 요청을 한 클라이언트 호스트 명 - 정보가 없으면 REMOTE_ADDR과 같음
+remote_host=Request.ServerVariables("REMOTE_HOST")
+'HTTP 요청을 받은 서버 호스트 명( 도메인 명 )
+http_host=Request.ServerVariables("HTTP_HOST")
+'이전페이지 
+referer=Request.ServerVariables("HTTP_REFERER")
+'현재페이지의 uri - url이 아님
+url=Request.ServerVariables("URL")
+'HTTP 요청을 받은 서버 호스트의 (아이피)
+addr=Request.ServerVariables("LOCAL_ADDR")
+'HTTP 요청을 한 클라이언트에서 입력한 문자열의 총길이
+content_length = Request.ServerVariables("CONTENT_LENGTH")
+'HTTP 요청과 응답에 사용되는 PORT ( 웹서버의 기본포트는 80 )
+server_port = Request.ServerVariables("SERVER_PORT")
+'HTTP 요청과 응답에 사용되는 프로토콜 버전
+server_protocol = Request.serverVariables("SERVER_PROTOCOL")
+'HTTP 요청을 받은 서버의 웹서버 버전 
+server_software = Request.serverVariables("SERVER_SOFTWARE")
+%>
+<%
+response.write ip & "<br>"
+response.write remote_host & "<br>"
+response.write http_host & "<br>"
+response.write referer & "<br>"
+response.write url & "<br>"
+response.write addr & "<br>"
+response.write content_length & "<br>"
+response.write content_type & "<br>"
+response.write server_port & "<br>"
+response.write server_protocol & "<br>"
+response.write server_software
+%>

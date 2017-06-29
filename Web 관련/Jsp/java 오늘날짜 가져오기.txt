@@ -1,0 +1,3 @@
+	java.util.Date ss = new java.util.Date();
+	java.text.SimpleDateFormat ss2 = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	String regDate =  ss2.format(ss);

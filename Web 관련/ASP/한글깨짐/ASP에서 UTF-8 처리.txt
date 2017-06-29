@@ -1,0 +1,183 @@
+http://unions5.tistory.com/38
+
+
+
+1. 모든 ASP 코드 페이지 첫줄에 다음과 같은 코드를 추가합니다
+<% @CODEPAGE="65001" language="vbscript" %>
+<% Option Explicit %>
+<% session.CodePage = "65001" %>
+<% Response.CharSet = "utf-8" %>
+<% Response.buffer=true %>
+<% Response.Expires = 0 %>
+ 
+2. Meta 테그를 다음과 같이 추가 합니다.
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ 
+3. Response.ChaRset = "utf-8"  
+ASP의 response.charset을 이용해서 문자 코드 세트명을 지정하는 부분 입니다.
+설정시 <html> 태그 보다 앞에 선언 되어야 HTML 이 출력되면서 해당 속성을 인식하게 됩니다.
+
+4. 에디트플러스나 울트라 에디터에서 수정후 저장할 때 반드시 Encoding 방식을 UTF-8 로 저장합니다
+ 
+5.DB Insert/Update 시 숫자 타입을 제외한 모든 대상에 N을 추가 합니다
+Insert 테이블이름 (칼럼a, 칼럼b) value (N'입력a', N'입력b')
+update 테이블이를 set 칼럼a = N'입력a' where 고유칼럼 = '번호'
+ 
+6.DB like 검색시 N 추가
+ 
+7. 파일 첨부 DEXT Upload사용(영문으로 설치)
+ SET uploadform = Server.CreateObject("DEXT.FileUpload")
+ uploadform.DefaultPath = Server.MapPath(ESP_BBS_DATA)
+ uploadform.CodePage = 65001
+ wFileSize = 0
+ rAttachment = uploadform("txtAttachFile")
+ 
+ If Len(rAttachment) > 0 Then
+  wFileName =  uploadform("txtAttachFile").FileName
+  wFileSize =  uploadform("txtAttachFile").FileLen
+ 
+  response.write uploadform.DefaultPath
+  rAttachment = uploadform.SaveAs(uploadform.DefaultPath & "" & wFileName , False)
+  rAttachment = UploadForm.LastSavedFileName
+ End If
+ 
+8. 파일 다운로드
+ 
+<% @LANGUAGE='VBscRIPT' CODEPAGE='65001' %>
+<%
+ 'Response.Charset = "UTF-8"
+ filepath = Request.QueryString("txtFilepath") '// form으로 파라메터 전달해야 함.
+ filename = Request.QueryString("txtFilename")'// form으로 파라메터 전달해야 함.
+ 
+ If filepath = "" Then
+  filepath=server.MapPath( Request.QueryString("txtFilename"))
+  filename = Mid(filepath, InStrRev(filepath, "")+1)
+ Else
+  filepath=server.MapPath(filepath)
+  filename =  Request.QueryString("txtFilename")
+  If filename = "" Then
+  filename = Request.QueryString("txtattachment")
+  End If
+ End If
+
+ filepath = filepath &"" & filename
+Call FileDown
+%>
+ 
+<%
+Sub FileDown
+' 참고http://www.taeyo.pe.kr/Lecture/20_TIps/Danny03.asp
+ 
+ Response.Buffer = False
+ Response.ContentType = "application/x-msdownload"
+ 'ContentType 를 선언합니다.
+ 'server.HTMLEncode
+ 'server.URLPathEncode
+ Response.AddHeader "Content-Disposition","attachment; filename=" & server.URLPathEncode(filename) '//server.URLPathEncode 사용해야만 파일명 재대로 출력
+ '헤더값이 첨부파일을 선언합니다.
+ Set objStream = Server.CreateObject("ADODB.Stream")
+ 'Stream 을 이용합니다.
+ objStream.Open
+ '무엇이든 Set 으로 정의했으면 열어야 겠지요^^
+ objStream.Type = 1
+ objStream.LoadFromFile filepath
+ '절대경로 입니다.
+ download = objStream.Read
+ Response.BinaryWrite download
+ '이게 보통 Response.Redirect 로 파일로 연결시켜주는 부분을 대신하여 사용된 것입니다.
+ Set objstream = nothing
+ '초기화시키구요.
+End Sub
+%>
+ 
+<%
+Sub DEXTDown  ' DEXT.FileDownload 는 일본어 OS에 영문으로 설치시 한글파일 찾지 못함.(DextUpload 2.0까지는 그랬음)
+ 'On Error Resume Next
+ Response.Buffer = False
+ Response.AddHeader "Content-Disposition","inline;filename=" &  server.URLPathEncode(filename)
+ set objFS = Server.CreateObject("scripting.FileSystemObject")
+
+ set objF = objFS.GetFile(filepath)
+ 
+ Response.AddHeader "Content-Length", objF.Size
+ set objF = nothing
+ set objFS = nothing
+ Response.ContentType = "application/x-msdownload"
+ Response.CacheControl = "public"
+ Set objDownload = Server.CreateObject("DEXT.FileDownload")
+ objDownload.Download filepath
+ Set uploadform = Nothing
+End Sub
+%>
+ 
+9. CDO Mail발송
+Dim iMsg
+Dim iConf
+Dim Flds
+Dim strHTML
+Const cdoSendUsingPort = 2 '1:로컬, 2:외부 smtp
+set iMsg = CreateObject("CDO.Message")
+set iConf = CreateObject("CDO.Configuration")
+Set Flds = iConf.Fields
+Flds.Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = cdoSendUsingPort
+Flds.item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 25  '포트번호
+Flds.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
+Flds.Item("http://schemas.microsoft.com/cdo/configuration/smtpconnectiontimeout") = 10
+Flds.Item("http://schemas.microsoft.com/cdo/configuration/sendusername") =  "" 'ID
+Flds.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") =  "" '암호
+
+Flds.Update
+Set iMsg.Configuration = iConf
+iMsg.To = "xxxx@xxx.ccx" 'ToDo: Enter a valid email address.
+iMsg.From = "xxxx@xxx.ccx"  'ToDo: Enter a valid email address.
+iMsg.Subject = "This is a test CDOSYS message (Sent via Port 25)"
+ 
+'iMsg..TextBody = strHTMLMsg '// 텍스트
+iMsg.HTMLBody = strHTML  '// HTML 제목 깨짐 발생..
+
+iMsg.BodyPart.Charset="UTF-8" '/// 한글을 위해선 꼭 넣어 주어야 합니다.
+iMsg.HTMLBodyPart.Charset="UTF-8" '/// 한글을 위해선 꼭 넣어 주어야 합니다.
+iMsg.Send
+End With
+Set iMsg = Nothing
+Set iConf = Nothing
+Set Flds = Nothing
+ 
+ 
+10. ASP에서 배달 확인/ 읽음 확인 구현 방법 http://tong.nate.com/windeo/5767827
+
+http://support.microsoft.com/default.aspx?scid=kb;ko;286430
+
+<%
+Set oMsg = CreateObject("CDO.Message")
+oMsg.Configuration.Fields("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+‘ 생성되는 메시지가 SMTP pickup 디렉터리가 아닌 SMTP 서비스로 전송되게 합니다.
+oMsg.Configuration.Fields("http://schemas.microsoft.com/cdo/configuration/sendusername") = "이름"
+oMsg.Configuration.Fields("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "xxxxx"
+oMsg.Configuration.Fields("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "seo-msg-01"
+‘ 생성되는 메시지의 서버, 사서함 및 암호
+oMsg.Configuration.Fields.Update
+
+oMsg.From = "smpark@microsoft.com"
+oMsg.To = "smpark@microsoft.com"
+
+oMsg.Subject = "읽음 확인 및 배달 확인"
+oMsg.DSNOptions = 14
+‘ 이 메시지의 배달 상태 확인(delivery status notification:DSN)값으로 14는 배달 성공, 실패 및 지연시
+‘ 확인메시지 생성
+oMsg.Fields("urn:schemas:mailheader:return-receipt-to") = smpark@microsoft.com <mailto:smpark@microsoft.com>
+‘ 받는 사람이 이 메시지를 열었을 때 읽음 확인 메시지가 여기에서 지정된 사람에게 보내집니다.
+oMsg.Fields("urn:schemas:mailheader:disposition-notification-to") = smpark@microsoft.com <mailto:smpark@microsoft.com>
+‘ MDN(Message Disposition Notification)은 이 메시지의 확인 메시지가 리턴 될 수신자를 지정합니다.
+‘ MDN에 대하여는 Request for Comments (RFC) 2298에 자세히 설명됩니다.
+oMsg.TextBody = " SMTP 서버를 통한 읽음 확인 및 배달 확인 메시지"
+oMsg.Fields.Update
+oMsg.Send
+
+Set oMsg = Nothing
+%>
+
+
+11. 업로드 컴포넌트 UTF-8 지원여부 확인
+SiteGalaxy(사이트 갤럭시) 및 ABC 업로드 :  utf-8을 지원하지 않음
+덱스트업로드는 3.x 이후 지원

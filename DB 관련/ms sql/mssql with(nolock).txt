@@ -1,0 +1,10 @@
+SQL Server의 기본 격리수준(isolation)은 read commited 이다
+그래서 데이터를 읽을 때는 공유 잠금이 유지되어, 테이블을 
+SELECT 할 경우 INSERT, UPDATE등은 BLOCK이 된다.
+이럴 경우 SELECT시 DB의 성능이 떨어지게 된다.
+이를 피하기 위해 SELECT 시 구문 끝에 WITH(NOLOCK)을 걸어주게 된다
+
+위의 경우 각 구문의 적용을 해야하는 불편함이 있는데 이러한 문제를 해결하기 위한 방법이 SP 상단에 아래의 구문을 
+삽입하면 된다.
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED

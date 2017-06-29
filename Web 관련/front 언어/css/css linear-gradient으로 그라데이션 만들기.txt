@@ -1,0 +1,158 @@
+[linear-gradient으로 그라데이션 만들기]
+
+linear-gradient는 CSS3에서 추가된 것으로, 선형 그라데이션 효과를 만들 수 있습니다.
+기본 문법은 다음과 같습니다.
+
+linear-gradient( direction, color1, color2, …, color3 );
+
+direction에는 그라데이션 방향을 입력합니다.
+- to bottom : 위에서 아래로 그라데이션을 만듭니다. (기본값)
+- to top : 아래에서 위로 그라데이션을 만듭니다.
+- to left : 오른쪽에서 왼쪽으로 그라데이션을 만듭니다.
+- to right : 왼쪽에서 오른쪽으로 그라데이션을 만듭니다.
+- ndeg : n도의 방향으로 그라데이션을 만듭니다.
+
+색은 여러개 입력할 수 있습니다. 입력한 순서로 설정한 방향으로 그라데이션을 만듭니다.
+
+예를 들어
+
+linear-gradient( to right, yellow, red );
+
+는 왼쪽에서 오른쪽으로 노란색과 빨간색 순서로 그라데이션을 만듭니다.
+
+
+- 예제 1 -
+
+방향에 따라 그라데이션이 어떻게 만들어지는지 비교하는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Gradient</title>
+    <style>
+      div {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+      }
+      .jbGrad01 {
+        background: linear-gradient( to bottom, yellow, red );
+      }
+      .jbGrad02 {
+        background: linear-gradient( to top, yellow, red );
+      }
+      .jbGrad03 {
+        background: linear-gradient( to right, yellow, red );
+      }
+      .jbGrad04 {
+        background: linear-gradient( to left, yellow, red );
+      }
+      .jbGrad05 {
+        background: linear-gradient( 45deg, yellow, red );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="jbGrad01">to bottom</div>
+    <div class="jbGrad02">to top</div>
+    <div class="jbGrad03">to right</div>
+    <div class="jbGrad04">to left</div>
+    <div class="jbGrad05">45deg</div>
+  </body>
+</html>
+
+
+색만 입력했을 때는 색을 균등하게 배분하여 그라데이션을 만듭니다. 
+색 뒤에 백분율 또는 픽셀 등으로 길이를 입력하면 그 길이까지 해당 색을 사용합니다.
+
+예를 들어
+
+linear-gradient( to right, yellow 50%, red 60%, purple );
+
+은 해당 요소의 왼쪽에서 50%까지는 노란색, 50% 초과 60% 이하에는 빨간색, 
+나머지는 보라색으로 그라데이션을 만듭니다.
+
+- 예제 2 -
+
+색 뒤에 길이를 정하여 그라데이션을 만드는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Gradient</title>
+    <style>
+      div {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+      }
+      .jbGrad01 {
+        background: linear-gradient( to right, yellow, red, purple, blue );
+      }
+      .jbGrad02 {
+        background: linear-gradient( to right, yellow 50%, red, purple, blue );
+      }
+      .jbGrad03 {
+        background: linear-gradient( to right, yellow 50%, red 60%, purple, blue );
+      }
+      .jbGrad04 {
+        background: linear-gradient( to right, yellow 50px, red 300px, purple 90%, blue );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="jbGrad01">to right, yellow, red, purple, blue</div>
+    <div class="jbGrad02">to right, yellow 50%, red, purple, blue</div>
+    <div class="jbGrad03">to right, yellow 50%, red 60%, purple, blue</div>
+    <div class="jbGrad04">to right, yellow 50px, red 300px, purple 90%, blue</div>
+  </body>
+</html>
+
+repeating-linear-gradient는 그라데이션을 반복합니다.
+
+
+- 예제 3 -
+
+그라데이션을 반복하는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Gradient</title>
+    <style>
+      div {
+        width: 100%;
+        height: 400px;
+      }
+      .jbGrad01 {
+        background: repeating-linear-gradient( yellow, red 10%, purple 20% );
+      }
+    </style>
+  </head>
+  <body>
+    <div class="jbGrad01"></div>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

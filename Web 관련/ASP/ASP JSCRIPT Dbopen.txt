@@ -1,0 +1,18 @@
+<%@ LANGUAGE="JSCRIPT" %>
+<%
+ var objDBCon;
+
+ function DBOpen()
+ {
+  var strDBConnect ="Provider=SQLOLEDB;Network Library=dbmssocn;Data Source=127.0.0.1;Initial Catalog=TESTDB;user ID=test;password=test;";
+  objDBCon = Server.CreateObject("ADODB.CONNECTION");
+  objDBCon.Open(strDBConnect);
+ }
+
+ function DBClose()
+ {
+  objDBCon.Close();
+  objDBCon = null;
+ }
+
+%>

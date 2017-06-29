@@ -1,0 +1,15 @@
+[.after()]
+
+.after()는 선택한 요소 뒤에 새 요소를 추가합니다.
+
+h1 요소 뒤에 p 요소를 추가하는 예제입니다.
+
+$( document ).ready( function() {
+   $( 'h1' ).after( '<p>Hello World!</p>' );
+} );
+
+추가하는 요소에 클래스를 넣거나
+
+$( 'h1' ).after( '<p class="abc">Hello World!</p>' );
+
+참고로, 선택한 요소 앞에 컨텐트를 추가할 때는 .before()를 사용합니다.

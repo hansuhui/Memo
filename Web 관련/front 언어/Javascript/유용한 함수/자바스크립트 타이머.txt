@@ -1,0 +1,33 @@
+
+		function GateWay()
+		{
+			fn_Excel();
+			timer = setTimeout(function () {
+				Reload()
+			}, 500);
+		}
+
+	function fn_Excel() {
+			var objGrid = objGrid = document.getElementById("tblList1");
+
+
+			$(".ExcelReMove").remove();
+			$(".ExcelView").attr("style","display:normal");
+			
+
+			fn_GetExcelParameterInfo(
+					objGrid					// 첫번째 Parameter는 GridRender영역
+				  , null					// 두번째 Parameter는 Grid의 제외될 컬럼 영역
+				  , "사용자 리스트 "			// 세번째 Parameter는 화면 Title 영역
+				  , ["lblShopName", "txtShopCode", "txtShopName"]	// 네번째 Parameter는 검색조건 영역
+				  , ["lblGubun", "ddlGubun"]
+				  , ["lblReturnDates", "txtSdate", "~", "txtEdate"]
+				  );
+			
+			return;
+		}
+		function Reload()
+		{
+			location.reload();
+		}
+

@@ -1,0 +1,43 @@
+create table test(
+no int identity(1,1) NOT NULL, --(시작할 숫자값, 증가할 숫자값)
+name varchar(256) NULL
+) 
+
+
+------------------------------------------------------------------------
+#2 인서트시 증가된 값 얻어오기
+
+Identity를 설정해준 테이블에 인서트한 경우 
+인서트한 identity 불러오기 위해서는 보통 다시한번 select를 해주게 된다
+
+인서트 쿼리 뒤에 select @@Identity을 붙여 주면 insert한 row의 identity를 불러올 수 있다.
+
+사용예)
+insert into test(name) values('James') select @@Identity as 'id'  (밑줄은 별칭이므로 아무거라도 상관 없다.)
+
+-------------------------------------------------------------------------
+#3 증가값을 임의로 정해보자
+
+:Identity를 선언한 경우에는 인서트 시 ,Identity선언 컬럼의 값을 임의로 지정할 수 없다
+ex) insert into test(no,name) values(1000,'James')
+테이블 생성 시 디폴트 값으로 임의의 번호로 지정하고 싶거나,
+삭제된 번호를 채워 넣고 싶을 때 유용한 방법이다.
+
+-SET IDENTITY_INSERT [테이블명] ON;
+  증가값을 수동 지정
+
+-SET IDENTITY_INSERT [테이블명] OFF;
+ 증가값을 자동 지정 (보통 우리가 사용하는 상태 )
+
+-DBCC CHECKIDENT ('[테이블명]', RESEED, 0);
+ 시작값을 임의 지정
+
+사용예)
+
+SET IDENTITY_INSERT test ON;                      -- Identity 증가값을 수동지정
+insert test(no,name) values(99999,'admin')      --수동입력 가능
+SET IDENTITY_INSERT product_lank OFF;        --Identity 증가값을 자동지정
+                                                                  --※ 증가값이 최초 1-->99999 변경되어짐
+                                                                       즉,다음 인서트 값 Identity는 100000 됨
+
+DBCC CHECKIDENT ('product_lank', RESEED, 0);   -- 시작값을 0으로 지정, 다음 증가값은 1이됨.

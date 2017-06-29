@@ -1,0 +1,25 @@
+[.replaceWith()]
+
+
+.replaceWith()는 선택한 요소를 다른 것으로 바꿉니다.
+.replaceWith( newContent )
+
+예를 들어 h1 요소를 abc로 바꾸고 싶다면 다음과 같이 합니다.
+
+$( 'h1' ).replaceWith( 'abc' );
+
+h1 요소의 내용 뿐 아니라 h1 태그까지 지우고 바꾼다는 것에 주의합니다.
+
+newContent에는 특정 요소가 들어갈 수 있습니다. 예를 들어
+
+$( 'h1' ).replaceWith( $( 'p.a' ) );
+
+는 h1 요소를 클래스 값이 a인  p 요소로 바꿉니다.
+
+[.resize()]
+
+.resize()는 윈도우 크기가 바뀔 때 어떤 작업을 할 수 있게 합니다.
+
+$( window ).resize( function() {
+  // do somthing
+?} );

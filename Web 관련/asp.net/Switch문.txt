@@ -1,0 +1,47 @@
+switch (i)
+{
+   default:
+      CaseAny();
+      break;
+   case 1:
+      CaseZeroOrOne();
+      goto default;
+   case 0:
+      CaseZero();
+      goto case 1;
+} 
+ 
+
+  switch(n){
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9: Console.WriteLine("입력하신 수를 16진법으로 변환하면 {0}입니다.", n);
+                    break;
+                case 10:
+                    Console.WriteLine("입력하신 수를 16진법으로 변환하면 A 입니다.");
+                    break;
+                case 11:
+                    Console.WriteLine("입력하신 수를 16진법으로 변환하면 B 입니다.");
+                    break;
+                case 12:
+                    Console.WriteLine("입력하신 수를 16진법으로 변환하면 C 입니다.");
+                    break;
+                case 13:
+                    Console.WriteLine("입력하신 수를 16진법으로 변환하면 D 입니다.");
+                    break;
+                case 14:
+                    Console.WriteLine("입력하신 수를 16진법으로 변환하면 E 입니다.");
+                    break;
+                case 15:
+                    Console.WriteLine("입력하신 수를 16진법으로 변환하면 F 입니다.");
+                    break;
+                default:
+                    Console.WriteLine("입력하신 수는 16을 넘어갑니다.");
+                    break;
+            }

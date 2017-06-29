@@ -1,0 +1,189 @@
+http://mrw0119.tistory.com/17
+
+[일반화(Generalization)]
+
+일반화는 간단히 말해 서로 다른 개념에서 공통점을 찾는 것이다.
+
+A와 B , C는 분명 다른 단어지만 영어라는 공통점을 가지며,
+ABC와 가나다는 분명 다른 글자이지만 문자 라는 공통점을 가진다.
+
+이렇듯 어떤 개념을 포괄하는 공통된 개념을 찾아 서로 다른 개념들을
+하나로 묶어 줄 수 있다.
+
+이것을 일반화(Generalization)라고 한다.
+
+=================================================================
+
+[일반화 메소드]
+
+그럼 프로그래밍에서도 이런 일반화가 가능하지 않을까?
+
+코드의 서로 다른 개념들 사이에서 공통적인 개념을 찾아 하나의
+코드로 묶어주는 것 말이다.
+
+예를 들어int , float , string 등은 분명 다른 타입이다.
+
+하지만 이들은 변수라는 개념으로 묶어줄 수 있다.
+
+이전에는 int, float , string을 다른 개념으로 보고 다른 코드를 사용하였다면,
+이제는 이들을 변수라는 하나의 개념으로 보고 하나의 코드로 만들어 줄 수 있겠다.
+
+서로 다른 타입이 여러개 있을 때, 이들을 출력하는 메소드를 일일이 만들어 주는 것보단
+위와 같이 일반화 과정을 거쳐 하나의 메소드로 만들어주는 것이 휠씬 효율적이다.
+
+이를 일반화 메소드라고 하며, 일반화 메소드는 다음과 같이 호출할 수 있다.
+
+
+- 예제 -
+
+using System;
+
+namespace Console1
+{
+    class Generalization_Ex
+    {
+        static void print<T>(T value) {
+            Console.WriteLine(value);
+        }
+        public void Main() {
+            print<int>(29);
+            print<float>(17.9f);
+            print<string>("한수희");
+        }
+    }
+}
+
+
+print<T>에서 T에 원하는 타입을 지정하면 print 메소드 내부의 T가 전부 지정한 변수로 치환되며,
+지정된 변수로 메소드가 실행된다. 즉, 위 예제에서처럼 int형을 지정하면 int형 데이터가 출력되고,
+
+float형을 지정하면 float형 데이터가, string형을 지정하면 string형 데이터가 출력되는 것이다.
+(
+여기에서 T는 형식매개변수라고 하여 형식(타입)을 지정해주는 역할을 한다.
+하지만 형식매개변수로 반드시 T만 사용가능한 것은 아니며,
+단순히 치환을 해주는 문자이기 때문에 T외에 어떤 문자도 사용가능하다. 한글도 가능
+)
+
+
+=================================================================
+
+
+[일반화 클래스]
+
+클래스도 마찬가지로 일반화된 클래스를 만들 수 있다.
+예를 들어 여러 타입의 자료구조 클래스를 만든다고 했을 때,
+
+타입마다 서로 다른 클래스를 만드는 것은 상ㅈ당히 비효율적이다.
+
+이럴 때 일반화 메소드를 만들었던 것과 마찬가지로 모든 타입을 포괄하는
+하나의 일반화 클래스를 만들 수 있다.
+
+- 예제 -
+
+using System;
+
+namespace Console1
+{
+    class List_Test<T> {
+        public T[] arr;
+        public List_Test() { arr = new T[1]; }
+    }
+    class Generalization_Class_Ex
+    {
+        
+        public void Main() {
+            List_Test<int> list1 = new List_Test<int>();
+            list1.arr[0] = 10;
+
+            List_Test<float> list2= new List_Test<float>();
+            list2.arr[0] = 2.2f;
+
+            List_Test<string> list3 = new List_Test<string>();
+            list3.arr[0] = "일반화 클래스";
+
+            Console.WriteLine(list1.arr[0]);
+            Console.WriteLine(list2.arr[0]);
+            Console.WriteLine(list3.arr[0]);
+        }
+    }
+}
+
+
+=================================================================
+
+[T 변수 제약조건 만들기]
+
+지금까지 만든 일반화 메소드와 일반화 클래스는 모든 타입의 변수를 처리할 수 있었다.
+다시말해 형식(타입)을 지정하는 매개변수 T는 모든 타입으로 치환이 가능했다.
+
+하지만 만약에 이 매개변수 T를 특정 조건을 갖춘 타입으로만 치환이 가능하도록
+제한하고 싶다면 어떻게 해야할까?
+
+이때 사용하는 것이 "Where T: 제약조건"이다.
+
+즉 where 이라는 키워드로 T의 타입 범위를 지정해주는 것이다.
+
+where 형식매개변수 : 조약조건
+
+class List<T> where: T :class{}
+void Print<U> where: U :struct{}
+
+예를 들어 'where T : class'라 하면 "형식 매개변수 T의 타입은 class여야 한다." 라는 것이고,
+'where T : struct'라 하면 "T의 타입의 값(int, float 등등..0이어야 한다는"것이다.
+
+이외에도 형식매개변수의 제약 조건은 여러가지가 있다.
+
+where T : new() / T는 매개변수가 없는 생성자를 가진 타입이여야 한다.
+
+where T : 클래스이름 / T는 지정한 클래스이거나 이를 상속받는 클래스이어야 한다.
+
+where T : 인터페이스 이름 / T는 인터페이스를 상속받는 클래스 이어야 한다.
+
+where T : U / T는 형식매개변수 U의 타입이거나 이를 상속받는 클래스 이어야 한다.
+
+
+- 예제 -
+
+using System;
+
+namespace Console1
+{
+  
+    class Generalization_Where_Ex
+    {        
+        public void Main() {
+            Where_List<Where_Parent> list = new Where_List<Where_Parent>();
+            list.array[0] = new Where_Parent();
+            list.array[1] = new Where_Children();
+
+            Console.WriteLine(list.array[0].name);
+            Console.WriteLine(list.array[1].name);
+        }
+    }
+
+    class Where_Parent {
+        public string name { get; set; }
+        public Where_Parent() { name = "부모클래스"; }
+    }
+
+    class Where_Children : Where_Parent {
+        public Where_Children() { name = "자식클래스"; }
+    }
+
+    class Where_List<T> where T : Where_Parent {
+        public T[] array;
+        public Where_List() { array = new T[2]; }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,260 @@
+https://www.typescriptlang.org/docs/handbook/modules.html
+
+[Modules]
+
+------------------------------------------------------------------------
+
+- Export -
+
+= Validation.ts =
+export interface StringValidator {
+    isAcceptable(s: string): boolean;
+}
+
+= ZipCodeValidator.ts =
+
+export const numberRegexp = /^[0-9]+$/;
+
+export class ZipCodeValidator implements StringValidator {
+    isAcceptable(s: string) {
+        return s.length === 5 && numberRegexp.test(s);
+    }
+}
+
+
+------------------------------------------------------------------------
+- Export statements -
+
+
+class ZipCodeValidator implements StringValidator {
+    isAcceptable(s: string) {
+        return s.length === 5 && numberRegexp.test(s);
+    }
+}
+export { ZipCodeValidator };
+export { ZipCodeValidator as mainValidator };
+
+------------------------------------------------------------------------
+
+- Re-exports -
+
+= ParseIntBasedZipCodeValidator.ts =
+
+export class ParseIntBasedZipCodeValidator {
+    isAcceptable(s: string) {
+        return s.length === 5 && parseInt(s).toString() === s;
+    }
+}
+
+// Export original validator but rename it
+export {ZipCodeValidator as RegExpBasedZipCodeValidator} from "./ZipCodeValidator";
+
+
+
+= AllValidators.ts =
+
+export * from "./StringValidator"; // exports interface 'StringValidator'
+export * from "./LettersOnlyValidator"; // exports class 'LettersOnlyValidator'
+export * from "./ZipCodeValidator";  // exports class 'ZipCodeValidator'
+
+
+========================================================================
+
+
+- Import -
+
+
+import { ZipCodeValidator } from "./ZipCodeValidator";
+let myValidator = new ZipCodeValidator();
+
+------------------------------------------------------------------------
+
+import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
+let myValidator = new ZCV();
+
+------------------------------------------------------------------------
+
+import * as validator from "./ZipCodeValidator";
+let myValidator = new validator.ZipCodeValidator();
+
+
+------------------------------------------------------------------------
+
+
+import "./my-module.js";
+
+========================================================================
+
+
+
+- Default exports -
+
+= JQuery.d.ts = 
+
+declare let $: JQuery;
+export default $;
+
+
+= App.ts =
+
+import $ from "JQuery";
+$("button.continue").html( "Next Step..." );
+
+------------------------------------------------------------------------
+
+= ZipCodeValidator.ts =
+
+export default class ZipCodeValidator {
+    static numberRegexp = /^[0-9]+$/;
+    isAcceptable(s: string) {
+        return s.length === 5 && ZipCodeValidator.numberRegexp.test(s);
+    }
+}
+
+
+= Test.ts =
+
+import validator from "./ZipCodeValidator";
+let myValidator = new validator();
+
+------------------------------------------------------------------------
+
+= StaticZipCodeValidator.ts =
+
+const numberRegexp = /^[0-9]+$/;
+
+export default function (s: string) {
+    return s.length === 5 && numberRegexp.test(s);
+}
+
+
+= Test.ts =
+
+import validate from "./StaticZipCodeValidator";
+
+let strings = ["Hello", "98052", "101"];
+
+// Use function validate
+strings.forEach(s => {
+  console.log(`"${s}" ${validate(s) ? " matches" : " does not match"}`);
+});
+
+
+------------------------------------------------------------------------
+
+
+= OneTwoThree.ts =
+
+export default "123";
+
+= Log.ts =
+
+import num from "./OneTwoThree";
+console.log(num); // "123"
+
+
+========================================================================
+
+- export = and import = require() -
+
+= ZipCodeValidator.ts =
+
+let numberRegexp = /^[0-9]+$/;
+class ZipCodeValidator {
+    isAcceptable(s: string) {
+        return s.length === 5 && numberRegexp.test(s);
+    }
+}
+export = ZipCodeValidator;
+
+
+= Test.ts =
+
+import zip = require("./ZipCodeValidator");
+
+// Some samples to try
+let strings = ["Hello", "98052", "101"];
+
+// Validators to use
+let validator = new zip();
+
+// Show whether each string passed each validator
+strings.forEach(s => {
+  console.log(`"${ s }" - ${ validator.isAcceptable(s) ? "matches" : "does not match" }`);
+});
+
+
+========================================================================
+
+- Code Generation for Modules -
+
+= SimpleModule.ts =
+
+import m = require("mod");
+export let t = m.something + 1;
+
+
+= AMD / RequireJS SimpleModule.js =
+
+define(["require", "exports", "./mod"], function (require, exports, mod_1) {
+    exports.t = mod_1.something + 1;
+});
+
+= CommonJS / Node SimpleModule.js =
+
+var mod_1 = require("./mod");
+exports.t = mod_1.something + 1;
+
+
+= UMD SimpleModule.js =
+
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports); if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./mod"], factory);
+    }
+})(function (require, exports) {
+    var mod_1 = require("./mod");
+    exports.t = mod_1.something + 1;
+});
+
+
+= System SimpleModule.js =
+
+System.register(["./mod"], function(exports_1) {
+    var mod_1;
+    var t;
+    return {
+        setters:[
+            function (mod_1_1) {
+                mod_1 = mod_1_1;
+            }],
+        execute: function() {
+            exports_1("t", t = mod_1.something + 1);
+        }
+    }
+});
+
+
+= Native ECMAScript 2015 modules SimpleModule.js =
+
+import { something } from "./mod";
+export var t = something + 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

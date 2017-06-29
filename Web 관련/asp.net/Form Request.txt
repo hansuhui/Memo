@@ -1,0 +1,9 @@
+System.Collections.Specialized.NameValueCollection frm = Request.Form;
+SYstem.Collections.Hashtable ht = new System.Collections.Hashtable();
+foreach(string item in frm)
+{
+ht.Add(item, frm[item]);
+}
+
+
+뷰에서 폼전체를 가져와서 Hashtable에 넣는작업

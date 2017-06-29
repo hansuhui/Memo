@@ -1,0 +1,291 @@
+[ChildActionOnly]
+public ActionResult 액션이름 ()
+{
+결과등 만들고
+return PartialView(결과물)
+}
+
+
+        [DisplayFormat(DataFormatString = "{0:d}")]
+
+
+
+
+
+
+뷰창에
+
+결과등~~~ 코딩하고
+
+
+
+레이아웃 원하는 부분에
+@{Html.RenderAction("액션이름","컨트롤러이름")}
+
+-------------------------------------------------------------
+숫자만 찾기
+microsoft.visualbasic  참조하고
+네임스페이스에 Microsoft.VisualBasic 상속
+
+사용할때는 Information.IsNumeric(변수)
+
+
+
+
+-------------------------------------------
+<a href="@Url.Action("액션이름",new{값넘기기})">내용</a>
+
+
+========================================================================================================
+
+
+
+HttpUtility.HtmlEncode
+
+
+홈페이지를 만든다
+
+회원가입이 가능하고
+
+로그인이 가능하고
+
+일반 게시판
+
+사진 게시판
+
+파일게시판(다운로드)?
+
+배운거 최대한 써서 해보기
+
+ <add name ="MoiveDBContext"
+         connectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Movies.mdf;Integrated Security=True"
+         providerName="System.Data.SqlClient" />
+
+<connectionStrings>  
+    <add name="MusicStoreEntities"  
+         connectionString="Data Source=DataDirectoryMvcMusicStore.sdf"  
+         providerName="System.Data.SqlServerCe.4.0"/>  
+  </connectionStrings>  
+<add name="DefaultConnection" connectionString="Data Source=(LocalDb)\v11.0;Initial Catalog=aspnet-JJ-20140116123253;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\aspnet-JJ-20140116123253.mdf" providerName="System.Data.SqlClient" />
+</configuration>
+
+--------------------------------------------------------------------------------------
+
+변경시 추가하는 메소드
+  System.Data.Entity.Database.SetInitializer(new MvcMusicStore.Models.SampleData());  
+ using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data.Entity;
+
+namespace MvcMusicStore.Models
+{
+    public class SampleData : DropCreateDatabaseIfModelChanges<MusicStoreEntities>
+    {
+        protected override void Seed(MusicStoreEntities context)
+{
+   }.ForEach(a => context.Albums.Add(a));
+        }
+    }
+}
+
+
+--------------------------------------------------------------------------------------
+
+ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name");
+ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name");  
+
+
+
+--------------------------------------------------------------------------------------
+
+
+           var cartItem = storeDB.Carts.Single(   
+                cart => cart.CartId == ShoppingCartId && cart.RecordId == id);   
+
+
+
+                      where cartItems.CartId == ShoppingCartId  
+                            select (int?)cartItems.Count).Sum();  
+
+
+
+     decimal? total = (from cartItems in storeDB.Carts  
+                                where cartItems.CartId == ShoppingCartId  
+                                select (int?)cartItems.Count * cartItems.Album.Price).Sum();  
+
+            return total ?? decimal.Zero;  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static ShoppingCart GetCart(HttpContextBase context) 
+        { 
+            var cart = new ShoppingCart(); 
+            cart.ShoppingCartId = cart.GetCartId(context); 
+            return cart; 
+        } 
+
+        // 장바구니 호출을 간단하게 만들어주는 도우미 메서드입니다.  
+        public static ShoppingCart GetCart(Controller controller)  
+        {  
+            return GetCart(controller.HttpContext);  
+        }  
+
+        // 세션에 접근하기 위해서 HttpContextBase를 사용합니다.  
+        public string GetCartId(HttpContextBase context)  
+        {  
+            if (context.Session[CartSessionKey] == null)  
+            {  
+                if (!string.IsNullOrWhiteSpace(context.User.Identity.Name))  
+                {  
+                    context.Session[CartSessionKey] = context.User.Identity.Name;   
+                }   
+                else  
+                {  
+                    // System.Guid 클래스를 이용해서 새로운 임의의 GUID를 생성합니다.  
+                    Guid tempCartId = Guid.NewGuid();  
+                    // 임시 장바구니 ID(tempCartId)를 세션에 설정합니다.  
+                    context.Session[CartSessionKey] = tempCartId.ToString();  
+                }  
+            }  
+            return context.Session[CartSessionKey].ToString();  
+        }  
+
+       public void MigrateCart(string userName)  
+        {  
+            var shoppingCart = storeDB.Carts.Where(c => c.CartId == ShoppingCartId);  
+            foreach (Cart item in shoppingCart)  
+            {  
+                item.CartId = userName;  
+            }  
+            storeDB.SaveChanges();  
+        }  
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+     // GET: /ShoppingCart/CartSummary  
+        [ChildActionOnly]  
+        public ActionResult CartSummary()  
+        {  
+            var cart = ShoppingCart.GetCart(this.HttpContext);  
+
+            ViewData["CartCount"] = cart.GetCount();  
+            return PartialView("CartSummary");  
+        }  
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------
+
+
+
+
+
+
+@model MvcMusicStore.ViewModels.ShoppingCartViewModel
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<script src="/Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>  
+<script type="text/javascript">  
+    $(function () {  
+        // Document.ready -> "Remove from cart" 링크의 이벤트 헨들러를 설정합니다.  
+        $(".RemoveLink").click(function () {  
+            // 해당 링크의 id를 가져옵니다.  
+            var recordToDelete = $(this).attr("data-id");  
+            if (recordToDelete != '') {  
+                // Ajax post를 수행합니다.  
+                $.post("/ShoppingCart/RemoveFromCart", {"id": recordToDelete },  
+                    function (data) {  
+                        // 정상적으로 작업이 수행되고 나면,  
+                        // 페이지의 요소들을 갱신합니다.  
+                        if (data.ItemCount == 0) {   
+                            $('#row-' + data.DeleteId).fadeOut('slow');  
+                        } else {  
+                            $('#item-count-' + data.DeleteId).text(data.ItemCount);  
+                        }  
+                        $('#cart-total').text(data.CartTotal);  
+                        $('#update-message').text(data.Message);  
+                        $('#cart-status').text('Cart (' + data.CartCount + ')');  
+                    });  
+            }  
+        });  
+    });  
+</script>  
+<h3>  
+    <em>Review</em> your cart:   
+</h3>  
+<p class="button">
+    @Html.ActionLink("Checkout >>", "AddressAndPayment", "Checkout")
+</p>  
+<div id="update-message">  
+</div>  
+<table>  
+    <tr>  
+        <th>
+            Album Name
+        </th>  
+        <th>   
+            Price (each)
+        </th>  
+        <th>
+            Quantity
+        </th>  
+        <th></th>  
+    </tr>   
+    @foreach (var item in Model.CartItems)
+    {
+        <tr id="row-@item.RecordId">  
+            <td>
+                @Html.ActionLink(item.Album.Title, "Details", "Store", new { id = item.AlbumId }, null)
+            </td>
+            <td>
+                @item.Album.Price
+            </td>  
+            <td id="item-count-@item.RecordId">   
+                @item.Count
+            </td>  
+            <td>  
+                <a href="#" class="RemoveLink" data-id="@item.RecordId">Remove from cart</a>
+            </td>  
+        </tr>   
+    }
+    <tr>  
+        <td>   
+            Total
+        </td>  
+        <td>  
+        </td>  
+        <td>  
+        </td>  
+        <td id="cart-total">
+            @Model.CartTotal
+        </td>  
+    </tr>  
+</table>
+

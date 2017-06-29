@@ -1,0 +1,9 @@
+IF intNumber = 1 THEN
+    Response.Write "intNumber 에 들어있는 수는 1입니다!"
+ELSEIF intNumber = 2 THEN
+    Response.Write "intNumber 에 들어있는 수는 2입니다!"
+ELSEIF intNumber = 3 THEN
+    Response.Write "intNumber 에 들어있는 수는 3입니다!"
+ELSE
+    Response.Write "intNumber 에 들어있는 수는 1,2,3 이 아닌 다른 숫자입니다!"
+END IF

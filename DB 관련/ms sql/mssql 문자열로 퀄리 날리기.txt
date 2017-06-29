@@ -1,0 +1,27 @@
+
+DECLARE @columns NVARCHAR(MAX), @sql NVARCHAR(MAX);
+
+SET @columns = N'';
+SELECT @columns += N', p.' + QUOTENAME(Name)   -- += 는 컬럼을 합쳐서 한 문자로 만들어 주죠.
+FROM (SELECT p.Name FROM dbo.Products AS p
+  INNER JOIN dbo.OrderDetails AS o
+  ON p.ProductID = o.ProductID
+ GROUP BY p.Name) AS x;
+print @columns
+
+SET @sql = N'
+ SELECT ' + STUFF(@columns, 1, 2, '') + '
+ FROM
+ (
+   SELECT p.Name, o.Quantity
+    FROM dbo.Products AS p
+    INNER JOIN dbo.OrderDetails AS o
+    ON p.ProductID = o.ProductID
+ ) AS j
+ PIVOT
+ (
+   SUM(Quantity) FOR Name IN ('
+   + STUFF(REPLACE(@columns, ', p.[', ',['), 1, 1, '')
+   + ')
+ ) AS p;';
+EXEC sp_executesql @sql;

@@ -1,0 +1,212 @@
+@model InnobileProject.Models.boardMaster
+@{
+    ViewBag.Title = "공지사항 상세";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    string[] strCel = new string[3];
+    if (!string.IsNullOrEmpty(Model.strCel))
+    {
+        strCel = Model.strCel.Split('-');
+    }
+}
+
+
+
+
+<div>
+	<ul class="breadcrumb">
+		<li><i class="icon-home"></i> Home<span class="divider">/</span></li>
+		<li>@ViewBag.Title</li>
+	</ul>
+</div>
+<!--
+   
+
+ 전화번호 ip
+내용
+등록일자 
+-->
+<form id="formDetail" name="formDetail" method="post" class="form-horizontal" action="Details">
+    <table class="table table-striped table-bordered">
+        <tbody>
+
+            <tr>
+                <td width="150" class="ac">I  D</td>
+                <td bgcolor="#f9f9f9;;" width="150" class="ac">@Model.strUID<input type="hidden" value="@Model.strUID" id="strUid"/></td>
+                <td width="150" class="ac">작 성 자</td>
+                <td width="150" class="ac"><input type="text" id="strName" class="input-small" value="@Model.strName" /></td>
+                <td width="200" class="ac">Email</td>
+                <td width="250" class="ac"><input type="text" id="strEmail" class="input-free" value="@Model.strEmail" /></td>
+                <td width="120" class="ac">암 호</td>
+                <td width="80" class="ac"><input type="text" id="strPwd" class="input-small" value="@Model.strPwd" /></td>
+            </tr>
+            <tr>
+                <td class="ac">제목</td>
+                <td colspan="5" class="ac"><input type="text" id="strTitle" class="input-free" value="@Model.strTitle" /></td>
+                <td class="ac">조 회 수</td>
+                <td class="ac">@Model.n4Cnt</td>
+            </tr>
+
+            <tr>
+                <td colspan="8" class="ac"><textarea id="strContent" name="" class="input-free" style="height:300px;">@Model.strContent</textarea></td>
+            </tr>
+            <tr>
+                <td class="ac">등록일</td>
+                <td width="500" colspan="2">@Model.regDate</td>
+                <td class="ac">전화 번호</td>
+                <td height="30" colspan="2" class="none">
+                    <input type="text" name="strCel1" id="strCel1" style="width:50px" maxlength="4" value="@strCel[0]">
+                    -
+                    <input type="text" name="strCel2" id="strCel2" style="width:50px" maxlength="4" value="@strCel[1]">
+                    -
+                    <input type="text" name="strCel3" id="strCel3" style="width:50px" maxlength="4" value="@strCel[2]">
+                </td>
+                <td class="ac">I  P</td>
+                <td colspan="2" class="ac">@Model.strIP<input type="hidden" value="@Model.strIP" id="strIP" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+</form>
+<p class="center">
+	<a id="btnSave" href="#" class="btn btn-large btn-primary"><i class="icon-upload"></i>저장</a>
+    <a id="btnCancel" href="#" class="btn btn-large btn-info"><i class="icon-chevron-left"></i>취소</a>
+</p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/slides")
+<script type="text/javascript">
+		$(document).ready(function () {
+
+
+		
+
+			$("#btnRemove").click(function () {
+
+				if ($("#strPwd").val() == "") {
+					alert("게시글의 비밀번호를 입력하세요.");
+					$("#strPwd").focus();
+					return false;
+				}
+
+				$("#formDetail").attr("action", "QnaRemove")
+				$("#formDetail").submit();
+			});
+
+		$("#btnSave").click(function () {
+			var f = document.formDetail;
+
+			if (f.strUid.value == "") {
+				alert("작성자를 입력하세요.");
+				f.strUid.focus();
+				return false;
+			}
+
+			if (f.strCel1.value == "") {
+				alert("연락처를 입력하세요.");
+				f.strCel1.focus();
+				return false;
+			}
+
+			if (f.strCel2.value == "") {
+				alert("연락처를 입력하세요.");
+				f.strCel2.focus();
+				return false;
+			}
+
+			if (f.strCel3.value == "") {
+				alert("연락처를 입력하세요.");
+				f.strCel3.focus();
+				return false;
+			}
+
+			if (f.strEmail.value == "") {
+				alert("이메일을 입력하세요.");
+				f.strEmail.focus();
+				return false;
+			}
+
+			if (f.strTitle.value == "") {
+				alert("제목을 입력하세요.");
+				f.strTitle.focus();
+				return false;
+			}
+
+			if (f.strContent.value == "") {
+				alert("내용을 입력하세요.");
+				f.strContent.focus();
+				return false;
+			}
+
+			if (f.strPwd.value == "") {
+				alert("비밀번호를 입력하세요.");
+				f.strPwd.focus();
+				return false;
+			}
+
+			f.submit();
+		});
+
+		$("#btnCancel").click(function () {
+			$("#formDetail").attr("action", "List");
+			$("#formDetail").submit();
+		});
+
+		$("#btnModify").click(function () {
+			var f = document.formDetail;
+
+			if (f.strUid.value == "") {
+				alert("작성자를 입력하세요.");
+				f.strUid.focus();
+				return false;
+			}
+
+			if (f.strCel1.value == "") {
+				alert("연락처를 입력하세요.");
+				f.strCel1.focus();
+				return false;
+			}
+
+			if (f.strCel2.value == "") {
+				alert("연락처를 입력하세요.");
+				f.strCel2.focus();
+				return false;
+			}
+
+			if (f.strCel3.value == "") {
+				alert("연락처를 입력하세요.");
+				f.strCel3.focus();
+				return false;
+			}
+
+			if (f.strEmail.value == "") {
+				alert("이메일을 입력하세요.");
+				f.strEmail.focus();
+				return false;
+			}
+
+			if (f.strTitle.value == "") {
+				alert("제목을 입력하세요.");
+				f.strTitle.focus();
+				return false;
+			}
+
+			if (f.strContent.value == "") {
+				alert("내용을 입력하세요.");
+				f.strContent.focus();
+				return false;
+			}
+
+			if (f.strPwd.value == "") {
+				alert("비밀번호를 입력하세요.");
+				f.strPwd.focus();
+				return false;
+			}
+
+			f.action = "QnaModify";
+			f.submit();
+		});
+
+	});//end ready
+</script>
+}

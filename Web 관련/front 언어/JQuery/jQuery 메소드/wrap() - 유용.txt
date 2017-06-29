@@ -1,0 +1,18 @@
+[.wrap()]
+
+.wrap()은 선택한 요소를 원하는 태그로 둘러싸게 합니다.
+
+.wrap( wrappingElement )
+
+p 요소를 div 태그로 둘러싸려면 다음과 같이 합니다.
+
+$( 'p' ).wrap( '<div></div>' );
+
+class나 id 값을 추가할 수도 있습니다.
+
+$( 'p' ).wrap( '<div id="ab" class="cd"></div>' );
+
+여러 태그를 한 번에 붙일 수도 있습니다.
+
+$( 'p' ).wrap( '<div><strong></strong></div>' );
+

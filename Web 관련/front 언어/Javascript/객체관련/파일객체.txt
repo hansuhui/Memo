@@ -1,0 +1,9 @@
+		_filePath = Path.Combine(Server.MapPath("/"), Config.UserDataRoot);
+		string ext = Path.GetExtension(FileUpload1.PostedFile.FileName);
+		string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+
+		// ## 서버에 파일 저장
+		string fileFullPath = Path.Combine(_filePath, fileName);
+		string path = Path.Combine( Server.MapPath("/"), Config.ProductThum);
+
+

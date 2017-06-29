@@ -1,0 +1,62 @@
+System.Text.StringBuilder sb = new System.Text.StringBuilder();
+sb.Append("<NewDataSet>");
+sb.Append("<Table1>");
+sb.Append("<Jong>" + Jong[i] + "</Jong>");
+sb.Append("<Qty>" + JongQty[i] + "</Qty>");
+sb.Append("</Table1>");
+sb.Append("</NewDataSet>");
+string XmlData = sb.ToString();
+
+예제
+			try
+			{
+				for (int i = 0; i < idxs.Length - 1; i++)
+				{
+					sb.Append("<Table1>");
+					sb.Append("<Idx>" + idxs[i] + "</Idx>");
+					sb.Append("</Table1>");
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+
+
+
+
+루프 돌면서 원하는 값을 추가 
+
+파라미터 데이터를 넘긴다
+
+프로시져에 선언하고
+@XmlData			xml
+
+테이블 선언하고
+
+-- xml 관련
+declare @idoc	int
+declare @Table1	table
+(
+	Jong		varchar(3)
+	,Qty		int
+)
+
+
+exec sp_xml_preparedocument @idoc OUTPUT, @XmlData
+Insert into @Table1
+	(Jong, Qty)
+select
+	Jong, Qty
+from openxml (@idoc, '/NewDataSet/Table1', 2)
+with
+(
+	Jong		varchar(3)
+	,Qty	int
+)
+order by Jong
+
+EXEC sp_xml_removedocument @idoc;
+
+
+그리고 테이블 활용

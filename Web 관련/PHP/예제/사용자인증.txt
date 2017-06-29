@@ -1,0 +1,58 @@
+<?php
+ 
+    cfunction authenticate() {
+      Header("WWW-authenticate: basic realm=\"BBS ADMIN영역\" ");
+      Header("HTTP/1.0 401 Unauthorized");
+      $title="Invalid Login";
+       ?>
+         아이디와 암호가 필요합니다!
+        <?php
+        exit;
+    }
+
+    if(!isset($PHP_AUTH_USER)) {
+        authenticate();
+    } else {
+        mysql_pconnect('','mysql','') or die("Unable to connect to SQL server"); // MySQL 서버 접속
+        mysql_select_db("test") or die("Unable to select database");             // DB 선택
+        $result = mysql_query("select name , level from member 
+	                        where id='$PHP_AUTH_USER'
+				and passwd='$PHP_AUTH_PW' ");
+        if(!mysql_num_rows($result))
+           { 
+            authenticate();
+           }
+        else
+	   {
+             $userinfo = mysql_fetch_array($result);
+	   }
+        }
+?>
+
+
+========================================================================
+
+<?php
+	  include "./auth.inc" ;
+?>
+
+<HTML>
+<HEAD>
+<TITLE> 사용자 인증 예제 </TITLE>
+</HEAD>
+
+<BODY bgcolor="#2B4577" text="white" link="blue" vlink="purple" alink="red">
+
+<?php
+$username =  $userinfo[0] ;   // auth.inc 에서 가져온 사용자 이름
+$userlevle = $userinfo[1] ;   //        "             사용자 LEVEL   
+
+echo(" <script>
+   		window.alert('어서오세요 $username 님')
+        location.href='level$userlevle.html' 
+	   </script>
+     ");
+?>
+
+</BODY>
+</HTML>

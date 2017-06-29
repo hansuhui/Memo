@@ -1,0 +1,17 @@
+Project > Properties 클릭
+
+거기서 JavaScript > Include Path 클릭
+
+거기서 Source 클릭 프로젝트 선택호 
+
+Excluded 떠블 클릭 
+
+창뜨면 
+
+Exclusion patterns (아래쪽) 
+
+Add 클릭 해서 
+
+**/jquery*.js 등록 
+
+아마 에러 제외 하는거인듯

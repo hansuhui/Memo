@@ -1,0 +1,6 @@
+3)  select str(year(getdate()))+'년'
+                +str(month(getdate()))+'월'
+                +str(day(getdate()))+'일'
+                +str(datepart(hour,(getdate())))+'시'
+                +str(datepart(minute,(getdate())))+'분'
+                +str(datepart(second,(getdate())))+'초'

@@ -1,0 +1,46 @@
+SCRIPT LANGUAGE="JavaScript">
+function printpr()
+{
+    var OLECMDID = 7;
+    /* OLECMDID values:
+    * 6 - print
+    * 7 - print preview
+    * 1 - open window
+    * 4 - Save As
+    */
+    var PROMPT = 1; // 2 DONTPROMPTUSER 
+    var WebBrowser = '<OBJECT ID="WebBrowser1" WIDTH=0 HEIGHT=0 CLASSID="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2"></OBJECT>';
+    document.body.insertAdjacentHTML('beforeEnd', WebBrowser);
+    WebBrowser1.ExecWB( OLECMDID, PROMPT);
+    WebBrowser1.outerHTML = "";
+}
+</script>
+    <div id="beforeEnd"></div>
+    Then:
+    <a href="#" onclick="printpr()">print</a>
+ 
+ 
+ 
+## 프린터 설정.(외부 activx)
+<object id=factory style="display:none" 
+classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" 
+codebase="./smsx.cab#Version=6,5,439,12"> 
+</object>
+<script language="javascript"> 
+function printWindow() 
+{ 
+   factory.printing.header          = ""; // 머리말을 설정합니다.
+   factory.printing.footer          = ""; // 꼬리말을 설정합니다.
+   factory.printing.portrait        = false; // 세로로 출력할것인지 가로로 출력할것인지 설정합니다. true:세로 false:가로
+   factory.printing.leftMargin      = 1.0;   // 좌측여백
+   factory.printing.topMargin       = 1.0;   // 상단여백
+   factory.printing.rightMargin     = 1.0;   // 우측여백
+   factory.printing.bottomMargin    = 1.0;   // 하단여백
+//   factory.printing.copies          = 1;     // 한장만 출력하라는뜻
+//   factory.printing.printBackground = true;  // 백그라운드까지 출력
+   factory.printing.Print(true, window);     // 현재윈도를 프린트하는뜻(window대신에 frame을 지정해주면 해당 프레임을 출력합니다.)
+} 
+</script>
+ <BODY onLoad="printWindow();">
+  ssssssssssssssssssssssssssssss
+ </BODY>

@@ -1,0 +1,65 @@
+[.fadeIn()]
+
+.fadeIn()은 선택한 요소를 서서히 나타나게 합니다.
+
+.fadeIn(duration, easing, complete)
+
+- duration -
+
+duration에는 완전히 나타날 때까지의 시간이 들어갑니다. 
+fast, slow로 정하거나 400 같은 숫자로 정할 수 있습니다. 
+숫자일 경우 단위는 1000분의 1초이며, fast는 200, slow는 600에 해당합니다. 
+아무것도 입력하지 않으면 기본값 400으로 설정됩니다.
+
+문자로 시간을 정할 때는 따옴표 안에 문자를 넣습니다.
+
+.fadeIn("slow")
+
+숫자로 시간을 정할 때는 숫자만 넣습니다.
+
+.fadeIn(600)
+
+- easing -
+
+easing에는 사라지는 모양이 들어갑니다. 
+swing과 linear가 가능하며 기본값은 swing입니다. 따옴표 안에 값을 넣습니다.
+
+.fadeIn("linear")
+
+
+- complete -
+
+complete에는 지정한 요소가 나타난 다음 불러올 함수가 들어갑니다.
+
+.fadeIn(function() {
+  // Function
+})
+
+
+- 예제 -
+
+2초 후에 h1 요소가 나타나고 글자가 빨간색으로 바뀌는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | fadeIn()</title>
+    <style>
+      h1.fi {
+        display: none;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("h1.fi").fadeIn(2000, function() {
+          $("h1.fi").css("color","red");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1 class="fi">Lorem ipsum dolor.</h1>
+  </body>
+</html>

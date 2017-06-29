@@ -1,0 +1,151 @@
+http://www.taeyo.pe.kr/lecture/2_beginner_hwang/1_6.htm
+
+
+2.6 연산자
+
+연산자들은 수학적, 논리적 연산 등을 수행하는 기호들을 가리킨다. 앞서 알아본 변수나 상수를 이용하여 프로그램에서 새로운 결과 값을 구하고자 할 때 사용되며 프로그래밍을 하기 위한 목적중의 하나이다. 기본적인 연산자로 가장 많이 사용하고 있는 대입 연산자인 등호(=)를 들 수 있지만, 이외의 여러 가지가 ASP에서 지원된다. 지금부터 각각의 연산자들에 대해서 알아보자.
+
+
+1) 산술 연산자
+
+산술(Arithmetic) 계산을 위한 연산자들이다. 기본적으로 가감승제의 작업을 수행한다. 
+
+연산자	설명
++	더하기
+-	빼기
+*	곱하기
+/	나누기
+^	지수
+-	음수
+mod 	나머지
+[표] 산술 연산자
+다음의 예제 소스코드를 입력한 후 실행하여 보자. 산술 연산자가 어떻게 실행되는지 결과를 확인할 수 있을 것이다.
+
+● arithmetic.asp
+
+<%@ Language=VBScript %> 
+<%
+Num1 = 10 
+Num2 = 3 
+Response.Write "Num1 + Num2 = " & (Num1 + Num2) & "<BR>" 
+Response.Write "Num1 - Num2 = " & (Num1 - Num2) & "<BR>" 
+Response.Write "Num1 * Num2 = " & (Num1 * Num2) & "<BR>" 
+Response.Write "Num1 / Num2 = " & (Num1 / Num2) & "<BR>" 
+Response.Write "Num1 ^ Num2 = " & (Num1 ^ Num2) & "<BR>" 
+Response.Write "Num1 mod Num2 = " & (Num1 mod Num2) & "<BR>"
+
+%> 
+
+[그림 6-1] arithmetic.asp 결과
+
+
+2) 관계 연산자
+
+관계(relational)라는 것은 둘 사이의 비교를 하여 결과를 얻는다는 말이다. 두 변수 사이의 관계를 알고자 할 때 사용되는 관계 연산자들은 다음과 같다. 
+
+연산자	설명
+=	같다
+<	∼보다 작다
+<=	∼보다 작거나 같다
+<>	같지 않다
+>	∼보다 크다
+>=	∼보다 크거나 같다
+
+관계 연산자의 사용을 알아볼 수 있는 다음의 예제를 실행하여 보자. 우선 코드의 입력을 하기 전에 If... Then...에 대해서 간단히 설명하겠다. 실제로 ASP에서 관계를 비교하기 위한 구문으로 If 다음의 조건이 입력되며, 입력된 조건의 True와 False의 여부를 알려주게 된다. 이 조건에 주로 관계 연산자를 사용하게 되며 조건의 참(True)일 경우에는 Then 다음의 구문을 실행하고, 거짓(False)일 경우에는 Else 다음의 구문을 실행한다.
+
+● relational.asp 
+
+<%@ Language=VBScript %>
+<%
+
+Num1 = 10 
+Num2 = 3 
+
+Response.Write "Num1 = " & Num1 & "<BR>" 
+Response.Write "Num2 = " & Num2 & "<BR>"
+
+if Num1 > Num2 then 
+　　Response.Write "Num1이 Num2보다 크다.<BR>" 
+else 
+　　Response.Write "Num1이 Num2보다 같거나 작다.<BR>" 
+end if
+
+if Num1 = Num2 then 
+　　Response.Write "Num1과 Num2가 같다.<BR>" 
+elseif Num1 <> Num2 then 
+　　Response.Write "Num1와 Num2는 다르다.<BR>" 
+end if
+
+%> 
+
+[그림 6-2] relational.asp 결과
+
+
+3) 논리 연산자
+
+조건에 대한 논리(Logical) 연산을 하기 위한 연산자들이다. 논리곱, 논리합, 부정 등이 주로 사용되며 조건문에 주로 사용된다.
+
+
+연산자	설명
+AND	논리곱, 두 조건이 모두 참이어야 참이 된다.
+OR	논리합, 두 조건 중 하나만 참이면 참이다.
+NOT	부정, 조건 값을 반대로 만든다.
+XOR	Execlusive OR
+
+ASP에서 주로 사용하는 것이 AND, OR, NOT이다. 각각의 논리 연산자는 앞의 관계 연산자들과 마찬가지로 If... Then... 문에서 주로 사용되어 조건의 논리 연산을 하게 된다. 다음의 예제를 살펴보자.
+
+● logical.asp 
+
+<%@ Language=VBScript %>
+<%
+
+Num1 = 10 
+Num2 = 3
+
+if Num1 = 10 AND Num2 = 3 then 
+　　Response.Write "Num1은 10, Num2는 3의 값을 가진다.<BR>" 
+end if
+
+if Num1 = 9 AND Num2 = 3 then 
+　　Response.Write "Num1은 9, Num2는 3의 값을 가진다.<BR>" 
+else 
+　　Response.Write "Num1과 Num2는 조건을 만족하지 않는다.<BR>" 
+end if
+
+if Num1 = 9 OR Num2 = 3 then 
+　　Response.Write "Num1과 Num2 둘 중 하나 이상은 조건을 만족한다.<BR>" 
+end if
+
+if NOT Num1 = 9 OR NOT Num2 = 2 then 
+　　Response.Write "Num1과 Num2 둘 중 하나 이상은 조건을 만족한다.<BR>" 
+end if
+
+%> 
+
+[그림 6-3] logical.asp 결과
+
+코드의 첫 부분에서 Num1은 10, Num2는 3의 값을 가진다. 이렇게 할당된 값을 기준으로 조건문에서 비교작업이 이루어지게 된다.
+
+첫 번째 [if Num1 = 10 AND Num2 = 3 then]에서는 Num1=10의 조건은 참, Num2=3의 조건도 참이므로 AND에 의해 참의 조건이 되는 것이다. 그렇기 때문에 Then 다음의 문장이 실행된다.
+
+두 번째 [if Num1 = 9 AND Num2 = 3 then]에서는 Num1=9의 조건은 거짓, Num2=3의 조건은 참이므로 두 조건 중 하나만 참이기 때문에 AND에 의해 이 조건은 거짓이 된다.
+
+세 번째 [if Num1 = 9 OR Num2 = 3 then]에서는 Num1=9의 조건은 거짓, Num2=3의 조건은 참이므로 두 조건 중 하나만 참이기 때문에 OR에 의해 이 조건은 참이 된다.
+
+네 번째 [if NOT Num1 = 9 OR NOT Num2 = 2 then] Num1=9가 아닌 것이 참이고, Num2=2가 아닌 것이 참이다. 각각의 조건 앞에 Not에 의해 모든 조건이 참이 된다.
+
+
+4) 연결 연산자
+
+지금까지의 연산자 이외에도 ASP에서 자주 사용되는 연산자가 있다. 바로 문자열의 합칠 때 사용하는 연결 연산자인 "&" 이다. 앞의 다른 연산자들의 예제에서도 볼 수 있는 & 연산자는 문자열을 합치는 기능을 수행한다. 다음의 예제를 살펴보자.
+
+● string.asp 
+<%@ Language=VBScript %>
+<%
+
+Str1 = "Hello" 
+Str2 = "ASP" 
+
+Response.Write Str1 & " " & Str2
+
+%> 

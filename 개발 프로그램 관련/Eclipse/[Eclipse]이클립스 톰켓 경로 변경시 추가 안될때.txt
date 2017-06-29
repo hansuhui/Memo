@@ -1,0 +1,23 @@
+이클립스에서 Tomcat Server를 생성하려고 할때
+
+Cannot create a server using the selected type 이 발생한다면
+(기존에 사용하던 톰켓 서버 위치가 변경되었을 경우 이러한 에러가 난다고 함)
+
+
+WorkSpace 안에 있는 다음의 경로를 찾아
+
+( .metadata\.plugins\org.eclipse.core.runtime\.settings )
+
+
+
+org.eclipse.wst.server.core.prefs
+
+org.eclipse.jst.server.tomcat.core.prefs
+
+
+
+2개 파일을 지워준다.
+
+
+
+이클립스 재시작후 다시 추가 모드

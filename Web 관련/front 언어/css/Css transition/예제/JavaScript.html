@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+ <style>
+	p {
+	  padding-left: 60px;
+	}
+
+	#foo {
+	  border-radius: 50px;
+	  width: 50px;
+	  height: 50px;
+	  background: #c00;
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  transition:  all 1s;
+	}
+	#foo2 {
+	  border-radius: 50px;
+	  width: 50px;
+	  height: 50px;
+	  background-color: blue;
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  transition:  all 1s;
+	}
+	#body{
+	 position:absolute;
+	 width:500px;
+	 height:500px;
+	 border :1px solid;
+	 top:100px;
+	}
+ </style>
+ <body>
+	  <p>Click anywhere to move the ball</p>
+	<div id="foo"></div>
+	<div id="foo2"></div>
+	<div id="body"><div>
+	
+	<script>
+		var f = document.getElementById('foo');
+		var f2 = document.getElementById('foo2');
+		var body = document.getElementById('body');
+		
+		document.addEventListener('click', function(ev){
+			f.style.left = (ev.clientX-25)+'px';
+			f.style.top = (ev.clientY-25)+'px';
+		},false);
+		var Postion = 100;
+		body.addEventListener('mouseover', function(ev){
+			f2.style.left = (ev.clientX-25)+'px';
+			f2.style.top = (ev.clientY-25)+'px';
+			Postion += 10;
+			body.style.top = Postion+"px";
+			body.style.left = Postion+"px";
+		},false);
+	</script>
+ </body>
+</html>

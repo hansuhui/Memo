@@ -1,0 +1,7 @@
+string serverPath = Server.MapPath("~/Data/Notice" )
+			string filePath = "";
+			foreach (var item in fileList)
+			{
+				filePath = Path.Combine(serverPath, ÆÄÀÏ¸í);
+				System.IO.File.Delete(filePath);
+			}

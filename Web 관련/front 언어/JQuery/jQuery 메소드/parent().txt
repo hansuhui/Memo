@@ -1,0 +1,18 @@
+[.parent()]
+
+.parent()는 어떤 요소의 부모 요소를 선택합니다.
+
+.parents( [selector] )
+
+selector에 값이 없으면 부모 요소를 선택하고, 
+값이 있으면 부모 요소에 그 selector가 있어야 선택합니다.
+
+예를 들어
+
+$( 'p' ).parent().css( 'color', 'green' );
+
+은 p의 부모 요소의 색을 녹색으로 만듭니다.
+
+$( 'p' ).parent( 'div' ).css( 'color', 'green' );
+
+은 p의 부모 요소가 div일 때만 녹색으로 만듭니다.

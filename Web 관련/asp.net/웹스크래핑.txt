@@ -1,0 +1,126 @@
+참조사이트 http://www.dotnetperls.com/scraping-html
+
+HTML CODE http://stackoverflow.com/questions/4377355/i-need-a-powerful-web-scraper-library
+
+
+[C# program that scrapes HTML]
+
+using System.Diagnostics;
+using System.Net;
+
+class Program
+{
+    static void Main()
+    {
+	// Scrape links from wikipedia.org
+
+	// 1.
+	// URL: http://en.wikipedia.org/wiki/Main_Page
+	WebClient w = new WebClient();
+	string s = w.DownloadString("http://en.wikipedia.org/wiki/Main_Page");
+
+	// 2.
+	foreach (LinkItem i in LinkFinder.Find(s))
+	{
+	    Debug.WriteLine(i);
+	}
+    }
+}
+
+
+
+[C# program that scrapes with Regex]
+
+
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
+public struct LinkItem
+{
+    public string Href;
+    public string Text;
+
+    public override string ToString()
+    {
+	return Href + "\n\t" + Text;
+    }
+}
+
+static class LinkFinder
+{
+    public static List<LinkItem> Find(string file)
+    {
+	List<LinkItem> list = new List<LinkItem>();
+
+	// 1.
+	// Find all matches in file.
+	MatchCollection m1 = Regex.Matches(file, @"(<a.*?>.*?</a>)",
+	    RegexOptions.Singleline);
+
+	// 2.
+	// Loop over each match.
+	foreach (Match m in m1)
+	{
+	    string value = m.Groups[1].Value;
+	    LinkItem i = new LinkItem();
+
+	    // 3.
+	    // Get href attribute.
+	    Match m2 = Regex.Match(value, @"href=\""(.*?)\""",
+		RegexOptions.Singleline);
+	    if (m2.Success)
+	    {
+		i.Href = m2.Groups[1].Value;
+	    }
+
+	    // 4.
+	    // Remove inner tags from text.
+	    string t = Regex.Replace(value, @"\s*<.*?>\s*", "",
+		RegexOptions.Singleline);
+	    i.Text = t;
+
+	    list.Add(i);
+	}
+	return list;
+    }
+}
+
+
+
+[Output]
+
+#column-one
+    navigation
+#searchInput
+    search
+/wiki/Wikipedia
+    Wikipedia
+/wiki/Free_content
+    free
+/wiki/Encyclopedia
+    encyclopedia
+/wiki/Wikipedia:Introduction
+    anyone can edit
+/wiki/Special:Statistics
+    2,617,101
+/wiki/English_language
+    English
+/wiki/Portal:Arts
+    Arts
+/wiki/Portal:Biography
+    Biography
+/wiki/Portal:Geography
+    Geography
+/wiki/Portal:History
+    History
+/wiki/Portal:Mathematics
+    Mathematics
+/wiki/Portal:Science
+    Science
+/wiki/Portal:Society
+    Society
+/wiki/Portal:Technology_and_applied_sciences
+    Technology
+
+
+

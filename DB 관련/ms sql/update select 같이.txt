@@ -1,0 +1,6 @@
+update MMS_CONTENTS_INFO set 
+ BAR_SIZE_WIDTH  = (select BarcodeWidth from Product a , GiftDesign b where a.DesignCode = b.DesignCode and a.Pcode = '10000003')
+ ,BAR_SIZE_HEIGHT = (select BarcodeHeight from Product a , GiftDesign b where a.DesignCode = b.DesignCode and a.Pcode = '10000003')
+,BAR_POSITION_X = (select BarcodeX from Product a , GiftDesign b where a.DesignCode = b.DesignCode and a.Pcode = '10000003')
+,	BAR_POSITION_Y	= 	 (select BarcodeY from Product a , GiftDesign b where a.DesignCode = b.DesignCode and a.Pcode = '10000003')
+where CONT_SEQ = 67

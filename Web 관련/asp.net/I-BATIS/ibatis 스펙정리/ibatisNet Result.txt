@@ -1,0 +1,663 @@
+<resultMap id="resultMapIdentifier" 
+           [class="fullyQualifiedClassName, assembly|typeAlias"] 
+           [extends="[sqlMapNamespace.]resultMapId"]>
+
+   <constructor > 
+       <argument property="argumentName" 
+           column="columnName"
+           [columnIndex="columnIndex"] 
+           [dbType="databaseType"] 
+           [type="propertyCLRType"]
+           [resultMapping="resultMapName"]
+           [nullValue="nullValueReplacement"] 
+           [select="someOtherStatementName"] 
+           [typeHandler="fullyQualifiedClassName, assembly|typeAlias"] />
+   </constructor > 
+
+   <result property="propertyName" 
+           column="columnName"
+           [columnIndex="columnIndex"] 
+           [dbType="databaseType"] 
+           [type="propertyCLRType"]
+           [resultMapping="resultMapName"]
+           [nullValue="nullValueReplacement"] 
+           [select="someOtherStatementName"] 
+           [lazyLoad="true|false"]
+           [typeHandler="fullyQualifiedClassName, assembly|typeAlias"]
+   />
+   <result ... .../>
+   <result ... .../>
+    // Inheritance support
+   <discriminator column="columnName" 
+                     [type|typeHandler="fullyQualifiedClassName, assembly|typeAlias"]
+   />
+    <subMap value="discriminatorValue" 
+               resultMapping="resultMapName"
+   />
+   <subMap .../> 
+</resultMap>
+
+
+[Constructor element example]
+
+<생성자> 요소는 결과 클래스 생성자 중 하나의 서명과 일치한다. 지정하면,
+이 요소는 결과 개체를 인스턴스화하는 iBATIS를하는 데 사용됩니다.
+의 <생성자> 요소는 SQL 결과는 인수 생성자를 반대하는 설정지도 하나 이상의 <인수> 자식 요소를 보유하고있다.
+
+<resultMap id="account-result-constructor" class="Account" >
+	 <constructor>
+		<argument argumentName="id" column="Account_ID"/>
+		<argument argumentName="firstName" column="Account_FirstName"/>
+		<argument argumentName="lastName" column="Account_LastName"/>
+	</constructor>
+	<result property="EmailAddress" column="Account_Email" nullValue="no_email@provided.com"/>
+	<result property="BannerOption" column="Account_Banner_Option" dbType="Varchar" type="bool"/>
+	<result property="CartOption"	column="Account_Cart_Option" typeHandler="HundredsBool"/>
+</resultMap>
+
+
+
+<resultMap id="get-product-result" class="product"> 
+  <result property="id" column="PRD_ID"/>
+  <result property="description" column="PRD_DESCRIPTION"/>
+  <result property="subCode" column="PRD_SUB_CODE" nullValue="-9999"/>
+</resultMap>
+
+
+
+
+[Sample of strongly typed collection used with proxy call]
+
+[C#]
+
+[Serializable]
+public class LineItemCollection : CollectionBase 
+{
+	public LineItemCollection() {}
+
+	public virtual LineItem this[int index] 
+	{
+		get	{ return (LineItem)List[index]; }
+		set { List[index] = value; }
+	}
+
+	public virtual int Add(LineItem value) 
+	{
+		return List.Add(value);
+	}
+
+	public virtual void AddRange(LineItem[] value) 
+	{
+		for (int i = 0;	i < value.Length; i++) 
+		{
+			Add(value[i]);
+		}
+	}
+
+	public virtual void AddRange(LineItemCollection value) 
+	{
+		for (int i = 0;	i < value.Count; i++) 
+		{
+			Add(value[i]);
+		}
+	}
+
+	public virtual bool Contains(LineItem value) 
+	{
+		return List.Contains(value);
+	}
+
+	public virtual void CopyTo(LineItem[] array, int index) 
+	{
+		List.CopyTo(array, index);
+	}
+
+	public virtual int IndexOf(LineItem value) 
+	{
+		return List.IndexOf(value);
+	}
+	
+	public virtual void Insert(int index, LineItem value) 
+	{
+		List.Insert(index, value);
+	}
+	
+	public virtual void Remove(LineItem value) 
+	{
+		List.Remove(value);
+	}
+
+	public new virtual int Count
+	{
+		get {return this.List.Count;}
+	}
+}
+
+
+
+
+
+[Concrete class]
+
+[Serializable]
+public class Person
+{
+...
+	public virtual string Name
+	{
+		get {return _name;}
+	}
+...
+}
+
+
+
+[ITypeHandlerCallback interface]
+
+using System.Data;
+using IBatisNet.DataMapper.Configuration.ParameterMapping;
+
+
+namespace IBatisNet.DataMapper.TypeHandlers
+{
+ public interface ITypeHandlerCallback
+ {
+  void SetParameter(IParameterSetter setter, object parameter);
+
+  object GetResult(IResultGetter getter);
+
+  object ValueOf(string s);
+ }
+}
+
+
+
+
+
+public class BudgetObjectCode
+{
+ private string _code;
+ private string _description;
+ private Guid _guidProperty;
+
+...
+
+ public Guid GuidProperty {
+  get { return _guidProperty; }
+  set { _guidProperty = value; }
+ }
+
+ public string GuidPropertyString {
+  get { return _guidProperty.ToString(); }
+  set { 
+  if (value == null) {
+    _guidProperty = Guid.Empty;
+   }
+   else {
+    _guidProperty = new Guid(value.ToString());
+   }
+  }
+ }
+...
+}
+
+
+
+
+[Guid String Type Handler]
+
+
+
+using System;
+using IBatisNet.DataMapper.TypeHandlers;
+
+namespace BigApp.Common.TypeHandlers
+{
+ /// <summary>
+ /// GuidVarcharTypeHandlerCallback.
+ /// </summary>
+ public class GuidVarcharTypeHandlerCallback : ITypeHandlerCallback
+ {
+  private const string GUIDNULL = "00000000-0000-0000-0000-000000000000";
+
+  public object ValueOf(string nullValue)
+  {
+   if (GUIDNULL.Equals(nullValue)) 
+   {
+    return Guid.Empty;
+   } 
+   else 
+   {
+    throw new Exception(
+     "Unexpected value " + nullValue + 
+     " found where "+GUIDNULL+" was expected to represent a null value.");
+   }  
+  }
+
+  public object GetResult(IResultGetter getter)
+  {
+   try {
+    Guid result = new Guid(getter.Value.ToString());
+    return result;
+   } 
+   catch
+   {
+     throw new Exception(
+     "Unexpected value " + getter.Value.ToString() + 
+     " found where a valid GUID string value was expected.");
+   }
+  }
+
+  public void SetParameter(IParameterSetter setter, object parameter)
+  {
+   setter.Value = parameter.ToString();
+  }
+
+ }
+}
+
+
+
+
+
+[Inheritance Mapping]
+
+
+// Database table Document
+CREATE TABLE [Documents] (
+    [Document_ID] [int] NOT NULL ,
+    [Document_Title] [varchar] (32) NULL ,
+    [Document_Type] [varchar] (32)  NULL ,
+    [Document_PageNumber] [int] NULL  ,
+    [Document_City] [varchar] (32)  NULL
+)
+
+
+
+[Documents, Books, and Newspapers!]
+
+// C# class
+public class Document
+{
+  private int _id = -1;
+  private string _title = string.Empty;
+
+  public int Id
+  {
+    get { return _id; }
+    set { _id = value; }
+  }
+
+  public string Title
+  {
+    get { return _title; }
+    set { _title = value; }
+  }
+}
+
+public class Book : Document
+{
+  private int _pageNumber = -1;
+
+  public int PageNumber
+  {
+    get { return _pageNumber; }
+    set { _pageNumber = value; }
+  }
+}
+
+public class Newspaper : Document
+{
+  private string _city = string.Empty;
+
+  public string City
+  {
+    get { return _city; }
+    set { _city = value; }
+  }
+}
+
+
+// Document mapping file
+<select id="GetAllDocument" resultMap="document"> 
+   select 
+     Document_Id, Document_Title, Document_Type,
+     Document_PageNumber, Document_City
+   from Documents 
+   order by Document_Type, Document_Id
+</select>
+
+<resultMap id="document" class="Document"> 
+  <result property="Id" column="Document_ID"/>
+  <result property="Title" column="Document_Title"/>
+  <discriminator column="Document_Type" type="string"/>
+  <subMap value="Book" resultMapping="book"/>
+  <subMap value="Newspaper" resultMapping="newspaper"/>
+</resultMap>
+
+<resultMap id="book" class="Book" extends="document"> 
+  <property="PageNumber" column="Document_PageNumber"/>
+</resultMap>
+
+<resultMap id="newspaper" class="Newspaper"  extends="document"> 
+  <property="City" column="Document_City"/>
+</resultMap>
+
+
+
+[Complex disciminator usage with Custom Type Handler]
+
+<alias>
+  <typeAlias alias="CustomInheritance" 
+  type="IBatisNet.DataMapper.Test.Domain.CustomInheritance, IBatisNet.DataMapper.Test"/>
+</alias>
+
+<resultMaps>
+  <resultMap id="document-custom-formula" class="Document">
+    <result property="Id" column="Document_ID"/>
+    <result property="Title" column="Document_Title"/>
+    <discriminator column="Document_Type" typeHandler="CustomInheritance"/>
+    <subMap value="Book" resultMapping="book"/>
+    <subMap value="Newspaper" resultMapping="newspaper"/>
+  </resultMap>
+</resultMaps>
+
+
+[Example ITypeHandlerCallback interface implementation]
+
+
+public class CustomInheritance : ITypeHandlerCallback
+{
+  #region ITypeHandlerCallback members
+
+  public object ValueOf(string nullValue)
+  {
+    throw new NotImplementedException();
+  }
+
+  public object GetResult(IResultGetter getter)
+  {
+   string type = getter.Value.ToString();
+
+   if (type=="Monograph" || type=="Book")
+   {
+     return "Book";
+   }
+   else if (type=="Tabloid" || type=="Broadsheet" || type=="Newspaper")
+   {
+     return "Newspaper";
+   }
+   else
+   {
+     return "Document";
+   }
+
+  }
+
+  public void SetParameter(IParameterSetter setter, object parameter)
+  {
+   throw new NotImplementedException(); 
+  }
+  #endregion
+}
+
+
+[Implicit Result Maps]
+
+[A Mapped Statement that doesn't need a Result Map]
+
+<statement id="selectProduct" resultClass="Product">
+  select
+    id,
+    description
+  from PRODUCT
+  where id = #value#
+</statement>
+
+
+
+
+[A Mapped Statement using column alaising instead of a Result Map]
+
+
+<statement id="selectProduct" resultClass="Product">
+  select
+  PRD_ID as id,
+  PRD_DESCRIPTION as description
+  from PRODUCT
+  where PRD_ID = #value#
+</statement>
+
+
+
+[Selecting a standard type]
+
+<select id="selectProductCount" resultClass="System.Int32">
+  select count(1)
+  from PRODUCT
+</select>
+
+
+[Loading a simple list of product descriptions]
+
+<resultMap id="select-product-result" resultClass="System.String">
+  <result property="value" column="PRD_DESCRIPTION"/>
+</resultMap>
+
+
+[Result Maps can use generic "entry-type" objects]
+
+<resultMap id="select-product-result" class="HashTable">
+  <result property="id" column="PRD_ID"/>
+  <result property="code" column="PRD_CODE"/>
+  <result property="description" column="PRD_DESCRIPTION"/>
+  <result property="suggestedPrice" column="PRD_SUGGESTED_PRICE"/>
+</resultMap>
+
+
+
+[Implicit Result Maps can use "entry-type" objects too]
+
+<statement id="selectProductCount" resultClass="HashTable">
+  select * from PRODUCT
+</statement>
+
+
+
+[Complex Properties]
+
+[A Result Map with a Complex Property]
+
+<resultMaps>
+  <resultMap id="select-product-result" class="product">
+    <result property="id" column="PRD_ID"/>
+    <result property="description" column="PRD_DESCRIPTION"/>
+    <result property="category" column="PRD_CAT_ID" select="selectCategory"/>
+  </resultMap>
+
+  <resultMap id="select-category-result" class="category">
+    <result property="id" column="CAT_ID"/>
+    <result property="description" column="CAT_DESCRIPTION"/>
+  </resultMap>
+</resultMaps>
+
+<statements>
+  <select id="selectProduct" parameterClass="int" resultMap="select-product-result">
+   select * from PRODUCT where PRD_ID = #value#
+  </select>
+
+  <select id="selectCategory" parameterClass="int" resultMap="select-category-result">
+   select * from CATEGORY where CAT_ID = #value#
+  </select>
+</statements>
+
+
+
+[Avoiding N+1 Selects (1:1)]
+
+[N+1 Selects (1:1)]
+<resultMaps>
+  <resultMap id="select-product-result" class="product">
+    <result property="id" column="PRD_ID"/>
+    <result property="description" column="PRD_DESCRIPTION"/>
+    <result property="category" column="PRD_CAT_ID" select="selectCategory"/>
+  </resultMap>
+
+  <resultMap id="select-category-result" class="category">
+    <result property="id" column="CAT_ID"/>
+    <result property="description" column="CAT_DESCRIPTION"/>
+  </resultMap>
+</resultMaps>
+
+<statements>
+  <!-- This statement executes 1 time -->
+  <select id="selectProducts" parameterClass="int" resultMap="select-product-result">
+   select * from PRODUCT
+  </select>
+
+  <!-- This statement executes N times (once for each product returned above) -->
+  <select id="selectCategory" parameterClass="int" resultMap="select-category-result">
+   select * from CATEGORY where CAT_ID = #value#
+  </select>
+</statements>
+
+
+
+[Resolving complex properties with a join]
+
+<resultMaps>
+  <resultMap id="select-product-result" class="product">
+    <result property="id" column="PRD_ID"/>
+    <result property="description" column="PRD_DESCRIPTION"/>
+    <result property="category" resultMapping="Category.CategoryResult" />
+  </resultMap>
+</resultMaps>
+
+<statements>
+  <statement id="selectProduct" parameterClass="int" resultMap="select-product-result">
+    select *
+    from PRODUCT, CATEGORY
+    where PRD_CAT_ID=CAT_ID
+    and PRD_ID = #value#
+  </statement>
+</statements>
+
+
+
+[Mapping that creates a list of complex objects]
+
+<resultMaps>
+
+  <resultMap id="select-category-result" class="Category">
+    <result property="Id" column="CAT_ID"/>
+    <result property="Description" column="CAT_DESCRIPTION"/>
+    <result property="ProductList" column="CAT_ID" select="selectProductsByCatId"/>
+  </resultMap>
+
+  <resultMap id="select-product-result" class="Product">
+    <result property="Id" column="PRD_ID"/>
+    <result property="Description" column="PRD_DESCRIPTION"/>
+  </resultMap>
+<resultMaps>
+
+<statements>
+
+  <statement id="selectCategory" parameterClass="int" resultMap="select-category-result">
+    select * from CATEGORY where CAT_ID = #value#
+  </statement>
+
+  <statement id="selectProductsByCatId" parameterClass="int" resultMap="select-product-result">
+    select * from PRODUCT where PRD_CAT_ID = #value#
+  </statement>
+</statements>
+
+
+[N+1 Select Lists (1:M and M:N), example of problem]
+
+
+<resultMaps>
+
+  <resultMap id="select-category-result" class="Category">
+    <result property="Id" column="CAT_ID"/>
+    <result property="Description" column="CAT_DESCRIPTION"/>
+   <result property="ProductList" column="CAT_ID" select="selectProductsByCatId"/>
+  </resultMap>
+
+  <resultMap id="Product-result" class="Product">
+    <result property="Id" column="PRD_ID"/>
+    <result property="Description" column="PRD_DESCRIPTION"/>
+  </resultMap>
+<resultMaps>
+
+<statements>
+
+  <!-- This statement executes 1 time -->
+  <statement id="selectCategory" parameterClass="int" resultMap="select-category-result">
+    select * from CATEGORY where CAT_ID = #value#
+  </statement>
+
+  <!-- This statement executes N times (once for each category returned above) 
+       and returns a list of Products (1:M) -->
+  <statement id="selectProductsByCatId" parameterClass="int" resultMap="select-product-result">
+    select * from PRODUCT where PRD_CAT_ID = #value#
+  </statement>
+
+
+[N+1 Select Lists (1:M and M:N) resolution]
+
+
+<sqlMap namespace="ProductCategory">
+<resultMaps>
+
+  <resultMap id="Category-result" class="Category" groupBy="Id">
+    <result property="Id" column="CAT_ID"/>
+    <result property="Description" column="CAT_DESCRIPTION"/>
+    <result property="ProductList" resultMapping="ProductCategory.Product-result"/>
+  </resultMap>
+
+  <resultMap id="Product-result" class="Product">
+    <result property="Id" column="PRD_ID"/>
+    <result property="Description" column="PRD_DESCRIPTION"/>
+  </resultMap>
+<resultMaps>
+
+<statements>
+
+  <!-- This statement executes 1 time -->
+  <statement id="SelectCategory" parameterClass="int" resultMap="Category-result">
+    select C.CAT_ID, C.CAT_DESCRIPTION, P.PRD_ID, P.PRD_DESCRIPTION
+    from CATEGORY C
+    left outer join PRODUCT P
+    on C.CAT_ID = P.PRD_CAT_ID
+    where CAT_ID = #value#
+  </statement>
+
+
+
+
+[Composite Keys or Multiple Complex Parameters Properties]
+
+
+[Mapping a composite key]
+
+<resultMaps>
+  <resultMap id="select-order-result" class="order">
+    <result property="id" column="ORD_ID"/>
+    <result property="customerId" column="ORD_CST_ID"/>
+    ...
+    <result property="payments" column="itemId=ORD_ID, custId=ORD_CST_ID"
+      select="selectOrderPayments"/>
+  </resultMap>
+<resultMaps>
+
+<statements>
+
+  <statement id="selectOrderPayments" resultMap="select-payment-result">
+    select * from PAYMENT
+    where PAY_ORD_ID = #itemId#
+    and PAY_CST_ID = #custId#
+  </statement>
+</statements>
+
+
+

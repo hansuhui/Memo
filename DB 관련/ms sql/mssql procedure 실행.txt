@@ -1,0 +1,9 @@
+프로시져 실행
+procedure
+
+
+exec 프로시져 명
+
+exec usp_shops_list_r
+
+exec [usp_shops_list_r] 인수, 인수

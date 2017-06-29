@@ -1,0 +1,38 @@
+public List<CodeDetail> GetCodeDetailList(int coGroup)
+		{
+			// parameters 
+			DbCommand command = db.GetStoredProcCommand("usp_common_codeDetail_r");
+			db.AddInParameter(command, "coGroup", DbType.Int32, coGroup);
+
+			List<CodeDetail> list = new List<CodeDetail>();
+
+			using (IDataReader r = db.ExecuteReader(command))
+			{
+				while (r.Read())
+				{
+					CodeDetail m = new CodeDetail();
+					m.coCode = r["coCode"].ToString();
+					m.coName = r["coName"].ToString();
+
+					list.Add(m);
+				}
+			}
+			return list;
+		}
+
+
+
+public List<CodeDetail> GetJongList(bool isAll = true)
+		{
+			List<CodeDetail> list = GetCodeNameList("12", "");
+
+			if (isAll) {
+				CodeDetail cd = new CodeDetail();
+				cd.coCode = "";
+				cd.coName = "== º±≈√ ==";
+
+				list.Insert(0, cd);
+			}
+
+			return list;
+		}

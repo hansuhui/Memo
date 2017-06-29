@@ -1,0 +1,310 @@
+to_char(regdate,'yyyy-MM-dd')
+
+oracle서버는 일정한 데이타형의 데이타를 사용해야 하는경우에 그것과 다른 데이타형과
+
+데이타를 사용할수있게 해줍니다.
+
+이것은 oracle 서버가 자동적으로 변환(암시적)될때 가능합니다.
+
+ 
+
+암시적자동데이타변환(oracle자체에서 수정)
+
+값할당시(assignment)시 a = b일때 b을 a에 넣는다. a와 b는 데이타형이 같아야 합니다.
+
+다를경우에는 오라클은 자동으로 데이타형을 암시적으로 변환한다.(아래표참조)
+
+ 
+
+ex)
+
+a       =       b
+
+number      varchar2,char
+
+date          varchar2,char
+
+varchar2    number
+
+varchar2    date
+
+ 
+
+c           =          a         +           b
+
+number             varchar2,char    number
+
+date                 varchar2,char
+
+ 
+
+※날짜 나 숫자 는 바처나 캐릭터로 암시적변환 불가능.
+
+ 
+
+명시적수동데이타변환(명시적으로 바꾸는 함수사용)
+
+ 
+
+TO_CHAR()
+
+ 
+
+1) 날짜를 문자로 바꿈 to_char(date,'변환포맷')
+
+ 
+
+날짜 변환포맷
+
+ 
+
+YYYY 년(숫자로 표현됨)
+
+YEAR 년(문자로 표현됨)
+
+MM 월(두자리숫자)
+
+MONTH 월(문자로 표현됨)
+
+DD 일(두자리숫자)
+
+DY 요일의 세자리 약어
+
+DAY 요일의 전체이름
+
+D 숫자요일(1(일요일) - 7(토요일))
+
+W 해당월의 몇주째 인지
+
+WW 올해의 몇주째인지
+
+ 
+
+※ 오라클 언어셋이 한글일때 TO_CHAR(DATE_VALUE, 'DAY') 하시면 '토요일' 이렇게 출력된다.
+
+ 
+
+※ 날짜 포맷 'D' 를 사용시 월요일~일요일 순서로 정렬하는 방법
+
+ 
+
+방법1
+
+SELECT B, CASE A WHEN '1' THEN'8' ELSE A END
+FROM TEST ORDER BY CASE A WHEN '1' THEN'8' ELSE A END;
+
+ 
+
+방법2
+
+SELECT B, CASE A WHEN '1' THEN'8' ELSE A END
+FROM TEST ORDER BY REPLACE(A,'1','8');
+
+ 
+
+ex1)
+
+--달만 출력하여 문자열로 변환후 출력
+
+SELECT TO_CHAR(A_DATE,'MM') FROM ACCOUNT;
+
+ 
+
+ex2)
+
+--20050925을 날짜로 바꾼후 7일을 더한후에 yyyy/mm/dd형식의 문자열로 변환후 출력
+
+select '20050925',to_char(to_date('20050925','yyyymmdd')+7,'yyyy/mm/dd') from dual;
+
+ 
+
+EX3)
+
+ 
+
+select to_char(sysdate,'ww') from dual;
+
+ 
+
+SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') FROM DUAL;
+
+-- 날짜를 YYYYMMDD 형식의 문자열로 출력
+
+SELECT TO_CHAR(SYSDATE, 'HH24MISS') FROM DUAL;
+
+-- 시간을 HHMISS 형식의 문자열로 출력
+
+ 
+
+SELECT TO_CHAR(SYSDATE, 'DDSPTH') FROM DUAL;
+
+-- 해당 날짜의 일(DD)을 영문자로 출력함
+
+-- SEVENTEENTH
+
+ 
+
+시간 변환포맷
+
+ 
+
+HH 시간(두자리 숫자)
+
+MI 분(두자리 숫자)
+
+SS 초(두자리 숫자)
+
+AM AM/PM(문자로 표현됨)
+
+ 
+
+변환포맷이용해 - 와 : 없이 날짜/시간 출력하기
+
+ 
+
+select to_char(sysdate,'yymmdd') from dual;
+--060423
+
+ 
+
+select to_char(sysdate,'yyyymmdd') from dual;
+--20060423
+
+ 
+
+select to_char(sysdate,'yyyymmddhh24miss') from dual;
+
+--20060423191715
+
+ 
+
+※ hh 뒤에 24를 붙이면 시간이 24 시간 기준으로 출력된다.
+
+ 
+
+select to_char(sysdate,'yyyymmddhhmiss') from dual;
+--20060423071715
+
+ 
+
+select to_char(sysdate,'hhmiss') from dual;
+--071715
+
+ 
+
+※월일 시간,초,분에 앞에 0을 배제할시에는 fm을 붙입니다.
+
+ 
+
+ex)
+
+select to_char(sysdate,'fmDD MONTH YYYY') from emp;
+
+--emp table에서 현재시간을 fm을 붙여 0을 없애고 일을 출력하고 달을 문자로 보여주고 년도를 보여준다.
+
+ 
+
+2) 정수, 실수를 문자로 변환 -> TO_CHAR(NUMBER)
+
+ 
+
+9 -> 숫자를 나타납니다. 999 는 숫자를 3자리로 출력
+
+0 -> 리딩제로를 표시합니다. 123을 0999로 출력하면 0123출력
+
+$ -> 숫자앞에 달러를 붙인다.
+
+L ->  지역화페를 출력합니다.
+
+. ->
+
+, -> 천단위로 금액을 출력
+
+ 
+
+금액을 천단위로 출력 예제
+
+ 
+
+SELECT TO_CHAR(1500000,'$999,999,999') FROM DUAL;
+-- $1,500,000
+
+SELECT TO_CHAR(1500000,'999,999,999') FROM DUAL;
+-- 1,500,000
+
+SELECT TO_CHAR(1500000,'FM999,999,999') FROM DUAL;
+-- 1,500,000
+
+ 
+
+※ ### 가 표시될때는 자릿수가 부족해서 그러니 자릿수를 늘리면 된다.
+
+※ 999 앞에 FM을 붙히면 좌측에 공백없이 붙어 출력한다.
+
+ 
+
+정수를 연결하여 문자로 출력 예제
+
+ 
+
+SELECT TO_CHAR(2006.2)||TO_CHAR(12) FROM DUAL;
+
+ 
+
+※ + 가 들어가면 to_char 하더라도 내부적으론 숫자로 인식합니다.
+
+ 
+
+3)문자를 숫자로 변환 to_NUMBER(char)
+
+ 
+
+TO_DATE()
+
+ 
+
+정의
+
+문자열형 날짜/시간값을 날짜데이타형으로 변환한다.
+
+ 
+
+사용형식
+
+to_date(문자열,'변환포맷')
+
+ 
+
+사용시점
+
+날짜와 문자 비교시 데이타형이 달라서 비교가 불가능합니다. 이때 날짜를 to_date()를 이용해서 문자로 변환한후 비교합니다.
+
+ 
+
+사용예제
+
+SELECT TO_DATE('20060910','yyyymmdd') FROM DUAL;
+-- 2006-09-10 (문자열 형식의 날짜를 날짜형 컬럼에 대입)
+
+SELECT TO_DATE('121212','hhmiss') FROM DUAL;
+-- 2006-10-01 오후 12:12:12
+
+SELECT TO_DATE('20060910112233','yyyymmddhhmiss') FROM DUAL;
+-- 2006-09-10 오전 11:22:33
+
+ 
+
+※ 초단위의 시간인 정수값을 시간:분:초 형식인 날짜 데이타형으로 변환하기
+
+SELECT TO_CHAR(TO_DATE(40000,'sssss'),'hh:mi:ss') FROM DUAL;
+
+결과 : 01:06:40
+주의 : 시간 값이 안나오면 시간은 기본값으로 12시 가 된다.
+
+ 
+
+SELECT TO_DATE('01:30', 'HH24:MI') FROM DUAL;
+
+-- 정의된 시간을 지정한 포맷으로 출력함
+
+-- 13:30

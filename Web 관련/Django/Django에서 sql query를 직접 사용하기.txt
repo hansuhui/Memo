@@ -1,0 +1,32 @@
+http://yevgnenll.me/archives/251
+
+
+
+from django.db import connection
+ 
+def my_custom_sql(self):
+    cursor = connection.cursor()
+ 
+    cursor.execute("UPDATE bar SET foo = 1 WHERE baz = %s", [self.baz])
+ 
+    cursor.execute("SELECT foo FROM bar WHERE baz = %s", [self.baz])
+    row = cursor.fetchone()
+ 
+    return row
+
+
+
+django 문서를 보면 이러한 방법으로 사용하라고 나와있다.
+connection은 DB에 바로 접근을 할 때 사용하는 것이고, cursor를 통해 컨트롤한다.
+그리고 fetchone 은 select로 나온 결과가 1개 일때 fetchall은 여러개일때이다
+
+
+
+ from django.db import connection
+ 
+    cursor = connection.cursor()
+    res = cursor.execute(query_string, [request.user.id])
+    result = cursor.fetchone()
+    return result
+
+배열로 온다 !! result[0] 사용시엔 !!

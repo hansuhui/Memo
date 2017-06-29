@@ -1,0 +1,206 @@
+
+[parameterMap]
+[A parameterMap and corresponding statement]
+
+<parameterMap id="insert-product-param" class="Product">
+  <parameter property="id"/>
+  <parameter property="description"/>
+</parameterMap>
+
+<statement id="insertProduct" parameterMap="insert-product-param">
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION) values (?,?);
+</statement>
+
+
+[parameterClass]
+[Ways to specify a parameterClass]
+<!-- fully qualified classname -->
+<statement id="statementName" parameterClass="Examples.Domain.Product, Examples.Domain">
+  insert into PRODUCT values (#id#, #description#, #price#)
+</statement>
+
+<!-- typeAlias (defined elsewhere) -->
+<statement id="statementName" parameterClass="Product">
+  insert into PRODUCT values (#id#, #description#, #price#)
+</statement>
+
+
+
+
+[resultMap]
+
+[A <resultMap> and corresponding <statement>]
+
+
+<resultMap id="select-product-result" class="product">
+  <result property="id" column="PRD_ID"/>
+  <result property="description" column="PRD_DESCRIPTION"/>
+</resultMap>
+
+<statement id="selectProduct" resultMap="select-product-result">
+  select * from PRODUCT
+</statement>
+
+
+[resultClass]
+
+
+[A <statement >element with resultClass attribute]
+
+
+<statement id="SelectPerson" parameterClass="int" resultClass="Person">
+  SELECT
+  PER_ID as Id,
+  PER_FIRST_NAME as FirstName,
+  PER_LAST_NAME as LastName,
+  PER_BIRTH_DATE as BirthDate,
+  PER_WEIGHT_KG as WeightInKilograms,
+  PER_HEIGHT_M as HeightInMeters
+  FROM PERSON
+  WHERE PER_ID = #value#
+</statement>
+
+
+[listClass]
+
+[A System.Collections.CollectionBase implementation]
+
+
+using System;
+using System.Collections;
+
+namespace WebShop.Domain 
+{
+ public class AccountCollection : CollectionBase 
+ {
+  public AccountCollection() {}
+
+  public Account this[int index] 
+  {
+   get { return (Account)List[index]; }
+   set { List[index] = value; }
+  }
+
+  public int Add(Account value) 
+  {
+   return List.Add(value);
+  }
+
+  public void AddRange(Account[] value) 
+  {
+   for (int i = 0; i < value.Length; i++) 
+   {
+    Add(value[i]);
+   }
+  }
+
+  public void AddRange(AccountCollection value) 
+  {
+   for (int i = 0; i < value.Count; i++) 
+   {
+    Add(value[i]);
+   }
+  }
+
+  public bool Contains(Account value) 
+  {
+   return List.Contains(value);
+  }
+
+  public void CopyTo(Account[] array, int index) 
+  {
+   List.CopyTo(array, index);
+  }
+
+  public int IndexOf(Account value) 
+  {
+   return List.IndexOf(value);
+  }
+  
+  public void Insert(int index, Account value) 
+  {
+   Account.Insert(index, value);
+  }
+  
+  public void Remove(Account value) 
+  {
+   Account.Remove(value);
+  }
+ }
+}
+
+
+
+
+[Example 3.16. A <statement >element with listClass attribute]
+
+<statement id="GetAllAccounts"
+ listClass="AccountCollection"
+ resultClass="Account">
+   select
+   Account_ID as Id,
+   Account_FirstName as FirstName,
+   Account_LastName as LastName,
+   Account_Email as EmailAddress
+   from Accounts
+   order by Account_LastName, Account_FirstName
+</statement>
+
+
+
+
+[cacheModel]
+
+
+[A <cacheModel> element with its corresponding <statement>]
+
+<cacheModel id="product-cache" implementation="LRU">
+  <flushInterval hours="24"/>
+  <flushOnExecute statement="insertProduct"/>
+  <flushOnExecute statement="updateProduct"/>
+  <flushOnExecute statement="deleteProduct"/>
+  <property name="size" value="1000" />
+</cacheModel>
+
+<statement id="selectProductList" parameterClass="int" cacheModel="product-cache">
+  select * from PRODUCT where PRD_CAT_ID = #value#
+</statement>
+
+
+
+[extends]
+
+<select id="GetAllAccounts"
+  resultMap="indexed-account-result">
+select
+  Account_ID,
+  Account_FirstName,
+  Account_LastName,
+  Account_Email
+from Accounts
+</select>
+		
+<select id="GetAllAccountsOrderByName"
+  extends="GetAllAccounts"
+  resultMap="indexed-account-result">
+    order by Account_FirstName
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

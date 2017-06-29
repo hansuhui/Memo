@@ -1,0 +1,138 @@
+MSSQL에서는 Like문에 정규식을 사용 할 수 있어 다양하게 데이타를 검색이 가능합니다.
+Like문에 "[" 와 "]" 사이에 정규식을 사용할 수 있으며, 아래에 몇가지 예를 소개하겠습니다.
+
+1. 소문자와 대문자 영어로 시작하는 데이타 조회
+ - 정규식 : [a-zA-Z]
+ - LIKE 조건 : [a-zA-Z]%
+
+
+with test(test_text) as
+(
+    select 'Korea'
+    union
+    select '12345'
+    union
+    select '.Net 2010'
+    union
+    select '10 years ago'
+)
+select *  from test
+where test_text like '[a-zA-Z]%' 
+
+
+
+2. 소문자와 대문자 영어로 시작하지 않는 데이타 조회
+  - 정규식 : [^a-zA-Z]
+  - LIKE 조건 : [^a-zA-Z]%
+
+
+
+with test(test_text) as
+(
+    select 'Korea'
+    union
+    select '12345'
+    union
+    select '.Net 2010'
+    union
+    select '10 years ago'
+)
+select *
+  from test
+ where test_text like '[^a-zA-Z]%'
+
+
+
+
+
+3. 숫자로 시작하는 데이터 조회
+  - 정규식 : [0-9]
+  - LIKE 조건 : [0-9]%
+
+
+
+
+with test(test_text) as
+(
+    select 'Korea'
+    union
+    select '12345'
+    union
+    select '.Net 2010'
+    union
+    select '10 years ago'
+)
+select *
+  from test
+ where test_text like '[0-9]%' 
+
+
+
+
+4. "e"와 "a" 문자가 함께 있는 데이터 조회
+  - 정규식 : [ea]
+  - LIKE 조건 : %[ea]%
+  ※ 정규식을 사용하지 않으면 LIKE 조건은 "like = '%e%' or like = '%a%'입니다.
+
+
+with test(test_text) as
+(
+    select 'Korea'
+    union
+    select '12345'
+    union
+    select '.Net 2010'
+    union
+    select '10 years ago'
+)
+select *
+  from test
+ where test_text like '%[ea]%'
+
+
+
+
+5. "["은 LIKE 문의 예약어이므로 정규식을 사용하여 데이터 조회해야 한다.
+  - 정규식 : [[]
+  - LIKE 조건 : %[[]%
+
+
+with test(test_text) as
+(
+    select 'Korea'
+    union
+    select '12345'
+    union
+    select '.Net 2010'
+    union
+    select '10 [years] ago'
+)
+select *
+  from test
+ where test_text like '%[[]%'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

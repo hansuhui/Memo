@@ -1,0 +1,270 @@
+https://opentutorials.org/module/384/4511
+
+[수업소개]
+
+본 수업은 NGINX의 소스를 컴파일해서 설치하는 방법에 대한 수업이다. 운영체제별로 제공되는
+자동인스톨 기능은 최신버전을 지원하지 않는 경우가 많다. 또 특정 모듈은 컴파일을 통해서만
+설치 할 수 있기 떄문에 컴파일 하는 법을 알아두자. 
+
+NGINX의 공식 설치 문서는 아래의 URL을 통해서 접근 할 수 있다.
+
+http://nginx.org/en/docs/install.html
+
+
+[버전소개]
+
+NGINX는 크게 안정버전(stable version)과 개발버전(devleoment version) 그리고 
+레거시버전(legacy version)이 있다. 안정버전의 설치가 권장된다.
+
+
+[다운로드]
+
+설치를 위해서는 우선 소스를 다운로드 받아야 한다. 아랠 URL를 통해서 다운로드 받을 수 있다.
+필자는 안정버전을 다운로드 받을 것이다. 필자는 1.4.0 버전을 사용할 것이다.
+
+http://nginx.org/en/download.html
+
+wget http://nginx.org/download/nginx-1.4.0.tar.gz
+
+
+[압축풀기]
+
+다운로드 받은 파일의 압축을 해체하자.
+
+tar -xvf nginx-1.4.0.tar.gz
+
+
+[의존성]
+
+nginx를 설치하기 전에 의존성 문제를 해결해야 한다.
+
+아래의 의존성 패키지들은 apt-get, yum과 같은 패키지 관리자를 이용해서 설치하는 것이 편리하다.
+이번 수업에서는 일부러 직접 컴파일 하는 법을 다루고 있다.
+
+[PCRE]
+
+NGINX는 Perl5에서 사용하는 정규표현식 라이브러리인 PCRE를 사용한다. 아래의 주소에서 다운로드
+한다. 필자는 소스 다운로드 페이지를 경유해서 아래의 주소에서 가장 최신 버전의 파일을
+다운 받았다.
+
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.32.tar.gz
+
+아래와 같이 압축을 푼다.
+
+tar xvf pcre-8.32.tar.gz
+
+
+[openssl]
+
+https 모듈인 HttpSslModule을 사용하기 위해서는 openssl이 필요하다. openssl은 아래의 위치에서
+다운로드 할 수 있다. 필자는 최신버전을 다운로드 받았다.
+
+http://www.openssl.org/source/
+
+wget http://www.openssl.org/source/openssl-1.0.1e.tar.gz
+
+tar -xzvf openssl-1.0.1e.tar.gz;
+
+[zlib]
+
+ngx_http_gzip_module 모듈을 사용하기 위해서는 zlib 라이브러리가 있어야 한다. zlib의 홈페이지를
+방문해서 잘 찾아보면 zlib의 소스코드를 다운로드 받을 수 있는 섹션이 있다. zlib의 홈페이지는
+아래와 같다.
+
+http://zlib.net/
+
+wget http://zlib.net/zlib128.zip
+
+unzip zlib128.zip
+
+unzip은 apt-get install unzip과 같은 명령으로 설치 할 수 있다.
+
+
+[외부 모듈의 설치]
+
+NGINX을 컴파일 하는 이유 중의 하나는 NGINX의 확장 기능인 모듈을 이용하기 위해서다.
+모듈에 대한 리스트는 아래 페이지를 통해서 구할 수 있다.
+
+http://wiki.nginx.org/3rdPartyModules
+
+[echo module]
+
+우리는 예제로 echo 모듈을 설치해보자. echo 모듈은 html 파일이나 애플리케이션(php,python) 없이
+NGINX의 설정만으로 페이지를 만들 수 있는 기능이다. 코드는 아래의 페이지에서 다운로드 받을 수
+있다. 
+
+사용법 - https://www.nginx.com/resources/wiki/modules/echo/
+
+https://github.com/agentzh/echo-nginx-module/tags
+
+wget https://github.com/agentzh/echo-nginx-module/archive/v0.45.zip;
+
+unzip v0.45.zip;
+
+
+[사용자]
+
+NGINX는 마스터 프로세스(Master Process)와 작업자 프로세스(Worker Process)를 가지고 있다.
+ps aux | grep nginx를 실행해보면 아래와 같은 프로세스가 떠있을 것이다.
+
+egoing@ubumtu : ps aaux | grep nginx
+root 919 nginx : master process /usr/local/nginx/sbin/nginx
+www-data 912 nginx : worker process
+
+
+마스터 프로세스는 루트 계정으로 실행되면서 80,443 포트의 소켓과의 통신을 담당한다.
+
+작업자 프로세스는 실제로 데이터를 처리하는 프로세스라고 할 수 있는데 이 프로세스를 핸들링할
+사용자를 만들어야 한다. 일반적으로 웹서버의 워커 유저는 www-data를 사용한다.
+www-data를 만드는 법은 아래와 같다.
+
+useradd --shell /sbin/nologin www-data
+
+ubuntu는 아래와 같이 한다.
+
+useradd --shell /usr/sbin/nologin www-data
+
+
+--shell는 로그인 할 수 없는 유저라는 뜻이다. 즉 NGINX를 실행할 때만 
+사용될 뿐 허가되지 않은 일을 하지 못하는 유저라는 의미가 된다.
+
+
+[설치]
+
+컴파일을 하기 위해서는 C, C++ 컴파일러가 필요하다. 필자는 gcc를 사용할 것이다.
+아래와 같은 명령으로 설치 할 수  있다.
+
+sudo apt-get install gcc g++;
+
+yum install gcc-c++;
+
+설치는 크게 세가지 단계로 진행된다.
+
+1.configure : 환경설정
+
+2.make : 설치파일을 컴파일
+
+3.make install : 설치파일을 이용해서 설치
+
+
+[configure]
+
+nginx의 소스 디렉토리로 이동한 후에 configure 명령을 실행한다. 이떄 사용할 수 있는
+옵션에 대한 설명은 공식 홈페이지를 참조한다. http://nginx.org/en/docs/install.html
+
+아래는 필자가 사용할 configure 명령이다.
+
+sudo ./configure --with-zlib=../zlib-1.2.8 --with-pcre=../pcre-8.32 --with-openssl=../openssl-1.0.1e --with-http_ssl_module --with-debug --add-module=../echo-nginx-module-0.45 --prefix=/usr/local/nginx --user=www-data --group=www-data
+
+
+위의 내용에 대한 설명은 아래와 같다.
+
+-with-(zlib | pcre | openssl) : NGINX가 의존하고 있는 라이브러리들의 소스 경로
+
+--with-(http_ssl_module | debug) : NGINX를 설치할 때 ssl, debug 모듈을 활성화한다. 이 모듈들은 NGINX가 제공하는 내부 모듈이지만 기본적으로는 설치가 되지 않는 옵션사항이다. 
+
+--add-module : 외부 모듈인 echo 모듈의 소스가 위치하는 디렉토리
+
+--prefix : NGINX가 설치될 기본 디렉토리를 의미한다. 이 디렉토리 하위에 NGINX의 실행, 로깅, 설정 파일들이 설치된다. 각각의 항목을 바꿀 수도 있다. 메뉴얼을 참고하자. 
+
+--user, --gourp : www-data 사용자의 권한으로 NGXIN를 실행시킨다. www-data 사용자가 없다면 만들어야 한다. 사용자의 리스트는 아래의 명령을 통해서 알 수 있다. www-data가 아니라 자기 자신의 계정을 사용해도 된다. 
+
+실행한 결과 필자와 같이 출력된다면 이제 컴파일 할 준비가 끝난 것이다. 아래의 정보가 설치된
+모듈들과 각종  패스들이다. 참고하자
+
+
+[make]
+
+컴파일을 해보자. 오랜시간이 걸릴 수 있다.
+
+sudo make;
+
+만약 make 명령을 찾지 못한다면 apt-get install make와 같은 명령을 이용해서 설치하자.
+
+
+[설치확인]
+
+NGINX가 설치된 디렉토리로 이동해보자. 필자는 configure에서 /usr/local/nginx를 사용했기 때문에
+이 디렉토리에 NGINX의 파일들이 모두 모여있다.
+
+
+각 디렉토리의 용도는 아래와 같다.
+
+- conf : 설정파일
+- html : 기본 document_root
+- logs : 로그 파일
+- sbin : nginx 실행파일
+
+
+[NGINX 구동]
+
+NGINX를 실행보자. 성공했다면 아무런 메시지도 출력되지 않을 것이다.
+
+sudo /usr/local/nginx/sbin/nginx;
+
+NGINX가 설치된 머신의 호스트(IP)로 접근해보자. 아래와 같은 메세지가 출력된다면 
+성공적으로 NGINX를 설치하고 구동한 것이다.
+
+init 
+
+NIGNX와 같은 소프트웨어들을 서비스 혹은 백그라운드 애플리케이션이라고 부른다.
+이러한 부류의 프로그램들은 표준화된 인터페이스를 가지고 있는데 아래와 같다.
+
+service nginx start : 시작
+ 
+service nginx stop : 정지
+
+service nginx restart : 재시작
+
+service nginx reload : 설정파일을 재로드
+
+service nginx status : 현재 상태 
+
+NGINX를 실행하고, 또 부팅시에 자동으로 동작하도록 하려면 /etc/init.d에 init 스크립트를
+위치시켜야 하는데 이 스크립트는 nginx의 소스에 포함되어 있지 않다. 운영체제별로 이 
+스크립트를 구해서 /etc/init.d 에  설치하는 방법을 알아본다.
+
+[Ubuntu]
+
+ubuntu의 init 스크립트는 다음 URL을 통해서 구할 수 있다.
+
+https://github.com/JasonGiedymin/nginx-init-ubuntu
+
+아래와 같은 명령으로 최신버전의 init 스크립트를 /etc/init.d 디렉토리로 가져오고 실행가능하게
+권한을 조정 할 수 있다.
+
+sudo wget https://raw.github.com/JasonGiedymin/nginx-init-ubuntu/master/nginx -O /etc/init.d/nginx;
+sudo chmod +x /etc/init.d/nginx;
+
+NGINX를 자동으로 실행되게 하려면 아래와 같은 명령을 입력한다.
+
+sudo update-rc.d -f nginx defaults
+
+위의 방법을 통해서 설치한 스크립트를 실행하기 위해서는 아래와 같은 명령을 실행하면 된다.
+
+service nginx status 
+
+service nginx stop
+
+service nginx start 
+
+운영체제별 init 스크립트는 아래의 주소를 통해서 구할 수 있다.
+
+http://wiki.nginx.org/InitScripts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

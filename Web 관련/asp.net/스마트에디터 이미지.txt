@@ -1,0 +1,35 @@
+#region SE이미지 업로드
+
+		public ActionResult FileUpload()
+		{
+			string fileName = string.Empty;
+			string filePath = string.Empty;
+			string serverPath = Server.MapPath("~" + getDataFolerToBoardContent);
+
+			HttpFileCollectionBase files = Request.Files;
+
+			foreach (string f in files)
+			{
+				if (files[f].ContentLength > 0)
+				{
+					fileName = TextUtil.GetFileName(serverPath, files[f].FileName);
+					int size = files[f].ContentLength;
+					string ext = Path.GetExtension(fileName);
+
+					filePath = Path.Combine(serverPath, fileName);
+					files[f].SaveAs(filePath);
+				}
+			}
+
+			string url = Request.Params["callback"] + "?callback_func=" + Request.Params["callback_func"];
+			string fileUrl = getDataFolerToBoardContent + "/" + Server.UrlEncode(fileName);
+
+			// default redirection
+			url += "&bNewLine=true";
+			url += "&sFileName=" + Server.UrlEncode(fileName);
+			url += "&sFileURL=" + fileUrl;
+
+			return Redirect(url);
+		}
+
+		#endregion

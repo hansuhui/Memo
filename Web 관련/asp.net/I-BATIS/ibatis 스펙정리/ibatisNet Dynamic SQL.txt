@@ -1,0 +1,263 @@
+[Dynamic SQL]
+
+[A simple dynamic select sttatement, with two possible outcomes]
+
+
+<select id="dynamicGetAccountList" cacheModel="account-cache" parameterClass="Account" resultMap="account-result" >
+  select * from ACCOUNT
+    <isGreaterThan prepend="and" property="Id" compareValue="0">
+       where ACC_ID = #Id#
+    </isGreaterThan>
+  order by ACC_LAST_NAME
+</select>
+
+
+[A complex dynamic select statement, with 16 possible outcomes]
+
+<select id="dynamicGetAccountList" parameterClass="Account" resultMap="account-result" >
+  select * from ACCOUNT
+    <dynamic prepend="WHERE">
+      <isNotNull prepend="AND" property="FirstName">
+        ( ACC_FIRST_NAME = #FirstName#
+        <isNotNull prepend="OR" property="LastName">
+          ACC_LAST_NAME = #LastName#
+        </isNotNull>
+        )
+      </isNotNull>
+      <isNotNull prepend="AND" property="EmailAddress">
+        ACC_EMAIL like #EmailAddress#
+      </isNotNull>
+      <isGreaterThan prepend="AND" property="Id" compareValue="0">
+        ACC_ID = #Id#
+      </isGreaterThan>
+    </dynamic>
+  order by ACC_LAST_NAME
+
+
+
+
+[Creating a dynamic statement with conditional tags]
+
+
+<statement id="someName" parameterClass="Account" resultMap="account-result" >
+  select * from ACCOUNT
+  <dynamic prepend="where">
+    <isGreaterThan prepend="and" property="id" compareValue="0">
+      ACC_ID = #id#
+    </isGreaterThan>
+    <isNotNull prepend="and" property="lastName">
+      ACC_LAST_NAME = #lastName#
+    </isNotNull>
+  </dynamic>
+order by ACC_LAST_NAME
+</statement>
+
+
+[Binary Conditional Attributes]
+
+prepend ? the overridable SQL part that will be prepended to the statement (optional) 
+	  붙을 속성 (and 나 or 같은거)
+
+property ? the property to be compared (required)
+	  (속성이름 비교할 변수 명)	
+
+compareProperty ? the other property to be compared (required or compareValue)
+		 아직 잘 모르겠음
+
+compareValue ? the value to be compared (required or compareProperty)
+	       (비교 값)
+
+
+
+[Binary conditional attributes]
+
+Element      /     Description
+
+
+<isEqual> :Checks the equality of a property and a value, or another property. Example Usage:
+
+<isEqual prepend="AND" 
+             property="status" 
+             compareValue="Y">
+MARRIED = 'TRUE'
+</isEqual>     
+
+
+
+
+<isNotEqual> :  Checks the inequality of a property and a value, or another property. Example Usage:
+<isNotEqual prepend="AND" 
+             property="status" 
+             compareValue="N">
+MARRIED = 'FALSE'
+</isNotEqual>   
+
+
+<isGreaterThan>  : Checks if a property is greater than a value or another property. Example Usage:
+
+<isGreaterThan prepend="AND" 
+             property="age" 
+             compareValue="18">
+ADOLESCENT = 'FALSE'
+</isGreaterThan>   
+
+
+
+
+<isGreaterEqual>   :   Checks if a property is greater than or equal to a value or another property. Example Usage:
+
+<isGreaterEqual prepend="AND" 
+             property="shoeSize" 
+             compareValue="12">
+BIGFOOT = ‘TRUE'
+</isGreaterEqual>
+
+
+
+
+<isLessEqual>   :   Checks if a property is less than or equal to a value or another property. Example Usage:
+
+<isLessEqual prepend="AND" 
+             property="age" 
+             compareValue="18">
+ADOLESCENT = ‘TRUE'
+</isLessEqual>
+
+
+
+[Unary Conditional Attributes]
+
+prepend ? the overridable SQL part that will be prepended to the statement (optional)
+
+property ? the property to be checked (required)
+
+
+[Unary conditional attributes]
+
+Element  :  Description
+<isPropertyAvailable>  :  Checks if a property is available (i.e is a property of the parameter object). Example Usage:
+
+<isPropertyAvailable property="id" >
+  ACCOUNT_ID=#id# 
+</isPropertyAvailable>
+
+
+<isNotPropertyAvailable>  :  Checks if a property is unavailable (i.e not a property of the parameter object). Example Usage:
+
+<isNotPropertyAvailable property="age" >
+  STATUS='New' 
+</isNotEmpty>
+
+
+<isNull>  :  Checks if a property is null. Example Usage:
+
+<isNull prepend="AND" property="order.id" >
+  ACCOUNT.ACCOUNT_ID = ORDER.ACCOUNT_ID(+) 
+</isNotEmpty>
+
+
+<isNotNull>  :  Checks if a property is not null. Example Usage:
+
+<isNotNull prepend="AND" property="order.id" >
+  ORDER.ORDER_ID = #order.id#
+</isNotEmpty>
+
+
+
+<isEmpty>  :  Checks to see if the value of a Collection, String property is null or empty ("" or size() < 1). Example Usage:
+
+<isEmpty property="firstName" >
+  LIMIT 0, 20
+</isNotEmpty>
+
+<isNotEmpty>  :  Checks to see if the value of a Collection, String property is not null and not empty ("" or size() < 1). Example Usage:
+
+<isNotEmpty prepend="AND" property="firstName" >
+  FIRST_NAME LIKE '%$FirstName$%'
+</isNotEmpty>
+
+
+
+
+[Testing to see if a parameter is present]
+
+Element  :  Description
+
+<isParameterPresent>  :  Checks to see if the parameter object is present (not null).
+
+<isParameterPresent prepend="AND">
+  EMPLOYEE_TYPE = #empType#
+</isParameterPresent>
+
+
+<isNotParameterPresent>  :  Checks to see if the parameter object is not present (null). Example Usage:
+
+<isNotParameterPresent prepend="AND">
+  EMPLOYEE_TYPE = ‘DEFAULT'
+</isNotParameterPresent>
+
+
+[Iterate Attributes]
+
+prepend ? the overridable SQL part that will be prepended to the statement (optional)
+
+property ? a property of type IList that is to be iterated over (required)
+
+open ? the string with which to open the entire block of iterations, useful for brackets (optional)
+
+close ? the string with which to close the entire block of iterations, useful for brackets (optional)
+
+conjunction ? the string to be applied in between each iteration, useful for AND and OR (optional)
+
+
+[Creating a list of conditional clauses]
+
+Element  :  Description
+
+<iterate>  :  Iterates over a property that is of type IList Example Usage:
+
+<iterate prepend="AND" property="UserNameList"
+  open="(" close=")" conjunction="OR">
+  username=#UserNameList[]#
+</iterate>
+
+Note: It is very important to include the square brackets[] at the end of the List property name when using the Iterate element. 
+These brackets distinguish this object as an List to keep the parser from simply outputting the List as a string.
+
+
+[Simple Dynamic SQL Elements]
+
+
+[A dynamic element that changes the collating order]
+
+<statement id="getProduct" resultMap="get-product-result">
+  select * from PRODUCT order by $preferredOrder$
+</statement>
+
+
+
+[A dynamic element that changes the comparison operator]
+
+<statement id="getProduct" resultMap="get-product-result">
+  SELECT * FROM PRODUCT
+  <dynamic prepend="WHERE">
+    <isNotEmpty property="Description">
+       PRD_DESCRIPTION $operator$ #Description#
+    </isNotEmpty>
+  </dynamic>
+</statement>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

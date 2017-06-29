@@ -1,0 +1,7 @@
+document.프래임명.접근
+
+
+  document.iframeName.getArray(testArray);  
+
+
+document.SaleInfor.SaleRequestAllsubmit();

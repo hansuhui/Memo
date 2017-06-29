@@ -1,0 +1,12 @@
+if(@KeyCode is null or @KeyCode = '')
+Begin
+	set @KeyCode = ''
+End
+
+if(@Keyword is null or @Keyword = '')
+Begin
+	set @Keyword = '%'	
+End Else
+Begin
+	set @Keyword = '%'+ @Keyword+'%'
+End

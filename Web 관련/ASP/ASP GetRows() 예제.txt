@@ -1,0 +1,19 @@
+<%
+sQuery = "쿼리 코딩~"
+oRs.Open sQuery, oCn, adOpenForwardOnly, adLockReadOnly, adCmdText
+
+If Not(oRs.Eof Or oRs.Bof) then
+    arrTmp = oRs.GetRows()          '로우를가져옴
+End if
+oRs.Close
+
+If IsArray(arrTmp) Then
+    For i=0 To UBound(arrTmp, 2)    '로우수만큼 for문 실행
+        cul1 = arrTmp(0, i)         '첫번째 컬럼
+        cul2 = arrTmp(1, i)         '두번째 컬럼
+        %>
+        뿌려줄 데이타 코딩~
+        <%
+    next
+end if
+%>

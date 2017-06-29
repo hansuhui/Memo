@@ -1,0 +1,12 @@
+Environment
+
+Environment.Is64BitProcess
+false
+Environment.Is64BitOperatingSystem
+true
+Environment.ExitCode
+0
+Environment.CurrentDirectory
+"C:\\Windows\\system32"
+Environment.CommandLine
+"\"D:\\Project\\Daemon\\Daemon\\bin\\Debug\\Daemon.exe\""

@@ -1,0 +1,35 @@
+바스크립트 배열과 배열 합치기 - concat 예제   JavaScript  
+2013/12/29 20:20
+http://blog.naver.com/jogundesign/70181921126
+전용뷰어 보기
+자바스크립트 배열과 배열 합치기 - concat 예제
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+       <script type='text/javascript'>
+           // Array 객체를 사용하여 배열을 생성합니다.
+           var oneArray = new Array( 'kbs','mbc','sbs','jtbc','ocn' );
+           // oneArray 와 합칠 twoArray 를 생성합니다.
+           var twoArray = new Array( 'ebs,tvn' );
+           // oneArray 에 concat 을 이용해 twoArray 원소를 더해줍니다.
+           var resultArray = oneArray.concat(twoArray);
+           document.write(resultArray)
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+concat  - 인자 배열의 원소를 더해 줍니다. ( Array 객체 메소드 )

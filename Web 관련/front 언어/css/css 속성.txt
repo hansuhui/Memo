@@ -1,0 +1,39 @@
+css3 속성들
+
+
+텍스트관련
+
+font-size (글자 크기)
+font-family (글씨체)
+line-height (글줄의 간격[행간])
+
+
+배경관련
+
+background  속기형 작성
+-background : background-color background-image background-repeat(반복)
+ 		background-attachment(고정) backgound-position(위치)
+
+예) background :url('경로') no-repeat 20px 140px  
+
+background-image : url('경로') (배경이미지)
+background-size (배경 사이즈)
+
+여백 관련
+
+가장 안쪽이 Content(내용) > padding > border > Margin 이다 
+
+padding (내부 여백)
+margin  (외부 여백)
+
+
+사이즈 관련
+
+width (가로 폭 조절)
+height (세로 폭 조절)
+border (테두리) - solid(직선 속성)
+-예제 border: 1px solid #555; (테두리 두께 1px 직선 중간 회색)
+
+정렬
+
+ 

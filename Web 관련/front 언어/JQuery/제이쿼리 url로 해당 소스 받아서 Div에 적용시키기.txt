@@ -1,0 +1,11 @@
+   $.ajax({
+                crossDomain: true,
+                type: "POST",
+                url: url,
+                data: { url: document.URL },
+                success: function (data) {
+
+                    $("#div").append(toStaticHTML(data))                   
+
+               
+            });

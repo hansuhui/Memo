@@ -1,0 +1,234 @@
+https://luna1x.wordpress.com/2013/10/06/centos-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC/
+
+
+CentOS 명령어 정리
+
+설치
+
+wget [URL] : URL에 있는 파일을 다운로드 받는다.
+
+rpm
+rpm -Uvh [rpm] : 패키지를 설치하거나, 업그레이드 한다.
+rpm -qi [rpm] : 패키지가 설치 되어있는지 확인한다.
+rpm -e [rpm] : 패키지를 삭제 한다.
+yum(의존성이 있는 패키지 그룹 단위)
+yum -y install [패키지] : 패키지를 설치한다.
+yum -y erase [패키지] : 패키지를 삭제한다.
+yum list : 설치 가능한 패키지 목록.
+yum list updates : 업데이트가 가능한 패키지 목록.
+yum list installed : 설치된 패키지 목록.
+yum update [패키지] : 패키지명이 없으면 전체 업데이트 있으면 해당 패키지만 업데이트
+
+make
+configure : 컴파일 옵션이 되는 설정파일을 만든다.
+make : 소스코드를 컴파일 해서 binary 파일을 만든다.
+make install : 만들어진 binary 파일을 지정된 경로로 이동 시킨다.
+make uninstall : 설치된 binary 파일을 삭제 한다.
+
+[디렉토리]
+
+pwd : 현재 위치한 디렉토의 절대경로를 출력한다.
+
+cd
+cd [디렉토리] : 디렉토리를 이동할 때에 사용한다.
+cd .. : 상위 디렉토리로 이동한다.
+cd ~ : 자신의 홈 디렉토리로 이동한다.
+cd ~[사용자명] : 특정 사용자의 홈 디렉토리로 이동한다.
+
+ls
+ls : 파일의 목록을 간단히 출력한다.
+ls -al : 숨겨진 파일을 포함해 자세히 출력한다.
+mkdir [디렉토리] : 디렉토리를 생성한다.
+rmdir -p [디렉토리] : 디렉토리를 삭제한다.
+
+[파일]
+
+touch [파일명] : 파일을 만든다.
+cp [원본] [사본] : 파일을 복사한다.
+mv [원본] [목적지] : 파일을 이동한다. 이것을 응용해 파일명도 바꿀수 있다.
+
+rm
+rm [파일] : 파일을 삭제한다.
+rm -rf [파일] : 삭제 동의를 묻지 않고, 파일은 그냥 지우고 디렉리면 하위경로 파일까지 모두 지운다.
+cat [파일] : 파일의 내용을 출력한다.
+| : 명령어의 출력결과를 다른 명령어의 입력으로 전환한다. 파이프라고 부른다.
+less [파일] : 파일의 내용을 한줄씩 출력하고, 위 아래로 이동할수 있다. 출력이 많을때 파이프로 연결해서 많이 사용한다. ex) cat a.log | less
+
+find
+find / -name *linux* : linux가 파일명에 포함된 모든 파일을 찾는다.
+find / -user linux : 소유자가 linux인 모든 파일을 찾는다.
+find / -perm 755 : 퍼미션이 755인 모든 파일을 찾는다.
+grep : 파일 또는 입력값내에서 특정 패턴을 검색한다. 파이프와 조합해서 출력에서 검색하고 싶을때 사용한다. ex) yum list | grep jdk, ps -ef | grep java
+[명령어] > [파일] : 명령어의 출력을 파일에 저장한다. 덮어쓴다.
+[명령어] >> [파일] : 명령어의 출력을 파일에 저장한다. 추가한다.
+[명령어] < [파일] : 파일에서 표준 입력을 받는다.
+chmod [퍼미션] [파일] : 소유자, 그룹, 다른 사용자가 가지는 퍼미션(읽기, 쓰기, 실행)을 설정한다. 퍼미션은 읽기4, 쓰기2, 실행1을 조합해서 표시한다.
+chmod 750 [파일] : 소유자 읽고 쓰고 실행 가능, 그룹 읽고 실행 가능
+chmod 4xxx [파일] : 실행될때 root권한으로 실행된다.
+chmod 2xxx [파일] [그룹] : 파일에 설정된 그룹명으로 실행된다.
+chmod 1xxx [디렉토리] : 해당 디렉토리에 누구나 쓰기는 가능하지만, 자신이 만든 파일에 대해서는 자신과 root만이 수정과 삭제가 가능하다.
+chown [소유자:그룹] [파일] : 파일 소유자와 사용자 그룹을 설정한다.
+chgrp [그룹] [파일] : 파일 사용자 그룹을 설정한다.
+chattr +i [파일] : 파일을 수정, 복사, 삭제 할 수 없게 한다.
+
+tar
+tar -cvzf [파일] [경로] : tar로 파일을 압축한다.
+tar -xvzf [파일] [경로] : tar로 파일을 압축 해제한다.
+
+파일  시스템
+fdisk -l : 현재 시스템의 파티션 목록과 파티션이 생성안된 disk를 보여준다.
+fdisk [disk] : disk에 파티션을 생성한다.
+badblocks -v  [disk] : disk의 배드블록을 체크한다.
+mkfs -V -t ext4 [장치] : 파일 시스템을 생성한다.
+
+mount
+mount : 현재 마운트된 목록을 보여준다.
+mount [장치] [디렉토리] : 장치를 디렉토리에 마운트 시킨다.
+vi /etc/fstab : /etc/fstab을 수정해야 재부팅이 되어도 마운트 설정이 유지된다.
+umount [디렉토리] : 마운트를 해제한다.
+df -h : 디스크의 남은 용량을 본다.
+
+du
+du -sh [디렉토리] : 디렉토리의 전체 사용량을 보여준다.
+du -h [디렉토리] : 모든 하위 디렉토리들의 사용량과 합계를 보여준다.
+
+사용자
+useradd [사용자명] : 사용자를 생성한다.
+userdel [사용자명] : 사용자를 제거한다.
+passwd [사용자명] : 사용자의 비밀번호를 설정한다.
+groupadd [그룹명] : 그룹을 생성한다.
+groupdel [그룹명] : 그룹을 삭제한다.
+id [사용자명] : 사용자의 uid, gid, group을 보여준다.
+
+usermod
+usermod -d [원본홈] -m [변경홈] : 홈디렉토리를 변경하고 파일을 이동한다.
+usermod -L [사용자명] : 계정을 잠궈서 로그인이 불가능해 진다.
+usermod -U [사용자명] : 잠긴 계정을 푼다.
+su ? [사용자명] : 다른 사용자의 권한으로 shell을 실행해서, 사용자 전환을 한다.
+시간
+
+clock
+clock -r : CMOS 시간을 출력한다.
+clock -w : 리눅스 시스템 시간으로 CMOS 시간 설정한다.
+clock -s : CMOS 시간으로 리눅스 시스템 시간 설정한다.
+date
+date : 현재 시스템 시간을 출력한다.
+date [MMDDhhmmYY] : 현재 시스템 시간을 변경한다.
+프로세스
+
+ps -ef : 현재 실행중인 프로세스의 목록을 보여준다.
+pgrep -fl [단어] : 해당 단어를 이름으로 가지거나 인자로 받는 프로세스 목록을 보여준다.
+ex) $pgrep -fl chef 967 /opt/chef/embedded/bin/ruby /usr/bin/chef-client -d -j /etc/chef/first-boot.json
+      970 chef-client worker: ppid=967;start=09:41:34;      1075 /opt/chef/embedded/bin/ruby /usr/bin/chef-client
+     1086 chef-client worker: ppid=1075;start=09:41:37;
+
+pkill -f [단어] : 해당 단어를 이름으로 가지거나 인자로 받는 프로세스를 모두 종료 시킨다.
+pstree : 프로세스 정보를 트리형태로 보여준다.
+
+kill
+kill [PID] : 프로세스를 종료 시킨다.
+kill -9 [PID] : 프로세스를 강제로 종료 시킨다.
+top : 프로세스의 CPU, MEMORY 사용량등을 실시간으로 모니터링 해준다.
+
+
+데몬
+
+chkconfig
+chkconfig ?list : 런레벨에 따라 자동으로 실행되는 데몬을 보여준다.
+chkconfig ?add [데몬] : 데몬을 추가한다.
+chkconfig ?del [데몬] : 데몬을 삭제한다.
+chkconfig ?level [런레벨] [데몬] on : 데몬의 런 레벨을 활성화 시킨다.
+chkconfig ?level [런레벨] [데몬] off : 데몬의 런 레벨을 비활성화 시킨다.
+
+service
+service [데몬] status : 데몬 상태를 보여준다.
+service [데몬] start : 데몬을 시작한다.
+service [데몬] stop : 데몬을 정지한다.
+service [데몬] restart : 데몬을 재시작한다.
+
+시스템
+crontab
+crontab -e : crontab 설정을 연다.
+형식 : 분(0~59) 시간(0~23) 일(1~31) 월(1~12) 요일(0~6) 명령
+01 * * * * [명령] : 매시간 1분에 명령 실행한다.
+02 4 * * * [명령] : 매일 4시 2분에 명령을 실행한다.
+22 4 * * 0 [명령] : 매주 월요일 1일 4시 22분에 명령을 실행한다.
+*/10 * * * * [명령] : 10분마다 명령을 실행한다.
+uname -a : 커널 버전을 보여준다.
+poweroff : 종료시킨다.
+reboot : 재부팅 시킨다.
+
+네트워크
+ping [호스트] : 다른 시스템의 네트워크가 현재 동작중인지 확인한다.
+
+ifconfig
+ifconfig : 현재 네트워크 인터페이스의 정보를 보여준다.
+ifconfig [인터페이스] down : 인터페이스를 중지한다.
+ifconfig [인터페이스] up : 인터페이스를 작동 시킨다.
+curl ifconfig.me : public ip를 보여준다.
+nslookup [도메인] : 도메인 정보를 보여준다.
+
+netstat
+netstat -anp  : 네트워크 연결, 라우팅 테이블, 네트워크 장치의 통계정보등 네트워크에 관련된 여러 정보를 보여준다.
+netstat -anpl : LISTENING 중인 정보만 보여준다.
+
+hostname
+hostname : 현재 시스템의 호스트네임을 보여준다.
+hostname [변경할네임] : 호스트네임을 변경한다.
+vi /etc/sysconfig/network : HOSTNAME 항목을 변경해야 리부팅 후에도 변경된 호스트 네임이 유지된다.
+iptables
+iptables -A INPUT -s [발신지] ?sport [발신지 포트] -d [목적지] ?dport [목적지 포트] ? j [정책] : 방화벽 정책을 추가한다.
+iptables -D INPUT [필터링 번호] : 방화벽 정책을 삭제한다.
+iptables-save : 설정한 방화벽을 저장해서, 재부팅시에도 적용되게 한다.
+iptables -A INPUT -s 1.1.1.1 -p tcp ?dport 8080 -j ACCEPT : 1.1.1.1에서 8080 포트로 tcp 요청하는것을 허락한다.
+iptables -A INPUT -p tcp ?dport 8080 -j DROP : 8080포트로 tcp 요청하는것을 막는다.
+iptables -A INPUT -p rcp ?dport 1:65535 -j DROP : 서비스 이외의 서비스포트 모두 거부한다.
+nmap [ip] : 현재 오픈되어 있는 포트를 보여준다.
+
+
+
+centos 7
+==================================================
+#방화벽 내리기
+
+systemctl stop firewalld
+systemctl stop iptables
+systemctl stop ip6tables
+ 
+#리부팅 뒤에도 실행 안되게끔
+systemctl disable firewalld
+systemctl disable iptables
+systemctl disable ip6tables
+===================================================
+#ifconfig 명령어사용
+yum install net-tools
+===================================================
+#selinux 정지하기
+sestatus -> SELinux 모드 확인
+vi /etc/sysconfig/selinux   -> SELINUX=enforceing 을 disabled 로 변경 리부팅
+=====================================================
+#사용자 추가하기
+adduser -d [홈디렉토리] [계정]
+passwd [계정] -> 패스워드설정
+====================================================
+#HOSTNAME 변경
+hostnamectl status  -> 상태확인
+hostnamectl set-hostname [변경호스트네임]
+hostnamectl set-icon-name [변경호스트네임]
+===================================================
+#서비스 관련
+systemctl is-active [서비스명] -> 서비스동작 여부
+systemctl enable [서비스명]  -> 시작 서비스 등록
+systemctl disable [서비스명]
+systemctl start [서비스명]
+systemctl stop [서비스명]
+systemctl restart [서비스명]
+systemctl reload [서비스명]
+% 위의 서비스를 데몬에 즉시 반영
+systemctl daemon-reload
+==================================================
+#권한관리 (chmod , chown , chgrp , umask)
+
+하위까지 반영하는 옵션 -R
+
+==================================================

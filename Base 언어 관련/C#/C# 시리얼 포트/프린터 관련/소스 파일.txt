@@ -1,0 +1,71 @@
+using System;
+using System.IO.Ports;
+using ThermalDotNet;
+
+
+public void PrintTest()
+        {
+
+            SerialPort port = new SerialPort();
+            port.PortName = "COM4";
+            port.BaudRate = 9600;
+            port.Parity = Parity.None;
+            port.DataBits = 8;
+            port.StopBits = StopBits.One;
+            port.Open();
+
+            if (port.IsOpen)
+            {
+
+                ThermalPrinter printer = new ThermalPrinter(port, 2, 180, 2);
+                //int euckrCodepage = 51949;
+                //port.Encoding = Encoding.GetEncoding(euckrCodepage);
+                port.Encoding = Encoding.GetEncoding("ks_c_5601-1987");
+
+                string Text = this.textBox1.Text;
+
+                printer.WakeUp();
+
+
+
+
+                printer.WriteLineSleepTimeMs = 200;
+
+                ThermalPrinter.BarcodeType myType = ThermalPrinter.BarcodeType.ean13;
+                string myData = "3350030103392";
+                printer.WriteLine(myType.ToString() + ", data: " + myData);
+                printer.SetLargeBarcode(true);
+                printer.LineFeed();
+                printer.PrintBarcode(myType, myData);
+                printer.SetLargeBarcode(false);
+                printer.LineFeed();
+                printer.PrintBarcode(myType, myData);
+
+
+                //printer.WriteLine("Default style");
+                //printer.WriteLine("PrintingStyle.Bold", ThermalPrinter.PrintingStyle.Bold);
+
+                //printer.SetAlignLeft();
+
+                port.WriteLine(printer.Encoding);
+                printer.LineFeed(3);
+                port.WriteLine(Text);
+                printer.LineFeed(3);
+                port.WriteLine("\x1b" + "\x69");
+                printer.Sleep();
+
+
+                // 종료 명령 (paper cut)
+                port.WriteLine("\x1b" + "\x69");
+                port.Close();
+                port.Dispose();
+                port = null;
+
+            }
+            else
+            {
+
+            }
+
+
+        }

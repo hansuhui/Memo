@@ -1,0 +1,13 @@
+gunicorn static
+
+
+[urls.py]
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+urlpatterns += staticfiles_urlpatterns()
+
+
+
+파일 적용하기 
+
+python manage.py collectstatic

@@ -1,0 +1,30 @@
+s[Git]
+
+- 설치 확인
+ git --version
+
+- 설치 명령어
+sudo apt-get install git 
+
+
+[nvm 설치]
+
+- nvm 설치 확인
+Node Version Manager
+Node.js 버전 업그레드 수순이 복잡하므로 nvm 필요
+Raspberry Pi 3 에 설치 되어 있지 않으므로 설치 필요
+nvm --version 확인
+
+- nvm 설치 디렉토리 설정
+sudo mkdir /usr/local/nvm 
+
+- nvm 퍼미션 설정
+sudo chmod 777 /usr/local/nvm
+
+- nvm.git에서 clone으로 작성
+ git clone https://github.com/creationix/nvm.git /usr/local/nvm
+
+- nvm 사용 설정
+
+source /usr/local/nvm/nvm.sh
+nvm --version

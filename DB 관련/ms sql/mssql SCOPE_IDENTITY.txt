@@ -1,0 +1,33 @@
+숫자 datatype에서 선언 할 수 있는 칼럼 속성이다.
+각 table에서 한 개만 가질 수 있다.
+
+IDENTITY [ ( 시작값 , 증가값 ) ]
+시작값과 증값을 지정하지 않으면 1부터 시작해서 1씩 증가한다.
+
+테이블에 지정된 시드값과 증가값을 알고 싶은때 다음과 같은 명령어를 실행한다.
+SELECT IDENT_SEED('table_name'), IDENT_INCR('table_name')
+
+테이블에서 IDENTITY 속성을 임시로 비활성화 시키려면
+SET IDENTITY_INSERT table_name ON 옵션을 사용한다.
+
+SET IDENTITY_INSERT table_name ON 옵션을 사용하면 유일성이 보장되지 않는다. 유일성을 강화하려면 칼럼에 UNIQUE나 PRIMARY KEY 제약을 선언해야 한다.
+
+IDENTITYCOL 키워드는 이름에 상관없이 IDENTITY 속성을 가진 테이블에 있는 특정 칼럼을 자동으로 참조한다.
+SELECT IDENTITYCOL FROM table_name 
+
+IDENTITY 속성에 의해 생성된 값을 바로 알고 싶을때는
+SELECT @@IDENTITY 를 사용한다.
+
+동일한 테이블이나 다른 테이블에 대해 한 일괄 처리에서 여러 개의 INSERT 문이 실행되면 변수가 마지막 문의 값만을 갖는다. 또 행을 삽입한 후 발생하는 INSERT 트리거가 있고, 이 트리거가 IDENTITY 속성을 가진 테이블에 행들을 삽입한다면 @@IDENTITY 가 원래 INSERT 문에 의해 삽입된 값을 갖지 않을 것이다.
+
+SELECT SCOPE_IDENTITY()
+SCOPE_IDENTITY() 함수는 동일한 범위(저장프로시저, 트리거, 일괄처리 등)에서 테이블에 삽입된 마지막 ID값을 반환한다.
+
+SELECT IDENT_CURRENT('table_name')
+IDENT_CURRENT() 함수는 임의의 세션과 범위에서 지정한 테이블에 생성된 마지막 ID 값을 반환한다.
+
+
+DBCC CHECKIDENT
+DBCC CHECKIDENT 명령어를 사용하여 ID 값을 적절한 번호로 재 설정 할 수 있다.
+
+DBCC CHECKIDENT(table_name , RESEED , 원하는값)

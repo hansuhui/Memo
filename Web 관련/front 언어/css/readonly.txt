@@ -1,0 +1,5 @@
+input[readonly] {
+	color: #000;
+	background: #ccc;
+	vertical-align: middle;
+}

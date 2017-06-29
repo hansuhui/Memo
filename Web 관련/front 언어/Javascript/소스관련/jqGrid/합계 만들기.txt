@@ -1,0 +1,12 @@
+http://thatisgood.tistory.com/101
+
+
+//footerrow: true,
+//userDataOnFooter: true,
+
+$("#tblList1").jqGrid('footerData', 'set', { crateName: '합계', AllQty: AllQtysum });
+$("#tblList1").jqGrid('footerData', 'set', { crateName: '합계', State1Qty: State1Qtysum });
+$("#tblList1").jqGrid('footerData', 'set', { crateName: '합계', State2Qty: State2Qtysum });
+$("#tblList1").jqGrid('footerData', 'set', { ORDERDATE: "합계" });
+
+

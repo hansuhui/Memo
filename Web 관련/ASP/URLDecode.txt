@@ -1,0 +1,7 @@
+	FUNCTION URLDecode(str)
+    Dim objScript
+    Set objScript = Server.CreateObject("ScriptControl")
+    objScript.Language = "JavaScript"
+    URLDecode = objScript.Eval("decodeURIComponent(""" & str & """.replace(/\+/g,"" ""))")
+    Set objScript = NOTHING
+END FUNCTION

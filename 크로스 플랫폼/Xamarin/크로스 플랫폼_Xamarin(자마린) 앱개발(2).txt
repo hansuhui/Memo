@@ -1,0 +1,94 @@
+http://analog-green.tistory.com/477
+
+
+1.프로젝트 구성
+
+1) 공유 데이터 서비스 코드 작성
+프로젝트명(이식가능)이 PCL 프로젝트, 플랫폼 공요코드를 작업할 프로젝트입니다.
+해당 프로젝트에 폴더등을 추가하고 , 또한 공용 클래스를 작성합니다.
+
+
+2)UI 코드 작성 시작
+안드로이드 프로젝트에서 다음과 같은 항목을 추가합니다.
+
+새항목 추가 > Cross-Platform > Forms Xaml Page
+
+
+1. 프로젝트 설정
+
+1) 어플 정보 변경
+Label: 출력되는 앱 이름
+
+
+1.UI 및 레이아웃 관련
+
+1) 입력 제어 
+[Detect a Touch - Xamarin]
+https://developer.xamarin.com/recipes/android/other_ux/gestures/detect_a_touch/
+
+2) UI구성
+
+[ListView Example in Xamarin.Android(BastAdapter)]
+http://stacktips.com/tutorials/xamarin/listview-example-in-xamarin-android
+
+[Part 2 - Populating a ListView With Data]
+https://developer.xamarin.com/guides/android/user_interface/working_with_listviews_and_adapters/part_2_-_populating_a_listview_with_data/
+
+[Part 3 - Customizing a ListView's Appearance]
+https://developer.xamarin.com/guides/android/user_interface/working_with_listviews_and_adapters/part_3_-_customizing_a_listview's_appearance/
+
+
+[Custom AlertDialog example in Xamarin.Android]
+http://www.appliedcodelog.com/2015/11/custom-alertdialog-example-in.html
+
+
+3) 로컬 저장
+
+[SQList.NET]
+https://components.xamarin.com/view/sqlite-net
+
+[Create a Database with SQLiteNET]
+https://developer.xamarin.com/recipes/ios/data/sqlite/create_a_database_with_sqlitenet/
+
+[An Introduction to Xamarin.Forms and SQLite]
+https://code.tutsplus.com/tutorials/an-introduction-to-xamarinforms-and-sqlite--cms-23020
+
+
+sqliter-net-pcl 패키지를 PCL&플랫폼별 프로젝트에 설치합니다. 유사 검색결과가 많은데,
+작성자와 신고 페이지등등 다음의 정보를 확인해야 합니다.
+
+작성자 :Frank A. Krueger
+NuGet 링크 : https://www.nuget.org/packages/sqlite-net-pcl/
+
+만약, 안드로이드만 개발하신다면 SharedPreferenecs로도 가능합니다.
+
+
+
+기타.openTK
+
+1)라이브러리
+- 연결
+에러 : OpenTK 설치 실패
+http://analog-green.tistory.com/483
+
+- 버전 및 API 대응
+OPenGL ES 1.0 and 1.1 - This API specification is supported by Android 1.0 and higher
+OpenGL ES 2.0  - This API specification is supported by Android 2.2(API lever 8) and higher 
+OpenGL ES 3.0  - This API specification is supported by Android 4.3(API lever 18) and higher 
+OpenGL ES 3.1  - This API specification is supported by Android 5.0(API lever 21) and higher 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

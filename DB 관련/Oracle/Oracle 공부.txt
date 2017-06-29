@@ -1,0 +1,400 @@
+L_SQL 1일차                                                                                               
+
+   
+                                         
+
+1. PL/SQL
+ 
+1. PL/SQL 사용한는 이유?
+  - 모듈식 프로그램 개발
+  - Oracle 툴과의 통합
+  - 이식성
+  - 예외처리
+  - 성능 향상  (단순 sql문의 반복을 변수를 통해 해소)
+ 
+PL/SQL 블록 구조
+  - DECLARE
+       변수, 커서정의
+  - BEGIN (필수)
+       SQL, PL/SQL문
+  - EXCEPTION
+       예외 발생시 수행할 작업
+  - END (필수)
+ 
+기본적인 PL/SQL문
+ 
+-- PL/SQL 블록은 BEGIN과 BLOCK의 배치 
+-- 실행 방법은 BEGIN - END 선택 후 CTRL + 엔터, 또는 F5 
+   BEGIN
+     UPDATE EMP
+     SET SAL = SAL * 1.2 
+     WHERE DEPTNO = 30;
+     DELETE EMP
+     WHERE DEPTNO = 10;
+   END;
+  => 메세지는 '블록이 완료되었습니다' 라고만 출력
+ 
+ 
+DBMS_OUTPUT
+몇개의 라인이 업데이트 되었는지 출력하고 싶다?
+DBMS_OUTPUT.PUT_LINE( SQL%ROWCOUNT || 'rows updated');
+그런데 DBMS_OUTPUT 을 사용하려면  SET SERVEROUTPUT ON;  
+  (SERVEROUTPUT 이라는 환경변수가 ON으로 설정되어 있어야 한다)
+ 
+ SET SERVEROUTPUT ON; 
+-- PL/SQL 블록은 BEGIN과 BLOCK의 배치 
+-- 실행 방법은 BEGIN - END 선택 후 CTRL + 엔터, 또는 F5 
+BEGIN
+  UPDATE EMP
+  SET SAL = SAL * 1.2 
+  WHERE DEPTNO = 30;
+  DBMS_OUTPUT.PUT_LINE( SQL%ROWCOUNT || 'rows updated'); 
+  
+  DELETE EMP
+  WHERE DEPTNO = 10;
+END;
+ 
+ 
+- 변수 이름 설정의 규칙
+변수 이름:
+? 문자로 시작
+? 문자나 숫자를 포함할 수 있음?
+? 특수 문자($, _, # 등)를 포함할 수 있음
+? 30자 이하의 문자만 포함
+? 예약어를 포함하면 안됨
+ 
+- 변수 이름 예시
+DECLARE
+   v_hiredate DATE;
+   v_deptno NUMBER(2) NOT NULL := 10;  
+    -- NOT NULL 이 들어가면 반드시 초기값을 지정해 주어야 함
+   v_location VARCHAR2(13) := 'Atlanta';
+   c_comm CONSTANT NUMBER := 1400;
+ 
+ 
+- 문자열과 리터럴의 구분
+ ① 문자열 리터럴은 작은 따옴표로 묶어야 합니다. "Today’s Date"처럼 문자열이 큰 따옴표로 묶인 경우 'Today''s Date'로 나타납니다.
+ ② v_event := q'[Mother's day]';    q'[  ] : 괄호안의 내용을 그대로 출력  Oracle 10g 이상부터 사용 할 수 있다.
+ 
+- 변수 유형
+  ?  스칼라  : 스칼라 데이터 유형은 단일 값을 보유 (CHAR, VARCHAR, NUMBER, BINARY, BOOLEAN)
+     - CHAR과 VARCHAR의 차이: LENGTH가 5만큼 길이가 있고 'ABC'를 입력 할 때, CHAR는 앞에서 순서대로 채우고
+        나머지는 SPACE로 메꾸어주어 5길이만큼 모두 사용하는데 VARCHAR 타입은 앞에서 부터 순서대로 채우고 뒤에 2길이는 없앰.
+        VARCHAR2는 최대 4000BYTE 까지만 저장 할 수 있다.
+     - NUMBER 선언시 (4,2) => 99.99 까지만 사용. (4,0) 사용시 9999 까지 사용. 그냥 NUMBER라고만 쓰면 수치형 데이터가 모두 들어올 수 있다.
+     - PLS_INTEGER : 9i 이상을 사용할 때 그냥 integer보다 pls_integer를 사용하는게 더 효율적일 수 있다.
+     - %TYPE 속성 : 앞서 선언한 변수 타입을 참조하여 생성. 추후 유지 관리할 때 쉽게 사용,       
+- 스칼라 변수 예제
+DECLARE
+    v_emp_job VARCHAR2(9);
+    v_count_loop BINARY_INTEGER := 0;
+    v_dept_total_sal NUMBER(9,2) := 0;
+    v_orderdate DATE := SYSDATE + 7;
+    c_tax_rate CONSTANT NUMBER(3,2) := 8.25;
+    v_valid BOOLEAN NOT NULL := TRUE;
+    v_emp_lname   employees.last_name%TYPE;
+ 
+  ?  참조 : 참조 데이터 유형은 저장 위치를 가리키는 포인터라는 값을 보유
+     -
+  ?  LOB(대형객체) : 대형 객체의 위치를 지정하는 위치자라는 값을 보유. 테이블 외부에 저장되는 그래픽 이미지 등이 대형 객체에 해당
+     - CLOB : Char LOB, BLOB : Binary LOB, BFILE : 실제 데이터는 DB외부단에 저장. DB에는 참조값만
+  ?  조합 : 조합 데이터 유형은 PL/SQL 컬렉션과 레코드 변수를 통해 사용할 수 있음.
+  ?  바인드 변수 : C나 JAVA처럼 호스트 단에서 생성되는 변수. VARIABLE 선언문으로 생성 가능함. PL/SQL 블록이 실행된 후에도 액세스할 수 있음
+     앞에 콜론을 사용하여 참조.
+ 
+3. 실행문 작성
+   - PL/SQL 블록에서 실행문 작성
+   PL/SQL 안에서 검색되는 데이터는 값이 없어도 에러, 여러개의 값이 나와도 에러.. 그래서 반드시 한개의 행이 나오도록 해야한다.
+   BEGIN
+      SELECT  *    
+      FROM DEPT;
+   END
+   => ORA-06550: 줄 3, 열7:PLS-00428: 해당 SELECT 문에 INTO 절이 필요합니다
+   이렇게만 실행하면 항상 에러   INTO 절이 항상 있어야 한다. 왜냐하면 블록 내에서는 개별적인 실행 결과를 조회해 주지 않기 때문에..
+?   그렇다면 어떻게 해야함?
+   DECLARE
+      V_DEPTNO   NUMBER (2) ;
+      V_DNAME    DEPT.DNAME%TYPE; 
+      V_LOC         DEPT.LOC%TYPE;
+   BEGIN
+      SELECT  *  INTO V_DEPTNO, VDNAME, V_LOC
+      FROM DEPT;
+   END
+ => ORA-01422: 실제 인출은 요구된 것보다 많은 수의 행을 추출합니다
+   위와 같은 에러 발생.. 해결? WHERE 절을 추가한다.
+   DECLARE
+      V_DEPTNO   NUMBER(2) ;
+      V_DNAME    DEPT.DNAME%TYPE; 
+      V_LOC      DEPT.LOC%TYPE;
+  BEGIN 
+      SELECT  *  INTO V_DEPTNO, V_DNAME, V_LOC
+      FROM DEPT
+      WHERE DEPTNO = 10;
+  END;
+  에러가 발생하는 이유? V_DEPTNO, V_DNAME, V_LOC는 변수 하나만을 저장하는 스칼라 타입이다. 그래서 조건절을 넣어서 반드시 결과값이 하나가 되도록 한다. 
+ 
+검색되는 행이 없는 경우도 에러로 인식 
+ 
+   DECLARE
+      V_DEPTNO   NUMBER(2) ;
+      V_DNAME    DEPT.DNAME%TYPE; 
+      V_LOC      DEPT.LOC%TYPE;
+  BEGIN 
+      SELECT  *  INTO V_DEPTNO, V_DNAME, V_LOC
+      FROM DEPT
+      WHERE DEPTNO = 50;      <= 에러 
+  END;
+ => ORA-01403: 데이터를 찾을 수 없습니다.
+ => UPDATE
+  DECLARE
+     V_DEPTNO   NUMBER(2) ;
+     V_DNAME    DEPT.DNAME%TYPE; 
+     V_LOC      DEPT.LOC%TYPE;
+  BEGIN 
+     SELECT  *  INTO V_DEPTNO, V_DNAME, V_LOC
+     FROM DEPT
+     WHERE DEPTNO = 10;
+  
+     UPDATE EMP
+     SET DNAME = V_DNAME
+     WHERE DEPTNO = V_DEPTNO;  
+  END; 
+  여러개일 경우 LOOP를 사용..
+ 
+  DECLARE
+    V_DEPTNO   NUMBER(2) ;
+    V_DNAME    DEPT.DNAME%TYPE; 
+    V_LOC      DEPT.LOC%TYPE;
+    V_CNT      V_DEPTNO%TYPE := 10;
+  BEGIN 
+    LOOP  
+      SELECT  *  INTO V_DEPTNO, V_DNAME, V_LOC
+      FROM DEPT
+      WHERE DEPTNO = V_CNT;
+    
+      UPDATE EMP
+      SET DNAME = V_DNAME
+      WHERE DEPTNO = V_DEPTNO;  
+    
+      V_CNT := V_CNT + 10;
+    
+      EXIT  WHEN  V_CNT = 40;
+    END LOOP;
+  END; 
+ 
+
+ 
+ 
+ 
+ 
+- 데이터의 유형 변환
+  암시적인 형 변환이 이루어 질 수 있다.
+  SELECT  '12' + 13  FROM DUAL ;   결과값은 25
+ 
+  그중에서도 제일 난감한게 v_date_of_joining DATE:= '02-Feb-2000';
+  컴파일하면 에러 발생
+ 
+  DECLARE
+     v_date_of_joining DATE:= '02-Feb-2000';
+  BEGIN
+    NULL;
+  END
+ => 01858. 00000 -  "a non-numeric character was found where a numeric was expected"
+  END
+ 
+형변환을 명시적으로 해주어야 한다.
+   DECLARE
+      v_date_of_joining DATE:= TO_DATE('02-Feb-2000','DD-MON-YYYY',
+                                                         'NLS_DATE_LANGUAGE=AMERICAN');
+   BEGIN
+      NULL;
+   END;
+ 
+ 
+ 
+4. 오라클 데이터베이스 서버와 상호 작용:
+PL/SQL 프로그램의 SQL 문
+ 
+- PL/SQL을 사용하여 데이터 검색
+?  SELECT 명령을 사용하여 데이터베이스에서 행을 검색합니다.
+?  DML 명령을 사용하여 데이터베이스에서 행을 변경합니다. DDL, DCL은 지원하지 않음 
+?  COMMIT, ROLLBACK 또는 SAVEPOINT 명령을 사용하여 트랜잭션을 제어합니다.
+=> CREATE TABLE, DROP TABLE을 사용할 경우에는 또다른 방법을 사용해야 한다.  아래처럼
+ BEGIN
+   EXCUTE IMMEDIATE 'DROP TABPE EMP' ;
+ END ;
+ 
+ FLASHBACK TABLE EMP TO BEFORE DROP;
+ 
+ 
+- SQL 커서
+  ORACLE 서버에 할당된 전용 메모리 영역에 대한 포인터.  암시적 커서와 명시적 커서라는 두 가지 유형의 커서가 있습니다.
+   암시적: Oracle 서버에서 SQL 문을 처리하기 위해 내부적으로 생성하고 관리합니다.
+   명시적: 프로그래머가 명시적으로 선언합니다.
+ 
+- 암시적 커서에 대한 SQL 커서의 속성
+  ?  SQL%FOUND 가장 최근의 SQL 문이 한 행 이상에 영향을 미친 경우 TRUE로 평가되는 부울 속성
+  ?  SQL%NOTFOUND 가장 최근의 SQL 문이 한 행에도 영향을 미치지 않은 경우 TRUE로 평가되는 부울 속성
+  ?  SQL%ROWCOUNT 가장 최근의 SQL 문에 의해 영향을 받은 행 수를 나타내는 정수 값
+ 
+DECLARE
+  v_rows_deleted VARCHAR2(30) v_empno employees.employee_id%TYPE := 176;
+BEGIN
+  DELETE FROM employees WHERE employee_id = v_empno;
+  v_rows_deleted := (SQL%ROWCOUNT || ' row deleted.');
+  DBMS_OUTPUT.PUT_LINE (v_rows_deleted);
+END;
+ 
+ 
+5. 제어 구조 작성
+ - IF 문 사용
+ 
+ SET SERVEROUTPUT ON;
+DECLARE 
+  v_myage NUMBER ;
+BEGIN
+  IF  v_myage < 11 THEN
+    DBMS_OUTPUT.PUT_LINE('I AM A CHILD');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('I AM not A CHILD');
+  END IF;
+END;
+=> 중요한 것은 IF 문은 TRUE 일 경우만 호출되고 ELSE구문은 FALSE 인 경우 뿐만 아니라 NULL 값인 경우에도 실행이 된다.
+ 
+ 
+ - CASE 문 및 CASE 식 사용
+   교재 참조
+ 
+ - NULL
+   NULL 과 어떤 연산이 와도 결과값은 항상 NULL
+ 
+ - LOOP 작성과 식별
+DECLARE
+   v_countryid locations.country_id%TYPE := 'CA';
+   v_loc_id locations.location_id%TYPE;
+   v_counter NUMBER(2) := 1;
+   v_new_city locations.city%TYPE := 'Montreal';
+BEGIN
+   SELECT MAX(location_id) INTO v_loc_id FROM locations
+   WHERE country_id = v_countryid;
+   LOOP
+      INSERT INTO locations(location_id, city, country_id)
+      VALUES((v_loc_id + v_counter), v_new_city, v_countryid);
+      v_counter := v_counter + 1;
+      EXIT WHEN v_counter > 3;
+   END LOOP;
+END;
+=>현재  locations 테이블에 존재하는 location_id 값에 1을 더해서 'CA', 'Montreal'값을 저장
+    여기서 INSERT 는 총 세번 진행
+ 
+ - WHILE LOOP
+DECLARE
+   v_countryid locations.country_id%TYPE := 'CA';
+   v_loc_id locations.location_id%TYPE;
+   v_new_city locations.city%TYPE := 'Montreal';
+   v_counter NUMBER := 1;
+BEGIN
+   SELECT MAX(location_id) INTO v_loc_id FROM locations
+   WHERE country_id = v_countryid;
+   WHILE v_counter <= 3 LOOP  => 조건식을 먼저 체크 
+      INSERT INTO locations(location_id, city, country_id)
+      VALUES((v_loc_id + v_counter), v_new_city, v_countryid);
+      v_counter := v_counter + 1;
+   END LOOP;
+END;    => WHILE LOOP으로 변경
+ 
+ - FOR LOOP
+DECLARE
+   v_countryid locations.country_id%TYPE := 'CA';
+   v_loc_id locations.location_id%TYPE;
+   v_new_city locations.city%TYPE := 'Montreal';
+BEGIN
+   SELECT MAX(location_id) INTO v_loc_id
+   FROM locations
+   WHERE country_id = v_countryid;
+   FOR i IN 1..3 LOOP
+      INSERT INTO locations(location_id, city, country_id)
+      VALUES((v_loc_id + i), v_new_city, v_countryid );
+   END LOOP;
+END;    => FOR LOOP으로 변경
+※ FOR LOOP 시 주의사항
+? 루프 안에 있는 카운터만 참조하십시오. 루프 밖에는 카운터가 정의되어 있지 않습니다.
+? 카운터를 할당 대상으로 참조하지 마십시오.
+? 루프 상한이나 하한은 NULL일 수 없습니다.
+ 
+ - CONTINUE 구문
+  ORACLE 11g 부터 사용 가능함
+  c 의 continue 구문과 동일함
+ 
+ 
+6. 조합 데이터 유형 작업
+ - 조합 데이터 유형
+1. 행 전체를 통채로 라인 타입 선언
+SET SERVEROUTPUT ON;
+DECLARE
+    EMP_REC EMP%ROWTYPE;
+BEGIN
+    SELECT * INTO EMP_REC
+    FROM EMP  WHERE EMPNO = 7788;
+    DBMS_OUTPUT.PUT_LINE(EMP_rEC.EMPNO||' '||EMP_REC.ENAME);
+END;
+ => 구조체 비스무리한 개념이 있다.
+ 
+2. 필요한 필드만 선언
+SET SERVEROUTPUT ON;
+DECLARE
+   TYPE  EMP_REC_TYP  IS RECORD
+    ( EMPNO NUMBER(4),
+       ENAME EMP.ENAME%TYPE,
+       SAL   NUMBER(7,2) );
+   EMP_REC EMP_REC_TYP ;
+BEGIN
+   SELECT EMPNO, ENAME, SAL INTO EMP_REC
+   FROM EMP  WHERE EMPNO = 7788;
+   DBMS_OUTPUT.PUT_LINE(EMP_rEC.EMPNO||' '||EMP_REC.ENAME);
+END;
+ 
+ 
+%ROWTYPE 사용 시 이점
+%ROWTYPE 속성 사용 시 이점이 슬라이드에 나열되어 있습니다. 기본 데이터베이스 테이블의 구조에 대해 정확히 모르는 경우 %ROWTYPE 속성을 사용합니다.  %ROWTYPE 사용 시 주된 이점은 유지 관리가 단순화된다는 것입니다. %ROWTYPE을 사용하면  기본 테이블이 변경되는 경우 이 속성을 사용하여 선언된 변수의 데이터 유형이 동적으로 변경됩니다. DDL 문이 테이블에서 열을 변경할 경우 PL/SQL 프로그램 단위가 무효화됩니다. 프로그램이 재컴파일되면 자동으로 새로운 테이블 형식을 반영합니다. %ROWTYPE 속성은 테이블에서 전체 행을 검색하려는 경우 특히 유용합니다. 이 속성이 없으면
+SELECT 문에 의해 검색되는 각 열에 대해 일일이 변수를 선언해야 합니다.
+ 
+PL/SQL 컬렉션 사용
+? 연관 배열 검사
+? 중첩 테이블 소개
+? VARRAY 소개
+ 
+ 
+- 연관 배열
+배열 처럼 사용 할 수 있다.
+ SET SERVEROUTPUT ON
+DECLARE
+  TYPE  ENAME_TAB_TYP IS TABLE OF VARCHAR2(10)   => 배열 구조 생성시 IS TABLE OF
+  INDEX BY  PLS_INTEGER;
+  
+  ENAME_TAB ENAME_TAB_TYP;
+BEGIN
+  ENAME_TAB(1):=  'AAA';
+  ENAME_TAB(2):=  'BBB';
+  ENAME_TAB(3):=  'CCC';
+  ENAME_TAB(4):=  'DDD';
+ 
+  IF  ENAME_TAB.EXISTS(4)  THEN     => 실제 그 배열에 값이 있는지 체크하는 메소드 제공
+     DBMS_OUTPUT.PUT_LINE(ENAME_TAB(3));
+  END IF;
+  DBMS_OUTPUT.PUT_LINE('ENAME_TAB.COUNT() = ' || ENAME_TAB.COUNT()); 
+  DBMS_OUTPUT.PUT_LINE('ENAME_TAB.FIRST() = ' || ENAME_TAB.FIRST());
+  DBMS_OUTPUT.PUT_LINE('ENAME_TAB.LAST()  = ' || ENAME_TAB.LAST());
+END;
+ 
+ 
+- 중첩 테이블 소개
+ DECLARE
+  TYPE  EMP_TAB_TYPE IS TABLE OF EMP%ROWTYPE;
+  EMP_TAB EMP_TAB_TYPE;
+BEGIN
+  SELECT * BULK COLLECT INTO EMP_TAB
+  FROM EMP;
+END;
+ 여러 FETCH 된 값을 한번에 중첩 테이블에 넣을 수 있다.  한번에 갖고와서 데이터를 처리하면 CURSOR를 이용하여 한건 한건 처리하는 것보다 성능의 향상을 맛볼 수 있다.
+ 

@@ -1,0 +1,37 @@
+
+<%
+'//--- 올해의 년도
+yearDate = year(date)
+'//--- 이번달의 월
+monthDate = month(date)
+'//--- 오늘의 날짜
+dayDate = day(date)
+'//--- 년월오늘날짜 
+todayDate = date()
+'//--- 오늘날짜 전체
+nowDate = now()
+
+'//-- 오늘의 요일은?
+weekDate = weekDay(now())
+select case weekDate
+case "1" weekDate = "일요일"
+case "2" weekDate = "월요일"
+case "3" weekDate = "화요일"
+case "4" weekDate = "수요일"
+case "5" weekDate = "목요일"
+case "6" weekDate = "금요일"
+case "7" weekDate = "토요일"
+end select
+'//--- 2.0 부터 추가된 weekDayName 함수를 이용한 방법
+'//--- 오늘의 요일은
+weekDate2 = weekDayName(weekDay(now))
+
+Response.Write "올해의 년도:" & yearDate & "<br>"
+Response.Write "이번달의 월:" & monthDate & "<br>"
+Response.Write "오늘의 날짜:" & dayDate & "<br>"
+Response.Write "년월오늘날짜:" & todayDate & "<br>"
+Response.Write "오늘날짜 전체" & nowDate & "<br>"
+Response.Write "오늘의 요일:" & weekDate & "<br>"
+Response.Write "weekDayName 함수를 이용한 오늘의 요일은:" & weekDate2 & "<br>"
+
+%>

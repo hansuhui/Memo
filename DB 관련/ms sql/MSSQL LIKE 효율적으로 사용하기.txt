@@ -1,0 +1,65 @@
+- LIKE 문이란? 
+?   LIKE문은 조건절에 사용되어 정확하지 않으나 부분적으로 일치되는 내용을 찾는데 이용됩니다.
+
+
+- MSSQL LIKE 사용방법
+ 
+?   WHERE [컬럼명] LIKE [조건절]
+?
+ 
+ - 성적 테이블 생성
+ 
+   CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       점수 int NOT NULL
+   )
+?
+ 
+ - 데이터 입력
+ 
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (1, '홍길동', 90)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (2, '일지매', 95)
+   INSERT INTO dbo.성적 (일련번호, 이름, 점수) VALUES (3, '임꺽정', 85)
+ 
+ 
+ - 테이블 입력 결과 확인?
+ 
+   SELECT * FROM dbo.성적
+ 
+? - 예제 1 
+   성적테이블에서 이름이 홍길동인 레코드 검색
+
+ 
+ - 예제 1 쿼리
+   SELECT * FROM dbo.성적 WHERE 이름 LIKE '홍길동'
+  
+ 
+ - 예제 2
+   성적테이블에서 성이 임인 레코드를 검색하시오.
+ 
+ 
+ - 예제 2 쿼리
+    SELECT * FROM dbo.성적 WHERE 이름 LIKE '임%'
+
+ 
+ - 예제 3
+   성적테이블에서 성이 홍이거나 일인 레코드를 검색하시오.
+ 
+ 
+ - 예제 3 쿼리
+   SELECT * FROM dbo.성적 WHERE 이름 LIKE '[홍|일]%'
+ 
+ - 예제 4
+    성적테이블에서 성이 홍이고 이름 맨 끝자가 동인 레코드를 검색하시오.
+ 
+ 
+ - 예제 4 쿼리
+   SELECT * FROM dbo.성적 WHERE 이름 LIKE '홍_동'
+ 
+ 
+ [참고사항] 와일드카드
+ 
+   ?와일드카드란 예제에서 사용한 _ 혹은 %를 가리키는 말로 _ 는 어떤글자든 1글자를 뜻하며 
+   %는 글자수가 정해지지 않은 어떤문자도 들어올 수 있음을 말합니다.
+   

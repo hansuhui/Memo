@@ -1,0 +1,356 @@
+[박스 모델(Box Model)]
+
+HTML 요소는 박스(box)로 이루어져 있습니다. 박스 위에 박스를 얹거나 박스들을 배열로 문서를 만들어 나갑니다.
+예를 들어 다음과 같이 코드를 작성했다면 
+
+<body>
+  <header>
+    <h1>Lorem</h1>
+  </header>
+</body>
+
+body 박스 위에 header 박스가 있고 , header 박수 위에 h1 박스가 있는 것입니다.
+
+
+
+- 박스의 구성 -
+
+하나의 박스는 바깥 여백 영역, 테두리 영역,  안족 여백 영역 , 내용 영역으로 구성됩니다.
+다음은 각 영역을 살펴보기 위한 간단한 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS</title>
+    <style>
+      h1 {
+        margin: 30px;
+        border: 30px solid #dddddd;
+        padding: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Box Model</h1>
+  </body>
+</html>
+
+각 영역을 꾸밀때 사용하는 속성은 다음과 같습니다.
+
+바깥 여백 : margin 속성
+테두리 :border 속성
+안쪽 여백 : padding 속성
+박스의 가로크기 : width 속성
+박스의 세로크기 : height 속성
+박스의 크기 기준 : box-sizing 속성
+박스의 배경 : background 속성
+
+
+
+[Background]
+
+- background-attachment -
+
+background-attachment는 스크롤 했을 떄 배경 이미지가 같이 움직일건지, 아니면
+고정되어 있을 건지 정하는 속성입니다.
+
+속성 값은 다음과 같습니다.
+
+- scroll : 스크롤 했을 떄 같이 움직입니다. 기본값입니다.
+
+- fixed : 스크롤 해도 벼갱 이미지가 움직이지 않습니다.
+
+- ingerit(상속)
+
+
+- background-color -
+
+
+배경색은 background-color 속성으로 정합니다. 간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | background-color</title>
+    <style>
+      .bg {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg">
+      <h1>Lorem ipsum dolor</h1>
+    </div>
+  </body>
+</html>
+
+
+- background-repeat - 
+
+이미지를 배경으로 사용하면 해당 요소를 다 채울 떄까지 반복되는 게 기본 설정입니다. 
+이러한 반복을 직접 설정할 떄에는 이러한 반복을 직접 설정할 떄에는 background-repeat 속성을 사용합니다.
+속성값은 다음과 같습니다.
+
+- repeat : 기본값입니다. 가로 방향, 세로 방향 모두 반복합니다.
+
+- repeat-x : 가로 방향만 반복합니다.
+
+- repeat-y : 세로 방향만 반복합니다.
+
+- no-repeat : 반복하지 않습니다.
+
+- inherit
+
+
+
+
+[Border]
+
+
+HTML 요소의 테두리는 border 속성으로 만듭니다. 
+테두리는 굵기, 모양, 색으로 구성되어 있습니다. 문법은 다음과 같습니다.
+
+
+border: 5px solid gray;
+
+굵기는 5px, 모양은 실선, 색은 회색으로 만들겠다는 뜻입니다. 
+간단한 예는 다음과 같습니다.
+
+
+div.bd {
+        text-align: center;
+        border: 5px solid gray;
+      }
+
+
+border 속성은 모든 모서리에 같은 값을 부여합니다. 
+만약 모서리마다 다른 값을 부여하려면 border-top, border-right, border-bottom, border-left 속성을 이용하면 됩니다. 
+간단한 예는 다음과 같습니다.
+
+
+  div.bd {
+        text-align: center;
+        border-top: 5px solid gray;
+        border-right: 4px dotted red;
+        border-bottom: 3px double blue;
+        border-left: 2px dashed green;
+      }
+
+- border-width -
+
+테두리 굵기는 border-width 속성으로 정합니다. 
+속성값으로는 thin, medium, thick과 px 등 길이를 사용할 수 있습니다.
+
+속성값은 다음과 같이 부여합니다
+
+border-width: xx yy zz ww;
+
+xx는 위, yy는 오른쪽, zz는 아래, ww는 왼쪽입니다. 
+이는 다음과 같이 나타낼 수도 있습니다.
+
+
+border-top-width: xx;
+border-right-width: yy;
+border-bottom-width: zz;
+border-left-width: ww;
+
+border-width의 속성값을 하나만 쓰면 위, 오른쪽, 아래, 왼쪽 모두 
+같은 값을 사용합니다. 즉, 다음의 두 줄은 같은 의미입니다.
+
+border-width: xx;
+border-width: xx xx xx xx;
+
+
+속성값을 두 개 쓰면 첫번째 값은 위와 아래, 
+두번째 값은 오른쪽과 왼쪽에 사용합니다. 즉, 다음의 두 줄은 같은 의미입니다.
+
+border-width: xx yy;
+border-width: xx yy xx yy;
+
+속성값을 세 개 쓰면 두번째 값을 오른쪽과 왼쪽에 사용합니다. 즉, 다음의 두 줄은 같은 의미입니다.
+
+border-width: xx yy zz;
+border-width: xx yy zz yy;
+
+간단한 예는 다음과 같습니다.
+
+ .bw {
+        border-style: solid;
+        border-width: thin medium thick 10px;
+      }
+
+
+- border-radius -
+
+
+border-radius 속성으로 둥근 모서리를 만들 수 있습니다. 
+박스에서 모서리는 네 개 있으므로 속성도 네 개로 나뉘어집니다.
+
+- border-top-left-radius : 위 왼쪽
+- border-top-right-radius : 위 오른쪽
+- border-bottom-right-radius : 아래 오른쪽
+- border-bottom-left-radius : 아래 왼쪽
+
+속성값을 정하는 방법은 다 같으니 border-top-left-radius로 값을 
+정하고 결과를 살펴보도록 하겠습니다. 문법은 다음과 같습니다.
+
+selector {border-top-left-radius: xx yy;}
+
+border-top-left-radius 속성에 두 개의 값이 들어가는데, 
+앞의 것이 가로 반지름의 길이, 뒤의 것이 세로 반지름의 길이입니다.
+
+간단한 예는 다음과 같습니다.
+
+
+ .bb {
+        padding: 10px 20px 10px 20px;
+        border: 5px solid #cccccc;
+        text-align: center;
+      }
+      .bbr {
+        border-top-left-radius: 60px 40px;
+      }
+
+
+반지름의 길이는 백분율로 정할 수도 있습니다.
+
+.bbr {
+  border-top-left-radius: 50% 100%;
+}
+
+
+속성값을 하나만 쓰면 가로 반지름의 길이와 세로 반지름의 길이가 같다는 뜻입니다. 
+예를 들어 다음의 두 줄은 같은 의미입니다.
+
+border-top-left-radius: 30px;
+border-top-left-radius: 30px 30px;
+
+네 모서리를 각각 정하는 것이 번거로우므로 보통 border-radius 속성으로 한번에 만듭니다.
+
+selector {border-radius: xx xx xx xx / yy yy yy yy;}
+
+xx는 가로 반지름의 길이입니다. 순서대로 위 왼쪽, 위 오른쪽, 아래 오른쪽, 아래 왼쪽입니다. 
+yy는 세로 반지름의 길이로 순서는 가로와 같습니다.
+
+.bbr {
+  border-radius: 100px 0px 100px 0px / 80px 0px 80px 0px;
+}
+
+
+세로 반지름의 길이를 정하지 않으면 가로 반지름의 길이와 같은 값을 사용합니다. 
+예를 들어 다음의 두 줄은 같은 의미입니다.
+
+border-radius: 20px 10px 20px 10px;
+border-radius: 20px 10px 20px 10px / 20px 10px 20px 10px;
+
+
+속성값을 하나만 쓰면 네 모서리 모두 같은 값을 사용합니다. 예를 들어 다음의 두 줄은 같은 의미입니다.
+
+border-radius: 20px;
+border-radius: 20px 20px 20px 20px;
+
+속성값을 두개 쓰면 앞의 값은 위 왼쪽과 아래 오른쪽, 뒤의 값은 위 오른쪽과 아래 왼쪽의 반지름의 길이입니다. 예를 들어 다음의 두 줄은 같은 의미입니다.
+
+border-radius: 20px 40px;
+border-radius: 20px 40px 20px 40px;
+
+속성값을 세개 쓰면 가운데 값을 위 오른쪽과 아래 왼쪽에 사용합니다. 
+예를 들어 다음의 두 줄은 같은 의미입니다.
+
+
+border-radius: 20px 40px 60px;
+border-radius: 20px 40px 60px 40px;
+
+주의할 점은 border-radius 속성은 IE 8 이하에서는 지원하지 않는다는 것입니다.
+
+
+[padding, margin]
+
+
+여백에는 안쪽여백과 바깥여백이 있습니다. 
+안쪽여백은 padding 속성으로, 바깥여백은 margin 속성으로 정합니다.
+
+
+속성값 부여하기
+
+padding과 margin 속성에 값을 부여하는 방법은 다음과 같습니다.
+
+padding: xx yy zz ww;
+margin: xx yy zz ww;
+
+xx는 위, yy는 오른쪽, zz는 아래, ww는 왼쪽 여백입니다. 간단한 예는 다음과 같습니다.
+
+
+   div {
+        border: 1px solid #333333;
+      }
+      div.ma {
+        margin: 10px 20px 30px 40px;
+      }
+      div.pa {
+        padding: 10px 20px 30px 40px;
+      }
+
+
+속성값의 개수는 줄일 수 있습니다. 속성값을 하나만 쓰면 위, 오른쪽, 아래, 
+왼쪽 모두 같은 값을 사용합니다. 즉, 다음의 두 줄은 같은 의미입니다.
+
+
+padding: xx;
+padding: xx xx xx xx;
+속성값을 두 개 쓰면 첫번째 값은 위와 아래, 두번째 값은 오른쪽과 왼쪽 여백을 의미합니다. 즉, 다음의 두 줄은 같은 의미입니다.
+
+padding: xx yy;
+padding: xx yy xx yy;
+속성값을 세 개 쓰면 두번째 값을 오른쪽과 왼쪽 여백으로 사용합니다. 즉, 다음의 두 줄은 같은 의미입니다.
+
+padding : xx yy zz;
+padding : xx yy zz yy;
+padding을 예로 들었지만 margin도 마찬가지입니다.
+
+위, 오른쪽, 아래, 왼쪽 중 하나에만 값을 부여하고 싶다면 다음과 같이 방향이 붙은 속성을 사용하면 됩니다.
+
+padding-top: xx;
+padding-right: xx;
+padding-bottom: xx;
+padding-left: xx;
+margin-top: xx;
+margin-right: xx;
+margin-bottom: xx;
+margin-left: xx;
+바깥여백(Margin)의 특징
+
+margin은 padding과 비교했을 때 두가지 특징이 있습니다.
+
+첫번째 특징은 속성값으로 음수를 사용할 수 있다는 것입니다. 간단한 예는 다음과 같습니다.
+
+
+  div {
+        border: 1px solid #333333;
+      }
+      div.ma {
+        margin: -15px 20px 0px 20px;
+      }
+
+
+두번째는 속성값으로 auto를 사용할 수 있다는 것입니다. 
+auto를 사용하면 HTML 요소를 가운데 정렬할 수 있습니다. 
+(문단 정렬이 아니라 요소를 가운데에 위치시키는 것입니다.)
+ 간단한 예는 다음과 같습니다.
+
+  div.ma {
+        width: 300px;
+        border: 1px solid #333333;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+
+
+
+

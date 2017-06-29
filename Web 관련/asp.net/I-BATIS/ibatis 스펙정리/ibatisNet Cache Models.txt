@@ -1,0 +1,63 @@
+[Cache Models]
+
+
+[Configuation a cache using the Cache Model element]
+
+<cacheModel id="product-cache" implementation="LRU" readOnly="true" serialize="false">
+  <flushInterval hours="24"/>
+  <flushOnExecute  statement="insertProduct"/>
+  <flushOnExecute  statement="updateProduct"/>
+  <flushOnExecute  statement="deleteProduct"/>
+  <property name="CacheSize" value="100"/>
+</cacheModel>
+
+
+
+
+[Specifying a Cache Model from a Mapped Statement]
+
+<statement id="getProductList" cacheModel="product-cache">
+  select * from PRODUCT where PRD_CAT_ID = #value#
+</statement>
+
+
+
+["MEMORY"]
+
+[Configuring a memory-type cache]
+
+<cacheModel id="product-cache" implementation="MEMORY" >
+  <flushInterval hours="24"/>
+  <flushOnExecute  statement="insertProduct"/>
+  <flushOnExecute  statement="updateProduct"/>
+  <flushOnExecute  statement="deleteProduct"/>
+  <property name="Type" value="WEAK"/>
+</cacheModel>
+
+
+
+["LRU"]
+
+
+[Configuring a LRU type cache]
+
+<cacheModel id="product-cache"  implementation="LRU" >
+  <flushInterval hours="24"/>
+  <flushOnExecute  statement="insertProduct"/>
+  <flushOnExecute  statement="updateProduct"/>
+  <flushOnExecute  statement="deleteProduct"/>
+   <property name="CacheSize" value="100"/>
+</cacheModel>
+
+
+["FIFO"]
+
+[Configuring a FIFO type cache]
+
+<cacheModel id="product-cache" implementation="FIFO" >
+  <flushInterval hours="24"/>
+  <flushOnExecute  statement="insertProduct"/>
+  <flushOnExecute  statement="updateProduct"/>
+  <flushOnExecute  statement="deleteProduct"/>
+  <property name="CacheSize" value="100"/>
+</cacheModel>

@@ -1,0 +1,52 @@
+자바스크립트 접속/새로고침 할때 마다 배경색 랜덤으로 바꿔주기
+ 
+ 
+실행결과 : [ jsfiddle ] 
+? 
+? 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />   
+  </head>
+  <body>
+        // 배경색을 적용할 div 를 셋팅 해줍니다.
+       <div id='bgDiv' style='width:300px; height:300px; background:#f34324;'></div>
+ 
+       <script type='text/javascript'>
+            // 0 ~ 1 까지의 난수를 생성하는 Math 객체의 random 메소드를 사용합니다.
+            var sum = Math.random();
+            // random 메소드로 생성된 난수에 ( 예: 0.335435 ) 10 을 곱해줍니다.
+            var result = sum * 10;
+            // 10을 곱한 난수를 ceil 메소드를 사용하여 올림 값으로 변경합니다.
+            var resultUp = Math.ceil(result);
+            // switch 문을 사용하여 랜덤으로 생성되는 1 부터 10 까지의 정수를 체크하여 배경을 지정 해줍니다.
+            // 새로고침 할때마다 다른 색의 배경이 적용되며 색을 추가 할경우에는 case 를 늘려주시면 됩니다. 
+            var d = document.getElementById('bgDiv');
+            switch ( resultUp ) {
+              case 1 : d.style.background = "#000000";
+              break;
+              case 2 : d.style.background = "#fd2344";
+              break;
+              case 3 : d.style.background = "#345454";
+              break;
+              case 4 : d.style.background = "#333333";
+              break;
+              default : d.style.background = "#dddddd";
+              break;
+            }
+       </script> 
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+random  - 랜덤으로 난수를 생성합니다. ( Math 객체 메소드 )
+ceil  - 소수점 값을 올림 해줍니다. ( Math 객체 메소드 )
+getElementById  - 주어진 id 값을 가진 엘리먼트로 접근합니다. ( Document 객체 메소드 )
+ 

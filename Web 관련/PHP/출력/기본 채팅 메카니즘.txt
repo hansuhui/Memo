@@ -1,0 +1,271 @@
+3. 기본 채팅 메카니즘 
+
+
+채팅은 기본적으로 MySQL을 이용하여 진행된다. 따라서 MySQL에 
+대한 기본적인 지식이 필요하다. www.phpschool.com 등에서 자세 
+한 내용은 참고하기를 바란다. 그럼 기본적으로 채팅이 어떻게 
+이루어 지는지 그 메카니즘을 살펴보도록 하자. 
+
+1) MySQL의 테이블 구성 
+
+우선, 기본적인 채팅 기능을 구현하기 위해서는 MySQL의 테이블 
+정의가 필요하다. 테이블을 살펴봄으로써 우리가 구현하게될 채팅 
+메카니즘의 핵심을 파악할 수 있다. 아래는 테이블을 정의한 파일 
+이다. 
+
+[tables.mysql] 
+
+# ---------------------------------------------------------- 
+
+############################################################### 
+# 
+#        1. 사용자 정보 
+# 
+# - 등록된 회원들의 관리정보(아이디,암호,내공점수 등등) 테이블 
+# - 용도: 로그인 및 회원 점수 참조시 이용된다. 
+# 
+############################################################### 
+
+CREATE TABLE UserInfo( 
+id        int(10) unsigned DEFAULT '0' NOT NULL auto_increment, 
+member_id  varchar(20), 
+password  varchar(10), 
+email      varchar(30), 
+score      int(10) unsigned DEFAULT '0' NOT NULL, 
+PRIMARY KEY(id) 
+); 
+
+############################################################### 
+# 
+#        2. 현재 채팅 참여자 정보 
+# 
+# - 현재 채팅중인 회원리스트  테이블 
+# - 용도: 로그인시 입력된 아이디가 현재 채팅에서 사용중인지 
+#        체크하는 데 필요하며, 그 외의 경우에 사용된다. 
+# 
+############################################################### 
+
+CREATE TABLE CurUserInfo( 
+id        int(10) unsigned DEFAULT '0' NOT NULL auto_increment, 
+member_id  text, 
+PRIMARY KEY(id) 
+); 
+
+############################################################### 
+# 
+#        3. 대기실 정보 
+# 
+# - 대기실에 있는 인원들의 리스트 
+# - 용도: 대기실에서의 채팅에 사용된다. 
+# - owner: 값이 '1'일 경우 방장을 의미한다. 
+# 
+############################################################### 
+
+CREATE TABLE WaitRoom( 
+id        int(10) unsigned DEFAULT '0' NOT NULL auto_increment, 
+member_id  text, 
+owner      int(1) unsigned DEFAULT '0' NOT NULL, 
+PRIMARY KEY(id) 
+); 
+
+############################################################### 
+# 
+#        4. 대기실 채팅 스크린 정보 
+# 
+# - 대기실의 채팅시 좌측스크린에 표시될 정보 저장 테이블 
+# - 용도: 대기실에서의 채팅메시지 전송에 사용된다. 
+# - sender,receiver: 각각 메시지를 보내고 받는 사람의 아이디 
+# 
+############################################################### 
+
+CREATE TABLE WaitRoomScr1( 
+id      int(10) unsigned DEFAULT '0' NOT NULL auto_increment, 
+sender  text, 
+receiver text, 
+message  text, 
+PRIMARY KEY(id) 
+); 
+
+############################################################### 
+# 
+#        5. 현재 개설된 방 정보 
+# 
+# - 말그대로... 현재 개설된 방들에 대한 정보 테이블 
+# - 용도: 굳이 설명하지 않겠다. 
+# 
+############################################################### 
+
+CREATE TABLE CurRoomInfo( 
+id            int(10) unsigned DEFAULT '0' NOT NULL auto_increment, 
+room_name    text, 
+room_subject  text, 
+room_max      int(3) unsigned DEFAULT '10' NOT NULL, 
+room_password varchar(10), 
+PRIMARY KEY(id) 
+); 
+
+# ---------------------------------------------------------- 
+
+- 이상 5개의 테이블이 기본 대화시 필요하다. 실제 채팅은 다음의 
+단계들을 통해 분석해 보도록 하자. 
+
+2) 로그인 
+
+1번 '사용자정보' 테이블을 이용해 사용자 인증을 거친다. 
+소스의 핵심적인 부분은 다음과 같다. 
+
+[verify.php] 
+
+//---------------------------------------------------------- 
+
+$user_table = "UserInfo"; // 1번 테이블 
+$curuser_table = "CurUserInfo"; // 2번 테이블 
+
+// 사용자가 입력한 아이디 $id값의 양끝의 공백을 제거한다. 
+$input_id = trim($input_id); 
+
+// 실제 MySQL에 연결하는 부분 
+// 지면 관계상 연결하는 부분은 생략한다. (그만큼 흔하다.) 
+$connect = db_connect(); 
+
+// MySQL로부터 테이블1,2에 있는 필요한 자료를 가져온다. 
+$query = "select * from $user_table;"; 
+$result1 = mysql_query($query,$connect); 
+$total1 = mysql_affected_rows($connect); 
+
+$query = "select * from $curuser_table;"; 
+$result2 = mysql_query($query,$connect); 
+$total2 = mysql_affected_rows($connect); 
+
+mysql_close($connect); // MySQL 접속해제 
+
+$login_ok = FALSE; // 로그인 여부를 확인할 변수 
+
+// 아이디와 패스워드가 일치하면 로그인 OK! 
+for($i = 0;$i < $total1;$i++){ 
+  $record = mysql_fetch_array($result1); 
+  if($record[member_id] == $id) if($record[password] == $password) $login_ok = TRUE; 
+} 
+
+if($login_ok){ // 로그인 OK시 사용자 아이디가 지금 사용중인지 검사 
+  for($i = 0;$i < $total2;$i++){ 
+      $record = mysql_fetch_array($result2); 
+      if($record[member_id] == $input_id){ 
+        echo("<script language=javascript>history.go(-1);alert('입력하신 ID는 지금 사용중입니다.');</script>"); 
+        return; 
+      } 
+  } 
+}else{ // 로그인 실패 즉 $login_ok = false 일 경우 
+  echo("<script language=javascript>history.go(-1);alert('로그인할 수 없습니다. ID가 없으시면 신규등록해 주세요.');</script>"); 
+  return; 
+} 
+
+//---------------------------------------------------------- 
+
+3) 메시지 전송 
+
+전 강좌에 나온 input.htm에서의 send.php 파일이 메세지를 
+전송하는 역할을 한다. 소스는 핵심부분은 아래와 같다. 
+
+[send.php] 
+
+//---------------------------------------------------------- 
+
+// MySQL과의 접속 및 접속종료는 생략했음. 
+
+// 대기실에 있을 경우의 $userroom_table,$room_scr1_table 변수 
+$userroom_table = "WaitRoom"; 
+$room_scr1_table = "WaitRoomScr1"; 
+
+// 대기실의 참여인원 리스트를 얻는다. 
+$query = "select * from $userroom_table;"; 
+$result = mysql_query($query,$connect); 
+$total = mysql_affected_rows($connect); 
+
+// 각 인원개인에게 메시지 전송 
+// sender에는 메시지 전송 장본인의 id를, receiver에는 참여자 
+// 각각의 id를 지정한다. message에는 입력한 $input_field 값을 
+// 넣는다. 
+// 
+// 주의할 것은 $s_id는 session을 이용하여 저장된 자신의 id이며, 
+// session에 관한 부분은 설명을 생략하겠다. 
+
+for($i = 0;$i < $total;$i++){ 
+  $record = mysql_fetch_array($result); 
+  $query = "insert into $room_scr1_table values('','$s_id','$record[member_id]','$input_field','','','');"; 
+  mysql_query($query,$connect); 
+} 
+
+//---------------------------------------------------------- 
+
+4) 메시지의 스크린 출력 
+
+위의 send.php에 의해 메시지가 MySQL의 4번 테이블에 입력되면 
+참여자들은 저장된 메시지 중에 receiver가 자신의 id로 된 것만 
+가져와서 화면에 document.write()으로 써준다. 이때, 테이블에서 
+가져온 메시지는 테이블에서 삭제하므로써 테이블을 깨끗이 유지 
+한다. 다음은 스크린에 출력하는 소스이다. 
+
+[screen1.php] 
+
+//---------------------------------------------------------- 
+
+// 물론, MySQL과의 접속 및 접속종료 그리고 세션관련은 생략했음. 
+
+// receiver가 자신의 id로 되어있으면 전부 가져온다. 
+$query = "select * from $room_scr1_table where receiver='$s_id' order by id;"; 
+$result = mysql_query($query,$connect); 
+$total = mysql_affected_rows($connect); 
+
+// 가져온 메시지들을 화면에 출력한다. 
+// write_document_scr1() 함수는 전번 강좌에서 설명한 
+// document.write()을 함수화 시킨것이다. 
+for($i = 0;$i < $total;$i++){ 
+  $record = mysql_fetch_array($result); 
+  $strOut = "$record[message]"; 
+  write_document_scr1($strOut); 
+} 
+
+// 출력이 끝났으면 MySQL의 메시지들을 지운다. 
+$query = "delete from $room_scr1_table where receiver='$s_id';"; 
+
+//---------------------------------------------------------- 
+
+PS: 위의 screen1.php는 1초 주기로 refresh된다는 것을 잊지말자. 
+    즉 1초 주기로 계속 자신에게로 온 메세지가 없는지 조사한다. 
+
+5) 요약 
+
+이상으로 기본적인 채팅 메카니즘을 살펴 보았다. 이번강좌는 
+독자 스스로 채팅에 관한 전체적인 메카니즘을 생각해 보는 것이 
+좋을 것이다. 소스 위주로 설명했지만 세세한 소스를 설명하는 
+것보다는 전반적인 채팅의 메카니즘을 이해하는 것이 더 중요하다 
+고 본다. 소스야 여러 싸이트들의 공개소스들을 참조하면 금방 
+이해될 것이다. 다시한번 말하지만 오늘 강좌의 핵심은 테이블 
+구조이다. 테이블 구조만 보고서도 대략의 메카니즘을 떠올릴 수 
+있다면 이번 강좌는 90% 이상 습득했다고 볼 수 있다. 좀더 나아 
+가서는 직접 더욱 쌈빡한 테이블로 재구성해봐도 좋을 것이다. 
+
+6) 숙제 
+
+위의 소스들에서는 $userroom_table이 "WaitRoom"이었다. 실제로 
+방을 만들면 대기실("WaitRoom")이외의 새로운 이름의 테이블을 
+생성하고 관련된 테이블을 만들것이다. 
+
+예제) 방제가 Test인 경우 
+      1. 테이블 Test, TestScr1 이 생성된다. 
+      2. CurRoomInfo 테이블에 Test가 등록된다. 
+      3. WaitRoom, WaitRoomScr1에 적용되었던 것과 똑같은 
+        방법으로 채팅을 한다. 
+      4. 사용자가 모두 나가게 되면 마지막 퇴장자가 Test, 
+        TestScr1 테이블을 지우고 CurRoomInfo에서 Test방을 
+        지운후 나간다. 
+
+'예제'에서와 같이 대기실 뿐만 아니라 방을 개설할 수 있도록 
+제작해본다. 어려우려나? ...... 화이링! 
+
+
+※ 궁금하거나 다음 강좌에서 다루었으면 하는 내용을 알려주 
+시면 반영토록 하겠습니다. 
+
+debug365@yahoo.co.kr 

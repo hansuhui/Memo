@@ -1,0 +1,70 @@
+자바스크립트 전화번호/핸드폰 번호 유효성 체크 하기
+ 
+ 
+실행결과 :  [ jsfiddle ] 
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+    <body>
+       <div>
+            <!-- phoneCheck() 함수 마지막에 false 를 리턴 하기 때문에 submit 은 작동 하지 않습니다. -->
+            <form name='formName'>
+                 <input type='text' name='phone1' style='width:50px;' /> - 
+                 <input type='text' name='phone2' style='width:50px;' /> - 
+                 <input type='text' name='phone3' style='width:50px;' />
+                 <input type='submit' name='buttontName' value='확인' />
+            </form>
+       </div>
+       <!-- 핸드폰 번호 체크 결과가 삽입될 div 를 셋팅 해줍니다. -->
+       <div id='resultDiv' style='margin:10px 0 0 0;'></div>
+ 
+       <script type='text/javascript'>
+             // 브라우저 호환(크로스브라우징)을 체크한후 페이지 로딩후 eventPlus() 함수를 실행 합니다.
+             if( window.addEventLitener ) {
+                     window.addEventListener("load",eventPlus,false); 
+             } else if ( window.attachEvent ){
+                     window.attachEvent("onload",eventPlus);  
+             } else {
+                     window.onload = eventPlus;
+             }  
+    
+             // 브라우저 호환(크로스브라우징)을 위해 브라우저 메소드 지원여부를 체크합니다.
+             // 체크후 "확인" 버튼에 click 이벤트를 추가 해줍니다.
+             function eventPlus() {
+                 if ( document.addEventListener ) {
+                     document.formName.buttontName.addEventListener("click",phoneCheck,false);
+                 } else {
+                     document.formName.buttontName.attachEvent("onclick",phoneCheck);
+                 }
+             }
+ 
+             // "확인" 버튼에 onsubmit 이벤트를 적용 합니다.
+             function eventPlus() {
+                     document.formName.onsubmit = phoneCheck;
+             }
+ 
+             // 정규표현식을 사용하여 입력한 폰번호를 체크 합니다.
+             function phoneCheck() {
+                 var phoneNum1 = document.formName.phone1.value;
+                 var phoneNum2 = document.formName.phone2.value;
+                 var phoneNum3 = document.formName.phone3.value;
+                 var phoneNumber = phoneNum1 + "-" + phoneNum2 + "-" + phoneNum3;
+                 var regExp = /(01[0|1|6|9|7])[-](\d{3}|\d{4})[-](\d{4}$)/g;
+                 // exec 는 정규표현식 대입하여 부합하는 값을 반환 합니다. 값이 없으면 null 입니다.
+                 var result = regExp.exec(phoneNumber);
+                 if( result ) {
+                     document.getElementById('resultDiv').innerHTML = '전화번호가 맞습니다.';
+                 } else {
+                     document.getElementById('resultDiv').innerHTML = '전화번호가 아닙니다.';
+                 }
+                 // submit 이 작동하여 페이지가 넘어가면 안되기 때문에 false 를 리턴 해줍니다.
+                 return false;
+             }
+       </script>
+  </body>
+</html>
+[출처] 자바스크립트 전화번호/핸드폰 번호 유효성 체크 하기|작성자 조군

@@ -1,0 +1,39 @@
+/src/app/app.module.ts 파일에서 
+
+import { HttpModule } from '@angular/http';
+
+상단에 추가하고
+
+
+imports:[
+  ...
+  HttpModule,
+  ...
+]
+
+추가한다 !!
+
+그리고 사용할 ts.파일에서
+
+
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
+
+상단에 임포트 하고
+
+posts: any;
+
+  constructor(public navCtrl: NavController, public http: Http) {
+       this.http.post('http://222.122.202.220/Account/login/',"").map(res => res.json()).subscribe(data => {
+       this.posts = data;
+    });
+
+
+html에서 사용할떄
+
+
+<ion-item *ngFor="let post of posts">
+        {{post.fields.admin_id}}
+        {{post.fields.shop_code}}
+        {{post.fields.admin_name}}
+</ion-item>

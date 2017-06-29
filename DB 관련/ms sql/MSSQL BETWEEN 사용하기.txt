@@ -1,0 +1,7 @@
+- BETWEEN 문이란?
+?  BETWEEN 문은 조건절에 사용되는데 범위를 나타내는데 주로 쓰입니다.
+
+ - MSSQL BETWEEN 사용방법
+?   WHERE [컬럼명] BETWEEN [조건절] AND [조건절]
+
+ 

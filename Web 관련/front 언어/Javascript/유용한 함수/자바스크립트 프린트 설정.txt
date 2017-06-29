@@ -1,0 +1,145 @@
+웹사이트를 제작할때 
+많은 사용자가 프린터를 어떻게 지원할것인가 고민하게 된다, 
+그리고 대부분 프로그램머는 자바스크립트에서 제공하는 print() 메서드를 사용해서 프린트하게 된다. 
+이는 간단하고 사용하기는 쉽지만, 제어기능은 별로 없는게 흠이다. 
+
+window.top.print(); 
+
+또한 이 메서드를 사용하면 항상 프린트 대화상자가 뜨는 것과 인쇄되는 페이지의 헤더와 풋터를 제어할 수 없다는 단점이 있다. 
+
+아쉽게도 우리가 알고있는 자바스크립트나 ASP로는 이를 제어할 수 없다. 
+다른 프로그래밍 언어나 activeX 를 사용하여 프린터를 직접 제어하도록 컴포넌트를 만들어 사용해야 하는데, 이것을 직접 만든다는것도 어렵고 성가신 일 중의 하나인것은 분명하다. 
+
+자유롭게 참조해서 쓸수 있는 프린트 컴포넌트를 사용하는 방법이 있다. 
+MeadCo에서 만든 ScriptX라는 컴포넌트인데, 이 컴포넌트를 클라이언트에서 직접 참조하여 사용할 수 있고 또한 다운을 받아서 자신의 서버에 설치(서버 관리자라면)하여 사용할 수 있다. 
+
+여기서는 클라이언트에서 직접 참조하여 사용하는 것에 대해서 보겠다. 
+
+당연한 말이지만 
+컴포넌트를 참조하긴 위해선 항상 HTML문서안에 개체를 추가해 주어야 한다. 
+
+
+<!-- MeadCo ScriptX --> 
+<object id=factory style="display:none" 
+classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" 
+codebase="http://www.meadroid.com/scriptx/ScriptX.cab#Version=6,1,429,14"> 
+</object> 
+
+
+위의 코드를 HTML 문서에 삽입하면 MeadCo 사이트의 ScriptX 개체를 참조하게 된다. 
+( 이것은 클라이언트측에서 참조되고, 구동되기 때문에 ASP 에서나 CreateObject 를 사용하지 않고 , 또한 클라이언트 스크립트에서 new ActiveXObject를 호출하지 않는다.) 
+
+이제 이를 호출하여 프린트하는 스크립트를 추가한다. 
+
+
+<script> 
+function printWindow() { 
+factory.printing.header = "This is MeadCo" 
+factory.printing.footer = "Printing by ScriptX 5.x" 
+factory.printing.portrait = false 
+factory.printing.leftMargin = 1.0 
+factory.printing.topMargin = 1.0 
+factory.printing.rightMargin = 1.0 
+factory.printing.bottomMargin = 1.0 
+factory.printing.Print(false, window) 
+} 
+</script> 
+
+
+
+
+
+header는 페이지 상단에 인쇄되는 부분이며 
+footer는 페이지 하단에 인쇄되는 부분을 말한다. 
+portrait을 false로 하면 가로 출력이되며 true로 하면 세로 출력을 한다. 
+
+아래 4개의 옵션은 상하좌우의 여백을 조정하며 Print 메서드에서 첫번째 인수는 프린트 대화상자를 표시할 것인지를 나타내는 것으로 false로 되어있는 경우 대화상자를 표시하지 않고 기본 프린터로 바로 출력 하게 된다. 
+두번째 인수는 전체 HTML 페이지를 인쇄할 것인지 아니면 특정 프레임을 출력할 것인지를 설정한다. 
+
+기타 다른 기술적인 부분에 대해서는 MeadCo의 Tech Docs 부분을 참고하기 바란다. 
+미리보기의 예제는 실제 이 컴포넌트를 사용하여서 프린트할 수 있는 예제이다. 
+
+
+<HTML>
+<HEAD>
+<TITLE>happyscript.com</TITLE>
+</HEAD>
+
+<script language="javascript">
+// http://happyscript.com
+function printWindow() {
+factory.printing.header = "머릿글로 출력되는 부분입니다."
+factory.printing.footer = "바닥글로 출력되는 부분입니다."
+factory.printing.portrait = true
+factory.printing.leftMargin = 30.0
+factory.printing.topMargin = 30.0
+factory.printing.rightMargin = 30.0
+factory.printing.bottomMargin = 30.0
+factory.printing.Print(false, window)
+}
+</script>
+
+<BODY>
+<object id=factory style="display:none" classid="clsid:1663ed61-23eb-11d2-b92f-008048fdd814" codebase="http://www.meadroid.com/scriptx/ScriptX.cab#Version=6,1,429,14">
+</object>
+<p>
+프린팅 테스트
+</p>
+<p>
+웹페이지의 프린트 제어 <br>
+http://happyscript.com
+</p>
+<input type="button" name="print" value="Print This Page..." onClick="printWindow();">
+</BODY>
+</HTML>
+
+
+[CSS] 프린트시에만 적용되는 스타일 시트 
+<link rel="stylesheet" href="./style/print.css" type="text/css" media="print"></link>
+
+
+-------------
+print.css
+-------------
+#banner, #footer, #leftcol, #breadcrumbs, .docs #toc, .docs .courtesylinks {
+ display: none;
+ }
+body.docs div.docs {
+ margin: 0 !important;
+ border: none !important
+ }
+
+
+
+수리바다님과 대화중에 알아 낸건데, 
+
+자카르타 프로젝트의 문서를 출력해 보신 분들은 아실테지만, 출력하면 상,하,좌의 메뉴등은 사라지고 내용만 출력이 되죠? 
+
+html소스를 뒤져보니 위와 같은 내용이 있었습니다.
+결국 print 시에만 적용되는 스타일 시트인 것이지요.
+
+그외에도 media를 조정하면 handheld등을 지정 할 수도 있습니다. 
+
+자세한 내용은 아래의 W3C문서를 참고 하시기 바랍니다.
+
+
+
+<script defer> 
+function Print() { 
+ factory.printing.header = "영수증 원본"; // Header에 들어갈 문장 
+ factory.printing.footer = "감사합니다."; // Footer에 들어갈 문장 
+ factory.printing.portrait = false // true 면 가로인쇄, false 면 세로 인쇄 
+ factory.printing.leftMargin = 1.0 // 왼쪽 여백 사이즈 
+ factory.printing.topMargin = 1.0 // 위 여백 사이즈 
+ factory.printing.rightMargin = 1.0 // 오른쪽 여백 사이즈 
+ factory.printing.bottomMargin = 1.0 // 아래 여백 사이즈 
+ factory.printing.SetMarginMeasure(2); // 테두리 여백 사이즈 단위를 인치로 설정합니다. 
+ factory.printing.printer = "HP DeskJet 870C"; // 프린트 할 프린터 이름 
+ factory.printing.paperSize = "A4"; // 용지 사이즈 
+ factory.printing.paperSource = "Manual feed"; // 종이 Feed 방식 
+ factory.printing.collate = true; // 순서대로 출력하기 
+ factory.printing.copies = 2; // 인쇄할 매수 
+ factory.printing.SetPageRange(false, 1, 3); // True로 설정하고 1, 3이면 1페이지에서 3페이지까지 출력 
+ factory.printing.Print(true) // 출력하기 
+} 
+</script> 

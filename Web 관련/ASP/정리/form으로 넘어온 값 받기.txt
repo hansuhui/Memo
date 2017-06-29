@@ -1,0 +1,9 @@
+만약 form 방식이 post라면
+
+Request.Form("input의name값")
+
+
+만약 form 방식이 get라면
+
+Request.QueryString("input의name값")
+

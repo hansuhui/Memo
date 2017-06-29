@@ -1,0 +1,252 @@
+원도우 폼이라고 부르는 원도으 API는 2001년도에 닷넷 정식버전이 발표될 떄 
+닷넷의 기본 클래스 라이브러리(Base Class Libray)에 포함되어졌다. (System.Windows.Forms.dll) 아시다시피
+원도우 폼 툴킷은 필요한 데스크탑의 GUI(Graphical User Interface)를 구현할 수 있고 또한 커스텀 컨트롤과 
+많은 리소스들을 관리할 수 있다. 추가적으로 GDI+라 불리는 네임스페이스는
+System.Drawing.dll 쪽으로 분리되어 있다. GDI+ 에서는 2D 그래픽을 만드는 다양한 기능들을 제공하고 
+또한 네트워크 프린터와의 동작을 지원할 뿐만 아니라 이미지 데이터들을 다루는 API 또한 지원하고 있다.
+
+원도우 폼과 GDI+ API들은 닷넷 3.5에서 당연히 존재하는 개념이고 앞으로도 계속 기본 클래스 라이브러리에
+탑재될 것이다. 하지만 닷넷 3.0이 발표되면서 마이크로소프트는 WPF(Windows Presentation Foundation)라는 
+새로운 기술을 발표하게 되었다. 다음 장에서 살펴보겠지만 WPF는 상당히 매료시킬만한 사용자 인터페이스를
+제공하고 있다. 어쨋든 이번 장에서 원도우 폼을 설명하는 이유는 원도우 폼 API는 WPF보다 가볍기 때문이다.
+사실상 WPF는 화려하고 나은 인터페이스를 제공해주기는 하지만 무거울 수 있기 떄문에 원도우 폼이 계속
+유지되는 이유이기도 한 것이다.
+
+이번 장의 주요내용은 원도우 폼의 프로그래밍 모델을 이용하는 것이고 비주얼 스튜디오 2008에서 지원하는 디자이너에서
+지원하는 많은 원도우 폼 컨트롤들을 살펴볼 것이다. 또한 GDI+를 이용한 그래픽 프로그래밍을 살펴 보면서 그와 관련된
+내용들을 살펴볼 것이다.
+
+원도우 폼의 네임스페이스들
+
+원도우 폼 API는 수많은 다양한 타입들로 구성 되어있다.(클래스들, 인터페이스들, 구조체들, enum  델리게이트등등) 즉,
+System.Windows.Form.dll 안에는 매우 다양한 네임스페이스들이 존재한다는 것이다.
+
+확실히 가장 중요한 네임스페이스는 System.Windows.Forms이다. 이 네임스페이스는 가장 최상위의
+네임스페이스로 다양한 기능들을 제공하고 있다.
+
+
+기본인프라 : 원도우 폼 프로그래밍을 위한 기본적인 동작들을 위한 기능을 제공하고 상호 운용성을 위한 다양한 기능을 제공한다.
+컨트롤 : 풍부한 UI들을 제공하고 있고(Button,MenuStrip, ProgressBar, DataGridView 등), 모든 컨트롤들은 Controls이라는
+	 기본 클래스를 상속받고 있다.COntrols 클래스는 디자인 시에 쉽게 설정할 수 있는 기능을 제공한다.
+
+컴포넌트 : Control 클래스를 상속받지 않은 컨트롤이지만 여전히 디자인 타입에서 지원되는 컨트롤들이 존재한다.
+    	   (Tooltip,ErrorProcider 등 ) 또한 Timer 나 BackgroundWorker 와 같은 컴포넌트들은 디자인 런타임에는 존재하지
+ 	   않지만 디자인 영역에서 설정이 가능하다.
+
+
+대화상자 : 원도우 폼은 OpenFileDialog, PrintDialog, ColorDialog와 같은 일반적인 대화 상자들을 지원하고 있다.
+	   만약 지원하는 대화상자가 적합하지 않다면 얼마든지 커스터 마이징이 가능하다.
+
+
+System.Windows.Forms 에서는 100개 이상의 다양한 타입들을 제공한다. 이 모든 멤버들은 원도우 폼에서 상당히
+중요한 부분이고 이번 장을 통해서 기본이 되는 중요한 내용들을 살펴볼 것이다. 만약 더 자세한 내용을 원한다면
+닷넷 프레임워크 3.5 SDK 문서를 참고하는 것이 좋을 것이다.
+
+
+[간단한 원도우 폼 애플리케이션 만들기]
+
+다양한 닷넷 툴들은(비주얼 스튜디오 2008, C# 2008 Expression SharpDevelop) 폼 디자이너를 지원하고 있고
+비주얼 적으로 수정 할 수 있는 환경을 제공해주고 있다. 반면에 이러한 툴들은 상당히 유용한 건 사실이지만
+원도우 폼이 동장되는 원리를 이해하는데 있어서는 좋지 않은 부분이 있다. 그렇기 떄문에 첫 번쨰 원도우 폼의
+예제는 단순히 텍스트 에디터에서 코드를 작성하고 커맨드창을 이용해서 컴파일을 한 후에 결과를 살펴보도록 하겠다.
+
+먼저 SimpleWinformsApp 라는 폴더를 만들고 SimpleWFApp.cs 라는 파일을 생성한다. 그리고 이 파일 안에 
+다음과 같은 코드를 작성한다.
+
+
+// 최소의 네임스페이스.
+using System;
+using System.Windows.Forms;
+namespace SimpleWFApp
+{
+  // 애플리케이션 객체.
+  class Program
+  {
+    static void Main()
+    {
+      Application.Run(new MainWindow());
+    }
+  }
+  // 매인 윈도우.
+  class MainWindow : Form {}
+
+
+이 코드는 원도우 폼 애플리케이션을 만들기 위한 최소의 코드이다. 코드를 살펴보면 Form을 상속받는 기본클래스를
+만들고 Main() 메서드 안에서 Appliction.Run() 메소드를 이용해서 원도우 폼을 생성시키게 된다. 앞에서 살펴봤던 대로
+커맨드 창을 이용해서 컴파일 할 수  있다.
+
+csc /target:winexe *.cs
+
+
+기술적으로 말해서 /target:exe 옵션을 이용해서 원도우 애플리케이션을 빌드 할 수 있지만 만약 이렇게 하게 되면
+메인 원도우를 종료할 때까지 커맨드 창이 희미하게 될 것이다. 만약 /target:winexe를 지정하게 되면 네이티브 원도우 폼
+애플리케이션이 실행 되기 때문에 커맨드 창이 희미해지지 않게 된다.
+
+만약 이렇게 해서 애플리케이션을 동작시키면 리사이징이 가능하고 창의 최소, 최대창을 지원하는 애플리케이션을 
+볼 수 있게 될 것이다.
+
+
+이 애플리케이션은 전혀 흥미로운 예제는 아니지만 얼만큼 간단하게 만들어 질 수 있는지를 보여주는 적절한 예제가 될 것이다.
+여기에 약간의 기능을 추가하자면 MainWindow 타입의 생성자에 약간의 설정 값을 전달할 수 있게 수정해 보겠다.
+
+
+
+
+// 매인 윈도우
+class MainWindow : Form
+{
+  public MainWindow(string title, int height, int width)
+  {
+    // 부모 클래스의 설정값을 셋팅한다.
+    Text = title;
+    Width = width;
+    Height = height;
+    // 폼을 가운데로 이동시키는 부모 메서드를 호출한다.
+    CenterToScreen();
+  }
+}
+
+//매인 윈도우를 이렇게 수정했다면 Main 메서드를 다음과 같이 수정한다. 
+static void Main()
+{
+  Application.Run(new MainWindow("My Window", 200, 300));
+}
+
+
+
+이렇게 고쳐 나가는 것이 올바른 방법이긴 하지만 어떤 원도우는 다양한 컨트롤들과 원도우 UI들을 요구할 수도 있다. 이러한 요소들이
+어떻게 추가되는지 이해하기 위해서는 Controls 클래스에서 제공하고 있는 속성들과 컬렉션들을 반드시 이해해야만 한다.
+
+
+[Controls의 컬렉션]
+
+
+System.Windows.Forms.Control 이라는 기본 클래스는 Controls라는 프로퍼티를 정의하고 있다. 이 프로퍼티는 Control이라는 
+클래스 안에 정의된 ControlsCollection 이라는 컬렉션으로 구성되어져 있다. 이 컬렉션은 여러 컨트롤들을 넣고 빼고 찾는
+여러 가지 메서드들을 제공해주고 있다.
+
+
+
+멤버 / 역할
+
+Add(), AddReang() / 컬렉션 안에 새로운 컨트롤을 추가한다.
+
+Clear() / 컬렉션 안의 모든 컨트롤을 제거한다.
+
+Count / 컬렉션의 항목 수를 반환한다.
+
+GetEnumeator() / 이 컬렉션에서 사용되는 IEnumerator를 반환한다.
+
+Remove() , RemoveAt() / 컬렉션에서 사용하고 있는 컨트롤을 제거한다.
+
+
+
+우리가 원도우 폼안에  UI를 넣고 싶다면 전형적으로 다음과 같은 단계를 거치게 된다.
+- Form을 상속받은 클래스 안에 UI 변수를 정의한다.
+- UI 요소의 기본 모양을 설정한다.
+- ControlsCollection 컨테이너의 Controls.Add()를 이용해서 UI 요소를 원도우에 추가한다.
+
+만약 MainWindow라는 클래스에 File과 Exit 메뉴를 추가하고 싶다고 한다면 다음과 같이 코드를 작성할 수 있다.
+
+
+class MainWindow : Form
+{
+    // 간단하게 메뉴 멤버들을 선언한다..
+    private MenuStrip mnuMainMenu = new MenuStrip();
+    private ToolStripMenuItem mnuFile = new ToolStripMenuItem();
+    private ToolStripMenuItem mnuFileExit = new ToolStripMenuItem();
+    public MainWindow(string title, int height, int width)
+    {
+        // 메뉴를 만드는 메서드 호출
+        BuildMenuSystem();
+    }
+    private void BuildMenuSystem()
+    {
+        // 메인 메뉴에 File 메뉴를 추가한다.
+        mnuFile.Text = "&File";
+        mnuMainMenu.Items.Add(mnuFile);
+        // Edit 메뉴를 추가한다. 
+        mnuFileExit.Text = "E&xit";
+        mnuFile.DropDownItems.Add(mnuFileExit);
+        mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
+        // 마지막으로 Form에 메뉴를 추가한다. 
+        Controls.Add(this.mnuMainMenu);
+        MainMenuStrip = this.mnuMainMenu;
+    }
+    // File과 Exit를 다루는 이벤트
+    private void mnuFileExit_Click(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
+}
+
+
+
+먼저 MainWindow 클래스에 새로운 세개의 변수를 선언했다는 것을 알아두자. MenuStrip 클래스는 원도우의 메뉴의 뼈대가 되고
+그 안에 항목으로 들어가는 아이템은 ToolStripMenuItem 컨트롤을 추가하여 사용하게 된다.
+
+만약 원도우 폼의 1.0 이나 1.1 버전에서 메뉴를 작성해본 적이 있다면 기족의 MainMenu와 MenuItem을 이용해서 메뉴를 작성했을 것이다.
+닷넷 2.0에서는 MenuStrip이라는 컨트롤이 추가되었고 기존의 MainMenu와 거의 비슷한 기능을 제공하고 있지만 여기에
+추가로 콤보박스나 텍스트 박스와 같은 기본항목들을 추가하는 것이 가능해졌다.
+
+소스를 보면 먼저 메뉴 컨트롤은 BuildMenuSystem() 메소드 안에서 만들어지게 된다. 그리고 각각의 ToolStripMenuItem 컨트롤들의
+Text 속성에는 메뉴 이름과 특정기호를 설정하였다. 여기에 설정한 구문은 Alt의 단축키이고 만약 Alt+F 를 누르게 되면 File 메뉴가
+실행되고 Alt + X를 누르게 되면 Exit 메뉴가 실행될 것이다. 그리고 Exit 메뉴는 File 객체의 DropDownItems 속성으로 추가되었고
+File 메뉴는 mnuMainMenu 객채의 Item 으로 추가되었다.
+
+메뉴 컨트롤을 완성했다면 먼저 Controls에서 제공하는 컨렉션을 이용해서 추가한다. 그리고 원도우의 MainMenuStrip 속성에
+MenuStrip를 할당한다. 이 부분이 조금 불필요해 보일 수도 있지만 MainMenuStrip과 같은 속성을 지정해 줌으로써 사용자별로
+보이는 메뉴거 다를 경우에 동적으로 메뉴를 조정해 줄 수 있다.
+
+여기서 다른 중요한 것은 사용자가 File을 누르고 Exit 메뉴를 클릭했을 때의 Click 이벤트를 제어할 수 있다는 것이다.
+Click 이벤트는 System.EventHandler라 불리는 기본 델리게이트를 사용한다.이 이벤트에서 첫번째 파라미터로는 System.Object
+객체를 전달하고 두번째 파라미터로 System.EventArgs 객체를 전달하게 된다. 여기서 앞에서 구현했던 mnuFileExit_Click 델리게이트는
+static 메소드인 Appliction.Exit()를 호출하게 된다. 
+
+
+System.EventArgs 와 System.EventHandler 의 역할
+
+System.EventHandler 은 우리가 이벤트핸들링으로 원도우 폼과 ASP.NET에서 사용되는 많은 델리게이트들 중에
+하나이다. 앞에서 설명했듯이 이 델리게이트는 첫 번째 파라미터는 System.Object를 가지게되는데 이 객체에는
+이벤트를 보낸 객체가 전달된다. 예를 들어 mnuFukeExit_Click()의 코드를다음과 같이 바꾸어 보겠다.
+
+
+
+
+private void mnuFileExit_Click(object sender, EventArgs e)
+{
+  MessageBox.Show(string.Format("{0} sent this event", sender.ToString()));
+  Application.Exit();
+}
+
+여기서 우리는 mnuFileExit의 이벤트를 실행하면 다음과 같은 메시지를 볼 수 있다.
+
+"E&xit sent this event"
+
+그렇다면 두 번째 파라미터인 System.EventArgs객체는 무엇일까? 이 객체는 이벤트에 필요한 추가적인 
+정보들을 담기 위해서 사용된다.
+
+
+
+public class EventArgs
+{
+  public static readonly EventArgs Empty;
+  static EventArgs();
+  public EventArgs();
+}
+
+
+이 타입은 닷넷에서 매우 여러 타입으로 확장되기 때문에 매우 유용하게 사용되고 있다. 예를 들어 MouseEventArgs 타입은
+마우스의 상태를 제공하는 이벤트이고 EventArgs에서 확장되어 사용되고 PaintEventArgs 타입 또한 EventArgs에서 확장되어
+그래픽에 관련된 데이터를 전달하는데 사용된다. EventArgs는 원도우 폼 뿐만 아니라 WPF와 ASP.NET에서도 기본적으로
+사용되는 타입이다.
+
+어쩃든 텍스트 에디터를 이용해서 간단하게 MainWindow를 구현할 수 있었지만 더 복잡한 UI를 만든다고 할 경우에 굉장히 많은
+코드들을 손으로 작성해야만 할 것이다. 하지만 다행히도 비주얼 스튜디오는 컨트롤 디자이너를 제공하고 있기 떄문에
+휠씬 쉽게 UI를 구성할 수 있다. 이번 장에서는 이 툴을  이용해서 많은 내용을 다루게 되지만 결국 C# 코드가 계속해서
+작성되고 있다는 것을 알아두자
+
+
+
+
+

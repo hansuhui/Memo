@@ -1,0 +1,26 @@
+
+select * from 테이블 1
+
+select * from 테이블 2
+
+
+레코드 집합이 여러게 일때 
+
+
+
+
+
+			using(IDataReader r = db.ExecuteReader(command)) {
+				string one = r["one"].ToString();
+
+
+				// 다음 레코드셋으로 이동
+				r.NextResult();  // 다음 테이블
+
+				while (r.Read())
+				{
+					CodeDetail cd = new CodeDetail();
+					cd.coMemo = r["memo"];
+				}
+				
+			}

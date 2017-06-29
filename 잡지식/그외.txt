@@ -1,0 +1,97 @@
+
+
+공백추가할때
+ㄱ+ 한자키 1
+
+
+페이징 액션 할때
+
+prevPage = (boardSearch.pageSize * (boardSearch.page - 1)) + 1;
+nextPage = boardSearch.pageSize * boardSearch.page;
+
+
+
+
+
+
+
+select convert(datetime, '2014-01-20 00:00:00', 120), convert(datetime, '2014-01-20 23:59:59', 120)
+
+
+자바 스크립트 주소이동
+
+  location.href = "create"
+
+
+유저 아이피 가져오기
+HttpContext.Current.Request.ServerVariables["remote_addr"]
+
+
+세션 사용
+Session["test"];
+
+형변환
+
+Convert.to형식
+
+
+row_number
+
+
+폼 속성 변경해서  submit
+
+$("#formDetails").attr("action", "List");
+ $("#formDetails").submit();
+
+
+
+
+
+생성자 객체 만들때
+
+  public class NoticeController : Controller
+    {
+      CommonData cd = null;
+		innobileEntities db = null;
+        string regdate1, regdate2;
+        AdminPageData bd = null;
+
+        public NoticeController()
+		{
+            bd = new AdminPageData();
+			cd = new CommonData();
+			db = new innobileEntities();
+		}
+
+
+
+
+작업끝내고 이동할떄 
+
+string script = "<script>alert('정상적으로 저장되었습니다. 빠른 시일내로 답변 드리겠습니다.'); location.href='List'; </script>";
+
+return Content(script);
+
+
+체크박스 체크 확인
+하는거
+	if ('0' == "1") {
+			$("#isSecurity2").attr("checked", true);
+		} else {
+			$("#isSecurity1").attr("checked", true);
+		}
+
+
+if문
+
+(Request.Params["isListView"] == "1") ? true : false
+
+
+공백
+
+&(엔퍼센트)nbsp;
+
+
+
+
+

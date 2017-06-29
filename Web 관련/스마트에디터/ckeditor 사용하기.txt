@@ -1,0 +1,85 @@
+참조
+http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.editor.html
+
+
+<script type="text/javascript" src="../ckeditor/ckeditor.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+
+        CKEDITOR.replace('ReviewContent', {
+            filebrowserUploadUrl: 'ImageUpload'
+        });
+        CKEDITOR
+
+jQuery("#QnaContent").val(encodeURI(CKEDITOR.instances.QnaContent.getData()));
+    </script>
+
+
+
+
+
+public void ImageUpload(HttpPostedFileBase upload)
+        {
+            if (upload.ContentLength == 0)
+                return;
+
+            string today = DateTime.Now.ToString("yyyyMMdd");
+            string directory = AppDomain.CurrentDomain.BaseDirectory + "UserUpload\\" + today;
+            string savedFileName = Path.Combine(directory, Path.GetFileName(upload.FileName));
+
+            DirectoryInfo di = new DirectoryInfo(directory);
+            //경로 확인.
+            if (!di.Exists)
+            {
+                di.Create();
+            }
+
+            FileInfo fi = new FileInfo(savedFileName);
+            int index = 1;
+            while (fi.Exists)
+            {
+                string otherFile = savedFileName.Substring(0, savedFileName.LastIndexOf('.')) + "_" + index + savedFileName.Substring(savedFileName.LastIndexOf('.'), savedFileName.Length - savedFileName.LastIndexOf('.'));
+                fi = new FileInfo(otherFile);
+                index++;
+            }
+
+            upload.SaveAs(fi.FullName);
+
+            string CKEditor = Request.QueryString["CKEditor"];
+            string CKEditorFuncNum = Request.QueryString["CKEditorFuncNum"];
+            string url = "/UserUpload/" + today + "/" + fi.Name;
+
+            Response.Write("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction('" + CKEditorFuncNum + "', '" + url + "', 'File전송이 완료되었습니다.');</script>");
+            return;
+        }
+
+
+
+
+CKEDITOR.instances.QnaContent.setData("")
+
+
+  
+insertElement(element) 
+
+Inserts an element into the currently selected position in the editor in WYSIWYG mode.
+ 
+  
+insertHtml(data) 
+
+Inserts HTML code into the currently selected position in the editor in WYSIWYG mode.
+ 
+  
+insertText(text) 
+
+Insert text content into the currently selected position in the editor in WYSIWYG mode 
+
+
+
+------------------------------------------------------------------------------
+
+작은 화면에서 틀 없애기
+@media all and (max-width:460px) {
+ .cke_bottom, .cke_top{display:none}
+}

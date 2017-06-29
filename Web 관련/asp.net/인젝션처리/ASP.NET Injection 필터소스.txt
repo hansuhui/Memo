@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+using Test.Models;
+
+
+namespace Test.Common
+{
+    [Serializable]
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    public class \ : AuthorizeAttribute
+    {
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+
+
+            string[] List;
+            string Split = ";,/*,*/,@@,@,char,nchar,varchar,nvarchar,alter,begin,cast,create,cursor,declare,delete,drop,end,exec,execute,fetch,insert,kill,open,select,sys,sysobjects,syscolumns,table,update,<script,</script>,'";
+            List = Split.Split(',');
+            if (filterContext.HttpContext.Request != null)
+            {
+                foreach (var Params in filterContext.HttpContext.Request.Params)
+                {
+                    string item = Params.ToString();
+                    string Val = filterContext.HttpContext.Request.Params[item];
+                    if (item == "__RequestVerificationToken") { continue; }
+                    else if (item == "ALL_HTTP") { break; }
+                    foreach (var Check in List)
+                    {
+                        //if (System.Text.RegularExpressions.Regex.IsMatch(Val, Check, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                        if (Val.IndexOf(Check) != -1)
+                        {
+                            string msg = Check.Replace("'", "따옴표").Replace("</script>", "script");
+                            string script = string.Empty;
+                            script += "<script>";
+                            script += "	alert('사용 할수 없는 문자가 있습니다.[{0}]'); ";
+                            script += " history.go(-1);";
+                            script += "</script>";
+                            script = string.Format(script, msg);
+                            filterContext.HttpContext.Response.Clear();
+                            filterContext.HttpContext.Response.Write(script);
+                            filterContext.HttpContext.Response.End();
+                            HandleUnauthorizedRequest(filterContext);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

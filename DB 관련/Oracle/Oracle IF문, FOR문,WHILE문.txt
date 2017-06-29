@@ -1,0 +1,175 @@
+#IF 조건문
+
+1) IF 조건 THEN 명령문_1 -> IF 조건 참 THEN 이하 실행
+  END IF;  -> IF 종료
+2) IF 조건 THEN 명령문_1
+   ELSE 명령문_2
+   END IF;
+3) IF 조건_1 THEN 명령문_1
+  ELSIF 조건_2 THEN 명령문_2
+  ELSIF 조건_3 THEN 명령문_3
+  ...
+  ELSE 명령문_n
+  END IF;
+
+
+SQL> set serveroutput on
+
+================================= (if문 예제 -  1)=============================
+SQL>
+ declare 
+      score01 int:=85;
+      grade01 varchar2(2);
+ BEGIN
+ IF score01>=90 THEN grade01:='A';
+ ELSIF score01>=80 THEN grade01:='B';
+ ELSIF score01>=70 THEN grade01:='C';
+ ELSIF score01>=60 THEN grade01:='D';
+ ELSE grade01:='F';
+ END IF;
+ dbms_output.put_line('당신의 SCOR는? ' || score01 || '점이고,' || 'Grade는? ' || grade01 || '입니다.');
+ end;
+/
+
+
+//당신의 SCORE는? 85점이고,Grade는? B입니다.
+
+================================= (if문 예제 -  2)=============================
+SQL>
+declare
+    i int := 10;
+BEGIN
+IF i !=20 THEN dbms_output.put_line('현재의 값은? '|| i || '이다');
+END IF;
+END;
+/
+//현재의 값은? 10이다
+
+#FOR LOOP문
+- 변수가 초기 값부터 1씩 증가하여 최종 값이 될 때까지 반복처리
+문법> FOR 변수 IN 초기값..최종값 LOOP
+              명령문1;
+              명령문2;
+               ....
+              명령문N;
+          END LOOP;
+
+
+================================= (for문 예제 - 1)=============================
+예제 1에서 10까지 반복하여 TEST1 테이블에 저장하라(FOR문 사용)
+
+먼저. SCOTT계정에서 TEST1 테이블 생성
+               SQL> create table test1(bunho number(3), irum varchar2(10));
+
+
+SQL> BEGIN
+      FOR i IN 1..10 LOOP
+           insert into test1 values(i,SYSDATE);
+      END LOOP;
+    END;
+    /
+결과 확인!>
+SQL> select * from test1;
+     BUNHO IRUM
+---------- ----------
+         1 07/03/19
+         2 07/03/19
+         3 07/03/19
+         4 07/03/19
+         5 07/03/19
+         6 07/03/19
+         7 07/03/19
+         8 07/03/19
+         9 07/03/19
+        10 07/03/19
+10 개의 행이 선택되었습니다.
+
+================================= (for문 예제 - 2)=============================
+SQL> 
+    declare i int := 0;
+    BEGIN
+       FOR i IN 0..50 LOOP
+           dbms_output.put_line('현재의 i값은? ' || i || '이다');
+       END LOOP;
+    END;
+    /
+//계정이 바꼈으니 set serveroutput on; 꼭 해주기!
+
+======================= 홀수단만 출력(for문과 if문 혼합)========================
+SQL> 
+    declare total number := 0;
+    BEGIN
+    FOR i IN 2..9 LOOP
+       IF MOD(i,2) <> 0 THEN -->2로 나눈 나머지가 0이 아니면 홀수
+          dbms_output.put_line(i || '단');
+          dbms_output.put_line('==============');
+          FOR j IN 2..9 LOOP
+              total := j * i;
+              dbms_output.put_line(i ||' * ' || j || ' = ' || total);
+          END LOOP;
+       END IF;
+    END LOOP;
+    END;
+    /
+
+※ 결과보기 
+more..
+
+
+========================== 1~50까지 출력(while문)============================
+SQL> 
+         declare
+         i int := 0;
+       begin
+            while i< 50 loop
+            i:=i+1;
+           dbms_output.put_line('현재의 i값은? ' || i || '이다');
+           end loop;
+       end;
+         /
+현재의 i값은? 1이다
+                 ....
+현재의 i값은? 50이다
+
+=============== 홀수 단을 출력하되 곱수가 3, 5, 7인 구구단을 출력! ===============
+SQL> 
+declare
+total number := 0;
+BEGIN
+FOR i IN 2..9 LOOP
+     IF mod(i,2) <> 0 THEN 
+          dbms_output.put_line(i || '단');
+          dbms_output.put_line('========');
+          FOR j IN 3..7 LOOP
+               IF mod(j,2) <> 0 THEN
+                       total := i * j;
+                       dbms_output.put_line(i || ' * ' || j || ' = ' || total);
+               END IF;
+         END LOOP;
+    END IF;
+END LOOP;
+END;
+ /
+
+※ 결과보기 
+more..
+
+=================== 짝수단 출력하되, 곱수가 홀수 인것===================
+SQL> 
+declare
+  total number := 0;
+BEGIN
+FOR i IN 2..9 LOOP
+    IF mod(i,2) = 0 THEN
+        dbms_output.put_line(i || '단');
+        dbms_output.put_line('=========');
+    FOR j IN 1..9 LOOP
+        IF mod(j,2) <> 0 THEN
+             total := i * j;
+             dbms_output.put_line(i || ' * ' || j || ' = ' || total);
+        END IF;
+    END LOOP;
+    END IF;
+END LOOP;
+END;
+/

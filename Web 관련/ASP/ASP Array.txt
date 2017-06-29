@@ -1,0 +1,9 @@
+Dim myFixedArray(3) 'Fixed size array
+myFixedArray(0) = "Albert Einstein"
+myFixedArray(1) = "Mother Teresa"
+myFixedArray(2) = "Bill Gates"
+myFixedArray(3) = "Martin Luther King Jr."
+ 
+For Each item In myFixedArray
+    Response.Write(item)
+Next

@@ -1,0 +1,22 @@
+https://ionicframework.com/docs/api/components/badge/Badge/
+
+[Badge]
+
+- ion-badge -
+
+
+Badges are simple components in Ionic containing numbers or text. 
+You can display a badge to indicate that there is new 
+information associated with the item it is on.
+
+[Basic Usage]
+
+ion-item>
+  <ion-icon name="logo-twitter" item-left></ion-icon>
+  Followers
+  <ion-badge item-right>260k</ion-badge>
+</ion-item>
+
+Badges can also be given any color attribute:
+
+<ion-badge color="secondary"></ion-badge>

@@ -1,0 +1,8 @@
+<add name="DefaultConnection" connectionString="server=211.233.58.54;uid=deete_user;Password=deete&amp;*();database=deete;Timeout=0" providerName="System.Data.SqlClient"   />
+
+
+
+
+
+   SqlCommand에서 cmd를 = 새로운 된 SqlCommand ();
+   cmd.CommandTimeout는 = 15 ;

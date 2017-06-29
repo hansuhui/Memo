@@ -1,0 +1,15 @@
+ $(function () {
+        $(document).on("keyup", "input:text[numberOnly]", function () { $(this).val($(this).val().replace(/[^0-9]/gi, "")); }); // 숫자만 입력가능
+         
+        $(document).on("keyup", "input:text[datetimeOnly]", function () { $(this).val($(this).val().replace(/[^0-9:\-]/gi, "")); }); // 숫자(-포함) 입력가능
+
+        $(document).on("keyup", "input:text[engOnly]", function () { $(this).val($(this).val().replace(/[^a-z]/gi, '')); }); // 영어만 입력가능
+         
+        $(document).on("keyup", "input:text[multiOnly]", function () { $(this).val($(this).val().replace(/[^a-z0-9]/gi, '')); }); // 영어, 숫자 입력가능
+
+        //$(document).on("keyup", "input:text[korOnly]", function () { $(this).val($(this).val().replace(/[a-z0-9]/gi, '')); }); // 한글만 입력가능
+
+        $(document).on('keyup', '.money', function () { var x = $(this).val(); $(this).val(x.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));  // money type (세자리마다 , 표시)
+
+        });
+    });

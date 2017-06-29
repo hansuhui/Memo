@@ -1,0 +1,6 @@
+
+ - DISTINCT 문이란?
+   쿼리 실행시 중복된 레코드 결과값을 제거해주는 역활을 합니다.
+?
+[출처] MSSQL 중복제거하고 조회하기 (DISTINCT)|작성자 창공
+ SELECT DISTINCT [컬럼명] FROM [테이블명]

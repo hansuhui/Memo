@@ -1,0 +1,11 @@
+http://87nyunseng.tistory.com/entry/asp-insert-%EC%A7%81%ED%9B%84-%EC%9E%90%EB%8F%99%EC%A6%9D%EA%B0%80%EA%B0%92-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0
+
+
+<%
+sQuery = "Set Nocount On Insert Into table (a, b, c) Values ('"&a&"','"&b&"','"&c&"')  Select @@Identity"
+oRs.Open sQuery, oCn, adOpenForwardOnly, adLockReadOnly, adCmdText
+If Not(oRs.Eof Or oRs.Bof) Then
+    iIdx = oRs(0)
+End If
+oRs.Close
+%>

@@ -1,0 +1,30 @@
+1. 먼저 사용하기 위해서는 using System.IO;를 선언해야합니다. 
+2. Path객체를 특별히 따로 선언해서 사용하는 것이아니라, static 메서드를 활용하여 경로부분을 원하는데로 다룰 수 있게 됩니다.
+
+? Path.ChangeExtension(string path) : 경로문자열에서 확장명 부분을 변경합니다.
+
+? Path.GetDirectoryName(string path) : 경로문자열에서 파일이름을 제외한 경로부분(디렉터리명)을 반환 합니다.
+
+? Path.GetExtension(string path) : 경로문자열에서 확장명 부분만 반환합니다.
+
+? Path.HasExtension(string path) : 경로문자열에서 확장명 부분이 있는지 확인하여 bool값으로 반환합니다.
+
+? Path.GetFileName(string path) : 경로문자열에서 파일이름부분을 반환합니다.
+
+? Path.GetFileNameWithoutExtension(string path) : 경로문자열에서 확장명부분을 제외한 파일이름을 반환합니다.
+
+? Path.GetFullPath(string path) : 경로문자열에 해당하는 절대경로를 반환합니다.
+
+? Path.GetPathRoot(string path) : 경로문자열에서 루트디렉터리(드라이브 명) 부분만 반환합니다.
+
+? Path.GetRandomFileName() : 파일 또는 폴더명으로 사용가능한 임의의 문자열을 반환합니다.
+
+? Path.GetTempFileName() : 임의로 임시파일을 생성 후, 생성된 임시파일의 경로를 반환합니다. 임시파일은 시스템의 지정된 임시폴더(Temp)에 생성됩니다.
+
+? Path.GetTempPath() : 시스템에 지정된 임시폴더의 경로를 반환합니다.
+
+? Path.IsPathRooted(string path) : 매개변수로 지정된 경로문자열이 상대경로인지 절대경로인지 파악하여 bool값으로 반환합니다. 절대경로이면 true를 반환합니다.
+
+? Path.GetInvalidFileNameChars() : 파일이름으로 부적합한 문자들의 배열을 반환합니다.
+
+? Path.GetInvalidPathChars() : 경로명으로 부적합한 문자들의 배열을 반환합니다.

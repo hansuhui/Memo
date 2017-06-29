@@ -1,0 +1,109 @@
+http://hisexperience.tistory.com/entry/ASP-%EA%B8%B0%EB%B3%B8-%EC%98%88%EC%A0%9C-%EC%A3%BC%EC%84%9D-%EB%B3%80%EC%88%98
+
+
+[개요]
+ASP의 기본 구조를 안다.
+
+1. ASP는 <% ...ASP CODE... %>로 이루어졌다.
+
+<예1> 현재시간을 나타내주는 예제 (파일명: firstasp.asp)
+
+<html>
+<head><title> First ASP </title></head>
+<body>
+<%
+ response.write "웹서버의 현재시간 = " & NOW() 
+%>
+</body>
+</html>
+
+[comment]
+response.write 기능은 서버와 클라이언트간의 (주절주절...) 뭐 그런것이고.. 그냥 printf라고 생각하자.
+다음예제에서는 좀 더 간편한 방법을 알아보자.
+
+
+<예2> (파일명: firstasp2.asp)
+
+<html>
+<%
+'파일명 : firstasp.asp
+
+var1 = "sample" '홑따옴표를 이용한 주석달기
+var2 = "ASP" : REM 주석달기
+%>
+<% = var1 %> <br>
+<% = var2 %>
+</html>
+
+[comment]
+response.write 대신 = 의 간단한 표기로 대처했다.
+=var1, =var2의 의미는 var1,var2 를 화면에 표시해줘라 뭐 그런 뜻.
+
+
+2. 주석달기
+
+주석을 사용하기 위해선 작은따옴표(')를 사용한다. 또는 REM KeyWord를 사용한다.
+
+<예>
+<%
+var1 = "Sample" '주석
+var2 = "ASP" REM 주석
+%>
+
+
+3. 변수
+
+(1) 명시적 변수 선언 : Dim 변수명
+
+<예>
+<% 
+ Dim test
+ test = "hello, world"
+%>
+<% = test %>
+
+
+(2) 암시적 변수 선언 : 변수=값 
+     ex) test = "Hello"
+
+
+※ 중요!!
+스크립트의 여러 곳에서 변수 이름을 잘못 입력하여 스크립트를 실행할 때 예기치 않은 오류를 일으킬 수 있으므로 방법은 좋지 않다. 그래서 모든 변수를 명시적으로 선언해야 할 경우 Option Explicit 문은 스크립트의 첫번재 명령문이어야 한다.
+
+ex) 
+<% Option Explicit %>
+<html>
+.
+.
+.
+
+
+(3) 변수를 데이터형과 함께 선언
+
+variant형 이외의 변수를 사용하려면, Private, Public, Dim, Static 문과 함께 As type으로 선언해야 한다. 그리고 두개의 단어를 하나의 변수로 쓸때는 첫자는 대문자로 하는 습관을 들이자.
+
+ex)
+Private I As Integer
+Dim Amt As Double
+Static YourName As String
+Public BillsPaid As Currency
+
+
+(4) TypeName
+:변수에 대한 정보를 제공
+
+(5) VarType
+:변수 값을 반환
+
+<예>
+ <%
+ Dim test1, test2, test3
+ test1 = 1234
+ test2 = 1234.5678
+ test3 = "텍스트"
+ test4 = Now()
+ %>
+ test1 = <% = test1 %> ( <% = TypeName(test1) %> ) <p>
+ test2 = <% = test2 %> ( <% = TypeName(test2) %> ) <p>
+ test3 = <% = test3 %> ( <% = VarType(test3) %> ) <p>
+ test4 = <% = test4 %> ( <% = VarType(test4) %> ) <p>

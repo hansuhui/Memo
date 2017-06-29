@@ -1,0 +1,161 @@
+https://ionicframework.com/docs/api/components/button/Button/
+
+[Button]
+
+[ion-button]
+Buttons are simple components in Ionic.
+ They can consist of text and icons and be 
+enhanced by a wide range of attributes.
+
+==========================================================================================
+
+[Usage]
+
+
+<!-- Colors -->
+<button ion-button>Default</button>
+
+<button ion-button color="secondary">Secondary</button>
+
+<button ion-button color="danger">Danger</button>
+
+<button ion-button color="light">Light</button>
+
+<button ion-button color="dark">Dark</button>
+
+<!-- Shapes -->
+<button ion-button full>Full Button</button>
+
+<button ion-button block>Block Button</button>
+
+<button ion-button round>Round Button</button>
+
+<!-- Outline -->
+<button ion-button full outline>Outline + Full</button>
+
+<button ion-button block outline>Outline + Block</button>
+
+<button ion-button round outline>Outline + Round</button>
+
+<!-- Icons -->
+<button ion-button icon-left>
+  <ion-icon name="star"></ion-icon>
+  Left Icon
+</button>
+
+<button ion-button icon-right>
+  Right Icon
+  <ion-icon name="star"></ion-icon>
+</button>
+
+<button ion-button icon-only>
+  <ion-icon name="star"></ion-icon>
+</button>
+
+<!-- Sizes -->
+<button ion-button large>Large</button>
+
+<button ion-button>Default</button>
+
+<button ion-button small>Small</button>
+
+
+==========================================================================================
+
+[Input Properties]
+
+Attr  /  Type  / Details
+
+block / boolean  / true 인 경우 사용 가능한 너비를 채우는 단추 스타일을 활성화합니다.
+
+clear / boolean / true 인 경우 테두리없이 투명한 버튼 스타일을 활성화합니다.
+
+color / string / Sass $ 색상 맵에서 사용할 색상입니다. 
+		 기본 옵션은 "기본", "보조", "위험", "밝음"및 "어두운"입니다. 
+
+default / boolean /  true 인 경우 기본 버튼 크기를 활성화합니다. 
+		     일반적으로 기본값입니다. 항목의 버튼에 유용합니다.
+
+
+full / boolean / true 인 경우 왼쪽 및 오른쪽 테두리없이 사용 가능한 너비를 
+		 채우는 단추 스타일을 활성화합니다.
+
+large / boolean / true 인 경우 큰 버튼 크기를 활성화합니다.
+
+mode / string / 모드는 사용할 플랫폼 스타일을 결정합니다. 
+		가능한 값은 "ios", "md"또는 "wp"입니다. 
+
+outline / boolean / true 인 경우 테두리가있는 투명한 버튼 스타일을 활성화합니다.
+
+small / boolean / If true, activates the small button size.
+
+solid / boolean / true 인 경우 단색 버튼 스타일을 활성화합니다. 
+		  일반적으로 기본값은 툴바의 버튼에 유용합니다.
+
+strong / boolean / true의 경우, 폰트 가중치가 큰 버튼을 활성화합니다.
+
+
+==========================================================================================
+
+[Advanced]
+
+<!-- Bind the color and outline inputs to an expression -->
+<button ion-button [color]="isDanger ? 'danger' : 'primary'" [outline]="isOutline">
+  Danger (Solid)
+</button>
+
+<!-- Bind the color and round inputs to an expression -->
+<button ion-button [color]="myColor" [round]="isRound">
+  Secondary (Round)
+</button>
+
+<!-- Bind the color and clear inputs to an expression -->
+<button ion-button [color]="isSecondary ? 'secondary' : 'primary'"  [clear]="isClear">
+  Primary (Clear)
+</button>
+
+<!-- Bind the color, outline and round inputs to an expression -->
+<button ion-button [color]="myColor2" [outline]="isOutline" [round]="isRound">
+  Dark (Solid + Round)
+</button>
+
+<!-- Bind the click event to a method -->
+<button ion-button (click)="logEvent($event)">
+  Click me!
+</button>
+
+
+------------------------------------------------------------------------------------------
+
+@Component({
+  templateUrl: 'main.html'
+})
+class E2EPage {
+  isDanger: boolean = true;
+  isSecondary: boolean = false;
+  isRound: boolean = true;
+  isOutline: boolean = false;
+  isClear: boolean = true;
+  myColor: string = 'secondary';
+  myColor2: string = 'dark';
+
+  logEvent(event) {
+    console.log(event)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

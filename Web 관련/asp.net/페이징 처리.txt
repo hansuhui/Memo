@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using System.Text;
+
+namespace hanyoung.Common
+{
+	public static class PagingHelpers
+	{
+		public static string PageLinks(this HtmlHelper html, int currentPage, int totalPages)
+		{
+			StringBuilder result = new StringBuilder();
+            //result.AppendLine("<script>");
+            //result.AppendLine("function GoPage(p) { ");
+            //result.AppendLine("	var $f = jQuery('#formList'); ");
+            //result.AppendLine("	$f.children('#page').val(p); ");
+            //result.AppendLine("	$f.submit(); ");
+            //result.AppendLine("}");
+            //result.AppendLine("</script>");
+
+			int currentSize = Convert.ToInt32((currentPage - 1) / 10) + 1;
+			int startPage = ((currentSize - 1) * 10) + 1;
+			int endPage = totalPages - (totalPages - (currentSize * 10));
+			int totalSize = 0;
+			int j = 0;
+
+			if (endPage > totalPages)
+				endPage = totalPages;
+
+			if (totalPages % 10 > 0)
+				totalSize = Convert.ToInt32(totalPages / 10) + 1;
+			else
+				totalSize = Convert.ToInt32(totalPages / 10);
+
+            result.AppendLine("<ul class=\"cd-pagination\">");
+
+
+			// 처음 페이지
+			if (currentPage > 1)
+				result.AppendLine("<li><a href=\"javascript:GoPage('1')\"><img src=\"/images/btn/btn_page_first.gif\" /></a></li>");
+			else
+				result.AppendLine("");
+
+			// 이전 10개
+			if (currentSize > 1)
+				result.AppendLine("<li><a href=\"javascript:GoPage('" + (startPage - 10).ToString() + "')\"><img src=\"/images/btn/btn_page_prev.gif\" /></a></li>");
+			else
+				result.AppendLine("");
+
+			//for (int i = 1; i <= totalPages; i++)
+			for (int i = startPage; i <= endPage; i++)
+			{
+				// 현재 페이지
+				if (i == currentPage)
+				{
+					//if (j == 0)
+
+					result.AppendLine("<li class=\"current\">" + i.ToString() + "</li>");
+					//else
+					//	result.AppendLine(" | <span id='currentPage'>" + i.ToString() + "</span>");
+
+					j++;
+					continue;
+				}
+
+
+                result.AppendLine("<li>");
+
+				// <a> 태그 생성
+				TagBuilder tag = new TagBuilder("a");
+				//tag.MergeAttribute("href", pageUrl(i));
+				tag.MergeAttribute("href", "javascript:GoPage('" + i.ToString() + "')");
+				//tag.MergeAttribute("class", "s");
+				tag.InnerHtml = i.ToString();
+
+				//if (j == 0)
+					result.AppendLine(tag.ToString());
+				//else
+				//	result.AppendLine(" | " + tag.ToString());
+
+                    result.AppendLine("</li>");
+
+				j++;
+
+			}
+
+			// 다음 10개 
+			if (totalSize > currentSize)
+                result.AppendLine("<li><a class=\"next i-next\" title=\"Weiter\"  href=\"javascript:GoPage('" + ((currentSize * 10) + 1).ToString() + "')\"> &#187; </a></li>");
+			else
+                result.AppendLine("<li> <a class=\"next i-next\" href=\"#\" title=\"Weiter\"> &#187; </a></li>");
+
+
+            //// 마지막 페이지
+            //if (currentPage < totalPages)
+            //    result.AppendLine("<li><a href=\"javascript:GoPage('" + totalPages.ToString() + "')\"><img src=\"/images/btn/btn_page_end.gif\" /></a></li>");
+            //else
+            //    result.AppendLine("<li><img src=\"/images/btn/btn_page_end.gif\" /></li>");
+
+
+			result.AppendLine("</ul>");
+
+			return result.ToString();
+		}
+	}
+}

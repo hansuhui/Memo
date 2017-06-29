@@ -1,0 +1,5 @@
+join (
+	select a.SaleCode, a.PaymentType from SalePayments a,
+	(select SaleCode,  min(Seq) as Seq from SalePayments group by SaleCode) b
+	where a.SaleCode = b.SaleCode and a.Seq = b.Seq
+) j on (a.SaleCode = j.SaleCode)

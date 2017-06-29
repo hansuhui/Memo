@@ -1,0 +1,332 @@
+[ApplicationName]
+
+SQL Server 와의 연결을 만든 클라이언트 응용프로그램의 이름입니다.
+이 열은 프로그램의 표시 이름이 아니라 응용 프로그램에서 전달한 값으로 채워집니다.
+
+[BigintDate1~2]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 Bigint 값입니다.
+
+[BinaryDate]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 이진 값입니다.
+
+[ClientProcessID]
+
+SQL Server를 호출하는 응용 프로그램의 프로세스 ID 입니다.
+
+[ColmnPermissions]
+
+열 사용 권한의 설정 여부를 나타냅니다.
+문 텍스트의 구문을 분석하여 어떤 사용권한이 어떤 열에 적용되었는지 정확히 확인합니다.
+
+
+[CPU] 
+
+이벤트에서 사용한 CPU 시간(밀리초) 입니다.
+
+
+[DatabaseID]
+
+USE database 문에서 지정한 데이터베이스의 ID이거나 특정 연결에 대해
+USE database 문이 생성되지 않은 경우에는 기본 데이터베이스의 ID입니다.
+
+
+[DatabaseName]
+
+사용자의 문이 실행 중인 데이터베이스 이름입니다.
+
+
+[DBUserName]
+
+클라이언트의 SQL Server 사용자 이름입니다.
+
+
+[Duration]
+
+이벤트에서 사용한시간입니다. 서버에서는 기간이 마이크로초 단위로 측정되지만 
+SQL Server Profiler 에는 [도구] > [옵션] 대화 상자의 설정에 따라 값이
+밀리초 단위로 표시됩니다.
+
+
+[EndTime]
+
+이벤트가 끝난 시간입니다. 이 열은 SQL:BatchString 또는 SP:Starting 등 
+시작하는 이벤트 클래스에 대해 채워지지 않습니다.
+
+
+[Error]
+
+지정된 이벤트의 오류 번호입니다.
+sysmessages에 저장된 오류 번호와 같을 때가 많습니다.
+
+
+[EventSubClass]
+
+이벤트 하위 클래스의 유형입니다. 이 데이터 열이 모든 이벤트 
+클래스에 대해 채워지는 것은 아닙니다.
+
+
+[FileName]
+
+수정될 파일의 논리적 이름입니다.
+
+
+[GroupID]
+
+현재 세션에 대한리소스 관리자에 의해 분류된 GroupID를 나타냅니다.
+
+
+[GUID]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 GUID 값입니다.
+
+
+[Handle]
+
+ODBC, OLE DB , DB-Library가 서버와의 공동 실행을 위해 사용하는 정수입니다.
+
+
+[HostName]
+
+클라이언트가 실행 중인 컴퓨터 이름입니다.
+클라이언트가 호스트 이름을 제공하면 이 데이터 열이 채워집니다.
+호스트 이름을 확인하려면 HOST_NAME 함수를 사용하십시오.
+
+
+[IndexID]
+
+이벤트의 영황을 받는 개체의 인덱스 ID입니다.
+개체의 인덱스 ID를 확인하려면 sysindexes 시스템 
+테이블의 indid열을 사용하십시오.
+
+
+[IntegerData]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 정수 값입니다.
+
+[IntegerData2]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 정수 값입니다.
+
+
+[IsSystem]
+
+이벤트가 시스템 프로세스에서 발생했는지 아니면 사용자 프로세스에서 발생했는지를 나타냅니다.
+(1 = 시스템 , 0 = 사용자).
+
+
+[LineNumber]
+
+오류를 포함하는 줄 번호를 표시합니다.
+
+
+[LinkedServerName]
+
+연결된 서버 이름입니다.
+
+
+[LoginName]
+
+사용자 로그인 이름(DOMAIN\Username 형식의 Windows 로그인 
+자격 증명 또는 SQL Server 보안 로그인)입니다.
+
+
+[LoginSid]
+
+로그인한 사용자의 SID(보안 ID)입니다.
+이 정보는 master 데이터베이스의 syslogins 테이블에 있습니다. 각 SID는 서버의 각 로그인마다
+고유합니다.
+
+
+[MethodName]
+
+OLE DB 메서드 이름입니다.
+
+
+[Mode]
+
+여러 가지 이벤트에서 이벤트의 수신 또는 
+요청 상태를 설명할 때 사용하는 정수입니다.
+
+
+[NestLevel]
+
+@@NESTLEVEL 에서 반환한 데이터를 나타내는 정수입니다.
+
+
+[NTDomainName]
+
+사용자가 속한 Windows 도메인입니다.
+
+[NTUserName]
+
+Windows 사용자 이름입니다.
+
+
+[ObjectID]
+
+시스템이 할당한 개체의 ID입니다.
+
+
+[ObjectID2]
+
+관련 개체 또는 엔터티의 ID입니다.(있는경우)
+
+
+
+[ObjectName]
+
+참조될 개체 이름입니다.
+
+
+[ObjectType]
+
+이벤트와 관련된 개체 유형을 나타내는 값입니다.
+이 값은 sysobjects의 유형 열과 일치합니다.
+
+
+[Offset]
+
+저장 프로시저 또는 일괄 처리 내에 있는 문의 시작 오프셋입니다.
+
+
+[OwnerID]
+
+잠금을 소유하는 개체 유형입니다.(잠금 이벤트용).
+
+
+[OwnerName]
+
+개체 소유자의 데이터베이스 사용자 이름입니다.
+
+
+[ParentName]
+
+개체가 있는 스키마의 이름입니다.
+
+
+[Permissions]
+
+선택한 사용 권한의 유형을 나타내는 정수 값입니다.
+
+
+[PlanHandle]
+
+계획 핸들에 대한 GUID를 나타냅니다.
+실행 계획 XML을 검색하기 위해 sys.dm_exec_query_plan 함수에서
+이 GUID를 사용할 수 있습니다.
+
+
+[ProviderName]
+
+OLE DB 공급자 이름입니다.
+
+
+[Reads]
+
+이벤트 서버에서 수행한 논리적 디스크 읽기 수입니다.
+
+
+[RequestID]
+
+문을 포함하는 요청 ID입니다.
+
+
+[RoleName]
+
+활성화될 응용 프로그램 역할의 이름입니다.
+
+
+[RowCounts]
+
+일괄 처리의 행 개수 입니다.
+
+
+[SessionLoginName]
+
+세션을  시작한 사용자의 로그인 이름입니다.
+예를 들어 사용자가 Login1을 사용하여 SQL Server에 연결하고
+Login2로 문을 실행하는 경우 LoginSessionName은 Login1을, LoginName은 Login2를
+표시합니다. 이 열은 SQL Server 및 Windows 로그인을 모두 표시합니다.
+
+
+[Severity]
+
+에외의 심각도입니닫.
+
+
+[SourceDatabaseID]
+
+개체 원본이 있는 데이터베이스의 ID입니다.
+
+
+[SPID]
+
+SQL Server가 클라이언트와 관련된 프로세스에 대해
+할당한 서버 프로세스 ID입니다.
+
+
+[SqlHandle]
+
+임시 쿼리의 텍스트 또는 SQL 개체의 데이터베이스 및 개체 ID를 기반으로 하는
+64비트 해시입니다. 이 값을 sys.dm_exec_sql_text()로 전달하여 관련
+텍스트 또는 개체를 검색할 수 있습니다.
+
+
+[StarTime]
+
+이벤트가 시작된 시간입니다(사용 가능한 경우).
+
+
+[State] 
+
+오류 상태 코드에 해당합니다.
+
+
+[Success]
+
+1 = 성공 . 0 = 실패 
+(예를 들어 1은 사용 권한 확인이 성공했음을 의미하고 , 0은 확인이 실패했음을 의미합니다.)
+
+
+[TargetLoginName]
+
+로그인을 대상으로 하는 동작(예: 새 로그인 추가)의 경우 대상 로그인의 이름입니다.
+
+
+[TargetLoginSid]
+
+로그인을 대상으로 하는 동작(예: 새 로그인 추가)의 경우 대상 로그인의 SID(보안 ID)입니다.
+
+
+[TargetUserName]
+
+데이터베이스 사용자를 대상으로 하는 동작(예: 사용자에게 사용 권한 부여)
+의 경우 해당 사용자의 이름입니다.
+
+
+[TextData]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 텍스트 값입니다.
+
+[TransactionID]
+
+시스템이 할당한 트랜잭션 ID 입니다.
+
+
+[Type]
+
+추적에서 캡처된 이벤트 클래스에 종속적인 정수 값입니다.
+
+
+[Writes]
+
+이벤트 대신 서버에서 수행한 물리적 디스크 쓰기 수입니다.
+
+
+[XactSequence]
+
+현재 트랜잭션을 설명하는 토큰입니다.
+
+

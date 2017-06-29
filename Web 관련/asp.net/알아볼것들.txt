@@ -1,0 +1,6 @@
+Entity Framework Code First 
+스캐폴딩(Scaffolding)
+LINQ
+HTML 도우미 메서드
+람다식
+Query Execution

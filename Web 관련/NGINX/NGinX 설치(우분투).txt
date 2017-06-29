@@ -1,0 +1,122 @@
+https://opentutorials.org/module/384/3463
+
+==========================[설치]==========================
+
+[NGINX의 환경]
+
+NGINX는 웹서버다. 웹서버는 인터넷 네트워크 위에서 HTTP 프로토콜을 이용해 HTML, CSS , 
+JavaScript , 이미지와 같은 정보를 웹브라우저에게 전송한다. 따라서 인터넷을 이용할 수 있는
+환경과 NGINX의 관계를 따져보고, 해당 환경에서 NGINX를 사용하기 위해서는 어떻게 해야 하는가를
+설명하고 있다.
+
+[IDC]
+
+NGINX를 설치하기 위해서는 우선 서버 머신이 필요하다. 서버는 일반적으로 전세계 어디에서나
+접근할 수 있는 안정적이고 속도가 빠른 인프라 위에 구축한다. 대표적인 인프라가 IDC다.
+
+
+[클라우드 컴퓨팅]
+
+클라우드 컴퓨팅은 가상화기술과 종량제라는 특성에 기반해서 서버로 서비스 할 수 있는
+서비스를 제공하는 서비스인데, 독립된 한대의 온전한 컴퓨터를 사용할 수 있기 떄문에 IDC에
+물리적인 ㅓㅁ퓨터를 위치시키거나, 가정용 컴퓨터로 서버를 사용하는 것과 동일한 수준의 자유도를 
+제공한다. 대표적인 클라우드 컴퓨팅 시스템으로는 아마존 웹서비스가 있고 국내에는 KT Ucloud , 
+SKT Tcloud등이 있다. 자세한 내용은 생활 코딩의 아마존 웹서비스 EC편을 참고한다.
+
+
+[가정에서 설치]
+
+하지만 자신의 컴퓨터에도 설치 할 수 있다. 다만 가정에 들어오는 인터넷은 유동 IP이기 떄문에
+가정용 컴퓨터를 통해서 인터넷 서비스를 운영 할 수 있다. 가정용 전기는 누진세가 적용되기 떄문에 
+IDC나 클라우드를 이용하는 것 대비 전기세를 따져봐야 한다.
+
+
+[웹호스팅]
+
+웹호스팅은 웹서버를 업체에서 제공하는 서비스다. 따라서 사용자가 웹서버를 교체 할 수 없다.
+현시점에서 NGINX를 웹서버로 제공하는 웹호스팅 서비스는 없고, 대부분 아파치를 제공하고 있다.
+
+
+[실습환경]
+
+위에서 기술한 내용은 NGINX를 실제로 서비스 할 수 있는 다양한 환경을 소개했다.
+하지만 학습을 위해서라면 자신의 컴퓨터에 NGINX를 직접 설치해서 사용할 수 있다.
+본 토픽의 하위 토픽에는 운영체제별로 NGINX를 설치하는 방법이 소개되어 있기 떄문에 
+이것을 참조해서 자신의 컴퓨터에 설치하자. 실제로 사용하고 있는 운영체제에
+설치하는 것보다는 가상머신 기술을 이용해서 가상화된 컴퓨터를 만든 후에 그 위에
+NGINX를 설치할 것을 권한다. 
+
+
+==========================[NGINX ubuntu 설치]==========================
+
+본 수업은 apt-get을 이용해서 Ubuntu에 NGINX를 설치하는 방법을 설명한다. 다양한 모듈을
+설치하고 싶다면 컴파일을 하는 법을 알야아 한다. NGINX 컴파일 수업을 통해서 NGINX에 대해서
+더 깊은 내용을 다루기 때문에 실제로는 패키지를 사용하더라도 컴파일 수업을 참고하자.
+
+[nginx설치]
+
+비공식적으로 유지되는 소프트웨어를 PPA라고 한다. 공식 nginx 패키지는 오래된 버전인 경우가 
+많기 때문에 비공식 패키지를 사용해야 하는 경우가 있다. 그렇지만 지금 소개 할 비공식
+패키지는 nginx의 공식 홈페이지를 통해서 추천되는 것이기 떄문에 신뢰 할 수 있다.
+
+sudo aptitude install software-preperties-common;
+sudo add-apt-repository ppa:nginx/development;
+sudo apt-get update;
+sudo apt-get install nginx;
+
+[패키지 추가]
+
+sudo nano / etc/apt/sources.list
+
+위의 파일을 열고 아래 내용을 참고해서 NGINX 패키지의 저장소를 등록한다. 아래는 버전별 저장소
+
+Ubuntu 10.04 (Lucid)
+
+deb http://nginx.org/packages/ubuntu/ lucid nginx 
+deb-src http://nginx.org/packages/ubuntu/ lucid nginx
+
+Ubuntu 11.10 (Oneiric)
+
+deb http://nginx.org/packages/ubuntu/ oneiric nginx 
+deb-src http://nginx.org/packages/ubuntu/ oneiric nginx
+
+Ubuntu 12.04 (Percise)
+deb http://nginx.org/packages/ubuntu/ precise nginx
+deb-src http://nginx.org/packages/ubuntu/ precise nginx
+
+
+인증키 등록
+
+wget http://nginx.org/keys/nginx_signing.key
+cat nginx_signing.key | sudo apt-key add -
+
+설치
+
+sudo apt-get update;
+sudo apt-get install nginx
+
+Document Root
+/usr/share/nginx/html/
+
+설정 파일
+/etc/nginx/
+
+로그파일
+/var/log/nginx/
+
+참고 
+http://wiki.nginx.org/Install#Official_Debian.2FUbuntu_packages
+http://www.arunchinnachamy.com/how-to-updateinstall-nginx-in-ubuntudebian/
+
+
+
+
+
+
+
+
+
+
+
+
+

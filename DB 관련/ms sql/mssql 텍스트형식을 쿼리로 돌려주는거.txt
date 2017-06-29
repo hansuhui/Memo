@@ -1,0 +1,17 @@
+exec sp_executesql @sql
+
+
+set @sql = ''
+set @sql = @sql + N' select '
+set @sql = @sql + N' 	msg_seq, cur_state, sent_date, req_date, RSLT_CODE2, call_to, call_from '
+set @sql = @sql + N' ,	cont_seq, udata_key, udata_val, gift_no, ''msg_data'' as tblname, userdata '
+set @sql = @sql + N' from MSG_DATA a with (nolock) '
+
+
+
+insert into @Table
+exec sp_executesql @sql;
+
+
+exec sp_executesql @Search
+ 

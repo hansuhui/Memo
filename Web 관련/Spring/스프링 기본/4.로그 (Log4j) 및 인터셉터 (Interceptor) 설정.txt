@@ -1,0 +1,425 @@
+http://addio3305.tistory.com/43
+
+1.Log4j 설정
+
+
+Log4j는 자바기반의 로깅 유틸리티로, Apache에서 만든 오픈소스 라이브러리다.
+갑지기 로그라고 하면 이게 무엇인가, 그걸 대체 어따 써먹는것인가!! 라고 생각할 수 있지만,
+로그는 우리가 굉장히 많이 쓰고 있다. 예를 들어서 개발하다가 어떤 변수의 값을 확인하고 싶으면
+자연스럽게 System.out.println()으로 출력을 하는데, 이런것들이 모두 로그의 한 종류라고 생각할 
+수있다. 그러면 그냥 System.out.println()으로 출력하면 되는데 왜 귀찮게 다른걸 사용하냐는 
+의문이 들 수 이싿.
+사실 우리는 혼자서 그냥 연습삼아 프로젝트를 만들거나 하면 System.out.println()은 큰 문제가 
+없지만, 실제 프로젝트는 혼자서 하는것도 아니고, 또 시스템 운영시에는 큰 문제를 야기한다.
+
+간단하게 살펴보면
+1) 운영시에 불필요한 로그가 계속 출력된다. - 시스템을 개발하고 운영할 때
+   System.out.println()을 모두 찾아서 지워 줘야한다.
+
+2) 모든 로그를 지워버리면 , 에러가 났을 경우, 그 에러 원인을 찾기가 어려울 수도 있다.
+  
+3) 성능에 큰 영향을 미친다.
+
+
+Log4j는 위에서 간단히 이야기 한 문제점을들 손쉽게 해결할 수 있다.
+Log4j는 시스템의 성능에 큰 영향을 미치치 않으면서도, 옵션 설정을 통해서 다양한 로깅 방법을
+제공한다. 환경설정을 통해서 선택적인 로그를 남긴다거나, 특정 파일등에 로그를 생성하는 등
+다양한 이점을 가지고 있다.
+
+Log4j의 구조는 다음과 같다.
+
+요소 / 설명
+
+Logger / 출력할 메시지를 Appender에 전달한다.
+
+Appender / 전달된 로그를 어디에 출력할지 결정한다. ( 콘솔 출력,파일 기록 , DB 저장등)
+
+Layout / 로그를 어떤 형식으로 출력할 지 결정한다.
+
+
+
+Log4j는 다음과 같은 로그 레벨을 가진다.
+
+
+
+로그레벨 / 설명
+
+FATAL / 아주 심각한 에러가 발생한 상태를 나타낸다.
+
+ERROR / 어떤한 요청을 처리하는 중 문제가 발생한 상태를 나타낸다.
+
+WARN / 프로그램의 실행에는 문제가 없지만, 향후 시스템 에러의 원인이 될수 있는
+       경고성 메시지를 나타낸다.
+
+INFO / 어떠한 상태변경과 같은 정보성 메시지를 나타낸다.
+
+DEBUG / 개발시 디버그 용도로 사용하는 메시지를 나타낸다.
+
+TRACE / 디버그 레벨이 너무 광범위한것을 해결하기 위해서 좀더 상세한 이벤트를 나타낸다.
+
+
+
+Log4j에 대한 간단한 설명은 이정도로만 하고 , 자세한 내용은 추후 이야기 하겠다.
+
+일단 여기서는 Log4j의 간단한 설정만 이야기 하겠다.
+
+
+1. pom.xml에 Log4j를 추가한다.
+
+인터넷에서 Log4j에 대해서 찾아보면 여러가지 글이 나오는데 , 상당히 많은 글들이
+.properties 파일을 이용한 설정 방법이다.
+
+Log4j에 .properties를 사용하는건 최악이다. 절대로 하지말자.
+
+이제 .properties는 굉장히 옛날 방식이고 절대로 사용해서는 안되는 방식인데, 최근에 작성된
+글들도 .properties를 가지고 이야기하고 있다. 
+최신 Log4j에서는 xml과 json을 이용한 설정만 지원하고 있다.
+
+src/main/resources 폴더 밑에 있는 log4j.xml 파일을 열자.
+log4j.xml이 Log4j의 설정파일로, 여기서 로그 출력 형식과 레벨 등을 모두 지정할 수 있다.
+기존에 http://addio3305.tistory.com/36 에서 프로젝트를 생성하고 실행시켰을 때, 
+콘솔에서 이것저것 출력되었던 것도 여기서 설정된 것을 이용해서 출력이 된것이다.
+
+우리는 앞으로 여러가지 로그를 찍고, 각 로그 종류에 따라서 화면에 보이는게 다르게 하기 
+위해서 다음과 같이 log4j.xml을 변경한다.
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+ 
+    <!-- Appenders -->
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %5p [%c] %m%n" />
+        </layout>   
+    </appender>
+     
+    <appender name="console-infolog" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %5p %m%n" />
+        </layout>   
+    </appender>
+     
+    <!-- Application Loggers -->
+    <logger name="first" additivity="false">
+        <level value="debug" />
+        <appender-ref ref="console"/>
+    </logger>
+     
+    <!-- Query Loggers -->
+    <logger name="jdbc.sqlonly" additivity="false">  
+        <level value="INFO"/>  
+        <appender-ref ref="console-infolog"/>  
+    </logger>
+     
+    <logger name="jdbc.resultsettable" additivity="false">  
+        <level value="INFO"/>  
+        <appender-ref ref="console"/>  
+    </logger>  
+ 
+    <!-- Root Logger -->
+    <root>
+        <priority value="off"/>
+        <appender-ref ref="console" />
+    </root>
+     
+</log4j:configuration>
+
+
+
+여기서 2개의 appender 와 3개의 logger를 볼 수 있다.
+일반적인 debug 레벨은 기존의 appender을 이용하고, 그 외 필요한 여러가지 정보는 info 레벨로 
+약간 다른형식으로 출력하려고 한다. 이건 추후 소스에서 그 결과를 확인할 수 있다.
+
+
+2.인터셉터(Interceptor) 설정
+
+인터셉터는 중간에 무엇인가를 가로챈다는 의미이다. 스프링에서도 말 그대로 중간에
+요청을 가로채서 어떠한 일을 하는것을 의미한다. 서블릿(Servlet)을 사용하는 사람이라면
+필터(Filter)를 들어봤을텐데, 비슷한 의미로 사용된다. 그럼 어느 중간에서 요청을 가로채서 
+무엇을 하는지를 간단히 살펴보자.
+
+인터셉ㅌ터는 위 이미지의 빨간색 박스 부분에서 동작한다.. 인터셉터의 정확한 명칭은
+핸들러 인터셉터(Handler Interceptor)이다. 인터셉터는 DispatcherServlet이 컨트롤러를 호출하기
+전,후에 요청과 응답을 가로채서 가공할 수 있도록 해준다
+예를 들어, 로그인 기능을 구현한다고 했을때, 어떠한 페이지를 접속하려고 할때, 로그인된
+사용자만 보여주고, 로그인이 되어있지 않다면 메인화면으로 이동시키려고 해보자. 기존에는
+로그인 체크 로직을 만들어서 각 화면마다 일일이 복사해서 만들기도 했다. 
+아마 누가 그렇게 하겠어~? 라고 생각할 수도 있겠지만 실제로 필자는 학생때 웹 프로젝트를 할때
+그렇게 만들었었다.
+
+스프링에서는 인터셉터를 사용하여 위의 기능을 간단히 만들 수 있다.
+인터셉터에서 어떠한 요청이 들어올 때 , 그 사람의 로그인 여부를 판단해서 로그인이
+되어있으면 요청한 페이지로 이동시키고, 로그인이 되어있지 않으면 바로 메인페이지로 
+이동 시키면 끝이다. 즉, 단 하나의 인터셉터로 프로젝트내의 모든 요청에서 로그인여부를 
+관리할 수 있는것이다.
+
+설명은 간단히 하고 , 실제로 어떻게 만들고, 동작하는지를 소스를 통해서 살펴보자.
+
+1. 먼저 src/main/java/프로젝트명 퍀키지 내의 common 패키지를 생성하고 그 및에 logger 패키지를
+   생성한다.
+
+기존에 작성되어있던 com.company.프로젝트명 패키지를 삭제하고, 프로젝트명.common.logger 패키지를
+생성한다. 마찬가지로 HomeController.java도 삭제한다.
+
+
+
+2.logger 패키지 맡에 LoggerInterceptor.java를 생성한다.
+
+이제 위에서 설명한 인터셉터를 만들 차례다. 인터셉터는 HandlerInterceptorAdapter 클래스를
+상속받아서 만든다.
+HandlerInterceptorAdater에서는 사용할 수 있는 몇가지 메서드들이 있는데 우리는 일단 두가지만
+구현하려고 한다. 전처리기와 후처리기가 바로 그것인데, 위에서 client -> controller로 요청할 때,
+그 요청을 처리할 메서드 하나(전처리기)와 controller -> client 로 응답할 때, 그 요청을 
+처리할 메서드 하나(후처리기)를 만들 에정이다.
+
+ 
+
+
+
+public class LoggerInterceptor extends HandlerInterceptorAdapter {
+    protected Log log = LogFactory.getLog(LoggerInterceptor.class);
+     
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("======================================          START         ======================================");
+            log.debug(" Request URI \t:  " + request.getRequestURI());
+        }
+        return super.preHandle(request, response, handler);
+    }
+     
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        if (log.isDebugEnabled()) {
+log.debug("======================================           END          ======================================\n");
+        }
+    }
+}
+
+이 소스에서 우리가 살펴봐야 할게 몇가지 있다.
+1) 위에서 우리는 Log4j를 사용해서 로그를 출력하기로 했었다. 이제 화면에 무엇인가를 출력할때는
+모두 Log4j를 사용하는데 이는 다음과 같이 사용한다.
+
+protected Log log = LogFactory.getLog(LoggerInterceptor.class);는 Log4j의 Log 객체를 log라는
+이름으로 생성한다.
+Log 객체를 생성할때는 몇가지 방법이 있는데 여기서는 생성자에 현재 클래스를 입력하였다.
+
+2) 전처리기와 후처리기의 메서드를 등록한다.
+preHandler()과 postHandle() 메서드가 전처리기와 후처리기에 해당된다. perHandler()은 컨트롤러가
+호출되기 전에 실행되고, postHandle()은 컨트롤러가 실행되고 난 후에 호출된다.
+여기서는 단순히 START 와 END의 로그를 출력함으로써, 하나의 요청을 쉽게 볼 수 있도록 
+경계선을 그어주는 역할을 한다.
+
+3) preHandle()에서 현재 호출된 URI가 무엇인지 보여주도록 한다.
+
+
+3. 방금 만든 인터셉터를 등록한다.
+
+1) src/main/resources 폴더 밑에 프로젝트명/spring 폴더를 생성한다.
+폴더를 생성하면 다음과 같이 패키지로 보이는 경우가 있을수 있다.
+
+이렇게 나오는 경우, 보기 좋지 않기 떄문에 http://addio3305.tistory.com/44 포스팅을 따라하도록 한다.
+
+
+2) action-servlet.xml을 다음과 같이 수정한다.
+다음의 소스를 붙여넣자.
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+ 
+    <context:component-scan base-package="first"></context:component-scan>
+     
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean id="loggerInterceptor" class="first.common.logger.LoggerInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+     
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+     
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0" />
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />    
+     
+    <bean
+        class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+        p:viewClass="org.springframework.web.servlet.view.JstlView"
+        p:prefix="/WEB-INF/jsp/" p:suffix=".jsp">
+    </bean>
+</beans>
+
+
+이 소스를 간단히 살펴보자.
+스프링 3.2 이상에서는 mvc를 설정하는게 많이 바뀌었다.
+<mvc:mapping path/>를 통래서 인터셉터가 동작할 URL을 지정할 수 있다. 지금 작성하는 로거는
+모든 요청에서 동작을 하기때문에 전체 패스를 의미하는 "/**" 로 설정하였다.
+그 후, bean을 수동으로 등록한다.
+
+중요!! 위에서 이야기 했듯이, Interceptor은 Controller가 요청되기 전에 수행된다.
+즉,interceptor는 DispatcherServlet과 같은 위치에 등록이 되어있어야지 정상적으로 수행이 된다.
+
+DispatcherServlet은 사용자(클라이언트)의 요청을 받아서 해당 요청에 매핑되는 컨트롤러와 연결한
+후, 컨트롤러에서 정의된 view를 사용자의 브라우저에 출력하는 역할을 수행한다.
+DispatcherServlet에  관련된 내용은 이미지 참고
+
+
+web.xml을 다시한번 살펴보자.
+
+<servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>
+        org.springframework.web.servlet.DispatcherServlet
+    </servlet-class>
+    <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/config/*-servlet.xml
+        </param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+</servlet-mapping>
+
+
+우리는 여기서 이미 DispartcherServlet을 정의하였다. 그리고 그 DispatcherServlet의 설정파일의
+위치는 /WEB-INF/config/ 폴더 밑의 -servlet.xml로 끄나는 모든 xml 파일이라고 명시한 것이다.
+
+즉, action-servlet.xml에 interceptor을 설정함으로써, 우리는 DispatcherServlet 과 
+Interceptor를 같은 위치에 등록을 한것이다.
+만약, action-servlet에서 Interceptor의 설정을 분리하여 다른 파일로 만들고싶으면, 
+action-servlet.xml이 있는 폴더에 *-servlet.xml의 이름 형식으로 만들면 된다.
+
+
+4.이제 인터셉터가 제대로 동작하는지 확인하자.
+앞에서 이야기한것을 잘 기억하고 있다면 , 인터셉터는 컨트롤러의 요청과 응답시에 호출된다.
+현재 우리는 컨트롤라가 아무것도 없으니.당연히 아무것도 보이지 않는다.
+따라서 간단한 컨트롤러를 하나 만들고 테스트를 해보자.
+
+1) src/main/java/first 밑에 sample.controller 패키지를 만든다.
+
+2) controller 패키지에 SampleController 클래스를 생성한다.
+   여기서 대소문자에 꼭 주의하도록 한다. 자바에서는 대소문자가 다른 문자이기떄문에,
+   대소문자를 필히 확인하고 맞춰야한다.
+
+
+3) 다음의 소스를 붙여넣자.
+
+@Controller
+public class SampleController {
+    Logger log = Logger.getLogger(this.getClass());
+     
+    @RequestMapping(value="/sample/openSampleList.do")
+    public ModelAndView openSampleList(Map<String,Object> commandMap) throws Exception{
+        ModelAndView mv = new ModelAndView("");
+        log.debug("인터셉터 테스트");
+         
+        return mv;
+    }
+}
+
+
+위 소스를 간단히 설명하면,
+1번째 줄의 @Controller 는 어노테이션(Annotation)으로 , 스프링 프레임워크에 현재 클래스가
+컨트롤러 라는 것을 명시해준다. 어노테이션은 앞으로 이것저것 나올테니, 
+그때 다시 설명하도록 한다.
+
+3번째 줄에서 우리가 사용할 Log4j 로그를 선언해놨다.
+
+5번째 줄에서 @Requestmapping 역시 어노테이션으로, DisptacherServlet은 어노테이션을 기준으로
+어떤 컨트롤러의 메서드가 호출되어야 할지를 결정한다.
+그 뒤의 (value="/sample/openSampleList.do")는 프로젝트가 실행될 주소를 의미한다.
+
+7번째 줄에서 ModelAndView 클래스형식의 mv 인스턴스를 생성하였다.
+여기서 new ModelAndView("")를 할때 생성자 부분에는 이 컨트롤러가 실행되고 나서 보여줄
+view를 설정할 수 있다.
+여기서는 인터셉터가 동작하는지 확인하기 테스트이기 때문에 따로 view를 설정하지 않겠다.
+8번째 줄의 log.debug("인터셉터 테스트");를 통해서 컨트롤러가 실행되고 log4j의 로거도
+동작하는것을 보려고 한다. 
+
+4)위에서 선언한 컨트롤러를 호출하자.
+우리는 그동안 프로젝트가 실행되면 자동으로 index.jsp가실행되도록 했었다.
+index.jsp를 이용해서 프로젝트가 실행되면 바로 방금 만든 /sample/openSampleList.do를 호출하도록
+변경하자.
+index.jsp를 열고 모든 내용을 삭제하고, 다음의 코드를 붙여넣는다.
+
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<jsp:forward page="/sample/openSampleList.do"/>
+
+
+index.jsp가 호출되면 자동으로 /sample/openSampleList.do 의 URL로 forward 시키도록 하였다.
+다시말해서, 프로젝트를 시작하면 index.jsp를 호출하게 되고, index.jsp에서는 다시 방금 위에서
+작성한  /sample/openSampleList.do 라는 주소를 호출한다..
+
+서버 실행후 주소창으로 해당 프로젝트를 실행한다.
+
+404에러가 나는데 위에서 ModelAndView에서 사용장제게 보여줄 화면(view)를 지정하지 않았기
+떄문이다. 
+주소는 정확히 호출되었지만, 사용자에게 보여줄 화면이 없기 떄문에 404에러가 발생한 것이다.
+우리가 인터넷을 하다보면 가끔 404 Page Not Found와 같은 에러를 볼 수 있는데, 지금과
+비슷한 상황이라고 생각하자.
+
+로그가 제대로 찍히면 인터셉터와 Log4j가 설정된 것이다.
+
+로그를 살펴보자.
+우리는 아까 LoggerInterceptor를 생성해서 전처리기와 후처리기인 preHandle()과 
+postHandle()을 만들고, 거기에 로그를 작성했다. 
+
+하나의 요청의 시작과 끝을 구분짓는다고 했는데 START는 요청의 시작, END는 모든 로직이 완료된
+것을 의미한다.
+
+START 밑에는 Requst URI : 요청 주소 라는 로그가 찍혀있다.
+이것은 현재 어떤 주소를 호출했는지를 보여준다.
+
+index.jsp에서 해당 주소를 호출했고, 그 주소를 실행했음을 알수 있다.
+마지막으로 log.debug("")통래서 사용자의 로그를 출력하도록 했는데, 그역시 정상적으로 
+출력하도록 했는데, 그 로그 역시 정상적으로 출력된 것을 확인할 수 있다.
+
+여기서, 로그를 자세히 살펴보자. 
+
+로그를 자세히 살펴보면 약간 다른것을 발견할 수 있다.
+DEBUG [first.common.logger.LoggerInterceptor] 와
+DEBUG [first.sample.controller.SampleController] 의 두종류의 로그가 있는것을 확인해보자. 
+
+
+우리는 Logger 객체를 생성할 떄 , 우리는 해당 클래스를 Logger 클래스의 생성자로 
+변수로 넣어주었다.
+
+이를 이용하려 Log4j가 알아서 어떤 클래스에서 로그가 출력된 것인지를 보여주는 것이다.
+만약 우리가 System.out.println()을 사용했으면 어떤 클래스에서 출력된 로그인지를 알기가 쉽지
+않은데, Log4j를 사용해서 어디서 출력된 로그인지를 알수 있도록 하였다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

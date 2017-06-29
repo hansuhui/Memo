@@ -1,0 +1,292 @@
+IEW 이란?
+
+ 
+
+하나또는 하나이상의 테이블로부터 데이터의 부분집합을 논리적으로 표현하는것으로 실제
+
+데이타를 가지고 있는것이 아니라 해당 데이타의 결과를 하나의 SQL 쿼리 정보로 가지고
+
+있습니다.
+
+ 
+
+※ VIEW는 생성시 SQL쿼리문(SELECT * FROM TABLE) 형태로 저장이 됩니다.
+
+※ 뷰테이블이란 표현은 잘못된 표현입니다. 뷰쿼리가 맞는 표현입니다.
+
+ 
+
+VIEW 장점,단점?
+
+ 
+
+뷰를 사용하면 코딩 라인이 짧아지고 결과에 대한 오류 발생시 빠르게 대응 할수 있다는 장점
+
+을 갖고 있습니다. 뷰는 상수값을 받지 못합니다. 즉, parameter 값을 받을수 없어
+
+Scan 범위를 줄일수 없습니다.
+
+ 
+
+VIEW 목적?
+
+ 
+
+데이터베이스 액세스를 제한하기위해
+
+view는 선택적인 내용을 보여주기 때문에 액세스를 제한합니다.
+
+ 
+
+복잡한 질의를 쉽게 만들어 준다.
+
+group나 order by와 같은 복잡한 질의의 정보를 view로 저장시켜놓으면 다음부터는 view의 정보만 가져오면 되므로 쉽게 사용가능하다.
+
+ 
+
+데이터의 독립성을 허용하기 위해
+
+ 
+
+다양하고 빠른 조회를 위해 사용
+
+ 
+
+테이블의 수를 줄이고 성능향상을 가져온다.
+
+ 
+
+VIEW 사용시점
+
+ 
+
+해당 프로젝트에서 관리차원이나 유지보수차원을 중요시 여긴다면 VIEW를
+
+사용하는게 좋다.
+
+ 
+
+VIEW의 종류
+
+ 
+
+단순뷰
+
+하나의 TABLE에서 뽑아오며 함수를 사용안한다.
+
+DML(INSERT,UPDATE,DELETE)사용 가능
+
+복합뷰
+
+하나이상의 TABLE에서 뽑아오며 함수를 사용합니다.
+
+DML(INSERT,UPDATE,DELETE)사용 불가능
+
+예제
+
+CREATE OR REPLACE VIEW AAA AS
+SELECT 
+D.DNAME,
+MIN(E.SAL),
+MAX(E.SAL),
+AVG(E.SAL)
+FROM EMP E , DEPT D
+WHERE E.DEPTNO=D.DEPTNO
+GROUP BY D.DNAME;
+
+ 
+
+VIEW 생성하기
+
+ 
+
+사용방식
+
+ 
+
+CREATE [OR REPLACE] VIEW VIEW_NAME AS QUERY_STRING [WITH READ ONLY];
+
+ 
+
+주의할점
+
+ 
+
+1. QUERY_STRING 에는 ORDER BY절 빼고 모두 사용가능하다.
+
+ 
+
+2. "OR REPLACE" 옵션을 사용하게되면 생성할 VIEW와 같은 VIEW_NAME이 있어도 무시하고 새로운것으로 갱신하게 됩므로 주의하여 사용해야 합니다.
+
+ 
+
+3. "WITH READ ONLY" 옵션을 사용하게 되면 해당 VIEW 에 DML 언어를 사용할수 없으며 DML 언어를 사용하게되면 에러가 발생합니다.
+
+ 
+
+사용예제 :
+
+ 
+
+CREATE VIEW VIEW1 AS
+
+SELECT NAME, AGE, ADDRESS
+
+FROM SCHOOL
+
+WHERE NAME = '김민수';
+
+ 
+
+CREATE OR REPLACE VIEW LEE AS
+
+SELECT * FROM DEPT;
+
+ 
+
+CREATE OR REPLACE VIEW LEE AS
+
+SELECT * FROM DEPT
+
+WITH READ ONLY;
+
+ 
+
+VIEW에 DML한후의 반응
+
+ 
+
+VIEW을 생성후 INSERT을 하게되면 VIEW에는 안들어가지고 원본 TABLE에 입력된다.
+
+VIEW을 생성후 UPDATE을 하게되면 VIEW는 데이타가 없어지면서 원본 TABLE내용이 갱신된다.
+
+ 
+
+뷰는 실테이블을 적당히 가공하여 보여주는 역할을 합니다. 
+실제 테이블의 자료를 보기 위한 하나의 틀 정도로 생각하시면 됩니다.
+뷰중에는 자료 입력,수정,삭제가 가능한 뷰도 있습니다. 
+뷰의 자료를 수정하게 되면 실제 테이블의 자료가 수정되는 것입니다. 
+테이블이 수정되면 뷰 또한 수정된 값을 보여줍니다. 
+
+ 
+
+VIEW 지우기
+
+ 
+
+사용형식 : DROP VIEW VIEW_NAME;
+
+사용예제 : DROP VIEW EXAMPLE1;
+
+ 
+
+생성된 VIEW보기
+
+ 
+
+SELECT * FROM USER_OBJECTS WHERE OBJECT_TYPE='VIEW';
+
+ 
+
+인라인 뷰란?
+
+ 
+
+SQL문에서 사용가능한 별칭을 사용하는 서브쿼리입니다.
+
+인라인뷰는 기본 질의의 FROM절에 명명된 서브쿼리를 사용하는것과 유사합니다.
+
+Oracle 7.1 이상에서 사용가능하다.
+
+ 
+
+※ 단점 : 인라인뷰를 사용한다는것은 가상메모리를 더 사용한다는 것이다.
+
+ 
+
+※ 대용량에서 인라인뷰를 출력항목에 사용하게되면 성능이 많이 떨어진다. 왜냐하면
+
+조회되는 건수만큼 인라인뷰가 실행되기 때문이다.
+
+ex
+
+SELECT (SELECT NAME FROM MEMBER) AS NAME FROM TRADE;
+
+ 
+
+인라뷰를 응용한 Top-N 분석
+
+ 
+
+
+회사에서 월급많이 받는 3명뽑아라
+
+회사에서 가장 최근에 입사한 직원 3명뽑아라
+
+ 
+
+사용형식:
+
+SELECT COLUMN_LIST ,ROWNUM FROM
+
+(SELECT COLUMN_LIST FROM TABLE ORDER BY TOP_N_COLUMN)
+
+WHERE ROWNUM<=N;
+
+ 
+
+사용예제:
+
+SELECT * FROM 
+(
+SELECT * FROM DEPT ORDER BY DNAME
+) 
+WHERE ROWNUM <= 3;
+
+ 
+
+VIEW의 내부 동작
+
+ 
+
+1. VIEW 생성
+
+CREATE VIEW TEST_VIEW AS SELECT NAME, AGE FROM MEMBER WHERE AGE > 5;
+
+ 
+
+2. VIEW 갱신명령
+
+UPDATE TEST_VIEW SET AGE = AGE + 10 WHERE NAME = 'JUNSIK';
+
+ 
+
+3. VIEW 내부적 변환
+
+UPDATE MEMBER SET AGE = AGE + 10 WHERE NAME = 'JUNSIK' AND AGE > 5;
+
+ 
+
+※ VIEW에 갱신명령을 내리면 겉으로는 2번과 같이 처리되는것 처럼 보이지만 DBMS가 명령
+
+을 받은후에 3번과 같이 변환후 실행한다.
+
+ 
+
+서로 다른계정에서 View 접근권한
+
+ 
+
+create or replace view test
+
+as
+
+select * from uer.temp
+
+where deptid =11;
+
+위의 명령을 A계정에서 할경우 당연히 권한이 없다고 나온다. 이때는 SYSTEM 계정에서
+
+A계정에 uer.temp 테이블에 대한 SELECT 권한을 주면 된다.
+
+그리고 SYSTEM계정으로 접속을 해도 권한이 없으면 다른 유저의 자료는 액세스 할수 없다.

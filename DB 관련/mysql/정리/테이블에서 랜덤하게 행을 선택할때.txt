@@ -1,0 +1,1 @@
+SELECT * FROM 테이블 ORDER BY RARD() LIMIT 행수;

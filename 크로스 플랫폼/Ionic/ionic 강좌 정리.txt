@@ -1,0 +1,54 @@
+https://www.youtube.com/watch?v=0IhgLtWZPjU&index=1&list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq
+
+
+[Propety Binding]
+
+<태그 [속성]="변수값">
+
+<div [class]="className">
+
+[Evnet Binding]
+
+<태그 (이벤트 속성)="함수">
+
+<div (click)="alert()">
+
+<ion-input #message (keypu.enter)="messages.push(message.value);message.value='';"
+<ion-item *ngFor = "let msg of message.reverse()">
+{{msg}}
+</ion-item>
+
+
+[OneWay Binding]
+
+이런듯 단방향으로만 값을 넣는것
+
+url:string = "abc.jpg"
+<img [src]="url">
+
+
+[ToWay Binding]
+
+[(ngModel)] : 클래스 맴버변수의 값을 가져오거나 넣을 수 있음
+
+abc: string = "Test";
+
+
+<input [(ngModel)] ="abc">
+
+
+[Directive]
+
+DOM 항목 또는 HTML 태그에 새로운 기능을 부여 할때 사용.
+
+*ngIF, *ngFor 이런것들
+
+<h1 *ngIF="변수">
+내용
+</h1>
+
+
+[값을 볼때]
+
+{{ 변수명 | json }}
+

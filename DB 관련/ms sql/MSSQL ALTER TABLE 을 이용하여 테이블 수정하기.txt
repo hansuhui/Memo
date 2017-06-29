@@ -1,0 +1,10 @@
+ - ALTER TABLE 을 이용하여 컬럼 생성방법
+    ALTER TABLE [테이블명] ADD [컬럼명] [데이터형식] [제약조건]?
+?
+ 
+ - ALTER TABLE 을 이용하여 컬럼 수정방법
+    ALTER TABLE [테이블명] ALTER COLUMN [컬럼명] [데이터형식] [제약조건]?
+?
+ 
+ - ALTER TABLE 을 이용하여 컬럼 삭제방법
+    ALTER TABLE [테이블명] DROP COLUMN [컬럼명]

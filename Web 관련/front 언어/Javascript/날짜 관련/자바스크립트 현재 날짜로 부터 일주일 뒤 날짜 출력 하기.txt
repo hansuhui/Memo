@@ -1,0 +1,33 @@
+자바스크립트 현재 날짜로 부터 일주일 뒤 날짜 출력 하기
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  </head>
+  <body>
+      <script type='text/javascript'> 
+            // Date 객체 사용을 명시해 줍니다.
+           var now = new Date();
+            // nowDate 변수에 현재 날짜만 담습니다.
+           var nowDate = now.getDate();
+            // nowDate 변수의 날짜에 + 7 (일주일)을 하여 setDate로 now의 날짜를 변경해줍니다.
+           now .setDate( nowDate + 7 );
+            // toLocaleString 으로 날짜를 보기좋게 출력 해줍니다.
+           document.write( "오늘부터 일주일 뒤 날짜는 : " + now.toLocaleString() );
+      </script>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성
+ 
+toLocaleString  -  월/일/년도 시간:분:초 형식으로 표시 ( Date 객체 메소드 )
+?getDate?  -  날짜를 구합니다. ( Date 객체 메소드 )

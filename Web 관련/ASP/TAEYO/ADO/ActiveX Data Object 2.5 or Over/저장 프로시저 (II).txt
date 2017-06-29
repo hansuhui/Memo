@@ -1,0 +1,193 @@
+저장 프로시저 (II)
+
+
+이전 강좌에 이어서, 프로시져에 관해서는 이 외에도 OUTPUT을 받아내는 방법과 
+Return 값을 받아내는 방법등이 존재한다. 
+이들은 각각 프로시져에 인자값을 전달하는 것뿐 아니라, 
+어떤 결과나 리턴값을 받아낼 수도 있도록 하는 방법이다. 
+이번에는 이들 방법에 대해서 알아볼 차례이다. 
+그렇다면, 먼저 OUTPUT를 사용하는 방법에 대해서 알아보도록 하자. 
+쿼리 애널라이저에서 다음과 같은 프로시져를 만들어 보자. 
+
+
+CREATE PROC usp_UpdatePrice_Output 
+    @type    char(12), 
+    @plus    Float, 
+    @MaxPrice    Float OUTPUT
+AS
+Begin 
+    Update titles SET price = price + @plus
+    Where type = @type
+
+    Select @MaxPrice = max(price) from titles Where type = @type
+End
+
+
+
+OUTPUT 라는 것은 저장 프로시져에게 인자값을 전달하는 것만이 아니라 되돌려 받을 수도 있게하는 키워드이다. 
+위의 스토어드 프로시져를 보면 알겠지만, 위의 내용은 지정한 타입의 책의 가격을 지정한 만큼 인상한 후, 
+그 인상한 책중에서 가장 비싼 책의 값을 매개변수로써 돌려받는 내용을 갖는다.
+
+
+
+돌려받은 값의 변수이름과 변수타입을 지정한 다음,(여기까지는 기존의 입력인자와 같다) 
+이 변수는 값을 되돌려 받는 데에 사용한다는 의미로 OUTPUT 이라는 키워드를 붙여준다. 
+그렇게 되면, 이 인자를 통해서 우리가 원하는 값을 얻어올 수 있게된다.
+
+소스를 바라보면, 우리는 특정값을 되돌리기 위해서 @MaxPrice라는 변수를 지정했음을 볼 수가 있다. 
+그리고, 이 변수는 Update 문을 진행한 다음 업데이트된 값중에서 가장 큰 값을 저장하게 됨을 볼 수가 있다. 
+그 문장이 바로 Select @MaxPrice = max(price) from titles Where type = @type 이다.
+
+이렇게 되면 우리가 지정한 인자값에 따라 프로시져는 동작하며, 
+그 결과 적용된 책중에서 가장 비싼 책의 가격을 @MaxPrice 라는 변수를 통해서 되돌려주게 된다. 
+그렇다면, 어떻게 그렇게 할 수 있는지 이 프로시져를 실행하는 예를 보도록 하자. 다음이 그 예이다.
+
+
+
+Declare @MaximumPrice    Float
+Set @MaximumPrice = 0
+EXEC usp_UpdatePrice_Output 'business', 10 , @MaximumPrice OUTPUT
+Select @MaximumPrice
+
+
+
+위의 구문이 바로 그 되돌림이 있는 프로시져를 수행하는 예인데, 
+조금은 복잡해 보이지만 알고보면 그렇지도 않다. 
+프로시져를 수행하는 것도 프로그램의 일종이기에 자체적인 문법도 있고, 
+변수를 사용하게 되면 변수의 선언도 필요하다.(SQL서버의 이 프로그래밍을 T-SQL이라고 한다) 
+
+
+EXEC usp_UpdatePrice_Output 'business', 10 , @MaximumPrice OUTPUT
+
+
+하지만, 이 구문에는 @MaximumPrice 라는 변수가 사용되어진다. 그렇기에 변수의 선언과 변수의 초기화가 필요하다. 해서
+
+
+Declare @MaximumPrice    Float
+Set @MaximumPrice = 0
+
+
+이 두 줄이 먼저 선행되어진 것이다. 그리고, 실제 프로시져 실행구문을 구동한다. 
+그렇게 되면 프로시져는 동작할 것이며, 책 중에서 Business 타입인 책들의 가격을 10 달러씩 증가시킬 것이다. 
+그리고, 이미 우리가 작성한대로 이 업데이트된 가격 중에서 가장 비싼 가격을 @MaximumPrice 라는 변수를 통해서 돌려줄 것이다. 
+이제 우리가 할 일은 그 돌려받은 값이 얼마인지 확인하는 일이다. 
+필자의 경우 프로시져 수행전의 가격은 33.988 이었으며, 수행 후의 가격은 43.988 이 되었다.
+
+
+
+참고 : 프로시져를 삭제하는 방법은?
+
+어쩌면 Delete를 생각했었을지 모르겠다. 하지만, 실은 Drop이다.
+Drop PROC usp_UpdatePrice_Output 과 같이 실행하면 프로시져를 없앨 수 있다.
+
+
+조금은 방법이 복잡해 보이지만, 이것은 T-SQL을 사용할 경우의 테스트 방법이며, ASP에서는 나름대로의 사용방법이 따로 존재한다.
+
+
+
+T-SQL이란?
+
+MS SQL 서버에서 사용이 가능한 확장형 SQL 로써, SQL 표준을 따르면서 나름대로 자신을 
+확장시켜 좀더 세세하게 여러 정보를 다룰 수 있게 한 프로그래밍이 가능한 확장된 SQL이라고 볼 수 있다.
+
+
+사실, 결과를 되돌려 받기 위해서는 OUTPUT를 사용하지 않고, 그냥 Select 문으로 레코드셋 자체를 넘길 수도 있다. 
+위의 프로시져는 다음과 같이 사용해도 같은 결과를 나타내게 될 것이다.
+
+
+CREATE PROC usp_UpdatePrice_Output
+    @type    char(12),
+    @plus    Float,
+AS
+Begin
+    Update titles SET price = price + @plus
+    Where type = @type
+
+    Select max(price) from titles Where type = @type
+End
+
+
+이렇게 되면, OUTPUT 인자없이도 레코드를 반환할 수가 있다. 
+OUTPUT 의 경우는 오직 하나의 값을 리턴할 경우 유리하며, 
+많은 레코드를 리턴하고 싶을 경우는 이 방법을 사용하는 것이 좋다. 
+사실 OUTPUT을 사용하는 방법은 그리 자주 사용되는 방법은 아니다.
+
+
+또, 다르게 값을 되돌릴 수 있는 방법으로는 RETURN 방법이 있다. 
+이는 사실 프로시져를 마치면서 또는, 비정상 종료하면서 Return값을 
+지정해서 이 프로시져를 호출한 클라이언트가 현재 어떻게 종료되었는지등을 
+판단하게 하기 위한 수단으로 사용되며, 처리결과를 간단히 알리는데 사용되어지게 된다. 
+주의할 것은 리턴 값은 정수만이 가능하다. (주로 1 아니면 0이다.)
+
+다음은 Return을 사용하는 프로시져의 예이다. 
+이 프로시져는 business 책 중에 가장 비싼 책의 가격을 인상하기 
+이전에 그 책의 가격이 50 달러 이상이라면 책 값을 더 이상 인상하지 않고 
+0을 리턴하게 되며, 아직 50달러 미만이라면 가격을 인상한 뒤에 1 이라는 값을 리턴하게 될 것이다.
+
+
+
+CREATE PROC usp_UpdatePrice_Return
+    @type    char(12),
+    @plus    Float
+AS
+Begin 
+    Declare @Check    int
+
+    Select @Check = Max(price) from titles
+    Where type = @type
+
+    if @Check < 50 
+        Begin
+            Update titles SET price = price + @plus
+            Where type = @type
+
+            Select @Check = 1
+        End
+    Else
+        Select @Check = 0
+
+    Return @Check
+End
+
+
+그러면, 이 구문을 실행해서 결과를 얻어오려면 어떻게 이 구문을 실행해야 할까?
+
+Declare @rtn    int 
+EXEC @rtn = usp_UpdatePrice_Return 'business', 10
+Select @rtn
+
+
+
+이 바로 그것이다. OUTPUT의 경우와 비교했을 때, 약간의 차이가 있다. 
+구문의 경우는 OUTPUT 의 경우와는 달리 돌려받은 값의 변수이름은 지정하지 않는다. 
+그리고, 실행시에는 리턴값을 받기위해, 프로시져 이름 앞에서 프로시져의 결과를 대입하는 모습을 띈 
+@rtn = usp_UpdatePrice_Return 가 인상적이다. 
+어려울 것은 없다. OUTPUT 보다는 조금은 단순한 모습을 띄고 있으니 말이다.
+
+지금의 예는 뭔가 현실적이지는 못하지만, 여러분은 여러 가지 모습으로 이러한 Return 값을 가지는 프로시져를 구성할 수 있을 것이다. 
+예를 들면, 회원가입시 현재 등록하고자 하는 사람의 아이디가 이미 존재하는지의 여부를 체크해서 존재한다면 1, 
+아니라면 0을 리턴하여 처리할 수도 있을 것이다.
+
+조금은 부족한 듯 하지만, 스토어드 프로시져의 사용법에 대해서 우리는 알아보았다. 
+이들은 간단하지만 가장 기본적인 프로시져의 사용예이니 적어도 이 정도는 이해하고 있어야만 한다. 
+이미 언급했듯이, 더욱 자세한 스토어드 프로시져에 대한 내용은 관련서적을 통해서 얻으셔야 한다. 
+이 스토어드 프로시져를 작성하는 구문이나 문법에 대해서는 T-SQL 문을 또한, 따로 공부하셔야 한다.
+
+여러분의 마음은 필자도 알고 있다. 여기서 T-SQL 문법이나 구문에 대해서도 알려주었으면 한다는 것을 말이다. 
+하지만, 그것이 그리 쉽지 않은 것이 T-SQL은 그것만으로도 두꺼운 책 한권이다. 역시 그도 하나의 언어이기 때문이다. 해서, 
+그를 여기서 설명한다는 것은 무리가 있다. 그에 대한 지식은 여러분이 필요한 만큼 SQL 서버 책이나 T-SQL 책 내지는 SQL Books Online을 통해서 얻으셔야만 한다. 
+
+이 지식은 여러분이 ASP 에서 ADO Command 개체를 사용하고자 할 경우나, 
+ADO.NET의 Command 관련 개체들을 사용할 경우 아주 유용한 지식이 되어줄 것이라 믿어 의심치 않는다.
+
+
+
+
+
+
+
+
+
+
+
+

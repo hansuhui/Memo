@@ -1,0 +1,30 @@
+http://87nyunseng.tistory.com/entry/asp-json-%EB%8B%A4%EB%A3%A8%EA%B8%B0
+
+
+ //json text
+     "0":{
+        "id":1384045,
+        "title":"scientist with test tube radiant gradient bg",
+        "creator_name":"Jose Gil",
+        "creator_id":6537,
+        "thumbnail_html_tag":"",
+        "thumbnail_width":81,
+        "thumbnail_height":110,
+    }
+ 
+<script runat="server" language="javascript" src="json2.min.js"></script>
+<%
+'JSON ÆÄ½Ì
+    Dim myJSON
+    Set myJSON = JSON.parse(jSonText)
+ 
+    'JSON Object Ãâ·Â
+    response.write "<BR><BR>"
+    Response.Write "id= " & myJSON.[0].id & "<BR>"
+    Response.Write "title= " &  myJSON.[0].title & "<BR>"
+    Response.Write "creator_name= " &  myJSON.[0].creator_name & "<BR>"
+    Response.Write "creator_id= " &  myJSON.[0].creator_id & "<BR>"
+    Response.Write "thumbnail_html_tag= " &  myJSON.[0].thumbnail_html_tag & "<BR>"
+    Response.Write "thumbnail_width= " &  myJSON.[0].thumbnail_width & "<BR>"
+    Response.Write "thumbnail_height= " &  myJSON.[0].thumbnail_height & "<BR>"
+%>

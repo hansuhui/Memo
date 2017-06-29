@@ -1,0 +1,16 @@
+    {% for s in a_list %}
+              {{ forloop.counter }} {# starting index 1 #}
+                {{ forloop.counter0 }} {# starting index 0 #}
+
+                  <tr>
+                    <td>
+                      <input type="checkbox" name="token" name="token_">
+                    </td>
+                    <td>{{ s.admin_name }}</td>
+                    <td>Windows Mobile 6</td>
+                    <td>-</td>
+                    <td>C</td>
+                  </tr>
+
+
+              {% endfor %}

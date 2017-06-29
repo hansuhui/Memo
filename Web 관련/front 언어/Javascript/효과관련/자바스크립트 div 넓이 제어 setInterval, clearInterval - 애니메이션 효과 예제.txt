@@ -1,0 +1,53 @@
+자바스크립트 div 넓이 제어 setInterval, clearInterval - 애니메이션 효과 예제
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  </head>
+  <body>
+      <div id='nemo' style="width:135px; height:100px; background:#fe3424;">
+          &nbsp;
+      </div>
+      <div style='margin:10px 0 0 0;'>
+           <a hre='#none' onclick='javascript:action(135);' style='cursor:pointer;'>다시</a>&nbsp;&nbsp;&nbsp;
+           <a hre='#none' onclick='startAction();' style='cursor:pointer;'>시작</a>&nbsp;&nbsp;&nbsp;
+            <!--  "정지" 를 누르게 되면 clearInterval() 메소드를 실행하여 종료 -->
+           <a hre='#none' onclick='javascript:clearInterval(startId);' style='cursor:pointer;'>정지</a>
+      </div>
+ 
+      <script type='text/javascript'>   
+          function startAction() {
+              // "정지" 에 사용되는 clearInterval() 메소드를 사용하기 위해서는 setInterval 을 변수에 선언하여야 합니다.
+             // 이유는 clearInterval() 메소드의 인자로 변수명을 넘겨줘야 정지 시킬수 있습니다.
+             startId = setInterval("action()",5); 
+          }
+          // 함수를 실행할때 마다 135가 대입 되면 안되기 때문에 함수밖에 선언    
+          var i = 135;  
+    
+          function action(iWin) {
+              // "다시" 버튼 클릭시 action 함수 인자로 135 를 넘겨 받아 "네모" 를 최초 넓이로 변경될수 있도록 합니다.
+             if ( iWin ) { i = iWin; }
+             // i 값을 증감식 으로 1 씩 증가 하도록 합니다.
+             i++;
+              // 1씩 증가된 i 값은 "네모" 의 넓이 값으로 계속 변경되게 됩니다.
+             document.getElementById('nemo').style.width = i + "px";  
+          }  
+      </script>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+???
+setInterval - 특정함수를 정해진 시간 마다 반복 적으로 실행 시킴 ( window 객체 메소드 )
+clearInterval - setInterval  반복 실행을 정지 시킴 ( window 객체 메소드 )
+ 

@@ -1,0 +1,8 @@
+<link rel="stylesheet" href="//cdn.rawgit.com/xdan/datetimepicker/master/jquery.datetimepicker.css">
+<script src="//cdn.rawgit.com/xdan/datetimepicker/master/jquery.datetimepicker.js"></script>
+
+
+ $('.datetimepicker').datetimepicker({
+                lang: 'ko',
+                format: 'Y-m-d H:i'
+            });

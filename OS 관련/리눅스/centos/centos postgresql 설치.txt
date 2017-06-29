@@ -1,0 +1,60 @@
+https://www.lesstif.com/pages/viewpage.action?pageId=31850584
+
+
+1.http://yum.postgresql.org/ 에서 사용하는 리눅스 배포판과 버전 확인 및 PostgreSQL 확인
+2.버전에 맞는 저장소 설치
+
+CentOS 7
+
+rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-3.noarch.rpm
+
+3.설치 가능한 패키지 검색
+
+yum list postgres*
+
+4.패키지 설치
+
+yum install postgresql95-server postgresql95-contrib postgresql95-devel
+
+5.postgres 컴파일 환경을 출력하는 pg_config 유틸을 패스에 추가
+
+ln -s /usr/pgsql-9.5/bin/pg_config /usr/bin/pg_config
+
+6.초기 db 를 생성하며  RHEL 7 과 6 의 방법이 다릅니다.
+
+[RHEL/CentOS 7]
+
+/usr/pgsql-9.5/bin/postgresql95-setup initdb
+
+7.서비스 구동
+
+service postgresql-9.5 restart
+
+8.Postgres 가 부팅시 자동 구동되도록 설정
+
+chkconfig postgresql-9.5 on 
+
+
+[DB 계정 설정]
+
+1.사용자 등록
+
+adduser sentry
+
+
+2.sentry 용 계정과 DB 를 생성하기 위해 pgsql 프롬프트를 구동
+
+sudo -u postgres psql postgres
+
+3."postgres=#" 프롬프트에서 사용자와 database 를 생성하고 권한을 부여
+
+
+create user 계정명;
+create database 디비명 ENCODING 'UTF-8' ;
+GRANT ALL PRIVILEGES ON DATABASE 디비명 TO 계정명;
+
+4.사용자 DB 암호 설정
+\password sentry 
+
+5.application 에서 정상 연결되는지 확인
+

@@ -1,0 +1,156 @@
+https://ionicframework.com/docs/api/components/action-sheet/ActionSheetController/
+
+
+[ActionSheetController]
+
+액션 시트는 사용자가 일련의 옵션 중에서 선택할 수 있는 대화 상자입니다.
+앱의 콘텐츠 상단에 표시되며 앱과의 상호 작용을을 재개하기 전에 사용자가 직접 해고해야
+합니다. 위험한(파괴적인)옵션은 ios 모드에서 명백하게 나타납니다. 바탕 화면에서 배경을 두드리거나
+이스케이프 키를 치는 것과 같이 작업 시트를 취소하는 쉬운 방법이 있습니다.
+
+액션 시트는 배열로부터 만들어지며 buttons 각 버튼은 그 text 속성과 선택적으로 
+a handler 및 b의 속성을 포함 role 합니다. 처리가 반환 false 화면 작업 시트가 닫히지 않습니다.
+액션 시티는 또한 선택적으로 title , sbuTitle , icon을 가질 수 있습니다.
+
+액션 시트의 모든 옵션은 create 메소드의 첫 번째 인수에 전달할 수 있습니다.
+ActionSheet.create(opts) 
+메소드는
+setTitle()또는 addButton().
+
+=================================================================================
+
+[Instance Members]
+
+- config -
+
+- create(opts) -
+
+Open an action sheet with a title, subTitle , and an array of buttons 
+
+
+Param / Type / Details
+
+opts / ActionSheetOptions / Action sheet options
+
+
+[Advanced]
+
+ActionSheet create options
+
+Option / Type / Description
+
+title / string / The title for the ActionSheet.
+
+subTitle / string / The sub-title for the ActionSheet.
+
+cssCalss / string / Additonal classes for custom style, separated by spaces.
+
+enableBackdropDismiss / boolean / If the Action Sheet should close when the user taps the backdrop.
+
+buttons / array<anay> / An array of buttons to display.
+
+
+ActionSheet button options
+
+Option / Type / Description
+
+text / string / The buttons text
+
+icon / icon / The button icons
+
+handler / any / An express the button should evaluate.
+
+cssClass / string / Additional classes for custom styles,
+		    separated by spaces.
+
+role / string / How the button should be displayed , 
+		destructive or cancel. If not role is
+ 		provided , It will display the button without
+		any addtional style
+
+
+[Dismissing And Asyncc Navigation]
+
+Atfer an action sheet has been dismissed, the app may need to
+also transition to another page depending on the handler's
+logic.Howerve , because  multiple transtions were fired at roughly the same time,
+it's difficult for the nav controller to cleanly animate multiple transitions that
+may have been kicked off asynchronously. This is further desciribed in the 
+Nav Transition Promises section. For action sheets, this means it's
+best to wait fro the action sheet to finish its transition on the same nav controller.
+
+In the example below, after the button has been clicked, its handler waiths on async operation 
+to complete , then it uses pop to navigate back a page in the same stack. The potential
+problem is that the async operation may have been completed before the action sheet has even 
+finished its transition out. In this case, it's best to ensure the action sheet has finished its
+transtion out first,then start the next transtion
+
+
+=================================================================================
+
+import { ActionSheetController } from 'ionic-angular'
+
+export class MyClass{
+
+ constructor(public actionSheetCtrl: ActionSheetController) {}
+
+ presentActionSheet() {
+   let actionSheet = this.actionSheetCtrl.create({
+     title: 'Modify your album',
+     buttons: [
+       {
+         text: 'Destructive',
+         role: 'destructive',
+         handler: () => {
+           console.log('Destructive clicked');
+         }
+       },
+       {
+         text: 'Archive',
+         handler: () => {
+           console.log('Archive clicked');
+         }
+       },
+       {
+         text: 'Cancel',
+         role: 'cancel',
+         handler: () => {
+           console.log('Cancel clicked');
+         }
+       }
+     ]
+   });
+
+   actionSheet.present();
+ }
+}
+
+
+=================================================================================
+
+
+It's important to note that the handler returns false. A feature of button handlers 
+is that they automatically dismiss the action sheet when their button was clicked, 
+however, we'll need more control regarding the transition. 
+
+Because the handler returns false, then the action sheet does not automatically dismiss itself. 
+Instead, you now have complete control of when the action sheet has finished transitioning, 
+and the ability to wait for the action sheet to finish transitioning out before starting a 
+new transition.
+
+
+=================================================================================
+
+[Sass Variables]
+
+
+- All -
+
+Property / Default / Description
+
+$action-sheet-width / 100% / Width of the action sheet
+
+$action-srheet-max-width / 500px / Maximum width of the action sheet
+
+
+

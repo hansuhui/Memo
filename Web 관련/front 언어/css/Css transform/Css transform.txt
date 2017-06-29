@@ -1,0 +1,177 @@
+https://developer.mozilla.org/ko/docs/Web/CSS/transform
+
+[transform]
+
+- 요약(Summary) -
+
+CSS의 transform 속성을 사용함으로써, CSS의 시각적 서식 모델의 좌표 공간을 변형 시킬수 있다.
+해당 속성의 지정된 값에 따라 엘리먼트의 이동(translate), 회전(rotate) , 크기변경(scale).
+기울임(skew)등의 효과를 줄 수 있다.
+
+
+만약, none이 아닌 값이 설정된 경우, stacking content 가 생성된다. 이 경우, 해당 객체는
+position: fixed 인 엘리먼트를 포한하는 컨테이너 처럼 작동한다.
+
+
+[문법(Syntax)]
+
+
+transform: none
+transform: matrix(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+transform: translate(12px, 50%)
+transform: translateX(2em)
+transform: translateY(3in)
+transform: scale(2, 0.5)
+transform: scaleX(2)
+transform: scaleY(0.5)
+transform: rotate(0.5turn)
+transform: skewX(30deg)
+transform: skewY(1.07rad)
+transform: matrix3d(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0)
+transform: translate3d(12px, 50%, 3em)
+transform: translateZ(2px)
+transform: scale3d(2.5, 1.2, 0.3)
+transform: scaleZ(0.3)
+transform: rotate3d(1, 2.0, 3.0, 10deg)
+transform: rotateX(10deg)
+transform: rotateY(10deg)
+transform: rotateZ(10deg)
+transform: perspective(17px)
+
+transform: translateX(10px) rotate(10deg) translateY(5px)
+
+
+[예제(Examples)]
+
+- Live Example -
+
+pre {
+     width: 33em;
+     border: solid red;
+
+    -webkit-transform: translate(100px) rotate(20deg);
+    -webkit-transform-origin: 60% 100%;
+
+    -o-transform:translate(100px) rotate(20deg); 
+    -o-transform-origin:60% 100%;
+
+    transform: translate(100px) rotate(20deg);
+    transform-origin: 60% 100%;
+}
+
+
+[CSS transform 함수(functions)]
+
+CSS의 transform 속성은 엘리먼트가 존재하는 좌표공간을 transform 함수로 변형시킬
+수 있도록해존다. 함수들은 아래에서 설명한다.
+
+
+- matrix -
+
+transform:  matrix(a, c, b, d, tx, ty)
+
+/* a, b, c, d 로 transformation matrix 가 구성되며, 
+   ┌     ┐ 
+   │ a b │
+   │ c d │
+   └     ┘
+   tx, ty 는 이동되는 값이다.  */
+
+
+2D transmation matrix는 6개의 값으로 구성된다. transformation 
+matrix [a b c d tx ty] 과 같이 적용하는 것을 말한다. 
+
+- Live examples -
+
+
+background: gold;  width: 30em;
+
+ -webkit-transform: matrix(1, -0.2, 0, 1, 0, 0);
+      -o-transform: matrix(1, -0.2, 0, 1, 0, 0);
+         transform: matrix(1, -0.2, 0, 1, 0, 0);
+background: wheat;
+ max-width: intrinsic;
+
+ -webkit-transform: matrix(1, 0, 0.6, 1,  250, 0);
+      -o-transform: matrix(1, 0, 0.6, 1,  250, 0);
+         transform: matrix(1, 0, 0.6, 1,  250, 0);
+
+- 회전(rotate) -
+
+transform:  rotate(angle);       /* an <angle>, e.g.  rotate(30deg) */
+
+엘리먼트(element)를 (또는 transform-origin 속성에 설정된 지점)을 
+기준으로 설정된 각도(angle)만큼 시계방향으로 회전시킨다. 
+이 동작은 행렬(matrix) [cos(angle) sin(angle) -sin(angle) cos(angle) 0 0] 연산에 대응된다. 
+
+
+- 크기(scale) -
+
+transform:  scale(sx[, sy]);     
+/* 단위가 지정되지 않은 하나 또는 두개의 <number>, e.g.  scale(2.1,4) */
+
+2D 크기(scaling)변환은 [sx, sy] 와의 연산이다. 만약 sy 가 설정되어 있지 않다면, sx 와 동일한 값으로 간주한다.
+
+
+- scaleX -
+
+transform:  scaleX(sx);          
+/* 단위가 지정되지 않은 <number>, e.g.  scaleX(2.7) */
+
+벡터(vector) [sx, 1] 를 이용한 크기(scale) 연산이다.
+
+
+- scaleY -
+
+transform:  scaleY(sy)           
+/* 단위가 지정되지 않은 <number>, e.g.  scaleY(0.3) */
+
+벡터(vector) [1, sy] 를 이용한 크기(scale)연산이다. 
+
+- 기울임(skew) -  
+
+transform:  skew(ax[, ay])       
+/* 하나 혹은 두개의 <angle>, e.g.  skew(30deg,-10deg) */
+
+엘리먼트(element)에 X, Y축을 중심으로 설정된 각도(angle)만큼 
+기울임(skew)연산을 수행한다. 만약 ay 가 설정되지 않으면, Y축으로는 기울임(skew)연산이 적용되지 않는다.
+
+
+- skewX -
+
+transform:  skewX(angle)         
+/* <angle>, e.g.  skewX(-30deg) */
+
+X축을 기준으로 정해진 각도(angle) 만큼 기울인다.
+
+
+- skewY -
+
+transform:  skewY(angle)         
+/* <angle>, e.g.  skewY(4deg) */
+
+Y축을 기준으로 정해진 각도(angle) 만큼 기울인다.
+
+
+- translate -
+
+transform:  translate(tx[, ty])  
+/* 하나 혹은 두개의 <length> 값 */
+
+벡터(vector) [tx, ty] 에 의한 2D 이동(translation) 연산이다. 
+만약 ty 값을 지정하지 않는다면, 0값으로 가정하여 계산한다.
+
+
+- translateX -
+
+transform:  translateX(tx)       
+/* 지정가능한 값은 <length> 를 참고할 것 */
+
+엘리먼트(element)를 X축을 따라 지정된 값 만큼 이동(translate)시킨다.
+
+- translateY -
+
+transform:  translateY(ty)       
+/* 지정가능한 값은 <length> 를 참고할 것 */
+
+엘리먼트(element)를 Y축을 따라 지정된 값 만큼 이동(translate)시킨다.

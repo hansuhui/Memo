@@ -1,0 +1,172 @@
+	function fn_AddGiftNo() {
+			var obj = $("#txtAddGiftNo").get(0);
+			onlyNumber(obj);
+
+			// 엔터키일경우.
+			if (event.keyCode == 13 || event.srcElement.id == "btnGiftNoInput") {
+
+				var strVal = obj.value;
+
+				if (strVal.length < 13) {
+					alert("정확한 상품권번호를 입력하세요.");
+					obj.value = "";
+					obj.focus();
+					return false;
+				}
+
+				$.ajax({
+					dataType: "json",
+					type: "POST",
+					url: "/Return/PopupReturnGiftInfo",
+					async: false,
+					data: { giftNo: strVal}
+				}).done(function (data) {
+
+					if (data != null) {
+
+						if (data[0] == null || data[0] == "") {
+							alert("회수불가 상품권입니다.");
+							$("#txtAddGiftNo").val("");
+							$("#txtAddGiftNo").focus();
+
+						} else {
+							var row = data[0];
+							var ableType = row.RetnAbleType;
+
+							if (ableType != '1') {
+								alert('회수불가 상품권입니다.');
+								return false;
+							}
+
+							ableType = "";
+
+							fn_AddGiftNoRow(row.GiftNo, row.Jong, row.JongName, row.JongAmt, row.IsSale, row.SaleShopName, row.IsRetn, row.RetnAbleTypeName, ableType, row.RetnReqShopName);
+						}
+
+					} else {
+						alert("데이터 확인시 문제가 발생했습니다. 관리자에게 문의하세요.");
+						return false;
+					}
+				});
+
+				$("#txtAddGiftNo").val("");
+				$("#txtAddGiftNo").focus();
+			}
+		}
+		// 상품권 번호 받아 상태결과 리턴 후 행추가 결과반영
+		function fn_AddGiftNoRow(val1, val2, val3, val4, val5, val6, val7, val8, val9) {
+			var rows = jQuery("#tblList tbody tr");
+			//상품권 번호 이미 추가 확인
+			for (var i = 1; i < rows.length; i++) {
+				if (rows[i].children[1].children[0].value == val1) {
+					alert('이미 존재하는 상품권번호 입니다.');
+					$("#txtAddGiftNo").select();
+					return false;
+				}
+			}
+			var lastrow = rows[rows.length - 1];
+			//$(lastrow).append(lastrow.outerHTML);
+			$("#tblList tbody").append(lastrow.outerHTML);
+
+			rows = $("#tblList tbody tr");
+			var rowIndex = rows.length - 1;
+
+			rows[rowIndex].children[0].innerText = parseInt(rows[rows.length - 1].children[0].innerText) + 1;
+			rows[rowIndex].children[1].children[0].value = val1;
+			rows[rowIndex].children[2].innerText = val3;
+			rows[rowIndex].children[3].innerText = fn_Number_Format(val4);
+			rows[rowIndex].children[4].innerText = val5;
+			rows[rowIndex].children[5].innerText = val6;
+			rows[rowIndex].children[6].innerText = val7;
+			rows[rowIndex].children[7].innerText = val8;
+			rows[rowIndex].children[8].innerText = val9;
+			rows[rowIndex].style.display = "";
+
+			fn_totResult();
+			$("#txtAddGiftNo").select();
+		}
+
+		function fn_totResult() {
+			var rows = jQuery("#tblList tbody tr");
+			$("#totQty2").text(rows.length - 1);
+
+			var totAmt2 = 0;
+			var tempstr = "0";
+			for (var i = 1; i < rows.length; i++) {
+				tempstr = fn_Format_Number(rows[i].children[3].innerText);
+				if (tempstr.length == 0) {
+					tempstr = "0";
+				}
+				totAmt2 += tempstr;
+			}
+			$("#totAmt2").text(fn_Number_Format(totAmt2));
+		}
+
+		function frm_submit() {
+
+			var cnt = 0;
+			var msg = "";
+
+
+			// 가맹점 확인
+			if ($("#ReqShopCode").val() == '') {
+				alert('가맹점을 입력하여 주십시오.');
+				return false;
+			}
+
+			// 입력확인
+			cnt = getReturnGubun.inputGitNoCount();
+			msg = "회수 상품권을 입력하세요.";
+
+			if (cnt < 1) {
+				alert(msg);
+				return false;
+			}
+
+
+			frm.submit();
+		}
+
+		var getReturnGubun = {
+			count: 0,
+			inputQtyCount: function () {
+
+				getReturnGubun.count = 0;
+				$("#tblTblType1 tbody tr input[name=JongQty]").each(function () {
+					var qty = $(this).val();
+
+					if (qty != "" && qty != "0") {
+						getReturnGubun.count = 1;
+						return false;
+					}
+
+				});
+
+				return getReturnGubun.count;
+			},
+			inputGitNoCount: function () {
+
+				getReturnGubun.count = 0;
+				$("#tblList tbody tr input[name=GiftNo]").each(function () {
+					var qty = $(this).val();
+
+					if (qty != "" && qty != "0") {
+						getReturnGubun.count = 1;
+						return false;
+					}
+
+				});
+
+				return getReturnGubun.count;
+			}
+		};
+
+		function fn_DeleteRow(objtbl) {
+			var rows = jQuery("#" + objtbl + " tbody tr ");
+			var rowsLength = rows.length;
+			if (rowsLength > 1) {
+				rows.eq(rows.length - 1).remove();
+
+				fn_totResult();
+			}
+		}

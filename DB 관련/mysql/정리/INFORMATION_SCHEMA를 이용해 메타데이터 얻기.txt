@@ -1,0 +1,33 @@
+
+[INFORMATION_SCHEMA를 이용해 메타데이터 얻기]
+
+데이터베이스에 대한 정보를 얻는 또 다른 방법은 INFORMATION_SCHEMA 데이터베이스에 접근하는
+것이다. INFORMATION_SCHEMA는 SQL 표준에 기초한다. 즉, 콘텐츠 일부분은 MySQL에 국한됐지만,
+접근 방식은 표준을 따른 다는 점이다. 이런 부분 떄문에 INFORMATION_SCHEMA는 완전히 MySQL에
+국한돼 있는 SHOW문에 비해 휠씬 이용하기 쉽다.
+
+SELECT 문을 통해 INFORMATION_SCHEMA에 접근하며 , 유연한 방식으로 사용 가능하다. 
+SHOW문은 항상 고정된 세트의 칼럼을 출력하며 결과를 테이블에 나타낼수 없다. 
+INFORMATION_SCHEMA로 SELECT 문은 출력 결과의 특정 칼럼을 지정할 수 있고 WHERE절은 
+원하는 정보를 선택하는데 필요한 모든 수식을 지정할수 있다.
+또한 조인 또는 서브 질의를 사용할 수 있고, 검색 결과를 추후에 처리할 수 있게 또 다른
+테이블에 저장하기 위해 CREATE TABLE ... SELECT 나  INSERT INTO .. .SELECT 를 
+사용할 수 있다.
+
+INFORMATION_SCHEMA를 여러 종류의 데이터베이스 메타데이터를 위한 뷰 역할을 하는 테이블이
+저장된 가상 데이터베이스로 생각해도 된다.
+INFORMATION_SCHEMA가 어떤 테이블을 포함하는지 확인하려면 SHOW TABLES를 사용한다.
+
+SHOW TABLES IN INFORMATION_SCHEMA;
+SELECT * FROM INFORMATION_SCHEMA.COLUMNS;
+
+- SCHEMATA , TABLES , VIEWS , ROUTINES , TRIGGERS , EVENTS , PARTITIONS, COLUMNS
+  데이터베이스에 대한 정보 : 데이터베이스 내의 데이블 , 뷰 , 저장 루틴 , 트리거, 그리고 
+  이벤트 함수 파라미터, 테이블 파티션, 그리고 테이블 내의 칼럼
+
+- FILES : 테이블스페이스 데이터를 저장하기 위해 사용된 파일데 대한 정보
+
+- TABLE_CONSTRAINTS, KEY_COLUMN_USAGE
+  고유 값을 갖는 인덱스나 외래 키와 같은 제약사항을 갖고 있는 테이블과 칼럼데 대한 정보
+
+- STATISTICS : 테이블 인텍스 특성에 대한 정보

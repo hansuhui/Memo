@@ -1,0 +1,14 @@
+- ISNULL / ISNUMERIC / ISDATE 란?
+ 
+   ISNULL 은 입력값이 NULL인지 아닌지를 확인한 후 NULL인 경우 NULL일때 반환값을 아닌 경우 입력값을 반환하는 함수입니다.
+   ISNUMERIC 은 입력값이 숫자인지 아닌지를 확인하는 함수입니다.
+   ISDATE 는 입력값이 날짜인지 아닌지를 확인하는 함수입니다.
+?
+ 
+ - MSSQL ISNULL / ISNUMERIC / ISDATE 사용방법
+ 
+   ISNULL('[입력값]', '[NULL일때 반환값]')
+   ISNUMERIC('[입력값]')
+   ISDATE('[입력값]')
+
+

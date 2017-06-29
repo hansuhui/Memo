@@ -1,0 +1,5 @@
+
+
+사이 공백을 원하는거루 채우는거
+s.CustCode = "C" + s.CustCode.PadLeft(7, '0') ;
+PadLeft(7, '0')

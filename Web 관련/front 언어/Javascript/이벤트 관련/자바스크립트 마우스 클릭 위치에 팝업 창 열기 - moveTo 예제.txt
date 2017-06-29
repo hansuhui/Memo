@@ -1,0 +1,40 @@
+자바스크립트 마우스 클릭 위치에 팝업 창 열기 - moveTo 예제
+
+
+실행결과 : [ jsfiddle ] 
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+    <script type='text/javascript'>
+         // 브라우서 호환 ( 크로스브라우징 ) 체크 하여 문서 전체에 click 이벤트를 걸어줍니다.
+         if ( document.addEventListener ) {
+             document.addEventListener("click",resultFun,false);
+         } else if ( document.attachEvent ) {
+             document.attachEvent("onclick",resultFun);
+         } else {
+             document.onclick = resultFun;
+         }
+         // window 객체의 open 메소드를 사용하여 팝업이 열리도록 합니다.
+         // 팝업이 열리는 위치는 moveTo 를 사용하여 클릭이 일어난 좌표로 이동 시켜줍니다.    
+         function resultFun(evt) {
+             var smallWin = window.open("http://naver.com","winName","width=300,height=300");
+             smallWin.moveTo(evt.screenX,evt.screenY);
+         }   
+  </script>
+  </head>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+moveTo - 윈도우 위치를 인자로 받은 좌표에 위치 시켜줍니다. ( window 객체 메소드 )
+ 
+[출처] 자바스크립트 마우스 클릭 위치에 팝업 창 열기 - moveTo 예제|작성자 조군

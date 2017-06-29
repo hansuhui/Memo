@@ -1,0 +1,10 @@
+@model List<DomainModel.Concrete.usp_sale_saleRegReportDetail_r_Result>
+@{
+    ViewBag.Title = "";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+
+	DomainModel.Concrete.SaleMst SaleMst = ViewBag.SaleMst;
+	DomainModel.Concrete.Shops Shop = ViewBag.Shop;
+	DomainModel.Concrete.Customers Customer = ViewBag.Customer;
+	List<DomainModel.Concrete.SalePayments> SalePayment = ViewBag.SalePayment;
+	}

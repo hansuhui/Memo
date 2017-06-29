@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Ionic Blank
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content #myContent padding>
+  <button ion-button (click)="onClickScroll(myContent)">Scroll</button>
+  {{ myName}} <br/>
+  {{ myAge - 10}}<br/>
+  {{ Animal.Cat}}<br/>
+  {{ Animal?.Cow}}<br/>
+  <div *ngIf = "show">
+	    Hello World!
+  </div>
+  <br/>
+  <div *ngFor = "let name of pets; let i = index">
+    나의 {{ i + 1 }} 번째 애완동물 <br/>
+    <b>종류</b> : {{ MyPets[name]['kind'] }}<br/>
+    <b>색깔</b> : {{ MyPets[name]['color'] }}<br/>
+  </div>
+  <br/>
+  <button ion-button (click)="onClick()">My Button</button>
+  <button ion-button (click)="onClickY()">Your Button</button>
+  <button ion-button (click)="onClickC()">Cat Button</button>
+
+  
+  <ion-list>
+    <ion-item>
+      <ion-input #message (keyup.enter)="messages.push(message.value); message.value=''"></ion-input>
+    </ion-item>
+    <ion-item *ngFor=" let msg of messages.reverse() ">
+      {{ msg }}
+    </ion-item>
+  </ion-list>
+  
+  <input [(ngModel)] = "abc"/><br/>
+  {{ abc }}<br/>
+
+  <input #phone (keyup)="call = phone.value"/>
+  {{call}}<br/>
+
+  <h1 *ngFor="let i of [1,2,3,4,5]">
+    Count: {{i}}<br>
+    ...
+  </h1>
+  <br/>
+
+  <h1 highlight>
+    왕초보 www.ionickorea.com
+  </h1>
+  <br/>
+
+  <child-cat></child-cat>
+
+  <img [src] = "urlFall"><br/>
+</ion-content>

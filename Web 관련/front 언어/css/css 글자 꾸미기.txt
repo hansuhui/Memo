@@ -1,0 +1,318 @@
+[구글 웹폰트 사용하기]
+
+웹폰트를 만들어서 사용하는 것보다 웹폰트를 제공하는 사이트를 이용하는게 훨씬 편합니다. 
+간단한 코드 몇 줄로 바로 적용시킬 수 있습니다.
+
+대표적인 웹폰트 제공 사이트는 Google Fonts입니다. 600개가 넘는 웹폰트가 있으며, 
+누구나 무료로 사용할 수 있습니다.
+
+http://www.google.com/fonts
+
+하지만, 여기에는 영어 글꼴만 있습니다. 한글을 비롯한 영어 
+이외의 글꼴은 Google Fonts Early Access로 가야합니다.
+
+http://www.google.com/fonts/earlyaccess
+
+Ctrl+F로 찾기를 열고 Korean으로 검색합니다. 
+제일 처음 나오는 한글 웹폰트는 Hanna입니다.
+
+글꼴 설명과 함께 두 줄의 코드가 있습니다.
+
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+
+글꼴을 사용할 수 있게 불러오는 코드입니다. CSS 코드 제일 위에 입력하면 됩니다.
+
+font-family: 'Hanna', serif;
+
+글꼴을 사용하는 예제 코드입니다. 글꼴 이름을 Hanna로 하면 글꼴을 사용할 수 있다는 뜻입니다.
+
+간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Google Font</title>
+    <style>
+      @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+      h1 {font-family: 'Hanna';}
+    </style>
+  </head>
+  <body>
+    <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+  </body>
+</html>
+
+
+Google Fonts Early Access에는 현재 총 6개의 한글 글꼴이 있습니다. 
+위의 예제에서 사용한 하나 글꼴과 나눔고딕, 나눔고딕코딩, 나눔명조, 나눔손글씨붓, 나눔손글씨펜입니다.
+
+각 글꼴을 한 번에 볼 수 있는 예제는 다음과 같습니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Google Fonts</title>
+    <style>
+      @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+      @import url(http://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
+      @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+      @import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+      @import url(http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+      @import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+      .hn {font-family: 'Hanna';}
+      .nbs {font-family: 'Nanum Brush Script';}
+      .ng {font-family: 'Nanum Gothic';}
+      .ngc {font-family: 'Nanum Gothic Coding';}
+      .nm {font-family: 'Nanum Myeongjo';}
+      .nps {font-family: 'Nanum Pen Script';}
+    </style>
+  </head>
+  <body>
+    <h1 class="hn">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+    <h1 class="nbs">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+    <h1 class="ng">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+    <h1 class="ngc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+    <h1 class="nm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+    <h1 class="nps">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+  </body>
+</html>
+
+
+
+
+[글자 간격(letter-spacing), 단어 간격(word-spacing) ]
+
+글자 간격은 letter-spacing 으로 , 단어 간격은 word-spacing 으로 정합니다.
+속성값이 양수이면 간격이 늘어나고, 음수이면 간격이 줄어듭니다.
+
+기본값은 normal 입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS</title>
+    <style>
+      p {
+        font-family: sans-serif;
+      }
+      .ls1 {
+        letter-spacing: 3px;
+      }
+      .ls2 {
+        letter-spacing: -1px;
+      }
+      .ws1 {
+        word-spacing: 3px;
+      }
+      .ws2 {
+        word-spacing: -1px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p class="ls1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p class="ls2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p class="ws1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p class="ws2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+  </body>
+</html>
+
+
+
+[글자 굵기 - font-weight]
+
+글자 굵기는 font-weight 속성으로 정합니다. 속성값은 다음의 두가지 방식으로 나타냅니다.
+
+normal, bold, bolder, lighter
+100, 200, 300, 400, 500, 600, 700, 800, 900
+간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | font-weight</title>
+  </head>
+  <body>
+    <p style="font-weight: normal;">font-weight normal</p>
+    <p style="font-weight: bold;">font-weight bold</p>
+    <p style="font-weight: bolder;">font-weight bolder</p>
+    <p style="font-weight: lighter;">font-weight lighter</p>
+    <p style="font-weight: 100;">font-weight 100</p>
+    <p style="font-weight: 200;">font-weight 200</p>
+    <p style="font-weight: 300;">font-weight 300</p>
+    <p style="font-weight: 400;">font-weight 400</p>
+    <p style="font-weight: 500;">font-weight 500</p>
+    <p style="font-weight: 600;">font-weight 600</p>
+    <p style="font-weight: 700;">font-weight 700</p>
+    <p style="font-weight: 800;">font-weight 800</p>
+    <p style="font-weight: 900;">font-weight 900</p>
+  </body>
+</html>
+
+
+[글자 그림자 효과 - text-shadow]
+
+CSS3부터 text-shadow 속성으로 글자에 그림자 효과를 줄 수 있습니다. 그림자 효과를 위해 이미지 편집 프로그램을 
+사용해야 했던 불편이 사라졌습니다.
+
+하지만, 인터넷 익스플로러 9 이전 버전에서는 지원되지 않는다는 것에 주의하셔야 합니다.
+
+text-shadow 속성의 번법은 다음과 같습니다.
+
+text-shadow: h-shadow v-shadow blur color
+
+속성값의 의미는 다음과 같습니다.
+
+- h-shadow : 그림자의 가로 위치(필수)
+- v-shadow : 그림자의 세로 위치(필수)
+- blur : 그림자의 번짐 정도(선택)
+- color : 그림자 색(선택)
+
+
+!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Text Shadow</title>
+    <style>
+      .s1 {text-shadow: 2px 2px 2px gray;}
+      .s2 {text-shadow: 2px 4px 2px blue;}
+      .s3 {text-shadow: 4px 2px 3px red;}
+      .s4 {text-shadow: -2px -2px 4px green;}
+    </style>
+  </head>
+  <body>
+    <p class="s1">Lorem ipsum dolor sit amet.</p>
+    <p class="s2">Lorem ipsum dolor sit amet.</p>
+    <p class="s3">Lorem ipsum dolor sit amet.</p>
+    <p class="s4">Lorem ipsum dolor sit amet.</p>
+  </body>
+</html>
+
+
+
+[글자 색]
+
+
+글자 색은 color 속성으로 정합니다. 속성값에는 색을 넣습니다. 간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Color</title>
+    <style>
+      .red1 {color: red;}
+    </style>
+  </head>
+  <body>
+    <h1 class="red1">Lorem ipsum dolor sit amet.</h1>
+  </body>
+</html>
+
+
+색의 불투명한 정도는 opacity 속성으로 정합니다. 속성값은 0.0부터 1.0까지의 숫자이고, 숫자가 작을수록 투명해집니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Color</title>
+    <style>
+      .red1 {color: red;}
+      .red2 {color: red; opacity: 0.5;}
+    </style>
+  </head>
+  <body>
+    <h1 class="red1">Lorem ipsum dolor sit amet.</h1>
+    <h1 class="red2">Lorem ipsum dolor sit amet.</h1>
+  </body>
+</html>
+
+
+
+[대소문자 변환 - text-transform]
+
+
+한글에서는 별로 의미가 없지만, 영어 텍스트를 대문자 또는 소문자로 바꿔주는 
+text-transform 속성이 있습니다. text-transform의 속성값은 다음의 네가지가 있습니다.
+
+none : 입력된 그대로 출력합니다.
+capitalize : 단어의 첫번째 글자를 대문자로 바꿉니다.
+uppercase : 모든 글자를 대문자로 바꿉니다.
+lowercase : 모든 글자를 소문자로 바꿉니다.
+
+비슷한 속성으로 font-variant가 있습니다. 속성값은 normal과 small-caps가 있는데
+, normal은 입력된 그대로 출력하고, small-caps는 소문자를 대문자로 만듭니다. 
+단, 일반적인 대문자가 아니라 작은 대문자로 만듭니다.
+
+간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Text Transform</title>
+    <style>
+      .ca {text-transform: capitalize;}
+      .up {text-transform: uppercase;}
+      .lo {text-transform: lowercase;}
+      .va {font-variant: small-caps;}
+    </style>
+  </head>
+  <body>
+    <p>Lorem ipsum dolor sit amet.</p>
+    <p class="ca">Lorem ipsum dolor sit amet.</p>
+    <p class="up">Lorem ipsum dolor sit amet.</p>
+    <p class="lo">Lorem ipsum dolor sit amet.</p>
+    <p class="va">Lorem ipsum dolor sit amet.</p>
+  </body>
+</html>
+
+
+[들여쓰기, 내어쓰기 - text-indent]
+
+
+문단의 들여쓰기, 내어쓰기는 text-indent 속성으로 만들 수 있습니다. 
+속성값에는 길이 또는 백분율이 들어가며, 양수일 때에는 들여쓰기, 음수일 때에는 내어쓰기가 됩니다.
+
+간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | Text Align</title>
+    <style>
+      .ti1 {text-indent: 1em;}
+      .ti2 {text-indent: 2em;}
+      .tim {text-indent: -1em;}
+    </style>
+  </head>
+  <body>
+    <p class="ti1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet.</p>
+    <p class="ti2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet.</p>
+    <p class="tim">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet.</p>
+  </body>
+</html>
+
+세번째 문단은 내어쓰기를 한 것인데, 내어쓴 만큼 가로폭을 벗어납니다. 
+내어쓰기를 할 때에는 내어쓴 만큼 margin 또는 padding을 지정해서 폭을 맞춥니다.
+
+.tim {text-indent: -1em; margin-left: 1em;}
+
+
+
+

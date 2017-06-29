@@ -1,0 +1,23 @@
+     [HttpPost]
+        public ActionResult fileDownLoad(string fileName, string MEMBER_SEQ)
+        {
+
+            string GetDate = DateTime.Now.ToShortDateString().Replace("-", "");
+
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+
+                fileName = fileName.Replace("http://" + Request.ServerVariables["HTTP_HOST"], "");
+                string serverPath = Server.MapPath("~" + fileName);
+                string[] fileNames = fileName.Split('/');
+
+                Response.Clear();
+                Response.AddHeader("Content-Disposition", "attachment;filename=" + Server.UrlEncode(fileNames[4]).Replace("+", "%20"));
+                Response.ContentType = new CargoCommon().MineTypeByFileExtension(fileNames[4]);
+                Response.WriteFile(fileName);
+                Response.End();
+            }
+
+            return frmSubmitPost("CarOwnerCheck", "seq", MEMBER_SEQ.ToString());
+        }

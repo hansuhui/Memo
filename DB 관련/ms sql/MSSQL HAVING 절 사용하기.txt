@@ -1,0 +1,54 @@
+
+ - HAVING 절이란?
+?   GROUP BY를 통해 묶인 레코드 그룹에 대해 조건을 거는 역활을 합니다.
+?
+ 
+ - MSSQL HAVING 절 사용방법 
+   SELECT [컬럼명] FROM [테이블명] GROUP BY [컬럼명] HAVING [조건절]
+?
+ 
+ - 성적 테이블 생성 
+   CREATE TABLE dbo.취미(
+       나이 int NOT NULL,
+       반정보 varchar(3) NOT NULL,
+       이름 varchar(6) NOT NULL,
+       취미 varchar(4) NOT NULL,
+   )
+?
+ 
+ - 데이터 입력
+ 
+   INSERT INTO dbo.취미 (나이, 반정보, 이름, 취미) VALUES (16, 'A반', '홍길동', '등산')
+   INSERT INTO dbo.취미 (나이, 반정보, 이름, 취미) VALUES (17, 'A반', '일지매', '축구')
+   INSERT INTO dbo.취미 (나이, 반정보, 이름, 취미) VALUES (16, 'A반', '임꺽정', '야구')
+   INSERT INTO dbo.취미 (나이, 반정보, 이름, 취미) VALUES (17, 'B반', '이순신', '축구')
+   INSERT INTO dbo.취미 (나이, 반정보, 이름, 취미) VALUES (17, 'B반', '강감찬', '야구')
+   INSERT INTO dbo.취미 (나이, 반정보, 이름, 취미) VALUES (18, 'B반', '김유신', '축구')
+ 
+ 
+ - 테이블 입력 결과 확인?
+ 
+   SELECT * FROM dbo.취미
+ 
+? 
+ - 예제 1
+    2명 이상이 좋아하는 취미를 대상으로 취미와 좋아하는 인원을 구하시오.
+ 
+ 
+ - 예제 1 쿼리
+   SELECT 취미, COUNT(취미) AS 인원 FROM dbo.취미 GROUP BY 취미 HAVING COUNT(취미) > 1
+ 
+ - 예제 2
+   평균나이 16살이 좋아하는 취미를 구하시오.
+ 
+ 
+ - 예제 2 쿼리
+   SELECT 취미, AVG(나이) AS 평균나이 FROM dbo.취미 GROUP BY 취미 HAVING AVG(나이) = 16
+ 
+ 
+
+ 
+ [참고사항] HAVING 절과 WHERE 절의 차이
+    HAVING 절과 WHERE 절은 동일하게 조건검색을 위해 사용되지만 집계함수를 사용하느냐 못하느냐의 차이점이 존재합니다.
+   HAVING 절은 집계함수를 사용할 수 있으며, WHERE 절은 집계함수를 사용할 수 없습니다.
+   집계함수 - COUNT, SUM, MAX, MIN, AVG

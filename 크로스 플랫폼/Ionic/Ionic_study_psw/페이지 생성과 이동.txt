@@ -1,0 +1,24 @@
+pages 폴더 아래 새로운 폴더를 생성하고 그 폴더 안에 타입스크립트를 생성.
+
+소스를 수정하고 app.module.ts 파일에 등록해줘야 사용이 가능하다.
+
+import {Component } from '@angular/core'; // 이걸 써줘야 컴포넌트 사용 가능
+
+@Component({
+  template : '<h2> This is my page</h2>'
+})
+
+// app.module.ts 파일에 import를 하고 페이지 추가를 해주기 위해서는
+// MyPage 클래스를 임포트 가능하도록 export 해줘야 한다.
+export class MyPage{
+}
+
+
+NavController는 Ionic Api로 페이지를 이동하는 기능을 제공한다.
+home.ts 파일의 onclick 함수를 
+  onClick(){
+    this.navCtrl.push(MyPage);
+  }
+이렇게 바꾸면 onclick 시 MyPage 로 이동시킨다.
+
+NavController.pop(); 이렇게 하면 이전페이지로 돌아가기

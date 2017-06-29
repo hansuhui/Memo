@@ -1,0 +1,9 @@
+http://tshooter.tistory.com/126
+
+MS-SQL SQL Server 에이전트 메일 설정
+
+http://tshooter.tistory.com/126
+
+에이전트 속성 들어가서 경고 시스템 들어가서
+
+메일 세션에 프로필 지정!!

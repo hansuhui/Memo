@@ -1,0 +1,213 @@
+[list-style-image]
+
+list-style-image로 이미지를 ul, ol 등의 목록의 마커(marker)로 사용 할 수 있습니다.
+
+- 기본값 : none
+- 상속 : yes
+- 애니메이션 : no
+- 버전 : CSS Level 1
+
+
+- 문법 -
+
+list-style-image : none / url / intial / inherit
+
+- none : 이미지가 없습니다.
+- url : 사용할 이미지의 URL을 입력합니다.
+- initial : 기본값으로 설정합니다.
+- ingerit : 부모 요소의 속성값을 상속받습니다.
+
+- 예제 -
+
+이미지는 원본 크기 그대로 나옵니다. 따라서 글자 크기에 맞는 이미지를 만들어야 합니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS</title>
+    <style>
+      ul.im1 {
+        list-style-image: url( "images/marker.png" );
+        font-size: 38px;
+      }
+      ul.im2 {
+        list-style-image: url( "images/marker.png" );
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="im1">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <ul class="im2">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+  </body>
+</html>
+
+
+
+[list-style-position]
+
+
+list-style-posotion 으로 ul, ol 등의 목록의 마커(marker)의 위치를 정합니다.
+
+- 기본값 : outside
+- 상속 : yes
+- 애니메이션 : No
+- 버전 : Css1
+
+- 문법 -
+
+list-style-position : inside / outside / initial / ingerit
+
+- inside : 문단 안쪽에 놓습니다.
+- outside : 문단 바깥쪽에 놓습니다.
+- inital : 기본값으로 설정합니다.
+- inherit : 부모 요소의 속성값을 상속받습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS</title>
+    <style>
+      .os {
+        list-style-position: outside;
+      }
+      .is {
+        list-style-position: inside;
+      }
+    </style>
+  </head>
+  <body>
+    <p>list-style-position: outside;</p>
+    <ul class="os">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet. Proin gravida velit dictum dui consequat malesuada.</li>
+    </ul>
+    <p>list-style-position: outside;</p>
+    <ul class="is">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla. Phasellus lacinia tempus mauris eu laoreet. Proin gravida velit dictum dui consequat malesuada.</li>
+    </ul>
+  </body>
+</html>
+
+
+[list-style-type]
+
+목록은 <ul> 또는 <ol> 태그로 만듭니다. 목록 앞에 붙는 도향이나 문자을 마커(Marker)라고 하는데,
+어떤 형식 도는 모양의 마커를 사용할지는 list-style-type으로 정합니다.
+
+속성값은 다음과 같습니다.
+
+
+
+- <ul> : disc, circle, square
+- <ol> : decimal, decimal-leading-zero, lower-roman, upper-roman, 
+       lower-greek, lower-latin, upper-latin, armenian, georgian, lower-alpha, upper-alpha
+- 공통 : none
+
+의미상으로는 <ul> 과 <ol>에 사용하는 속성값을 구분하는게 맞지만,  <ul>에 decimal을
+사용하거나 <ol>에 disc를 사용하는 등 바꾸어 사용해도 됩니다.
+
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | list-style-type</title>
+  </head>
+  <body>
+    <h3>disc</h3>
+    <ul style="list-style-type: disc;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>circle</h3>
+    <ul style="list-style-type: circle;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>square</h3>
+    <ul style="list-style-type: square;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>decimal</h3>
+    <ul style="list-style-type: decimal;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>decimal-leading-zero</h3>
+    <ul style="list-style-type: decimal-leading-zero;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>lower-roman</h3>
+    <ul style="list-style-type: lower-roman;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>upper-roman</h3>
+    <ul style="list-style-type: upper-roman;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>lower-greek</h3>
+    <ul style="list-style-type: lower-greek;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>lower-latin</h3>
+    <ul style="list-style-type: lower-latin;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>upper-latin</h3>
+    <ul style="list-style-type: upper-latin;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>armenian</h3>
+    <ul style="list-style-type: armenian;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>georgian</h3>
+    <ul style="list-style-type: georgian;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>lower-alpha</h3>
+    <ul style="list-style-type: lower-alpha;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>    
+    <h3>upper-alpha</h3>
+    <ul style="list-style-type: upper-alpha;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+    <h3>none</h3>
+    <ul style="list-style-type: none;">
+      <li>Lorem ipsum dolor sit amet</li>
+      <li>Aenean nec mollis nulla.</li>
+    </ul>
+  </body>
+</html>
+
+
+
+
+
+
+
+

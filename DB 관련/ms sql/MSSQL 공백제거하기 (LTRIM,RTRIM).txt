@@ -1,0 +1,49 @@
+
+ - LTRIM / RTRIM 이란? 
+   LTRIM은 문자열의 왼쪽에 존재하는 공백값을 제거하는 함수이며, RTRIM은 오른쪽에 존재하는 공백값을 제거하는 함수입니다.
+?
+ 
+ - MSSQL LTRIM / RTRIM 사용방법 
+   LTRIM('[문자열]')
+   RTRIM('[문자열]')
+?
+ 
+ - 테이블 생성
+    CREATE TABLE dbo.출석부 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL
+   )
+?
+ 
+ - 데이터 입력 
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (1, '홍길동')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (2, '   일지매')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (3, '임꺽정   ')
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.출석부
+ 
+? 
+ - 예제 1 
+   출석부를 조회하되 이름컬럼의 왼쪽 공백을 제거하고 조회하시오.
+ 
+ 
+ - 예제 1 쿼리 
+   SELECT 일련번호, LTRIM(이름) AS 이름 FROM dbo.출석부
+?
+? - 예제 2
+   출석부를 조회하되 이름컬럼의 오른쪽 공백을 제거하고 조회하시오.
+ 
+ 
+ - 예제 2 쿼리
+   SELECT 일련번호, RTRIM(이름) AS 이름 FROM dbo.출석부
+?
+? - 예제 3
+    출석부를 조회하되 이름컬럼의 공백을 제거하고 조회하시오.
+ 
+ 
+ - 예제 3 쿼리 
+   SELECT 일련번호, LTRIM(RTRIM(이름)) AS 이름 FROM dbo.출석부
+?
+?

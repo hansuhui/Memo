@@ -1,0 +1,155 @@
+
+[ASP #include 와 Server.Execute 의 차이점]
+
+ASP로 개발 작업을 하다 보면 여러 파일에 공통으로 들어가는 부분이 꼭 있기 마련입니다. 
+그냥 Copy & Paste 신공을 이용해서 여러 파일에 붙여넣기 해도 되지만 나중에 
+수정할 일이라도 생기면 그때의 초 난감함은 이루 말할 수가 없습니다.
+
+수정해야 할 파일의 수가 몇개라면 걍 눈 딱 감고 그냥 수정하면 되지만 수십 개...또는 수백 개라면 이건 수정하고, 
+모든 파일 맞게 수정했는지 또 체크하고, 그리고 테스트하고, 다 됐다 싶어서 보고하면 미처 체크하지 못해서 
+빠졌던 부분 팍팍 튀어 나옵니다. 다음날 출근하면 책상이 깨끗이 치워져 있을 수도 있습니다.
+
+볼륨감이 있는 중형급이상 사이트인데 이런식으로 개발하고 나 몰라라하고 혹여 
+퇴사라도 해 버리면 퇴직금이 안나오거나 후임자도 바로 퇴사했다는 소문을 듣게 될지도 모릅니다.
+
+이런 극단적인 상황까지 가지 말라고 개발과 관련된 모든 언어는 공통으로 사용되는 부분은 한곳에 몰아놓고. 
+그걸 호출해서 사용하는 여러가지 방법을 지원합니다.
+
+ASP역시 #include와 Server.Execute라는 명령어를 이용해서 공통파일이나 외부파일을 포함하는 방법을 제공하고 있습니다. 
+그런데 두가지 모두 외부파일을 포함하는 방법이긴 한데 약간의 차이점이 있습니다.
+
+차이점) #include 방법
+
+#include 방법은 IIS에서 ASP파일을 실행 시키기 전에 포함되는 파일을 먼저 처리하여 포함하고 있는 파일에 삽입합니다.
+포함되고, 포함해서 이렇게 말하니까.... 조금 이해가 어려울 수도 있는데..다음 예제를 보면 금방 이해 하실 겁니다.
+
+
+test.asp 파일 )
+
+<%
+Dim tmp 
+tmp = 100
+%> 
+
+이 test.asp 파일을 test.inc 파일에서 #include를 이용해서 포함합니다.
+
+
+test.inc 파일 )
+<!--#include file="test.asp"-->
+<%
+
+Response.Write tmp
+
+%>
+
+Response.Write 를 이용해서 출력하는 tmp의 값은 test.asp에있는 tmp 변수의 값인 100 이 출력됩니다.
+결국 #include를 이용해서 포함했을 경우에는 두파일이 우리는 한몸이다를 
+외치고 IIS역시 너희는 하나다를 인정해 주는 것입니다. 
+
+이해를 돕기 위해서 testinc.asp 파일에 tmp변수를 다시 선언해 보겠습니다.
+
+test.inc 파일 )
+<!--#include file="test.asp"-->
+<%
+
+Dim tmp 
+tmp = 1000
+Response.Write tmp
+
+%>
+
+다시 선언된 tmp의 값인 1000 이 출력되지 않고 다음과 같은 에러가 발생합니다.
+
+에러출력)
+Microsoft VBScript 컴파일 오류 error "800a0411"
+다시 정의된 이름
+/asptest/testinc.asp, line 3
+Dim tmp = 1000
+----^
+
+변수가 두번 정의 되었다고 에러를 내 버립니다. #include 방법은 완벽하게 하나로 인식한다는 뜻입니다.
+
+
+차이점 ) Server.Execute 방법
+
+Server.Execute 방법은 ASP파일 처리시 같이 처리하게 되며 독립된 파일이 포함된 걸로 인식합니다.
+위의 예제에서 포함 방법만 Server.Execute로 바꿔 보겠습니다.
+
+test.asp 파일 )
+<%
+Dim tmp 
+tmp = 100
+%> 
+testex.asp 파일 )
+<%
+
+Server.Execute("Test.asp") 
+
+Dim tmp 
+tmp = 1000
+Response.Write tmp
+
+%>
+
+testex.asp 파일을 실행해보면 변수가 두번 정의 되었다고 에러를 내지도 않고, 
+testex.asp파일에 선언된 tmp 의 값인1000 이 출력됩니다. 
+결국 Server.Execute 방법은 너는너 나는나 인 셈입니다. 
+그리고 또 한가지 #include처럼 먼저 처리가 되지 않기 때문에 동적으로 포함시키는 것이 가능합니다. 
+#include는 If 문의 조건에 따라서 동적 포함을 하는 것이 불가능합니다.
+
+
+그럼 어쩔때 Server.Execute 방법을 사용하는 것이 좋을까요? 
+간단하게 게시판 개발을 예로 들어 보겠습니다. 
+게시판을 개발할때 write.asp, view.asp, list.asp, delete.asp 이렇게 파일명을 정해서 
+글쓰기에는 write.asp 파일을 호출하고, 글보기에는 view.asp를 호출하는 경우가 더러 있습니다. 
+wirte.asp 파일안에는 <!--#include file="write.inc"--> 이렇게 정의하여 실제처리 루틴을 정적으로 포함시켜놓고, 
+view.asp 파일에도 <!--#include file="view.inc"--> 이렇게 정의해 놓는 경우가 더러 있습니다.
+
+이보다는 Server.Execute를 사용하여 동적인 처리를 하면 상당히 깔끔해 집니다. 
+페이지 호출시 인자를 하나 더 주어 그 인자의 값에 따라서 내부에서 
+Server.Execute로 동적으로 파일을 포함시키면 됩니다.
+
+아래의 Get 방식 호출방법을 살펴보시기 바랍니다. board.asp를 호출하면서 act라는 인자가 하나 더 넘어갑니다.
+http://도메인네임/board/board.asp?act=read&bid=1001&page=102&no=1043
+
+이 act라는 인자의 값에 따라서 board.asp파일의 내부는 Server.Execute를 이용한 동적처리를 하게 됩니다.
+이런식으로 처리하면 게시판의 실제처리 루틴을 포함하는 외부파일은 board.asp파일 하나면 족합니다.
+
+아래는 board.asp파일에서 Server.Execute가 어떻게 사용되는 가를 보여주는 짧막한 예입니다.
+
+
+Server.Execute 사용예)
+<%
+act = request("act")
+bid = request("bid")
+If len(act) = 0 Then
+act = "list"
+End If
+%>
+.......................................
+
+----------생략----------------
+<tr> 
+<td width="18">&nbsp;</td>
+<td width="686" align="center" valign="top">
+<% if act = "list" then %>
+<% Server.Execute("list.inc") %>
+<% end if %>
+<% if ( act = "write" OR act = "reply" OR act = "edit" ) then %>
+<% Server.Execute("write.inc") %>
+<% end if %>
+<% if act = "read" then %>
+<% Server.Execute("view.inc") %>
+<% end if %>
+<% if act = "admin" then %>
+<% Server.Execute("awrite.inc") %>
+<% end if %>
+<% if act = "delete" then %>
+<% Server.Execute("delete.inc") %>
+<% end if %>
+
+</td>
+<td width="18">&nbsp;</td>
+</tr>
+----------생략----------------
+........................................

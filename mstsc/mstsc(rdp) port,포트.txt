@@ -1,0 +1,28 @@
+http://vhrms.tistory.com/256
+
+
+
+
+mstsc(rdp) port,포트 // 포트 변경 방법 (Windows 8)
+
+
+아래의 REG값을 변경 합니다.
+
+
+기본 mstsc의 포트는 3389입니다.
+
+
+
+HKLM\System\CurrentControlSet\Control\Terminal Server\wds\rdpwd\tds\tcp
+
+
+HKLM\System\CurrentControlSet\Control\Terminal Server\Winstations\Rdp-tcp
+
+
+
+
+
+
+아래의 REG값을 변경 하므로써 port no.를 변경할 수 있습니다.
+
+PortNumber라는 Dword값이 존재 하지 않는다면 새로 생성해서 값을 입력 하면 됩니다.

@@ -1,0 +1,32 @@
+
+
+http://stackoverflow.com/questions/18969659/adding-more-than-two-columng-group-headers-in-jqgrid
+
+
+
+<style>
+        .tableThSet {
+            border: 1px solid #d3d3d3;
+            font-weight: normal;
+            color: #555555;
+	    width:25%;
+        }
+    </style>
+
+$table.jqGrid('setGroupHeaders', {
+                    useColSpanStyle: true,
+                    groupHeaders: [{
+                        startColumnName: "SHOP_NAME1",
+                        numberOfColumns: 12,
+                        titleText:
+                            '<table style="width:100.5%;border-spacing:0px;margin-left:-2px;">' +
+                            '<tr><th class="tableThSet" colspan="12">수익분배</td></tr>' +
+                            '<tr>' +
+                                '<th class="tableThSet" colspan="3">본사</td>' +
+                                '<th class="tableThSet" colspan="3">총판</td>' +
+                                '<th class="tableThSet" colspan="3">대리점</td>' +
+                                '<th class="tableThSet" colspan="3">가맹점</td>' +
+                            '</tr>' +
+                            '</table>'
+                    }]
+                });

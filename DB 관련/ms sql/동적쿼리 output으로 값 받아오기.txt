@@ -1,0 +1,5 @@
+DECLARE @N_SEQ INT;
+DECLARE @N_SEQ_SET nvarchar(300);
+SET @N_SEQ_SET = '@N_SEQ int output'
+ exec INTERBILE.cardGatewayDB_test.dbo.sp_executesql N'SELECT @N_SEQ = IDENT_CURRENT(''CARD_POINT_LOG'') ',@N_SEQ_SET,@N_SEQ=@N_SEQ OUTPUT;
+SELECT @N_SEQ

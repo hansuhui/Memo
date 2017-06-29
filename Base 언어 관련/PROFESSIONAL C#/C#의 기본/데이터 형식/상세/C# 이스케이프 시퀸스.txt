@@ -1,0 +1,12 @@
+이스케이프 시퀸스  / 문자
+\'  / 단일따옴표
+\"  / 겹따옴표
+\\  / 백스래시(backslash)
+\0  / Null
+\a  / Alert
+\b  / 백스페이스(backspace)
+\f  / 폼 피드(form feed)
+\n  / 새 줄(newline)
+\r  / 캐리지 리턴(carriage return)
+\t  / 탭 문자(tab)
+\v  / 수직 탭(vertical tab)

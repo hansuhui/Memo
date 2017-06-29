@@ -1,0 +1,375 @@
+[·¹ÄÚµå¼Â ³»¿¡¼­ÀÇ µ¥ÀÌÅÍ °Ë»ö°ú ÇÊÅÍ¸µ]
+
+
+Find ¸Þ¼Òµå´Â ASP¿¡¼­ ±×´ÙÁö »ç¿ëµÇ¾îÁö´Â ¼Ó¼ºÀº ¾Æ´ÏÁö¸¸, ±×·±´ë·Î ¾µ¸¸ÇÑ ±â´ÉÀ» °¡Áø ¸Þ¼ÒµåÀÔ´Ï´Ù.
+ÀÌ ¸Þ¼Òµå´Â ·¹ÄÚµå¼Â ³»¿¡¼­ ¿ì¸®°¡ ÇÊ¿äÇÑ µ¥ÀÌÅÍ¸¦ Ã£±â À§ÇØ »ç¿ëµÇ¾îÁú ¼ö ÀÖ´Â ¸Þ¼Òµå·Î ¸¶Ä¡ °á°ú µ¥ÀÌÅÍ ¾È¿¡¼­
+´Ù½Ã ÇÑ¹ø Äõ¸®ÀÇ where ÀýÀ» ¼öÇàÇÏ´Â °Í°ú °°Àº °á°ú¸¦ ¾ò¾î³¾ ¼ö ÀÖÁö¿ä.
+
+ÀÌ ±¸¹®ÀÇ Çü½ÄÀº ´ÙÀ½°ú °°½À´Ï´Ù.
+
+Rs.Find Criteria, SkipRecoreds,SearchDirecion, Start
+
+ÀÌ ¸Þ¼ÒµåÀÇ Ã¹ ¹øÂ° ÀÎÀÚ¸¦ Á¦¿ÜÇÏ°í´Â ³ª¸ÓÁö ÀÎÀÚ´Â ÁöÁ¤µÇ´Â °æ¿ì°¡ ÀûÀº ÆíÀÌÁö¸¸, °¢°¢ÀÇ ÀÎÀÚ¸¦ °£·«È÷ ¼³¸íÇÏ¸é 
+
+
+
+======================================
+
+{Criteria}
+
+Ã£°íÀÚÇÏ´Â µ¥ÀÌÅÍÀÇ ºñ±³Ç¥ÇöÀÌ µé¾î°¡´Â °÷ÀÔ´Ï´Ù. ÀÏ¹Ý SQL Äõ¸®¿¡¼­ Where Àý¾ÈÀÇ ³»¿ë°ú ÀÏÄ¡ÇÑ´Ù°í
+º¸¸é µÇ°Ú³×¿ä. ¿¹¸¦ µé¸é, ÀÌ ÀÎÀÚ·Î´Â ´ÙÀ½°ú °°Àº Ç¥ÇöµéÀÌ »ç¿ëµÉ ¼ö ÀÖ½À´Ï´Ù.
+"title_id='¾îÂ¼°í'"
+"price=20"
+"title_id like'Cooking%'"
+
+
+{SkipRecords}
+
+½ÃÀÛÀ§Ä¡¿¡¼­ ¾î´ÀÁ¤µµÀÇ ·¹ÄÚµå¸¦ Áö³ªÄ£ µÚ¿¡ °Ë»öÀ» ½ÃÀÛÇÒ °ÍÀÎÁö ±× ¼ö¸¦ ÁöÁ¤.
+
+{SearchDirection}
+
+°Ë»öÀ» ÁøÇàÇÒ ¹æÇâ adSerchForward¸¦ ÁöÁ¤ÇÏ¸é ³»¸® °Ë»öÀ» ÇÏ°ÔµÇ°í, adSearchBackWard·Î ÁöÁ¤ÇÏ°Ô µÇ¸é
+¿ªÀ¸·Î ¹Ø¿¡¼­ºÎÅÍ °Ë»öÀ» ½ÃÀÛÇÏ°Ô ÇÕ´Ï´Ù. µÑ Áß¿¡ ÇÏ³ªÀÇ ÀÎÀÚ¸¦ »ç¿ëÇÒ ¼ö ÀÖÀ¸¸ç ±âº»°ªÀº adSearchForward ÀÔ´Ï´Ù.
+
+{Start}
+
+°Ë»öÀ» ½ÃÀÛÇÒ À§Ä¡¸¦ ÁöÁ¤ÇÕ´Ï´Ù.
+
+
+======================================
+
+ÇÏÁö¸¸, ÀÌ Find ¸Þ¼Òµå´Â ·¹ÄÚµå¼Â³»ÀÇ ¸ðµç µ¥ÀÌÅÍ¸¦ °Ë»öÇÏÁö´Â ¾ÊÀ¸¸ç, 
+Á¶°Ç¿¡ ¸Â´Â µ¥ÀÌÅÍ¸¦ Ã£´Â ¼ø°£ °Ë»öÀ» ±×°÷¿¡¼­ ¸ØÃß°í, 
+Ä¿¼­ÀÇ À§Ä¡¸¦ ±× ·¹ÄÚµå¿¡ µÎ°Ô µË´Ï´Ù. ÀÌ¸¦ ÀÌÇØÇÏ±â À§ÇØ¼­´Â ¿ª½Ã³ª 
+°£´ÜÇÑ ¿¹Á¦¸¦ ÇÏ³ª ÇØ º¸¸é ½±°Ô ÀÌÇØ¸¦ ÇÒ ¼ö°¡ ÀÖ´Âµ¥, 
+´ÙÀ½ ¿¹Á¦´Â titles Å×ÀÌºí¿¡¼­ business Å¸ÀÔÀÇ Ã¥µéÀ» Äõ¸® ¸í·ÉÀ¸·Î °¡Á®¿Í¼­, 
+±× °á°ú ·¹ÄÚµå¼Â ³»¿¡¼­ Find ¸Þ¼Òµå¸¦ »ç¿ëÇØ¼­ °¡Àå ¸ÕÀú Ã£¾ÆÁö´Â °¡°ÝÀÌ 10 ´Þ·¯ ÀÌÇÏÀÎ Ã¥ÀÇ Á¦¸ñ°ú °¡°ÝÀ» Ãâ·ÂÇÏ´Â ¿¹ÀÔ´Ï´Ù
+
+
+[Find.asp]
+
+<!--METADATA TYPE= "typelib" NAME= "ADODB Type Library"
+    FILE="C:\Program Files\Common Files\SYSTEM\ADO\msado15.dll" -->
+<%
+Option Explicit
+
+Dim strConnect, sql
+Dim Rs
+
+strConnect ="Provider=SQLOLEDB.1;Data Source=TAEYO;Initial Catalog= pubs;User ID=sa;Password="
+Set Rs= Server.CreateObject("ADODB.RecordSet")
+SQL = "Select title, price from titles where type = 'business'"
+Rs.open SQL,strConnect, adOpenStatic,adLockReadOnly, adCmdText
+
+Rs.Find "price < 10" 
+
+If Rs.EOF then
+    Response.Write "¿äÃ»ÇÏ½Å Á¶°Ç¿¡ ¸Â´Â µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù"
+Else
+    Response.Write "Á¦¸ñ : " & rs(0) & "<br>"
+    Response.Write "°¡°Ý : " & rs(1) & "<p>"
+End if
+
+Rs.Close
+set Rs = nothing
+%>
+
+
+ÀÏ´Ü, ¼Ò½ºÁß¿¡¼­ ·¹ÄÚµå ¼ÂÀÇ Ä¿¼­Å¸ÀÔÀ» adOpenStatic À¸·Î ÁöÁ¤ÇÑ °Í¿¡ ÁÖ¸ñÇØ¾ß ÇÏ´Âµ¥, ÀÏºÎ µ¥ÀÌÅÍ Á¦°øÀÚ´Â
+adOpenForward ·Î ¿ÀÇÂÇÑ ·¹ÄÚµå¼ÂÀÇ °æ¿ì Find ¸Þ¼Òµå¸¦ Áö¿øÇÏÁö ¾Ê±â ‹š¹®ÀÔ´Ï´Ù.
+
+°í·Î, Find ¸Þ¼Òµå¸¦ »ç¿ëÇÏ±â À§ÇØ¼­´Â ¹Ýµå½Ã adOpenStatic À¸·Î ·¹ÄÚµå¼ÂÀ» ¿ÀÇÂÇÏ¿©¾ß ÇÕ´Ï´Ù.
+
+±×¸®°í, If Rs.EOF then ºÎºÐµµ °ü½ÉÀÖ°Ô ¹Ù¶óº¸µµ·Ï ÇÏ¼¼¿ä. Find ¸Þ¼Òµå·Î ³»¸®°Ë»öÀ» ÇÒ °æ¿ì¿¡´Â ¸¸ÀÏ, 
+±× °Ë»ö¿¡ ´ëÇÑ °á°ú°¡ ¾øÀ» °æ¿ì EOF °¡ True¸¦ ¸®ÅÏ ÇØÁÖ°Ô µË´Ï´Ù. 
+¹Ý´ë·Î, ¹Ø¿¡¼­ À§·Î °Ë»öÇÒ °æ¿ì °Ë»ö°á°ú°¡ ³ª¿ÀÁö ¾Ê´Â´Ù¸é BOF °¡ True¸¦ ¸®ÅÏÇØ ÁÖ°Ô µÇ°í ¸»ÀÌÁÒ.
+
+ÇØ¼­ ¿ì¸®´Â À§ÀÇ °æ¿ì EOF °ªÀ» Ã¼Å©ÇÔÀ¸·Î½á °Ë»ö°á°ú°¡ ¾øÀ» °æ¿ì¿¡´Â 
+"¿äÃ»ÇÏ½Å Á¶°Ç¿¡ ¸Â´Â µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù"¶ó´Â ¹®ÀÚ¿­ÀÌ Ãâ·ÂÇÏ°Ô²û ±¸¼ºÇØ ³õÀº °ÍÀ» º¼ ¼ö°¡ ÀÖÀ» °ÍÀÔ´Ï´Ù.
+(¹°·Ð, ±×·± °á°ú´Â ¸¸³ªÁö ¸øÇÏ°ÚÁö¸¸.. ^_______^)
+
+Find ¸Þ¼Òµå°¡ ¿ì¸®°¡ ¿øÇÏ´Â µ¥ÀÌÅÍ¸¦ Ã£¾ÆÁÖ´Â ¿ªÇÒÀ» ÇÑ´Ù¸é, 
+±× ºÎºÐ¿¡ ´ëÇØ¼­´Â ÇÊÅÍ¸µµµ °°Àº ÀÔÀåÀÌ¶ø´Ï´Ù. ÇÏÁö¸¸, Find ´Â ¿ì¸®°¡ ÁöÁ¤ÇÑ ·¹ÄÚµå¸¦ Ã£À» ¶§±îÁö¸¸ 
+°Ë»öÇÏ´Â ¹Ý¸é, ÇÊÅÍ¸µÀº ·¹ÄÚµå¼Â ¾ÈÀÇ ¸ðµç ·¹ÄÚµå¸¦ °Ë»öÇÏ¿© ¿ì¸®°¡ ÁöÁ¤ÇÑ Á¶°Ç¿¡ ¸Â´Â 
+·¹ÄÚµåµé¸¸À» »Ì¾Æ³¾ ¼ö ÀÖ°Ô ÇÏ´Â ¼Ó¼ºÀÌÁö¿ä.
+
+´õ¿í ¿øÈ°ÇÑ ÀÌÇØ¸¦ À§ÇØ¼­ ¸ÕÀú ½¬¿î ¿¹Á¦¸¦ Å×½ºÆ® ÇØº¸°í ¸¶Àú ÀÌ¾ß±â¸¦ ³ª´©¾î º¸µµ·Ï ÇÏÀÚ±¸¿ä.
+
+
+
+[Filter.asp]
+
+<!--METADATA TYPE= "typelib" NAME= "ADODB Type Library"
+    FILE="C:\Program Files\Common Files\SYSTEM\ADO\msado15.dll" -->
+<%
+Option Explicit
+
+Dim strConnect
+Dim Rs
+
+strConnect = "Provider=SQLOLEDB.1;Data Source=TAEYO;Initial Catalog= pubs;User ID=sa;Password="
+Set Rs = Server.CreateObject("ADODB.RecordSet")
+
+Rs.open "titles", strConnect, adOpenStatic, adLockReadOnly, adCmdTable
+Rs.Filter = "price < 15" 
+
+Response.Write "<b>*** ·¹ÄÚµå¼Â¿¡¼­ price < 15 ·Î ÇÊÅÍ¸µ ÇÏ¿´½À´Ï´Ù. ***</b><p>"
+
+If Rs.EOF then
+    Response.Write "¿äÃ»ÇÏ½Å Á¶°Ç¿¡ ¸Â´Â µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù"
+Else
+    Response.Write "<table width=500>"
+    Response.Write "<tr><td>Á¦¸ñ</td><td>°¡°Ý</td></tr>"
+    Do until Rs.EOF
+        Response.Write "<tr><td>" & rs("title") & "</td>"
+        Response.Write "<td>" & rs("price") & "</td></tr>"
+        Rs.MoveNext
+    Loop
+    Response.Write "</table>"
+End if
+
+Response.Write "<p><b>*** ·¹ÄÚµå¼Â¿¡¼­ ÇÊÅÍ¸µÀ» Á¦°ÅÇß½À´Ï´Ù. ***</b><p>"
+
+Rs.Filter =adFilterNone
+
+Response.Write "<table width=500>"
+Response.Write "<tr><td>Á¦¸ñ</td><td>°¡°Ý</td></tr>"
+Do until Rs.EOF
+    Response.Write "<tr><td>" & rs("title") & "</td>"
+    Response.Write "<td>" & rs("price") & "</td></tr>"
+    Rs.MoveNext
+Loop
+Response.Write "</table>"
+
+	Rs.Close
+	set Rs = nothing
+%>
+
+
+
+ÀÌ¹ø ¿¹Á¦¿¡¼­´Â pubs µ¥ÀÌÅÍº£ÀÌ½ºÀÇ titles Å×ÀÌºíÀÇ ¸ðµç µ¥ÀÌÅÍ¸¦ ÀÏ´Ü ·¹ÄÚµå¼Â¿¡ ´ã¾Æº¸¾Ò½À´Ï´Ù. 
+±×¸®°í, Ã¥ÀÇ °¡°ÝÀÌ 15ºÒ ÀÌÇÏÀÎ Ã¥¸¸À¸·Î ´ÙÀ½°ú °°ÀÌ ÇÊÅÍ¸µÀ» ÇÑ °ÍÀ» º¼ ¼ö°¡ ÀÖÀ» °ÍÀÌ±¸¿ä.
+
+Rs.open "titles", strConnect, adOpenStatic, adLockReadOnly, adCmdTable
+Rs.Filter = "price < 15"
+
+ÀÌÁ¦ ·¹ÄÚµå¼ÂÀº ÇÊÅÍ¸µÀÌ µÇ¾îÁ®¼­ °¡°ÝÀÌ 15ºÒ ÃÊ°úÀÎ Ã¥µéÀº ¼û°ÜÁö°Ô µÇ¸ç, 
+15ºÒ ÀÌÇÏÀÎ Ã¥µé¸¸ÀÌ ·¹ÄÚµå¼Â¿¡¼­ º¸¿©Áö°Ô µË´Ï´Ù. ÇØ¼­, 
+±× ÀÌÈÄÀÇ ¼Ò½º¸¦ º¸¸é ±× ÇÊÅÍ¸µÀÇ °á°ú°¡ Á¦´ë·Î ³ª¿À´ÂÁö¸¦ È®ÀÎÇÏ±â À§ÇØ¼­ 
+·çÇÁ¸¦ µ¹¸é¼­ °¢°¢ÀÇ µ¥ÀÌÅÍ¸¦ Ãâ·ÂÇÏ°í ÀÖ´Â °ÍÀ» º¼ ¼ö ÀÖÀ» °ÍÀÔ´Ï´Ù.
+
+±×¸®°í, ±× ·çÇÁ°¡ ³¡³­ ´ÙÀ½¿¡´Â ´ÙÀ½°ú °°Àº ÄÚµå¸¦ »ç¿ëÇØ¼­ ÇÊÅÍ¸µÀ» ¾ø¾Ö°í, 
+¸ðµç µ¥ÀÌÅÍ¸¦ ´Ù½Ã ·¹ÄÚµå¼Â¿¡¼­ º¸ÀÌ°Ô ÇÏ´Â °ÍÀ» º¼ ¼ö°¡ ÀÖ½À´Ï´Ù.
+
+Rs.Filter = adFilterNone
+
+·¹ÄÚµå¼ÂÀÇ Filter ¼Ó¼ºÀ¸·Î´Â ¿©·¯ºÐÀÌ ¿øÇÏ´Â °Ë»öÁ¶°ÇÀ» »ç¿ëÇÏ¸é µÇÁö¸¸, 
+±× Á¶°Ç¿Ü¿¡ ´ÙÀ½°ú °°Àº »ó¼öµéÀ» ÁöÁ¤ÇÒ ¼öµµ ÀÖ¾î¿ä.°¢°¢ÀÇ »ó¼ö °ª°ú »ó¼öÀÇ ¿ªÇÒÀ» Ç¥·Î Á¤¸®ÇØ º¸¾Ò½À´Ï´Ù.
+
+===================»ó¼ö °ª°ú »ó¼öÀÇ ¿ªÇÒ===================
+
+adFilternone / ÇöÀç ÁöÁ¤µÈ ÇÊÅÍ¸¦ ¾ø¾Ö°í, ¸ðµç ·¹ÄÚµå¸¦ º¸ÀÌ°Ô ÇÑ´Ù.
+
+adFilterPendingRecords / º¯°æ³»¿ëÀÌ ¾ÆÁ÷ µ¥ÀÌÅÍ½ºÅä¾î·Î Àü´ÞµÇÁö ¾ÊÀº ·¹ÄÚµåµéÀ» º¸¿©ÁØ´Ù.
+			 ´Ü, ÀÌ±â´ÉÀº ¹èÄ¡¾÷µ¥ÀÌÆ® ¸ðµå¿¡¼­¸¸ Àû¿ëµÈ´Ù.
+
+adFilterAffectedRecords / ¸¶Áö¸· Delete, ReSync, UpdateBatch µîÀÇ È£Ãâ·Î ¿µÇâÀ» ¹ÞÀº ·¹ÄÚµåµé¸¸À» º¸¿©ÁØ´Ù.
+
+
+adFilterFetchedRecoreds  / µ¥ÀÌÅÍ¸¦ °¡Á®¿À´Â ¸¶Áö¸·È£Ãâ¿¡ ÀÇÇØ ¸¸µé¾îÁø ·¹ÄÚµåµéÀ» º¸¿©ÁØ´Ù.
+
+
+=========================================================
+
+ÀÌµéÀº °¢°¢ ºñ±³Àû °£´ÜÇÑ Find ¸Þ¼Òµå¿Í Filter ¼Ó¼ºÀÇ »ç¿ë ¿¹ÀÌ¾ú½À´Ï´Ù. ÇÏÁö¸¸, ASP ÆäÀÌÁö¿¡¼­ÀÇ
+»ç¿ëºóµµ°¡ ±×´ÙÁö ¸¹Áö ¾ÊÀº ÀÌÀ¯´Â ¿øÇÏ´Â µ¥ÀÌÅÍ¸¦ Ã£±â À§ÇØ¼­ Äõ¸®ÀÇ ¼öÇàÀ» ÇÏ°í, °Å±â¿¡ Find³ª Filter¸¦ ÅëÇØ¼­
+Àç °Ë»öÀ» ½ÃµµÇÏ´Â °ÍÀº ÀÌÀ¯¾øÀÌ ¼­¹öÀÇ ¼º´É¸¸À» ÀúÇÏ½ÃÅ³ »ÓÀÌ±â ‹š¹®ÀÌÁö¿ä. Â÷¶ó¸® ±×·²¹Ù¿¡´Â ÇÑ¹øÀÇ Äõ¸®¸¦
+¿øÇÏ´Â µ¥ÀÌÅÍ¸¦ ¾ò¾î¿Ã ¼ö ÀÖµµ·Ï ±¸¼ºÇÏ´Â °ÍÀÌ ´õ È¿À²ÀûÀÔ´Ï´Ù. ÇÏÁö¸¸, °¡Á®¿Â µ¥ÀÌÅÍ¸¦ Àç Á¤·ÄÇÏ¸é¼­ Ãâ·ÂÇØ
+ÁÙ ÇÊ¿ä¼ºÀÌ ÀÖ´Ù°Å³ª ÇÏ´Â Æ¯º°ÇÑ °æ¿ì¿¡´Â ¿ÀÈ÷·Á À¯¸®ÇÔÀ» Á¦°øÇÒ ¼öµµ ÀÖ½À´Ï´Ù.
+
+¿¹¸¦ µé¸é, °¡Á®¿Â ¸ñ·ÏµéÀ» °¡,³ª,´Ù ¼øÀ¸·Î Å« ºÐ·ù¸¦ ³ª´©¾î Ãâ·ÂÇÏ°íÀÚ ÇÒ °æ¿ì¿¡ À¯¸®ÇÕ´Ï´Ù.
+±×·² °æ¿ì, °¢°¢ÀÇ Äõ¸®¸¦ ´øÁ® µ¥ÀÌÅÍ¸¦ °¡Á®¿À±â º¸´Ù´Â ÇÊÅÍ¸µÀ» ÅëÇØ¼­ °¢°¢ÀÇ µ¥ÀÌÅÍ¸¦ °¡,³ª,´Ù ¼øÀ¸·Î ÇÊÅÍ¸µÇÏ¿©
+Ãâ·ÂÇÏ´Â °ÍÀÌ ¼º´ÉÀÇ Çâ»óÀ» °¡Á®¿ÃÅ×´Ï ¸»ÀÌÁö¿ä
+
+¶ÇÇÑ, À¥ÀÌ ¾Æ´Ñ È¯°æÀÇ ·¹ÄÚµå¼Â ³»¿¡¼­¶ó¸é ÀÌ ¹æ¹ýµéÀº È¿À²ÀûÀ¸·Î »ç¿ëµÉ ¼ö ÀÖ½À´Ï´Ù. ±»ÀÌ ÀÌ¹Ì ¿øÇÏ´Â µ¥ÀÌÅÍ°¡ µé¾îÀÖ´Â
+·¹ÄÚµå¼Â ³»¿¡¼­ Æ¯Á¤µ¥ÀÌÅÍ¸¦ Àç °Ë»öÇÏ±â À§ÇØ¼­ ´Ù½Ã ¼­¹ö¸¦ °¬´Ù¿Í¾ß ÇÒ ÇÊ¿ä¼ºÀº ¾øÀ¸´Ï ¸»ÀÌÁÒ. ÀÌµéÀ» ÀûÀýÈ÷ »ç¿ëÇÒ¸¸ÇÑ
+°÷À» Ã£´Â °Íµµ ¿©·¯ºÐÀÇ ´É·ÂÀÔ´Ï´Ù. ÁøÁ¤ÇÑ ³»°øÀÇ »ó½ÂÀº ¿©·¯ Áö½ÄÀ» ¿©·¯ºÐ ¸Ó¸® ¼Ó¿¡¼­ Á¤¸®ÇÑ µÚ, ÀûÀýÇÑ °÷¿¡¼­ 
+»ç¿ëÇÒ ÁÙ¾Æ´Â µ¥¿¡ ÀÖÀ¸´Ï ¸»ÀÔÁÒ....
+
+±×·¯¸é ¸ÕÀú ·ÎÁ÷À» ÀÌÇØÇÏ±â À§ÇØ¼­ ¾ËÆÄºª¼øÀ¸·Î Ãâ·ÂÇÏ´Â ¿¹Á¦¸¦ ¸ÕÀú ÇØº¸°íÀÚ ÇÏ´Âµ¥, ÀÌ ¿¹Á¦´Â ¸ðµç Á÷¿öÀÇ µ¥ÀÌÅÍ¸¦
+·¹ÄÚµå¼Â¿¡ °¡Á®¿Â ´ÙÀ½, ±× ¾È¿¡¼­ °¢°¢ÀÇ »ç¿øÀÇ ÀÌ¸§µéÀ» ¾ËÆÄºª ¼øÀ¸·Î ³ª¿­ÇÏ´Â ¿¹ÀÌ¶ø´Ï´Ù.
+
+ÀÌ¸¦ ±¸ÇöÇÒ °æ¿ì´Â ÇÊÅÍ¸µÀ» »ç¿ëÇÏ´Â °ÍÀÌ ¿©·¯ ¹øÀÇ Äõ¸®¸¦ »ç¿ëÇÏ¿© ¸ñ·ÏÀ» ¾ò¾î¿À´Â °Íº¸´Ù È¿°úÀûÀÌ±â¿¡ ÀÌ ¿¹¸¦ ÇÑ¹ø
+»ìÆìº¸°íÀÚ ÇÕ´Ï´Ù. ¸ðµç µ¥ÀÌÅÍ¸¦ ·¹ÄÚµå¼ÂÀ¸·Î °¡Á®¿Â ´ÙÀ½, ÇÊÅÍ¸¦ A,B,C ¼øÀ¸·Î ¹Ýº¹ÇØ¼­ ÇÊÅÍ¸µÀ» °É¾î °¢°¢¿¡ ¸Â´Â µ¥ÀÌÅÍ¸¸À»
+Ãâ·ÂÇÑ´Ù¸é È¿°úÀûÀ¸·Î ¾ËÆÄºª ¼øÀÇ ¸ñ·ÏÀ» ¾ò¾î³¾ ¼ö°¡ ÀÖÀ» °ÍÀÔ´Ï´Ù.
+
+
+
+[Filter_list.asp]
+
+<!--METADATA TYPE= "typelib" NAME= "ADODB Type Library" 
+    FILE="C:\Program Files\Common Files\SYSTEM\ADO\msado15.dll" -->
+<%
+Option Explicit
+
+Dim strConnect, SQL
+Dim Rs
+Dim char, alphabet
+
+strConnect = "Provider=SQLOLEDB.1;Data Source=TAEYO;Initial Catalog= pubs;User ID=sa;Password="
+Set Rs = Server.CreateObject("ADODB.RecordSet")
+
+SQL = "select lname, fname from employee"
+Rs.open SQL, strConnect, adOpenStatic, adLockReadOnly, adCmdText
+%>
+<html><body>
+<%
+For char = 65 to 90
+    alphabet = Chr(char)
+    Rs.Filter = "Lname like '" & alphabet & "%'"
+
+    Response.Write "<table width=500>"
+    Response.Write "<tr><td><h3>" & UCase(alphabet) & "</h3></td></tr>"
+    if Rs.EOF then
+        Response.Write "<tr><td>±×·± ¼ºÀ» °¡Áø »ç¶÷Àº ¾ø½À´Ï´Ù</td></tr>"
+    else
+        Response.Write "<tr><td>"
+        Do until Rs.EOF
+            Response.Write rs(0) & "(" & Rs(1) & ") , "
+            Rs.MoveNext
+        Loop
+        Response.Write "</td></tr>"
+    End if 
+    Response.Write "</table><br>" 
+next
+
+Rs.Close 
+set Rs= nothing
+%>
+</body></html>
+
+
+
+¼Ò½ºÁßÀÇ ÇÙ½ÉÀº °¢°¢ÀÇ ¾ËÆÄºª ¼øÀ¸·Î ·çÇÁ¸¦ µ¹¸®¸ç, ±× °ªÀ» ÇÊÅÍ¸µ¿¡ °Å´Â ´ÙÀ½ ºÎºÐÀÔ´Ï´Ù.
+
+For char= 65 to 90 
+    alphabet = Chr(char)
+    Rs.Filter = "Lname like '" & alphabet & "%'"
+
+
+¾ËÆÄºªÀÇ ¾Æ½ºÅ° ÄÚµå´Â 65¹øºÎÅÍ ½ÃÀÛÇÕ´Ï´Ù. ±×·¸±â¿¡ ¿ì¸®ÀÇ ·çÇÁ´Â 65¿¡¼­ºÎÅÍ ½ÃÀÛÇÏ¸ç, 
+¸Å¹ø ±× °ªÀ» Chr() ÇÔ¼ö·Î ¾ËÆÄºªÀ¸·Î ¹Ù²Ù¾îÁÖ¾î ±× °ªÀ¸·Î ÇÊÅÍ¸µÀ» °Å´Â °ÍÀ» º¼ ¼ö°¡ ÀÖ½¿´Ù. 
+ÇÊÅÍ¸µ ÈÄ,ÇÊÅÍ¸µµÈ µ¥ÀÌÅÍµéÀ» Ãâ·ÂÇÑ µÚ, ´Ù½Ã ±× ´ÙÀ½ ¾ËÆÄºªÀ¸·Î ÇÊÅÍ¸µ °É¾î 'Z'±îÁö
+°è¼ÓÀûÀ¸·Î ÇÊÅÍ¸µÀ» °Å´Â °ÍÀ» º¼ ¼ö°¡ ÀÖÀ» °ÍÀÓ´Ù.
+
+À§ÀÇ ¼Ò½º¸¦ ÀÌÇØÇÏ´Â °ÍÀº ±×´ÙÁö ¾î·ÆÁö ¾ÊÀ» °ÍÀÌ¶ó°í »ý°¢ÇÕ´Ï´Ù. ÇÏÁö¸¸, ÇÑ±ÛÀÇ °æ¿ì¶ó¸é?
+
+´ë´ÜÈ÷ ¸¹Àº Áú¹®À» ¹Þ´Â °ÍÁß¿¡ ÇÏ³ª°¡ µ¥ÀÌÅÍµéÀ» ¤¡,¤¤,¤§ ¼øÀ¸·Î ¹èÄ¡ÇÏ°í ½Í´Ù´Â °ÍÀÌ¾ú¾î¿ä.
+ÀÌ°Íµµ ¸¶Âù°¡Áö·Î ÇÊÅÍ¸µÀ» °É¸é ÇØ°áÀÌ °¡´ÉÇÑµ¥ ¹®Á¦´Â ¾î¶»°Ô µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ ¤¡,¤¤,¤§¿¡ °¢°¢ ¸Â´Â µ¥ÀÌÅÍ¸¦
+°¡Á®¿Ã °ÍÀÎ°¡ÀÔ´Ï´Ù. ÀÌ°ÍÀº ¿¹»ó¿Ü·Î °£´ÜÇÏ´ä´Ï´Ù.
+
+´Ù¸¥ µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­¶ó¸é Àå´ãÇÒ ¼ö ¾øÁö¸¸ SQL ¼­¹ö 7.0 ±âÁØÀÌ¶ó¸é ¤¡À¸·Î »çÀÛÇÏ´Â ¸ðµç µ¥ÀÌÅÍ¸¦ °¡Á®¿À±â À§ÇØ¼­´Â
+´ÙÀ½°ú °°Àº Äõ¸®¸¦ »ç¿ëÇÏ¸é µÇÁÒ.
+
+Select * from Å×ÀÌºí where name >= '°¡' and name < '³ª'
+
+ÀÌ¸¦ ÈùÆ®·Î ¿©·¯ºÐµéÀº °¢°¢ÀÇ ÀÚÀ½¿¡ ¸Â´Â µ¥ÀÌÅÍ¸¦ °¡Á®¿Ã ¼ö ÀÖÀ» °ÍÀÔ´Ï´Ù. ¹®Á¦´Â ¤¾ ºÎºÐÀÎµ¥, ÀÌºÎºÐµµ ´ÙÀ½°ú °°ÀÌ
+Äõ¸®¸¦ »ç¿ëÇÏ¿© °¡Á®¿Ã ¼ö ÀÖ¾î¿ä.
+
+Select * from Å×ÀÌºí where name >= 'ÇÏ' and name < 'ÆR'\
+
+±×·¸´Ù¸é, ÀÌ·± ·ÎÁ÷À» »ç¿ëÇÏ¿© ¿©·¯ºÐÀÇ µ¥ÀÌÅÍ¸¦ ¤¡,¤¤,¤§, ¼øÀ¸·Î Ãâ·ÂÇÒ ¼ö ÀÖÀ» °ÍÀÔ´Ï´Ù.
+
+
+[ilter_korean.asp]
+
+<!--METADATA TYPE= "typelib" NAME= "ADODB Type Library" 
+    FILE="C:\Program Files\Common Files\SYSTEM\ADO\msado15.dll" -->
+<%
+Option Explicit
+
+Dim strConnect, SQL
+Dim Rs
+Dim korean, startChar,endChar, criteria,i
+
+strConnect = "Provider=SQLOLEDB.1;Data Source=TAEYO;Initial Catalog= pubs;User ID=sa;Password="
+Set Rs = Server.CreateObject("ADODB.RecordSet")
+
+SQL = "select name from test_member"
+Rs.open SQL, strConnect, adOpenStatic, adLockReadOnly, adCmdText
+%>
+<html><body>
+<%
+korean = "°¡³ª´Ù¶ó¸¶¹Ù»ç¾ÆÀÚÂ÷Ä«Å¸ÆÄÇÏÆR"
+
+For i = 1 to 14
+    startChar = mid(korean,i,1)
+    endChar = mid(korean,i+1,1) 
+
+    criteria = "name > = '" & startChar & "' and name < '" & endChar & "'"
+    Rs.Filter = criteria
+
+    Response.Write "<table width=500>"
+    Response.Write "<tr><td><h3>" & startChar & "</h3></td></tr>"
+    if Rs.EOF then
+        Response.Write "<tr><td>±×·± ¼ºÀ» °¡Áø »ç¶÷Àº ¾ø½À´Ï´Ù</td></tr>"
+    else
+        Response.Write "<tr><td>"
+        Do until Rs.EOF
+            Response.Write rs(0) & " , "
+            Rs.MoveNext
+        Loop
+        Response.Write "</td></tr>"
+    End if
+    Response.Write "</table><br>"
+next	
+
+Rs.Close
+set Rs = nothing
+%>
+</body></html>
+
+
+
+
+
+ÇÑ±ÛÀÌ¶ó´Â Æ¯¼º ¶§¹®¿¡ ¹Ì¸® korean ÀÌ¶ó´Â º¯¼ö¿¡ "°¡³ª´Ù¶ó¸¶¹Ù»ç¾ÆÀÚÂ÷Ä«Å¸ÆÄÇÏÆR" ¶ó´Â ¹®ÀÚµéÀ» ´ã¾ÆµÎ¾úÀ¸¸ç, 
+ÀÌ°÷¿¡¼­ Mid ÇÔ¼ö¸¦ »ç¿ëÇØ¼­ °Ë»öÀ» ½ÃÀÛÇÏ·Á´Â ±ÛÀÚ¿Í, ±× ´ÙÀ½ ±ÛÀÚ¸¦ °¢°¢ »Ì¾Æ³»¾î 
+startChar°ú endChar ÀÌ¶ó´Â º¯¼ö¿¡ ´ãÀº °ÍÀ» º¼ ¼ö°¡ ÀÖÀ» °ÍÀÌ±¸¿ä.
+
+±×¸®°í, ÀÌ ·çÇÁ¸¦ 14¹ø ¹Ýº¹ÇÏ¿© ¤¡ºÎÅÍ ¤¾ ±îÁö °ü·Ã ÀÌ¸§µéÀ» ¸ðµÎ »Ì¾Æ¿À´Â °ÍÀ» º¼ ¼ö ÀÖ½À´Ï´Ù. 
+Mid ÇÔ¼öÀÇ »ç¿ë¹ý°ú, Äõ¸®ÀÇ Á¦ÀÛ¸¸À» ½Å°æ¾´´Ù¸é ÀÌ ºÎºÐµµ ±×¸® ¾î·Á¿ï °ÍÀÌ ¾øÀ» °ÍÀÌ¸ç,  
+ÀÌ°ÍÀº ¿©·¯ºÐÀÌ À½¹Ý°ü·Ã »çÀÌÆ®³ª ¿µÈ­°ü·Ã »çÀÌÆ®¸¦ ¿î¿µÇÑ´Ù¸é ²Ï³ª µµ¿òÀÌ µÉ¸¸ÇÑ ¼Ò½ºÀÏÁöµµ ¸ð¸£°Ú³×¿ä.
+
+ÇÊÅÍ¸µÀº ASP ÆäÀÌÁö¿¡¼­ À§¿Í °°Àº °æ¿ì µµ¿òÀÌ µÇ¾îÁÙ °ÍÀÔ´Ï´Ù.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

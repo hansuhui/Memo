@@ -1,0 +1,105 @@
+
+http://xshine.tistory.com/230
+
+
+----------------------[설치]----------------------
+
+[Windown]
+
+ create extension dblink;
+
+
+
+[리눅스]
+
+예를 들어 redhat 64bit 이고 postgresql 8.4.4 버전을 사용한다면
+
+wget http://wwwmaster.postgresql.org/download/mirrors-ftp/binary/v8.4.4/linux/rpms/redhat/rhel-5-x86_64/postgresql-contrib-8.4.4-1PGDG.rhel5.x86_64.rpm
+
+또는 
+
+wget ftp://ftp.postgresql.org/pub/binary/v8.4.4/linux/rpms/redhat/rhel-5-x86_64/postgresql-contrib-8.4.4-1PGDG.rhel5.x86_64.rpm
+
+
+postgresql-contrib를 다운 받는다.
+
+그리고
+
+rpm -ivh postgresql-contrib-8.4.4-1PGDG.rhel5.x86_64.rpm 실행 하여 설치 한다.
+이로서 dblink 모듈 설치는 끝났다.
+설치된 모듈을 사용하기 위해서는 function을 생성 해야 한다.
+
+/usr/share/pgsql/contrib/dblink.sql 을 psql을 사용하거나
+pgadmin3 같은 쿼리툴을 사용해서 실행 한다.
+
+여기까지 끝났다면 dblink를 사용할 수 있다.
+(* 9.1 또는 그 이후 버전을 사용 중이신데 위의 말대로 되지 않는다면
+CREATE EXTENSION dblink; 를 pgadmin3와 같은 쿼리툴에서 실행해 보세요.)
+
+
+
+[dblink 사용법]
+
+
+-- 먼저 연결 하고자 하는 db 서버에 연결 한다.
+SELECT dblink_connect('연결명','hostaddr=서버주소 port=포트 dbname=데이터베이스이름 user=계정ID password=비밀번호');
+ 
+-- example
+SELECT dblink_connect('testconnect', 'hostaddr=192.168.0.100 post=5432 dbname=testdb user=postgres password=1111');
+-- 위와 같이 실행하여 서버에 연결이 되었다면 OK를 반환 할 것이다
+ 
+-- dblink 가 연결 되었다면 아래와 같이 쿼리를 할 수 있다.
+SELECT * FROM dblink('연결명','실행할 쿼리문') AS t1 (반환되는 필드 타입 명시)
+ 
+-- example
+SELECT * FROM dblink('testconnect', 'select field1, field2 from test_table') AS t1 (field1 integer, field2, bigint)
+ 
+-- dblink를 다 사용했다면 아래 처럼 dblink의 연결을 끊어 준다.
+SELECT dblink_disconnect('연결명')
+
+
+
+
+===================================================================
+
+
+
+http://www.postgresonline.com/journal/archives/44-using-dblink-to-access-other-postgresql-databases-and-servers.html
+
+
+
+SELECT towns.*
+FROM dblink('dbname=somedb','SELECT town, pop1980 FROM towns')
+    AS towns(town varchar(21), pop1980 integer);
+
+
+SELECT p.*
+FROM dblink('dbname=ma_geocoder port=5433',
+            'SELECT gid, fullname, the_geom_4269 
+                    FROM ma.suffolk_pointlm')
+    AS p(gid int,fullname varchar(100), the_geom geometry);
+
+
+SELECT blockgroups.*
+    INTO temp_blockgroups
+    FROM dblink('dbname=somedb port=5432 
+            host=someserver user=someuser password=somepwd',
+    'SELECT gid, area, perimeter, state, county, 
+            tract, blockgroup, block, 
+            the_geom 
+            FROM massgis.cens2000blocks')
+            AS blockgroups(gid int,area numeric(12,3),
+                perimeter numeric(12,3), state char(2), 
+                county char(3), tract char(6), 
+                blockgroup char(1), 
+                block char(4), the_geom geometry);
+
+
+SELECT realestate.address, realestate.parcel, s.sale_year, s.sale_amount, 
+        FROM realestate INNER JOIN 
+                dblink('dbname=somedb port=5432 host=someserver 
+                user=someuser password=somepwd',
+                'SELECT parcel_id, sale_year, 
+                    sale_amount FROM parcel_sales')
+            AS s(parcel_id char(10),sale_year int, sale_amount int)
+             ON realestate.parcel_id = s.parcel_id;

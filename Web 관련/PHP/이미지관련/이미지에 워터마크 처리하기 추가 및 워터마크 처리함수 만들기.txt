@@ -1,0 +1,716 @@
+php > 내가 만들어 쓰는 함수 > 이미지에 워터마크 처리하기 추가 및 워터마크 처리함수 만들기
+
+이전까지는 새로 정의한 함수들에 대해 정리와 수정을 해보았습니다.
+이번에는 전전 시간에 다ㅤㄹㅝㅅ던 이미지 워터마크 처리의 추가적인 부분과 워터마크 처리함수를 만들어 보겠습니다.
+
+
+이전 워터마크 처리 부분이 생각나지 않는다면 이전 내용을 한번 읽어보고 이번 내용을 접하는것이 좋을듯 합니다.
+
+아무튼 이전의 워터마크 처리에서는 워터마크 이미지를 각 위치에 따라 한번만 넣었습니다. 그런데 원본의 끝에 딱 붙어 있어서 조금 보기 싫습니다. 그래서 html의 padding 개념으로 원본과 워터마크사이의 여백을 주는 부분을 다룰것입니다. 또, 한번만 워터마크 이미지를 붙이는것이 아닌 이미지 전체에 반복해서 워터마크를 붙이는 부분을 다룰것입니다.
+문제1>
+원본 test.jpg 를 5분의 1로 축소하고, php.png 를 사용하여,
+상단 왼쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_top_left.jpg
+상단 오른쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_top_right.jpg
+하단 왼쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_bottom_left.jpg
+하단 오른쪽을 기준으로 선명도 70으로 워터마크 처리하여 watermark_bottom_right.jpg
+가운데 중앙을 기준으로 선명도 70으로 워터마크 처리하여 watermark_middle_center.jpg
+로 각각 저장하세요.
+단, 원본에서 10px 의 여백을 주세요.
+
+처리힌트>
+이전 내용의 문제와 동일하지만, 마지막에 10px의 여백을 주라고 한점이 다릅니다.
+각 위치별로 기준점을 구한다음 그 기준점을 조건에 따라 x,y좌표를 10px씩 + 해주거나 - 해주면 됩니다.
+
+처리과정>
+1. 원본과 워터마크에 사용될 이미지의 리소스를 생성합니다.
+2. 원본을 5 분의 1로 축소합니다.
+3. 각 조건에 따라 축소한 원본 의 기준점을 구합니다.
+4. 구해진 기준점에서 조건에 따라 10px 씩 이동한 새로운 기준점을 구합니다.
+5. imagecopymerge 를 통해 각각의 워터마크 처리를 합니다.
+6. 각각의 파일명으로 저장합니다.
+
+
+예제1 : test13.php
+
+<?php
+
+//이미지 처리 함수 인클루드
+include_once 'lib/image_proc.function.php';
+
+$path_file = 'sample_image/test.jpg';//원본파일
+$path_mark_file ='sample_image/php.png';//워터마크에 사용할 파일
+
+$path_save_top_left_file = 'sample_image/watermak_top_left.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_top_right_file = 'sample_image/watermak_top_right.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_bottom_left_file = 'sample_image/watermak_bottom_left.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_bottom_right_file = 'sample_image/watermak_bottom_right.jpg';//워터마크 처리한 것을 저장할 파일
+$path_save_middle_center_file = 'sample_image/watermak_middle_center.jpg';//워터마크 처리한 것을 저장할 파일
+
+//원본의 이미지 리소스를 받아온다.
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_file);
+if (empty($src)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//워터마크에 사용될 이미지 리소스를 받아온다.
+list($mark, $mark_w, $mark_h) = get_image_resource_from_file ($path_mark_file);
+if (empty($mark)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//원본을 5 분의 1로 축소한 너비와 높이를 구한다.
+$src_w_small = ceil($src_w / 5);
+$src_h_small = get_size_by_rule($src_w, $src_h, $src_w_small);
+
+//원본의 상단 왼쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+$src2_x = 0;
+$src2_y = 0;
+
+//padding 을 10px 씩 줘야 하므로 x좌표는 오른쪽으로 10 이동 y좌표는 아래로 10 이동
+$src2_x += 10;
+$src2_y += 10;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_top_left_file, 70, 2);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 상단 오른쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = $src_w_small - $mark_w;
+$src2_y = 0;
+
+//padding 을 10px 씩 줘야 하므로 x좌표는 왼쪽으로 10 이동 y좌표는 아래로 10 이동
+$src2_x -= 10;
+$src2_y += 10;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_top_right_file, 70, 2);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 하단 왼쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = 0;
+$src2_y = $src_h_small - $mark_h;
+
+//padding 을 10px 씩 줘야 하므로 x좌표는 오른쪽으로 10 이동 y좌표는 위로 10 이동
+$src2_x += 10;
+$src2_y -= 10;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_bottom_left_file, 70, 2);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 하단 오른쪽을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = $src_w_small - $mark_w;
+$src2_y = $src_h_small - $mark_h;
+
+//padding 을 10px 씩 줘야 하므로 x좌표는 왼쪽으로 10 이동 y좌표는 위로 10 이동
+$src2_x -= 10;
+$src2_y -= 10;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_bottom_right_file, 70, 2);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//원본의 가운데 중앙을 기준으로 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$src2_x = ceil(($src_w_small - $mark_w) / 2);
+$src2_y = ceil(($src_h_small - $mark_h) / 2);
+
+//가운데는 패딩 줄 필요없음
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, 70);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_save_middle_center_file, 70, 2);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+@imagedestroy($src);
+@imagedestroy($mark);
+
+
+//성공하였다면 이미지 출력
+
+?>
+원본 이미지 <br />
+<img src='<?=$path_file?>'> <br />
+
+워터마크에 사용할 이미지 <br />
+<img src='<?=$path_mark_file?>'> <br />
+
+상단 왼쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_top_left_file?>'> <br />
+
+상단 오른쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_top_right_file?>'> <br />
+
+하단 왼쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_bottom_left_file?>'> <br />
+
+하단 오른쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_bottom_right_file?>'> <br />
+
+가운데 중앙 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_middle_center_file?>'> <br />
+
+예제는 이전 예제와 큰 차이가 없고,
+
+상단 왼쪽에는
+//padding 을 10px 씩 줘야 하므로 x좌표는 오른쪽으로 10 이동 y좌표는 아래로 10 이동
+$src2_x += 10;
+$src2_y += 10;
+
+상단 오른쪽에는
+//padding 을 10px 씩 줘야 하므로 x좌표는 왼쪽으로 10 이동 y좌표는 아래로 10 이동
+$src2_x -= 10;
+$src2_y += 10;
+
+하단 왼쪽에는
+//padding 을 10px 씩 줘야 하므로 x좌표는 오른쪽으로 10 이동 y좌표는 위로 10 이동
+$src2_x += 10;
+$src2_y -= 10;
+
+하단 오른쪽에는
+//padding 을 10px 씩 줘야 하므로 x좌표는 왼쪽으로 10 이동 y좌표는 위로 10 이동
+$src2_x -= 10;
+$src2_y -= 10;
+
+의 변화만 있었습니다.
+가운데 중앙은 padding 을 줄 필요가 없기 때문에 주지 않았습니다.
+
+
+문제2>
+원본 test.jpg 를 5분의 1로 축소하고, php.png 를 사용하여,
+전체를 선명도 30으로 워터마크 처리하여 watermark_all.jpg
+전체를 선명도 70으로 워터마크 처리하고 워터마크마다 padding을 10px 적용하여 watermark_all_padding.jpg
+로 각각 저장하세요.
+
+처리힌트>
+이문제의 핵심은 루프입니다.
+반복으로 워터마크를 찍는것인데 루프를 xy축으로 몇번 돌릴것인것을 구해내는 것이 관건입니다.
+패딩이 없는 경우라면 단순히 x축은 원본 너비 / 워터마크 너비 해서 ceil로 처리, y축은 원본 높이 / 워터마크 높이 해서 ceil로 처리하면 됩니다.
+그러나 패딩이 있는 경우라면 조금 달리 구해야 합니다.
+패딩의 갯수는 워터마크가 찍힐 갯수보다 하나가 더 많습니다. 이미지로 보여주면 좋은데 제가 재주가 없어서 말로 설명하겠습니다. 패딩은 기본적으로 원본 양끝에 다 붙기 때문에 그렇습니다.
+따라서 x축은 (원본너비 - 패딩) / (워터마크너비 + 패딩) 로 구해서 ceil 처리, y축은 (원본높이 - 패딩) / (워터마크높이 + 패딩) 로 구해서 ceil 처리합니다.
+
+처리과정>
+1. 원본과 워터마크에 사용될 이미지의 리소스를 생성합니다.
+2. 원본을 5 분의 1로 축소합니다.
+3. 루프 횟수를 구합니다.
+4. 각 루프마다 기준점을 구하고, imagecopymerge 를 통해 반복하면서 워터마크 처리를 합니다.
+5. 각각의 파일명으로 저장합니다.
+
+
+예제2 : test14.php
+<?php
+
+//이미지 처리 함수 인클루드
+include_once 'lib/image_proc.function.php';
+
+$path_file = 'sample_image/test.jpg';//원본파일
+$path_mark_file ='sample_image/php.png';//워터마크에 사용할 파일
+
+$path_save_all_file = 'sample_image/watermak_all.jpg';//워터마크 처리한 것을 저장할 파일, 전체 워터마크
+$path_save_all_padding_file = 'sample_image/watermak_all_padding.jpg';//워터마크 처리한 것을 저장할 파일, 전체 워터마크에 패딩 10
+
+$sharpness = 30;//선명도 30
+$save_quality = 70;//썸네일 저장 품질 70 %
+$save_force = 2;//강제 저장
+
+//원본의 이미지 리소스를 받아온다.
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_file);
+if (empty($src)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//워터마크에 사용될 이미지 리소스를 받아온다.
+list($mark, $mark_w, $mark_h) = get_image_resource_from_file ($path_mark_file);
+if (empty($mark)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//원본을 5 분의 1로 축소한 너비와 높이를 구한다.
+$src_w_small = ceil($src_w / 5);
+$src_h_small = get_size_by_rule($src_w, $src_h, $src_w_small);
+
+//전체 선명도 70으로 워터마크 처리
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//x 축으로 워터마크를 몇번 찍을 것인지 계산
+$x_max = ceil($src_w_small / $mark_w);
+
+//y 축으로 워터마크를 몇번 찍을 것인지 계산
+$y_max = ceil($src_h_small / $mark_h);
+
+//루프를 돌리면서 워터마크를 찍음
+for($x = 0; $x < $x_max; $x++){
+
+for($y = 0; $y < $y_max; $y++){
+
+//기준점을 구한다.
+$src2_x = $x * $mark_w;
+$src2_y = $y * $mark_h;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $mark_w, $mark_h, $sharpness);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+}
+}
+
+$result_save = save_image_from_resource ($src2, $path_save_all_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+//전체 선명도 70으로 워터마크 처리, 패딩 10
+$padding = 10;//패딩 10
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+
+$w_max = $src_w_small - $padding;
+$h_max = $src_h_small - $padding;
+
+//x 축으로 워터마크를 몇번 찍을 것인지 계산, 패딩을 더해서 나눔
+$x_max = ceil($w_max / ($mark_w + $padding));
+
+//y 축으로 워터마크를 몇번 찍을 것인지 계산
+$y_max = ceil($h_max / ($mark_h + $padding));
+
+//루프를 돌리면서 워터마크를 찍음
+for($x = 0; $x < $x_max; $x++){
+
+for($y = 0; $y < $y_max; $y++){
+
+//기준점을 구한다.
+$src2_x = $x * ($mark_w + $padding) + $padding;
+$src2_y = $y * ($mark_h + $padding) + $padding;
+
+$copy_w = $mark_w;
+$copy_h = $mark_h;
+
+if ($src2_x + $mark_w > $w_max) $copy_w = $w_max - $src2_x;
+if ($src2_y + $mark_h > $h_max) $copy_h = $h_max - $src2_y;
+
+$result_watermark = imagecopymerge($src2, $mark, $src2_x, $src2_y, 0, 0, $copy_w, $copy_h, $sharpness);
+if ($result_watermark === false) die("워터마크 처리에 실패하였습니다.<br />\n");
+}
+}
+
+$result_save = save_image_from_resource ($src2, $path_save_all_padding_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src2);
+
+@imagedestroy($src);
+@imagedestroy($mark);
+
+
+//성공하였다면 이미지 출력
+
+?>
+원본 이미지 <br />
+<img src='<?=$path_file?>'> <br />
+
+워터마크에 사용할 이미지 <br />
+<img src='<?=$path_mark_file?>'> <br />
+
+전체 워터마크 처리한 이미지, 패딩 0 <br />
+<img src='<?=$path_save_all_file?>'> <br />
+
+전체 워터마크 처리한 이미지, 패딩 10 <br />
+<img src='<?=$path_save_all_padding_file?>'> <br />
+
+
+$sharpness = 30;//선명도 30
+$save_quality = 70;//썸네일 저장 품질 70 %
+$save_force = 2;//강제 저장
+
+이부분은 나중에 함수로 만들것을 생각해서 변수로 처리해 보았습니다.
+$sharpness 는 워터마크 찍을시 워터마크 이미지의 선명도 입니다.
+
+패딩이 없는 경우에는
+//x 축으로 워터마크를 몇번 찍을 것인지 계산
+$x_max = ceil($src_w_small / $mark_w);
+
+//y 축으로 워터마크를 몇번 찍을 것인지 계산
+$y_max = ceil($src_h_small / $mark_h);
+
+이렇게 단순 계산으로 xy의 루프 갯수를 계산하였습니다.
+루프속의 기준점 계산은 위에서 아래로 왼쪽에서 오른쪽으로 루프가 흘러가므로 워터마크이미지의 너비 높이만 더해주면 됩니다.
+
+$src2_x = $x * $mark_w;
+$src2_y = $y * $mark_h;
+
+패딩이 있는 경우에는
+$w_max = $src_w_small - $padding;
+$h_max = $src_h_small - $padding;
+
+//x 축으로 워터마크를 몇번 찍을 것인지 계산, 패딩을 더해서 나눔
+$x_max = ceil($w_max / ($mark_w + $padding));
+
+//y 축으로 워터마크를 몇번 찍을 것인지 계산
+$y_max = ceil($h_max / ($mark_h + $padding));
+
+이렇게 처리하였습니다.
+이렇게 한 이유는 앞에서도 설명햇듯이 패딩의 갯수가 찍힐 워터마크의 갯수보다 항상 하나가 더 많기 때문입니다.
+
+기준점을 구하는 것도 패딩이 없는 경우보다는 복잡한데
+$src2_x = $x * ($mark_w + $padding) + $padding;
+$src2_y = $y * ($mark_h + $padding) + $padding;
+
+$copy_w = $mark_w;
+$copy_h = $mark_h;
+
+if ($src2_x + $mark_w > $w_max) $copy_w = $w_max - $src2_x;
+if ($src2_y + $mark_h > $h_max) $copy_h = $h_max - $src2_y;
+
+와 같이 처리 되었습니다.
+기준점은 원래 계산방식에서 기본적으로 패딩을 더해줍니다.
+루프를 도는 동안 계속 이게 유지되지만 오른쪽 끝을 찍거나 하단을 찍을 경우에는 패딩을 한번더 생각해야 하므로, 마지막 찍을 워터마크가 마지막 패딩범위를 침범하는지 계산하여 침범한다면 그부분을 빼주었습니다.
+
+이제 워터마크의 대략적인 처리는 다 다루어 보았습니다.
+지금까지 다루었던 내용을 가지고 앞으로 워터마크 처리의 편이성을 위해서 함수로 만들어 보겠습니다.
+
+예제3 : proc_watermark, image_proc.function.php 에 추가
+
+function proc_watermark($src, $src_w, $src_h, $path_mark_file, $pos, $sharpness, $padding=0){
+
+  if (empty($src))  {//원본의 리소스 id 가 빈값일 경우
+
+    $GLOBALS['errormsg'] = '원본 리소스가 없습니다.';
+
+    return false;
+  }
+
+  //정수형이 아니라면 정수형으로 강제 형변환
+  if (!is_int($src_w)) settype($src_w, 'int');
+  if (!is_int($src_h)) settype($src_h, 'int');
+  if (!is_int($sharpness)) settype($sharpness, 'int');
+  if (!is_int($padding)) settype($padding, 'int');
+
+  if ($src_w < 1 || $src_h < 1){//원본의 너비와 높이가 둘중에 하나라도 0보다 큰 정수가 아닐경우
+
+    $GLOBALS['errormsg'] = "원본의 너비와 높이가 0보다 큰 정수가 아닙니다. ($src_w, $src_h)";
+
+    return false;
+  }
+
+  if (empty($path_mark_file)) {//워터마크 이미지 경로값이 없다면
+
+    $GLOBALS['errormsg'] = '워터마크 이미지경로값이 없습니다.';
+
+    return false;
+  }
+
+  list($mark, $mark_w, $mark_h) = get_image_resource_from_file ($path_mark_file);
+
+  if (empty($mark)) return false;//에러 메시지 작성은 get_image_resource_from_file 내부에서 함
+
+  if ($src_w < $mark_w + (2 * $padding)) {//원본너비가 워터마크 이미지 너비보다 작으면 워터마크 처리 안함, return true;
+
+    return true;
+  }
+
+  if ($src_h < $mark_h + (2 * $padding)) {//원본높이가 워터마크 이미지 높이보다 작으면 워터마크 처리 안함, return true;
+
+    return true;
+  }
+
+  if ($sharpness < 0 || $sharpness > 100) $sharpness = 30;//$sharpness 가 지정된 범위 이상의 숫자라면 30으로 강제 재설정
+
+  if ($padding < 0 || $padding > $mark_w || $padding > $mark_h) $padding = 10;//$padding이 0보다 작거나 워터마크의 너비나 높이보다 크면 10으로 강제 재설정
+
+  if ($pos == 10) {//워터마크 전체로 찍을 경우의 처리
+
+    $w_max = $src_w - $padding;
+    $h_max = $src_h - $padding;
+
+    //x 축으로 워터마크를 몇번 찍을 것인지 계산, 패딩을 더해서 나눔
+    $x_max = ceil($w_max / ($mark_w + $padding));
+
+    //y 축으로 워터마크를 몇번 찍을 것인지 계산
+    $y_max = ceil($h_max / ($mark_h + $padding));
+
+    //루프를 돌리면서 워터마크를 찍음
+    for($x = 0; $x < $x_max; $x++){
+
+      for($y = 0; $y < $y_max; $y++){
+
+        //기준점을 구한다.
+        $src_x = $x * ($mark_w + $padding) + $padding;
+        $src_y = $y * ($mark_h + $padding) + $padding;
+
+        $copy_w = $mark_w;
+        $copy_h = $mark_h;
+
+        if ($src_x + $mark_w > $w_max) $copy_w = $w_max - $src_x;
+        if ($src_y + $mark_h > $h_max) $copy_h = $h_max - $src_y;
+
+        $result_watermark = imagecopymerge($src, $mark, $src_x, $src_y, 0, 0, $copy_w, $copy_h, $sharpness);
+        if ($result_watermark === false) {
+
+          @imagedestroy($mark);
+
+          $GLOBALS['errormsg'] = "워터마크 처리에 실패하였습니다.";
+
+          return false;
+        }
+      }
+    }
+  }
+  else {//워터마크를 하나만 찍을 경우에의 처리
+
+    //워터마크의 복사할 너비, 높이 기본값 지정
+    $copy_w = $mark_w;
+    $copy_h = $mark_h;
+
+    switch($pos){
+
+      case 1 : //상단 왼쪽
+
+        $src_x = 0 + $padding;
+        $src_y = 0 + $padding;
+
+        break;
+
+      case 2 : //상단 오른쪽
+
+        $src_x = $src_w - $mark_w - $padding;
+        $src_y = 0 + $padding;
+
+        break;
+
+      case 3 : //하단 왼쪽
+
+        $src_x = 0 + $padding;
+        $src_y = $src_h - $mark_h - $padding;
+
+        break;
+
+      case 4 : //하단 오른쪽
+
+        $src_x = $src_w - $mark_w - $padding;
+        $src_y = $src_h - $mark_h - $padding;
+
+        break;
+
+      case 5 : //중앙
+
+        $src_x = ceil(($src_w - $mark_w) / 2);
+        $src_y = ceil(($src_h - $mark_h) / 2);
+
+        break;
+
+      default : // 그 밖의 값은 전부 상단 왼쪽 치부
+
+        $src_x = 0 + $padding;
+        $src_y = 0 + $padding;
+
+    }
+
+    $result_watermark = imagecopymerge($src, $mark, $src_x, $src_y, 0, 0, $copy_w, $copy_h, $sharpness);
+
+    @imagedestroy($mark);
+
+    if ($result_watermark === false) {
+
+      $GLOBALS['errormsg'] = "워터마크 처리에 실패하였습니다.";
+
+      return false;
+    }
+  }
+
+  return true;
+}
+
+proc_watermark 함수를 image_proc.function.php 에 추가
+
+용도 : 원본의 리소스를 가지고 워터마크 이미지를 주어진 조건에 따라 찍는 처리를 합니다. 성공시 true, 실패시 false를 반환합니다.
+
+인자 :
+$src : 원본의 리소스 id
+$src_w : 원본의 너비
+$src_h : 원본의 높이
+$path_mark_file : 워터마크로 사용될 이미지파일의 전체경로 또는 상대경로
+$pos : 워터마크를 찍을 포지션을 숫자로 지정
+==> 1 일경우에는 상단 왼쪽에 한번만
+==> 2 일경우에는 상단 오른쪽에 한번만
+==> 3 일경우에는 하단 왼쪽에 한번만
+==> 4 일경우에는 하단 오른쪽에 한번만
+==> 5 일 경우에는 중앙에 한번만
+==> 10 일 경우에는 전체를 반복해서
+==> 그 외의 값은 4로 처리
+$sharpness : 워터마크의 선명도, 0부터 100 까지의 정수만 가능
+$padding : 워터마크 사이의 간격, 생략가능하며 생략시 자동으로 0 로 값이 들어갑니다.
+
+프로그램의 유연성을 주기 위해 $pos는 지정된 외의 값이 들어올경우에는 자동으로 4로 처리, $sharpness는 지정된 범위 외의 값이 들어올 경우에는 자동으로 30로 처리, $padding 은 0보다 작거나 워터마크이미지의 너비나 높이보다 클경우에는 10 로 처리하였습니다.
+
+또 원본의 너비나 높이가 워터마크이미지의 너비나 높이보다 작으면 워터마크 처리는 하지 않고 바로 return ture 하였습니다.
+
+
+아래 문제를 마지막으로 워터마크 관련은 모두 마무리 짓도록 하겠습니다.
+
+문제3>
+원본 test.jpg 를 5분의 1로 축소하여 test_small.jpg 로 저장합니다.
+test_small.jpg 를 가지고 php.png 를 사용하여, 선명도 30, 패딩 10으로 워터마크를 각 $pos별로 처리한후 파일로 저장하세요.
+단, proc_watermark 를 사용하세요.
+
+예제4 : test15.php
+
+<?php
+
+//이미지 처리 함수 인클루드
+include_once 'lib/image_proc.function.php';
+
+$path_file = 'sample_image/test.jpg';//원본파일
+$path_small_file = 'sample_image/small_.jpg';//원본파일의 5분의 1 축소판
+$path_mark_file ='sample_image/php.png';//워터마크에 사용할 파일
+
+$path_save_1_file = 'sample_image/watermak_1.jpg';//상단 왼쪽
+$path_save_2_file = 'sample_image/watermak_2.jpg';//상단 오른쪽
+$path_save_3_file = 'sample_image/watermak_3.jpg';//하단 왼쪽
+$path_save_4_file = 'sample_image/watermak_4.jpg';//하단 오른쪽
+$path_save_5_file = 'sample_image/watermak_5.jpg';//가운데 중앙
+$path_save_10_file = 'sample_image/watermak_10.jpg';//전체
+
+$sharpness = 30;//선명도 30
+$padding = 10;//패딩 10
+$save_quality = 70;//썸네일 저장 품질 70 %
+$save_force = 2;//강제 저장
+
+//원본의 이미지 리소스를 받아온다.
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_file);
+if (empty($src)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//원본을 5 분의 1로 축소한 너비와 높이를 구한다.
+$src_w_small = ceil($src_w / 5);
+$src_h_small = get_size_by_rule($src_w, $src_h, $src_w_small);
+
+//축소판 저장
+$src2 = get_image_resize($src, $src_w, $src_h, $src_w_small, $src_h_small);
+if (empty($src2)) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save = save_image_from_resource ($src2, $path_small_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+@imagedestroy($src2);
+
+//상단 왼쪽
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_small_file);
+
+proc_watermark($src, $src_w, $src_h, $path_mark_file, 1, $sharpness, $padding);
+
+$result_save = save_image_from_resource ($src, $path_save_1_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+
+//상단 오른쪽
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_small_file);
+
+proc_watermark($src, $src_w, $src_h, $path_mark_file, 2, $sharpness, $padding);
+
+$result_save = save_image_from_resource ($src, $path_save_2_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+
+//하단 왼쪽
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_small_file);
+
+proc_watermark($src, $src_w, $src_h, $path_mark_file, 3, $sharpness, $padding);
+
+$result_save = save_image_from_resource ($src, $path_save_3_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+
+//하단 오른쪽
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_small_file);
+
+proc_watermark($src, $src_w, $src_h, $path_mark_file, 4, $sharpness, $padding);
+
+$result_save = save_image_from_resource ($src, $path_save_4_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+
+//가운데 중앙
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_small_file);
+
+proc_watermark($src, $src_w, $src_h, $path_mark_file, 5, $sharpness, $padding);
+
+$result_save = save_image_from_resource ($src, $path_save_5_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+
+//전체 반복
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_small_file);
+
+proc_watermark($src, $src_w, $src_h, $path_mark_file, 10, $sharpness, $padding);
+
+$result_save = save_image_from_resource ($src, $path_save_10_file, $save_quality, $save_force);//저장
+if ($result_save === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($src);
+
+@imagedestroy($mark);
+
+//성공하였다면 이미지 출력
+
+?>
+원본 이미지 <br />
+<img src='<?=$path_file?>'> <br />
+
+축소판 이미지 <br />
+<img src='<?=$path_small_file?>'> <br />
+
+워터마크에 사용할 이미지 <br />
+<img src='<?=$path_mark_file?>'> <br />
+
+상단 왼쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_1_file?>'> <br />
+
+상단 오른쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_2_file?>'> <br />
+
+하단 왼쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_3_file?>'> <br />
+
+하단 오른쪽 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_4_file?>'> <br />
+
+가운데 중앙 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_5_file?>'> <br />
+
+전체 워터마크 처리한 이미지 <br />
+<img src='<?=$path_save_10_file?>'> <br />

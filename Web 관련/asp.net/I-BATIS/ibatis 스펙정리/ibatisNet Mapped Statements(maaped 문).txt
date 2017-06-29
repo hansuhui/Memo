@@ -1,0 +1,55 @@
+Example 3.3. Statement element syntax
+
+<statement id="statement.name"
+  [parameterMap="parameterMap.name"]
+  [parameterClass="alias"]
+  [resultMap="resultMap.name"]
+  [resultClass="class.name|alias"]
+  [listClass="class.name|alias"]
+  [cacheModel="cache.name"]
+  [extends="statement.name"]
+>
+
+  select * from Products where Product_Id = [?|#propertyName#]
+  order by [$simpleDynamic$]
+
+</statement>
+
+
+
+The six statement-type elements
+
+
+
+Statement Element / Attributes / Attributes / Methods
+
+
+<statement>  /   id , parameterClass   / All dynamic element / Insert , Update , Delete , All query methods
+		 resultClass,listClass
+		 parameterMap,resultMap
+		 cacheModel	
+
+
+
+<insert>     / id , parameterClass, parameterMap  / All dynamic elements       / Insert , Update , Delete
+						   <selectKey> , <generate>
+
+
+
+<update>    / id, parameterClass, 	/ All dynamic elements, <generate>  / Insert , Update , Delete
+	      parameterMap, extends
+
+
+
+<delete>    / id, parameterClass, 	/ All dynamic elements, <generate>  / Insert , Update , Delete
+	      parameterMap, extends
+
+
+
+<delete>   /  id , parameterClass , resultClass    / All dynamic elements, <generate> /  All query methods
+	      listClass, parameterMap , resultMap
+	      cacheModel , extends
+
+
+<procedure>  / id , parameterMap        / All dynamic elements   / Insert , Update , Delete , All query methods
+	       resultClass, cacheModel

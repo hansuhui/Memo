@@ -1,0 +1,55 @@
+ - DB명 변경방법
+    SP_RENAMEDB '[기존 DB명]', '[새로운 DB명]'
+?
+ 
+ - 테이블명 변경방법
+    SP_RENAME '[기존 테이블명]', '[새로운 테이블명]'
+?
+ 
+ - 컬럼명 변경방법
+    SP_RENAME '[기존 테이블명].[기존 컬럼명]', '[새로운 컬럼명]'
+?
+ 
+ - 예제 1
+    학생정보 DB를 학생성적 DB로 변경하시오. (사용자가 학생정보DB와 교직원정보DB를 생성해둔 것으로 가정)
+ 
+ 
+ - 예제 1 쿼리
+   SP_RENAMEDB '학생정보', '학생성적'
+?
+ 
+ - 결과 확인
+    SELECT name FROM sys.databases WHERE name NOT IN ('master', 'model', 'msdb', 'tempdb')
+
+ - 예제 2 
+   학생성적 DB에 성적 테이블을 생성하고 테이블이름을 A반성적으로 변경하시오.
+ 
+ 
+ - 테이블 생성 
+   CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL,
+       점수 int NOT NULL
+   )
+?
+ 
+ - 예제 2 쿼리 
+   SP_RENAME '성적', 'A반성적'
+?
+ 
+ - 결과 확인 
+   SELECT name, object_id FROM sys.tables
+ 
+? 
+ - 예제 3
+    A반성적 테이블의 일련번호를 학번으로 변경하시오.
+ 
+ 
+ - 예제 3 쿼리
+  SP_RENAME 'A반성적.일련번호', '학번'
+?
+ 
+ - 결과 확인
+   SELECT name FROM sys.columns WHERE object_id = '837578022'
+ 
+? 

@@ -1,0 +1,29 @@
+자바스크립트 배열 원소중 지정한 원소 가져오기 - slice 예제
+ 
+ 
+실행결과 :  [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+       <script type='text/javascript'>
+           // Array 객체를 사용하여 배열을 생성합니다.
+           var newArray = new Array( 'kbs','mbc','sbs','jtbc','ocn' );
+           // slice 의 인자인 2,4 는 newArray 배열 인덱스 [2] 부터 4번째 원소까지의 값을 가져오겠다는 뜻입니다.
+           var resultArray = newArray.slice(2,4);
+           // 결과값은 인덱스 [2] 인 sbs 부터 4번째 원소인 jtbc 까지 sbs,jtbc 를 반환 합니다.
+           document.write(resultArray);
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+slice  - 첫번째 인자 인덱스 부터 두번째 인자 위치의 원소를 반환 합니다. ( Array 객체 메소드 )

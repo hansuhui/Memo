@@ -1,0 +1,10 @@
+
+- MSSQL 테이블 복사방법
+  SELECT * INTO [새로운 테이블명] FROM [기존 테이블명] WHERE [조건절]
+?
+
+[참고사항] 복사가 되지 않는 것들
+ 복사 쿼리로 테이블의 구조와 레코드는 복사할 수 있으나 Primary Key, 
+ Foreign Key, Default, Index등은 복사를 할 수 없습니다.
+
+

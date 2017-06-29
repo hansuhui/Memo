@@ -1,0 +1,27 @@
+response.binarywrite 에러가나는 경우가있습니다.
+파일이 너무커서~
+그럴땐 나눠서 써주시면 됩니다.
+
+<%
+	response.binarywrite Stream.read(5)
+	response.binarywrite Stream.read(5)
+%>
+ 
+<%
+	nDpSize = 1048576
+ 
+	If Err.Number = 0 then
+ 
+ 	   nLoopCnt = oStream.Size / nDpSize
+   
+	    For i = 1 To nLoopCnt
+	        Response.BinaryWrite oStream.Read(nDpSize)
+	    Next
+   
+	    '루프에서 처리 안된 나머지 값.
+	    If (oStream.Size Mod nDpSize) <> 0 Then
+	        Response.BinaryWrite oStream.Read(oStream.Size Mod nDpSize)
+	    End If
+   
+	End if
+%>

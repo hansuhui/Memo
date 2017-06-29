@@ -1,0 +1,45 @@
+-- #커서 생성
+declare cur_gift cursor for
+
+select GiftNo from @Table
+
+open cur_gift
+FETCH NEXT FROM cur_gift INTO @GiftNo
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+
+
+	
+	 insert into SaleCancelDtl 
+	  (
+	  Code,SaleCode,Seq,GiftNo, ScratchNo ,Amount, CurAmt,DcRate,Commission,RegUserId,RegDate,FeeAmt,UnpaidRefund,CancelState 
+	  )
+	  select
+	  (
+	  select dbo.uf_lpad(convert(bigint, isNull(max(Code), '0')) + 1, 10, '0') from SaleCancelDtl) 
+	  ,a.SaleCode
+	  ,row_number() over(order by a.SaleCode)
+	  ,c.GiftNo
+	  ,c.ScratchNo
+	  ,a.Price
+	  ,isnull(a.CurAmt,0)
+	  ,a.DcRate
+	  ,isnull(a.Commission,0)
+	  ,@RegUserId
+	  ,Convert(datetime,getdate(),120)
+	  ,0
+	  --,(case when @Amt < @PaidAmt then (@PaidAmt= @PaidAmt-@Amt), @Amt   else  )
+	  ,@RefundState
+	  from SaleDtl a with (nolock)
+	  join SaleMst b with (nolock) on (a.SaleCode = b.SaleCode)
+	  join GiftMst c with (nolock) on (dbo.uf_DecData(a.GiftNo) = dbo.uf_DecData(c.GiftNo))
+	
+
+
+	FETCH NEXT FROM cur_gift INTO @GiftNo
+
+END	-- end of cursor
+
+CLOSE cur_gift
+DEALLOCATE cur_gift

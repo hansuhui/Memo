@@ -1,0 +1,33 @@
+[.before()]
+
+.before()는 선택한 요소 앞에 컨텐트(Content)를 추가합니다.
+
+$( 'p' ).before( '<h1>Hello World</h1>' );
+
+는 p 요소 앞에 Hello World를 내용으로 갖는 h1 요소를 추가합니다.
+
+
+- 예제 -
+
+순서 없는 목록 제일 앞에 Home을 내용으로 갖는 li 요소를 추가하는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Method | .before()</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'li:first-child' ).before( '<li>Home</li>' );
+      } );
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>Lorem</li>
+      <li>Ipsum</li>
+      <li>Dolor</li>
+    </ul>
+  </body>
+</html>

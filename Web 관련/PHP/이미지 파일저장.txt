@@ -1,0 +1,3 @@
+$파일변수 =  $HTTP_POST_FILES[네임명][tmp_name];
+$파일명변수 =  $HTTP_POST_FILES[네임명][name];
+move_uploaded_file($파일변수,"경로및/$파일명변수"); //실 저장

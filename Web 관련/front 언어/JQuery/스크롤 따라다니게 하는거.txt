@@ -1,0 +1,26 @@
+            $(window).scroll(  
+        function(){  
+            //스크롤의 위치가 상단에서 450보다 크면  
+            if($(window).scrollTop() > 450){  
+                /* if(window.pageYOffset >= $('원하는위치의엘리먼트').offset().top){ */  
+                $('#OsView').addClass("fix");
+                //위의 if문에 대한 조건 만족시 fix라는 class를 부여함  
+            }else{  
+                $('#OsView').removeClass("fix");
+                //위의 if문에 대한 조건 아닌경우 fix라는 class를 삭제함  
+            }  
+        }  
+    ); 
+
+
+
+
+
+[css]
+        .fix {
+            position: fixed;
+            _position: absolute;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }

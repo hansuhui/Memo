@@ -1,0 +1,21 @@
+
+[임시테이블 생성]
+
+존재하지 않는 테이블만 생성하려면 CREATE TABLE IF NOT EXISTS를 사용한다.
+필요로 하는 테이블이 이미 설정이 됐는지 추정할 수 없는 애플리케이션에 이 질의문을
+사용할 수 있다. 애플리케이션은 무작정 테이블을 생성할 수 있다.
+IF NOT EXISTS 수정자는 특히 mysql로 배치 작업을 수행하는 스크립트에 사용된다.
+
+[임시테이블 생성]
+
+CREATE TEMPORARY TABLE TAMP 
+
+[다른데이블 복사]
+
+CREATE TABLE 새테이블명 LIKE 복사 테이블
+CREATE TEMPORARY TABLE TAMP LIKE TEST
+
+예제
+CREATE TEMPORARY TABLE TAMP LIKE TEST;
+INSERT INTO TAMP SELECT * FROM TEST;
+SELECT * FROM TAMP

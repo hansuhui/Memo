@@ -1,0 +1,44 @@
+- LEN / DATALENGTH 란?
+    LEN는 문자열의 크기를 나타내는 함수이며,
+   DATALENGTH는 문자열의 바이트 수를 나타내는 함수입니다.
+?
+ 
+ - MSSQL LEN / DATALENGTH 사용방법 
+   LEN('[문자열]')
+   DATALENGTH('[문자열]')
+?
+  - 테이블 생성 
+   CREATE TABLE dbo.출석부 (
+       일련번호 int NOT NULL,
+       이름 varchar(8) NOT NULL
+   )
+?
+ 
+ - 데이터 입력 
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (1, '홍길동')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (2, '세종대왕')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (3, 'Caesar')
+ 
+ 
+ - 테이블 입력 결과 확인? 
+   SELECT * FROM dbo.출석부
+ 
+? 
+ - 예제 1 
+   출석부의 일련번호, 이름, 이름의 글자크기를 조회하시오.
+ 
+ 
+ - 예제 1 쿼리 
+   SELECT 일련번호, 이름, LEN(이름) AS 글자크기 FROM dbo.출석부
+? 
+ - 예제 2
+   출석부의 일련번호, 이름, 이름의 byte크기를 조회하시오.
+ 
+ 
+ - 예제 2 쿼리 
+   SELECT 일련번호, 이름, DATALENGTH(이름) AS byte크기 FROM dbo.출석부
+?
+?
+ [참고사항] byte크기와 글자크기가 다른 이유 
+   영어, 숫자는 1byte를 사용하기 때문에 글자크기와 바이크크기가 같지만 한글은 2byte를 사용하기 때문에
+   byte크기가 글자크기의 2배가 됩니다.

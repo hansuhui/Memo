@@ -1,0 +1,35 @@
+- OPENQUERY 를 이용하여 MySQL 과 MSSQL 테이블 UNION 하기
+   SELECT [컬럼명] FROM [테이블명]
+   UNION
+   SELECT [컬럼명] FROM OPENQUERY ([연결된 서버별칭], 'SELECT [컬럼명] FROM [테이블명]')
+
+
+- OPENQUERY 를 이용하여 MySQL 과 MSSQL 테이블 JOIN 하기
+   SELECT [별칭].[컬럼] FROM [테이블] AS [별칭] [조인문] 
+   (SELECT [컬럼명] FROM OPENQUERY ([연결된 서버별칭], 'SELECT [컬럼명] FROM [테이블명]')) AS [별칭]   ON [조건절]
+
+-------------------예제 ----------------
+   SELECT A.seqno, A.value, B.value FROM mssql_test AS A INNER JOIN 
+   (SELECT seqno, value FROM OPENQUERY (mysql, 'SELECT seqno, value FROM mysql_test')) AS B
+   ON A.seqno = B.seqno
+
+ 
+
+ 
+ - OPENQUERY 를 이용하여 조건별 UPDATE 하기
+   UPDATE? OPENQUERY ([연결된 서버별칭], 'SELECT [컬럼명] FROM [테이블명]')
+   SET [컬럼명] = [조건 테이블 별칭].[값] FROM 
+   (SELECT [컬럼명] FROM [테이블명]) AS [조건 테이블 별칭] WHERE [조건절]
+
+?
+ -------------------예제 ----------------
+   UPDATE OPENQUERY (mysql, 'SELECT seqno, value FROM mysql_test')
+   SET value = A.val FROM 
+   (SELECT seqno AS seq, value AS val FROM mssql_test) AS A WHERE seqno = A.seq
+
+
+[참고사항] 예제 3번의 쿼리중 컬럼에 별칭을 준 이유 
+   예제 3번의 쿼리중 SELECT seqno AS seq, value AS val FROM mssql_test 처럼 컬럼값에 별칭을 주었습니다.
+   이렇게 별칭을 준 이유는 OPENQUERY 를 통해 업데이트 할 대상 테이블과 컬럼명이 동일하기 때문에 처리를 한 것으로
+   동일하지 않을때는 별칭을 주지않고 실행하여도 문제 없이 실행이 됩니다.
+ 

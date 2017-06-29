@@ -1,0 +1,104 @@
+[접근성 한정자(accessobillity modifier)]
+
+internal, private , protected , public의 한정자들은 변수의 접근성의 정도를 설정해 주는데
+쓰인다. 각 변수 당 하나의 한정자만 사용하게 되는데, protected와 internal은 예외적으로 함께
+사용 할 수 있다. 다음 표는 다섯 가지로 나누어진 접근성의 정도를 설명하고 있다.
+
+
+
+접근성	/	설명
+
+public  / 변수가 속한 데이터 형식의 필드로서 어디에서든지 변수에 엑세스 가능하다.
+
+internal / 현재 프로그램에서만 변수에 엑세스 가능하다.
+
+protected / 이 변수가 속한 데이터 형식, 혹은 이 데이터 형식으로부터 파생된
+	    데이터 형식에서만 변수에 엑세스 가능하다.
+
+protected internal / 현재 프로그램이나 현재 데이터 형식에서 파생된 데이터 형식으로부터
+		     변수에 엑세스 가능하다.(즉 2가지의 접근성을 동시에 가지고 있다.)
+
+private / 자신이 속한 데이터 형식에서만 변수에 엑세스 가능하다.
+
+
+
+이 접근성의 의미가 무엇인지 알아보자. 두 개의 클래스를 갖는 프로그램을 작성하자.
+첫번째 클래스의 이름은 AccessTest이고 , x라는 이름의 int 형식 변수를 하나 가지고 있다.
+다른 클래스는 AccessTest클래스를 인스턴스화 하고 , 그 인스턴스의 x 변수를 제어할 것이다.
+
+
+using System;
+
+public class AccessTest
+{
+	public int x =12;
+}
+
+public class AccessClient
+{
+	public static int Main()
+	{
+	AccessTest Test = nwe AccessTest();
+	int x = Test.x;
+	Console.writeLine(x);
+	return 0;
+	}
+}
+
+이 파일을 AccessTest.cs로 저장한 후 csc AccessTest.cs 명령으로 컴파일하자. 이 경우에 x를
+public으로 선언하였기 때문에 어디에서든지 엑세스 가능하므로 프로그램은 잘 동작할 것이다.
+비슷하게 한정자를 internal이나 protected internal로 바꾼다고 하더라도 아무런 문제는 없다.
+두개의 클래스는 같은 프로그램의 일부이고 함께 컴파일되기 때문이다.
+
+protected internal int x = 12;
+
+하지만 만약 한정자를 private나 protected로 바꾸면, 그 변수는 AccessClient에서 
+보여질 수 없기 때문에 컴파일 시 다름과 같은 오류가 발생한다.
+
+(보호 수준 때문에 "AccessTest.x"에 엑세스할 수 없습니다.)
+
+
+이제는 두 개의 클래스를 따로 컴파일해보자. 첫번째로 AccessTest 클래스를 AccessTest.cs
+ 파일에 저장하자.
+
+
+//AccessTest.cs
+public class AccessTest
+{
+public int x =12;
+}
+
+이것을 다음 명령어를 사용하여 클래스 라이브러리로 컴파일하자.
+
+csc /t:library AccessTest.cs
+
+다음의 AccessClient 클래스를 AccessClient.cs 파일에 저장하자. using System을 이 파일의
+첫번째 줄에 추가해야한다.
+
+//AccessClient.cs
+
+using System;
+
+public class AccessClient
+{
+	public static int Main()
+	{
+	AccessTest objTest = new AcccessTest();
+	int x = objTest.x;
+	console.WriteLine(x);
+	return 0;
+	}
+}
+
+
+위에서 새롭게 컴파일한 AccessTest.dll을 참조하도록 하여 이 파일을 콘솔 응용프로그램으로
+컴파일하도록 하자.
+
+
+csc /r:AccessTest.dll AccessClient.cs
+
+
+변수 x의 접근성이 public으로 되어 있으면 특별한 문제없이 컴파일되어 실행된다. 만약 
+이 변수의 접근성을 protected나 protected intenal로 바꾸고 다시 두개의 파일을 컴파일 하면
+AccessClient.cs 파일을 컴파일할 때 오류가 발생한다. 두 개의 파일은 독립적으로 컴파일되었기
+때문에 C# 컴파일러가 봤을 때 같은 프로그램의 일부분이 아니기 떄문이다.

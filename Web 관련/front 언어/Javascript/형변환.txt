@@ -1,0 +1,37 @@
+eval()
+ 수식 또는 문자열(계산)
+ 실수
+
+ Number()
+ 문자
+ 숫자
+
+ String()
+ 숫자
+ 문자
+
+ escape()
+ 한글
+ 16진수
+
+ unescape()
+ 16진수
+ 한글
+
+ parseInt(문자열, 진수)
+ parseInt()
+ 문자열
+ 정수(원하는 진수 변환 가능) 
+
+
+ parseFloat()
+ 문자열
+ 부동소수점, 변환불가 일때 NaN 반환
+
+ isFinite()
+ 유한수 TRUE, 무한수 FALSE
+ 
+
+  isNan()
+ 문자 TRUE, 숫자 FALSE
+ 

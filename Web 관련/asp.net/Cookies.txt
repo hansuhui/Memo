@@ -1,0 +1,23 @@
+쿠키설정 법
+
+
+
+
+
+HttpCookie 쿠키이름 = new HttpCookie("쿠키이름");
+
+쿠키이름["변수이름"] = "값";
+Response.Cookies.Add(aCookie);
+
+
+Request.Cookies.Get("쿠키이름").Values.Get("변수이름")
+
+
+
+HttpCookie aCookie = new HttpCookie("User");
+                aCookie["SITE"] = "HANYOUNG";
+                aCookie["ID"] = Member.User_ID;
+                aCookie.Expires = DateTime.Now.AddMonths(1);
+                Response.Cookies.Add(aCookie);
+
+Request.Cookies.Get("User").Values.Get("ID")

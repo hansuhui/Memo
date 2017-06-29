@@ -1,0 +1,31 @@
+USE [BD]
+GO
+/****** Object:  UserDefinedFunction [dbo].[CreateModel]    Script Date: 2016-01-22 오전 10:53:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+create FUNCTION [dbo].[CreateModel]
+(	
+	@TableName varchar(100)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select (
+case DATA_TYPE when 'int' then 'public int '+COLUMN_NAME+' { get; set; }'
+when 'varchar' then 'public string '+COLUMN_NAME+' { get; set; }'
+when 'bit' then 'public bool '+COLUMN_NAME+' { get; set; }'
+else DATA_TYPE end) as CV  ,
+COLUMN_NAME,isnull((upper(DATA_TYPE)+'('+cast(CHARACTER_MAXIMUM_LENGTH as varchar)+')'),upper(DATA_TYPE)) as DATATYPE 
+from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = @TableName
+)
+
+
+-- 사용 select * from dbo.CreateModel('테이블명') 

@@ -1,0 +1,35 @@
+	public void CompleprintGate(GiftOrderEntity s, string[] GiftNo)
+		{
+			DbTransaction tran = GetTransaction();
+
+			try
+			{
+				s.ORDERCODE = CompleprintMstSave(s, tran);
+
+				if (GiftNo != null)
+				{
+					for (int i = 0; i < GiftNo.Length; i++)
+					{
+						s.ENDNO = GiftNo[GiftNo.Length - 1];
+						s.STARTNO = GiftNo[i];
+						if (!string.IsNullOrEmpty(GiftNo[i]))
+						{
+							CompleprintDtlSave(s, tran);
+							CompleGiftMst(s, tran);
+
+						}
+
+					}
+				}
+
+				tran.Commit();
+			}
+			catch (Exception)
+			{
+				
+				throw;
+			}
+			
+
+
+		}

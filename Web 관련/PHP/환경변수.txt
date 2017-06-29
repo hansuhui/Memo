@@ -1,0 +1,18 @@
+$SERVER_NAME : 서버이름
+
+$SERVER_PROTOCOL : 서버의 프로토콜
+
+$SERVER_PORT : 서버 포트
+
+$REMOTE_ADDR : 클라이언트 주소
+
+$SCRIPT_FILENAME : 실행 중인 파일의 절대 경로
+
+$SCRIPT_NAME : 실행 중인 파일 이름 (상대 경로)
+
+$PHP_SELF :  실행 중인 파일 이름
+
+$HTTP_COOKIE_VARS : 쿠키 변수 배열
+
+$HTTP_SESSION_VARS : 세션 변수 배열
+

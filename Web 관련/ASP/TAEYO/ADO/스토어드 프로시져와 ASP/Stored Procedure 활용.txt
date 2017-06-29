@@ -1,0 +1,271 @@
+[Stored Procedure 활용]
+
+제가 올릴 글은 ASP 와 SQL Server 7.0 ( SQL Server 2000 ) 에서의 stored Procedure ( 이하 sp ) 의 활용입니다. 
+sp는 알고계시죠? 간단히 말하자면 pre-compiled procedure 입니다. 서버에 미리 컴파일이 되어있으니까 
+물론 속도면에서는 차이가 나겠죠? 그러면 일단 소스를 먼저 보여드리고 말씀드리겠습니다.
+
+모두 sql 쿼리 분석기 를 열어주세요. sp 의 구문은 다음과 같습니다.
+
+
+CREATE PROC [ EDURE ] procedure_name [ ; number ]
+       [ { @parameter data_type }
+              [ VARYING ] [ = default ] [ OUTPUT ]
+       ] [ ,...n ] 
+
+[ WITH
+       { RECOMPILE | ENCRYPTION | RECOMPILE , ENCRYPTION } ]
+
+[ FOR REPLICATION ]
+
+AS sql_statement [ 
+...n 
+]
+
+
+sp_print_name (요건 작성하지 마세요)
+
+create proc sp_print_name
+       @strName	varchar(20)
+As
+Begin
+       print @strName
+       Set @strName = 'Hello World !!!'
+       print @strName
+End
+
+
+보시는 대로 sp_print_name 이라는 이름으로 sp를 만들었습니다. 하나씩 설명을 해 볼까요??
+
+
+
+create proc sp_print_name
+--> sp_print_name 이라는 이름으로 sp를 만들어라
+       @strName	varchar(20)
+-->	@strName 은 변수이름입니다.
+       M$ SQL 에서는 변수에다가는 앞에 @을 붙여줘서 테이블 컬럼과의 구분을 하게 되죠.
+       참고로 이 변수는 parameter입니다.
+As	-->	sp의 시작을 알립니다.
+> Begin	-->	M$ SQL에서는 블럭 처리를 begin ~ end 로 처리합니다.
+              참고로 C 언어의 경우는 { ~ }, ASP 는 블럭이 없죠?
+       print @strName	-->	결과를 화면에 찍어라
+                            ASP로 생각을 하시면 Response.Write strName 정도가 되겠죠?
+       Set @strName = 'Hello World!!!'
+       -->	변수에 어떤 값을 넣어줄 때는 Set 또는 Select를 사용합니다.
+       print @strName
+End
+
+
+
+
+간단한 sp를 작성해 봤는데요..  이제 두번째 sp를 만들어보죠..  어떤 언어를 하던지 단계가 있잖아요.
+첨에는 hello world, 글구 두번째는 ~~~음 ~~~ 머더라?? 기억이 안나는 관계로 전 그냥 구구단을 하겠습니다. ^^
+
+제가 C 언어 할때 아마 처음 쯤으로 기억이 되거든요..  소스는 다음과 같습니다. 
+( 참고로 다시한번 말씀드립니다. sp는 SQL Server에서 쿼리 분석기에서 실행하시고, asp는 말씀안드려도 아시죠??)
+
+
+
+Create proc sp_gugudan
+as
+Begin
+       Declare	@intI	int,
+              @intJ	int
+       Set @intI = 1
+       Set @intJ = 1
+       While ( @intI < 10 )
+       Begin
+              While ( @intJ < 10 )
+              Begin
+                     print convert( char(2), @intI ) + '* ' + cast( @intJ as char(2)) + ' = ' + convert( char(2), @intI * @intJ )
+                     Set @intJ = @intJ + 1
+              End
+
+              Set @intI = @intI + 1
+              Set @intJ = 1
+       End
+End
+
+
+ 다 코딩하셨습니까?? 그럼 다음에 해야 할 일은??  물론 실행을 해서 확인을 해보셔야죠... 
+
+Exec sp_gugudan
+
+자 , 결과가 어떻습니까? 그 옛날 손바닥 맞아가면서 외운 구구단이 주우욱 나오지 않습니까??  
+신기하지 않습니까?? 아니라구요??  쩝...    전 첨에 했을 때 신기했는데...       자 그럼 소스를 설명 해 보지요..
+
+
+create proc sp_gugudan
+as
+Begin
+       Declare	@intI	int,	-->	변수를 선언하는 부분입니다. 변수는 다음과 같이 declare를 이용해서 선언합니다.
+              @intJ	int1회에 했던 내용은 parameter로 받는 부분이어서 decare를 사용하지 않았구요..
+
+       Set @intI = 1	-->	변수를 초기화합니다. 제가 처음에 언어를 배울 때 초기화 안해서 많이 고생했었어요..
+       Set @intJ = 1	              버릇을 단단히 들이면 좋더라고요..참고로 C#을 하시려면 이것은 꼭 필요합니다.
+
+       While ( @intI < 10 )	-->	while Loop 입니다. 괄호안의 값이 참일 동안 계속 진행된다는 것.. 알고 계시죠?
+       Begin
+              While ( @intJ < 10 )
+              Begin
+                     print convert( char(2), @intI ) + '* ' + cast( @intJ as char(2)) + ' = ' + convert( char(2), @intI * @intJ )
+                     -->	convert 와 cast 는 동일한 기능을 하는 함수입니다. 
+                            그런데 이것을 같이 쓴 이유는?? 맞습니다. 여러분이 원하는걸로 골라서 쓰세요..
+                            골라쓰는 재미가 있습니다.
+                     Set @intJ = @intJ + 1
+                     -->	한번 계산했으니까 1을 증가시켜야 구구단이 되겠죠?
+              End
+              Set @intI = @intI + 1	-->	한번 계산했으니까 1을 증가시켜야 구구단이 되겠죠?
+              Set @intJ = 1-->	다음 단에서는 1부터 구구단을 해야 하니까 다시 1로 맞춰주는 것이죠..
+       End
+End
+
+
+
+
+이렇게 해서 기초적인 sp를 다루었습니다.  그럼 이제 본격적으로 sp를 들어가겠습니다.  sp를 왜 사용하겠습니까? 
+
+
+
+굳이 이것처럼 글자만 찍으려고 sp를 사용하려 한다면 저같아도 안합니다. 
+역시 sp를 하는 이유는 DB안에서 복잡한 DB작업을 할 수 있기 때문이죠. 물론 transaction 처리까지 말이죠.  
+우선 사용할 테이블부터 만듭니다.
+
+
+
+Create Table Address
+(
+       idx	int	identity( 1, 1)	primary key	Not Null,
+       -- identity( x, y ) 라는 함수는 x 부터 y씩 증가하면서 자동으로 값을 넣어준다는 것입니다.
+       name	varchar(20)Not Null,
+       tel	varchar(15)Not Null,
+       email	varchar(50)Null,
+       regid	varchar(15)Not Null,
+       sex	tinyInt	Not Null
+       -- 남자일 경우는 0, 여자일 경우는 1
+)
+
+
+
+그리고 다음과 같이 sp를 만들어 보세요
+
+
+
+Create Proc sp_Insert_Address
+       @strName	varchar(20),
+       @strTelvarchar(15),
+       @strEmail	varchar(50),
+       @strRegID	varchar(15),
+       @intIdxintoutput
+As
+Begin
+       Declare @intSex	tinyInt
+
+       Begin Tran
+              If ( subString( @strRegID, 8, 1 ) = '1' ) 
+                     Set @intSex = 0
+              else
+                     Set @intSex = 1
+
+              Insert Into Address ( name, tel, email, regid, sex )
+              values ( @strName, @strTel, @strEmail, @strRegID, @intSex )
+
+              Set @intIdx = @@identity
+       If ( @@error <> 0 ) 
+              RollBack Tran
+       else
+       Commit Tran
+End
+
+
+
+위의 sp는 입력된 값을 DB에 반영시키는 sp 입니다.  그럼 또 설명해 볼까요??
+
+
+
+Create Proc sp_Insert_Address
+       @strName	varchar(20),
+       @strTelvarchar(15),
+       @strEmail	varchar(50),
+       @strRegID	varchar(15),
+       -->	여기까지는 아시겠죠?
+
+       @intIdxintoutput
+       -->	요놈은 처음보네요.. 하지만 걱정하지 마세요... 제가 있잖습니까?
+              요놈은 output이라는 놈으로 다 실행하고 난 다음에 이 값을 리턴해주죠.
+              여러개도 쓸 수 있걸랑요.
+              전 사실 요놈이 좋아서 이걸 자주 쓴답니다.
+              만일 100개의 게시판의 게시물 숫자를 구하려면...
+              ASP에서 레코드셋을 백번 열어서 확인해야 하죠??
+              하지만 여기에서는 output을 사용해서 한번에 다 받을 수 있죠...
+As
+Begin
+       Declare @intSex	tinyInt
+       -->	전에 했던 변수선언입니다.
+       Begin Tran
+       -->	엇? 첨 보는 놈이죠??
+              여러분 Transaction 이라고 들어보셨죠?
+              예제로 많이 쓰는 것이 은행에서 돈 뽑을 때를 예로 많이 들죠..
+              만일 제가 돈을 뽑는데 처리가 거의 끝났습니다. 돈이 나와야 할 순간...
+              앗?? 이런 정전이 되어버렸네...
+              이런 띠바... ㅠ.ㅠ
+              이럴 경우 어떻게 합니까?
+              DB에서는 돈이 나간걸로 처리되어있는데...
+              걱정마세요..
+              이럴 때 있는 것이 transaction이랍니다.
+              transaction은 모든 과정이 제대로 끝나지 않고 에러가 발생할 경우는 
+              처음 상태로 모든 것일 되돌려 놓는답니다. ( RollBack )
+              그렇지 않고 제대로 끝난다면 모든 것을 처리하죠. ( Commit )
+
+              If ( subString( @strRegID, 8, 1 ) = '1' )	
+              -->	substring( a, b, c ) : a 의 문자의 b 부터 c까지 뽑아와라..
+                     예를 들면 subString( 'abcdef', 2, 2) == > 'bc'
+                     이렇게 된답니다.
+
+                     Set @intSex = 0
+              else
+                     Set @intSex = 1
+
+              Insert Into Address ( name, tel, email, regid, sex )
+              values ( @strName, @strTel, @strEmail, @strRegID, @intSex )
+
+              Set @intIdx = @@identity
+              -->	아까 identity를 한 것 기억나시죠?? 그것은 아무 값을 안 넣어도 숫자가 자동으로
+                     증가되어서 들어간다고 말씀드렸죠?
+                     그런데 그 값을 어떻게 압니까?
+                     그건 @@identity 라는 전역번수에 들어갑니다.
+                     물론 휘발성입니다. 계속 바뀐다는 말이죠.
+                     참고로 @ 1개면 지역변수, @ 2개면 전역변수입니다.
+
+       If ( @@error <> 0 ) 
+              RollBack Tran
+       else
+              Commit Tran
+
+       -->	아까 말씀드린 RollBack과 Commit 입니다.
+              @ 2개면 뭔지 기억나시죠? 
+              맞습니다. 
+              전역변수입니다.
+              이 @@error에는 어떤 값이 저장되느냐...
+              에러 번호가 저장됩니다.
+              에러번호가 0이라면 정상적으로 처리된 것이고, 그것이 아니라면 어떤 좋지않은 일이 발생한 것이겠죠?
+End
+
+
+
+Exec sp_Insert_Address '이름', '전화번호', '이메일', '주민등록번호', 0
+
+
+
+위의 값을 넣어보시고 실행해 보세요. 주민등록번호는 자신의 번호를 넣어서 실행하세요.  안그러면 에러납니다.
+
+이제 이것을 ASP 페이지에서 호출하는 방법을 말씀드려야겠죠?? 앗 벌써 시간이 이렇게??  이제 저도 일을 해야하겠네요..  
+오늘 벌써 오후인데 일을 해 놓은게 없네요...  ㅠ.ㅠ
+
+일부러 소스에 주석처리를 다 하지 않았습니다.  그러면 여러분들이 소스를 한번 더 보시고 도움이 되실 듯해서요..
+
+좋은 하루 되세요..  여러분 다음 강좌까지 안녕히 ~~~
+
+
+
+
+

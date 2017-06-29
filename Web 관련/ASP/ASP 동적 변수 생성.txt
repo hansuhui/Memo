@@ -1,0 +1,10 @@
+execute("key1 = 2134234")
+response.write "key1" = 2134234
+execute("response.wirte key1") = 2134234
+ 
+ 
+execute("key1 = ""abcde""")
+response.write "key1" = abcde
+execute("response.wirte key1") = abcde
+ 
+eval("key1") = abcde

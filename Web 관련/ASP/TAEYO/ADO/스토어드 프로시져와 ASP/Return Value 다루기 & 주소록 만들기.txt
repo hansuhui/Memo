@@ -1,0 +1,268 @@
+[Return Value 다루기 & 주소록 만들기]
+
+
+
+자.. 저번에 어디까지 했었죠?? 그렇습니다. ASP에서 sp 를 호출하는 부분까지 했습니다. 
+오늘은 값을 받아오는 부분을 좀 더 다른 각도에서 살펴보겠습니다. 이름 하여 Return Value 입니다.
+
+왜 주소록을 만들다가 다른데로 새냐구요?? 왜냐하면요.. 내 마음이지 ~~~ ^^ ㅎㅎ.. 강좌 제목이 sp와 ASP잖아요.. 
+중요한 것은 sp란 놈을 ASP로 어떻게 구워삶을까 하는 것이니까요... 이전까지 사용하던 것은 무엇인가요?? 
+맞습니다. output parameter 였습니다. 그런데 return value 는 뭐야... 라고 말씀하시는 분 저기 계시네요.. 
+머 그리 큰 차이점은 없습니다.
+
+단순히 sp를 호출한 놈한테 값을 전해주는 것이죠.. 
+다른 language 에서와 마찬가지입니다. 그럼 예제를 함 볼까요?? 눈 크게 뜨세요..
+
+
+#########################################################
+Create Pro sp_Return_Value
+As
+Begin
+    Declare  @intExists  int
+    Set @intExists = 2
+    RETURN @intExists  -- @intExists 를 return 해준다.
+End
+#########################################################
+그리고 ASP 소스는 다음과 같습니다.
+
+<< return_value.asp >> 
+#########################################################
+<% Option Explicit %>
+
+<!-- #include file = "adovbs.inc" -->
+<% 
+    Dim objConn
+    Dim strConnection
+    Set objConn = Server.CreateObject("ADODB.Connection")
+
+    strConnection = "Provider=SQLOLEDB;Data Source=자신의 아이피주소;Initial Catalog=데이터베이스이름;User id=사용자아이디; Password=사용자비밀번호;"    '한 줄로 주욱 쓰세요
+    objConn.Open strConnection
+
+    Dim objCmd
+    Set objCmd = Server.CreateObject("ADODB.Command")
+
+    with objCmd
+        .ActiveConnection = objConn
+        .CommandText = "sp_Return_Value"
+        .CommandType = adCmdStoredProc
+        .Parameters.Append .CreateParameter("RETURN_VALUE", adInteger, adParamReturnValue, 0)
+
+        .Execute , , adExecuteNoRecords
+
+        Dim intResult
+        intResult = .Parameters("RETURN_VALUE")
+
+    End with
+    Response.write intResult
+
+    Set objCmd = Nothing
+    objConn.Close
+    Set objConn = Nothing
+%>
+#########################################################
+그럼 소스 설명을 함 해볼까요?? 다른 것은 모두 전에 사용했던 것이고 다른 것은 몇개밖에 없습니다.
+
+with objCmd
+    .ActiveConnection = objConn
+    .CommandText = "sp_Return_Value"
+    .CommandType = adCmdStoredProc
+    .Parameters.Append .CreateParameter("RETURN_VALUE", adInteger, adParamReturnValue, 0)
+
+    --> 이 부분이 다른 부분입니다. 리턴을 받을 경우는 위와 같이 해주시면 되겠슴다.
+    .Execute , , adExecuteNoRecords
+
+    Dim intResult
+    intResult = .Parameters("RETURN_VALUE")
+    --> 여기 역시 마찬가지 이지요???
+End with
+
+
+근데 이상한 것은 변수앞에 @가 빠진 것입니다 좀 이상하지요?? 그건 MS 에 함 물어보세요.. 전 그것까지는...
+
+결과가 어떻게 나옵니까??? 그냥 부라우자에 "2" 라고만 찍히죠?? 어때요?? 쉽죠?? 
+이렇게 쉬운 sp를 왜 진작 하지 않았을까 ... 하는 생각이 절로 드시죠??? 
+아니라구요?? 쩝... 아님 말구요... ㅠ.ㅠ
+
+또 한가지의 방법이 있습니다. 배열로 파라미터를 전달하는 것인데요... 그런데 
+이건 전 별로 추천하고 싶은 방법은 아닙니다. 문법 자체는 굉장히 간단합니다.
+
+
+.Parameters.Append .CreateParameter("@intPrm1", adInteger, adParamInput, 0)
+.Parameters.Append .CreateParameter("@intPrm2", adInteger, adParamInput, 0)
+.Parameters.Append .CreateParameter("@intPrm3", adInteger, adParamInput, 0)
+.Parameters.Append .CreateParameter("@intPrm4", adInteger, adParamInput, 0)
+
+.Parameters("@intPrm1") = intPrm1
+.Parameters("@intPrm2") = intPrm2
+.Parameters("@intPrm3") = intPrm3
+.Parameters("@intPrm4") = intPrm4
+이렇게 표현되는 것을 단지
+
+.Execute , Array( intPrm1, intPrm2, intPrm3, intPrm4 )
+이렇게 표현만 하면 됩니다.
+
+하지만 output 이나 return value 가 있을 경우는 사용을 할 수가 없구요.. 
+단지 input 만 있을 경우만 사용할 수 있습니다. 그러나 편한 만큼 희생도 있다는 말 아시죠??
+
+속도 자체는 별로 차이가 나지 않지만 여러번 사용하다 보면 차이가 날 수 밖에 없습니다. 
+왜냐하면 ADO 는 파라미터의 데이터 타입이나 그 파라미터가 제대로 들어왔는지를 체크해야 하기 때문이죠. 
+위의 소스가 복잡하고 귀찮은 소스가 될 수도 있지만 파라미터의 속성을 명확하게 표시해 주는 것이 더 좋은 소스로 저는 생각됩니다.
+
+그러면 주소록 계속해서 나가 보겠습니다.
+
+우리가 지금 하려는 것은 주소록입니다. 하지만 주소록의 모든것을 여기에서 하는 것은 좀 그렇죠?? 
+모든 로직은 게시판과 동일하구요..주소록 읽는 부분만 해보고 나머지 수정, 삭제, 리스트를 보는 
+부분은 여러분에게 맡겨드리겠습니다.읽는 부분의 소스는 다음과 같습니다.
+
+#########################################################
+Create Proc sp_address_read
+    @intIdx    int,
+    @strName    varchar(20)    output,
+    @strTel    varchar(15)    output,
+    @strEmail    varchar(50)    output,
+    @strRegid    varchar(15)    output,
+    @intSex    int    output,
+    @intPrevIdx    int    output,
+    @intNextIdx    int    output,
+    @strPrevName    varchar(20)    output,
+    @strNextName    varchar(20)    output
+As
+Begin
+    -- sp를 호출한 페이지에 다음의 변수로 넘겨준다.
+    select @strName = name, @strTel = tel, @strEmail = email, @strRegID = regid, @intSex = sex 
+    from address 
+    where idx = @intIdx
+
+     -- 이전글, 다음글을 구현한 sp
+    -- 게시판에 써먹으면 참 좋겠죠?
+    -- 이전 asp 게시판은 복잡한 소스를 asp 안에서 전부 했었는데...^_-
+    if Exists ( select * from address where idx < @intIdx )
+    Begin
+        select @intPrevIdx = max(idx) from address where idx < @intIdx
+        select @strPrevName = name from address where idx = @intPrevIdx
+    End
+    if Exists ( select * from address where idx > @intIdx )
+    Begin
+        select @intNextIdx = min(idx) from address where idx > @intIdx
+        select @strNextName = name from address where idx = @intNextIdx
+    End
+End
+#########################################################
+그렇다면, 소스입니다
+
+< address_list.asp >
+<% Option Explicit %>
+
+<!-- #include virtual = "/include/adovbs.inc" -->
+
+<% 
+    Dim objConn
+    Dim strConnection
+    Set objConn = Server.CreateObject("ADODB.Connection")
+
+    ' 데이터베이스에 연결한다.
+    strConnection = "Provider=SQLOLEDB;Data Source=자신의 아이피주소;Initial Catalog=데이터베이스이름;User id=사용자아이디; Password=사용자비밀번호;"
+    objConn.Open strConnection
+
+    ' 변수선언
+    Dim intIdx
+    Dim strName
+    Dim strTel
+    Dim strEmail
+    Dim strRegID
+    Dim intSex
+    Dim intPrevIdx
+    Dim intNextIdx
+    Dim strPrevName
+    Dim strNextName
+
+    ' 쿼리스트링으로 넘어온 값을 받는다. 당연히 리스트에서는 쿼리스트링이름을 idx 로 주어야겠죠?
+    intIdx = Request.QueryString("idx")
+
+    ' command object 생성
+    Dim objCmd
+    Set objCmd = Server.CreateObject("ADODB.Command")
+
+    ' sp 실행
+    with objCmd
+        .ActiveConnection = objConn
+        .CommandText = "sp_address_read"
+        .CommandType = adCmdStoredProc
+        .Parameters.Append .CreateParameter("@intIdx", adInteger, adParamInput, 0)
+        .Parameters.Append .CreateParameter("@strName", adVarWChar, adParamOutput, 20)
+        .Parameters.Append .CreateParameter("@strTel", adVarWChar, adParamOutput, 15)
+        .Parameters.Append .CreateParameter("@strEmail", adVarWChar, adParamOutput, 50)
+        .Parameters.Append .CreateParameter("@strRegID", adVarWChar, adParamOutput, 15)
+        .Parameters.Append .CreateParameter("@intSex", adInteger, adParamOutput, 0)
+        .Parameters.Append .CreateParameter("@intPrevIdx", adInteger, adParamOutput, 0)
+        .Parameters.Append .CreateParameter("@intNextIdx", adInteger, adParamOutput, 0)
+        .Parameters.Append .CreateParameter("@strPrevName", adVarWChar, adParamOutput, 20)
+        .Parameters.Append .CreateParameter("@strNextName", adVarWChar, adParamOutput, 20)
+
+        ' input type 변수를 넘겨준다.
+        .Parameters("@intIdx") = intIdx
+
+        .Execute , , adExecuteNoRecords
+
+        ' output type 변수를 받아온다.
+        strName = .Parameters("@strName")
+        strTel = .Parameters("@strTel")
+        strEmail = .Parameters("@strEmail")
+        strRegID = .Parameters("@strRegID")
+        intSex = .Parameters("@intSex")
+        intPrevIdx = .Parameters("@intPrevIdx")
+        intNextIdx = .Parameters("@intNextIdx")
+        strPrevName = .Parameters("@strPrevName")
+        strNextName = .Parameters("@strNextName")
+    End with
+
+    ' 닫아주고 소멸시켜주고...
+    objConn.Close
+    Set objCmd = Nothing
+    Set objConn = Nothing
+%>
+
+<table width = 300 border = 1 cellpadding = 0 cellspacing = 0>
+    <tr>
+        <td width = 100 align = center>이름</td>
+        <td><%=strName%></td>
+    </tr>
+    <tr>
+        <td width = 100 align = center>전화번호</td>
+        <td><%=strTel%></td>
+    </tr>
+    <tr>
+        <td width = 100 align = center>E mail</td>
+        <td><%=strEmail%></td>
+    </tr>
+    <tr>
+        <td width = 100 align = center>주민등록번호</td>
+        <td><%=strRegID%></td>
+    </tr>
+    <tr>
+        <td width = 100 align = center>성별</td>
+        <td><% if ( intSex = "0" ) then Response.Write "남자" else Response.Write "여자" endif%></td>
+    </tr>
+</table>
+<table width = 300 border = 1 cellpadding = 0 cellspacing = 0>
+<%
+    if ( intPrevIdx <> "" ) then
+%>
+    <tr>
+        이전친구:<ahref=address_read.asp?idx=<%=intPrevIdx%>><%=strPrevName%></a>
+    </tr>
+<%
+    end if
+    if ( intNextIdx <> "" ) then
+%>
+    <tr>
+        다음친구:<ahref=address_read.asp?idx=<%=intNextIdx%>><%=strNextName%></a>
+    </tr>
+<%   end if %>
+</table>
+위의 소스를 보시면 어느정도 이해가 가시죠?? 적당한 부분에 주석을 달아놓았습니다.
+
+어떻습니까?? sp가 그리 어렵지는 않죠? 아니, 더 쉽지 않습니까?? 
+다시 한번 강조를 합니다. Stored Procedure는 일반 SQL 문장보다는 훨씬 빠릅니다. 
+그러니까 말이죠.. 좀더 효과적인 사이트를 만들고 싶으시다면 이쪽을 많이 해보시는게 좋을 것이라고 생각됩니다.
+

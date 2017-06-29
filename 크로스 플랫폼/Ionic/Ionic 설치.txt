@@ -1,0 +1,73 @@
+1. nodejs 설치하기
+https://nodejs.org/en/
+
+
+2. cordova, ionic설치
+#> cd c:\program files\nodejs
+#> npm install -g cordova
+#> npm install -g ionic
+
+3. 프로젝트 생성
+blank, tabs, sidemenu형태로 생성가능
+#> ionic start Project tabs
+
+
+4. 실행
+#> cd Project
+#> lonic serve
+
+
+
+플랫폼 환경을 add해 주어야 합니다.
+1) iOS
+#> ionic platform add ios
+2) Android
+#> ionic platform add android
+
+
+플랫폼 환경이 추가되었다면, 빌드 과정이 남았습니다. 빌드 과정도 한줄이면 끝납니다.
+#> ionic build ios
+#> ionic build android
+
+
+실행은 emulate로 하는 방법
+#> ionic emulate ios
+#> ionic emulate android
+
+
+android는 기기에 직접 테스트 하는 방법이 있습니다.
+android 환경 테스트를 위해, 안드로이드 환경설정에서 개발자모드에 USB 디버깅에 체크를 하신 후,
+USB를 연결합니다.
+
+#> ionic run android
+
+
+
+
+
+#> ionic start --list
+
+
+
+
+맵 사용시
+
+#> cordova telemetry on
+
+#> cordova platform add android
+
+
+
+
+
+
+
+
+
+
+5. 개발툴
+
+https://code.visualstudio.com/
+
+[출처] ionic 설치하기|작성자 ihongss
+

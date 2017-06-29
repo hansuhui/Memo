@@ -1,0 +1,3 @@
+ifnull()
+
+select ifnull(Image2 ,'ss') from Maker where Code = 'w100000019' 

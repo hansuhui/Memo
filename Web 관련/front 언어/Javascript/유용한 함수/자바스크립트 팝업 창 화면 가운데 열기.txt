@@ -1,0 +1,41 @@
+자바스크립트 팝업 창 화면 가운데 열기
+ 
+ 
+실행결과 :  [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+      <script type='text/javascript'>
+          // popup 함수 실행시 인자로 주소,팝업이름,넓이,높이 값 전달 받습니다.
+          function popup(sUrl,sName,iWin,iHeight) {
+             // 팝업 창 화면 가운데 열기 공식  = ( 화면 넓이,높이 - 팝업 창 넓이,높이 ) / 2 
+             var iLeft = ( screen.width - iWin ) / 2;
+             var iTop = ( screen.height - iHeight ) / 2;
+             var popOption = 'width=' + iWin + ', height=' + iHeight + ', left=' +  iLeft + ', top=' + iTop;
+             // popOption 변수와 인자로 넘겨받은 주소, 팝업이름을 적용하여 팝업을 엽니다. 
+             // newPopup ( 전역변수 )? 에 담은 이유는 부모창에서 팝업 닫기가 가능하도록 하기 위해서 입니다.
+             newPopup = window.open(sUrl,sName,popOption);    
+          }
+      </script>
+  </head>
+  <body>
+// popup 함수 실행시 인자로 주소,팝업이름,넓이,높이를 인자로 넘깁니다.
+          <input type='button' value='팝업열기' onclick="popup('http://naver.com','popup',400,400);">
+// newPopup ( 전역변수 ) close 메소드를 이용하여 팝업창을 닫을수 있습니다.
+<input type='button' value='팝업닫기' onclick='newPopup.close();'>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+?window.open?  - 새 창을 열수 있습니다. ( window 객체 메소드 )
+?close?  -  지정한 창을 닫을수 있습니다.( window 객체 메소드 )
+?screen.width?  - 해상도의 넓이를 구합니다. ( screen 객체 프로퍼티 )
+?screen.height?  - 해상도의 높이를 구합니다. ( screen 객체 프로퍼티 )

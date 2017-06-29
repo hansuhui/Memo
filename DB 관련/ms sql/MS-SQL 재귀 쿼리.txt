@@ -1,0 +1,35 @@
+--임시테이블을 설정해서 안에서 자기 자신을 설정한다!!! 
+조건만큼 돌아서 나온다!!
+
+
+	with 임시테이블명(컬럼명, 컬럼명, 컬럼명)
+	as
+	(
+		-- 상위 업체가 없다면 본사
+		select shop_code, shop_name, 0 from shop where  SHOP_CODE = '456412427'
+		union all
+		select a.shop_code, a.shop_name, b.shop_level + 1
+		from shop a inner join 임시테이블명 b on (a.UPPER_SHOP_CODE = b.컬럼명)
+
+	)
+	 --order by shop_level, shop_name
+	select shop_code,shop_level from TblShopLevel 
+
+
+
+=======================예제=======================
+
+
+	with TblShopLevel(shop_code, shop_name, shop_level)
+	as
+	(
+		-- 상위 업체가 없다면 본사
+		select shop_code, shop_name, 0 from shop where  SHOP_CODE = '456412427'
+		union all
+		select a.shop_code, a.shop_name, b.shop_level + 1
+		from shop a inner join TblShopLevel b on (a.UPPER_SHOP_CODE = b.shop_code)
+
+	)
+	 --order by shop_level, shop_name
+	select shop_code,shop_level from TblShopLevel 
+

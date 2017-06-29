@@ -1,0 +1,38 @@
+Table 3.5. Supported DbTypes for Parameter Maps and Result Maps (.NET)
+
+
+CLR Type  /  iBATIS support  /  SqlDbType  /  OleDbType  /  OdbcType  /  OracleType
+
+Byte[]  /  Yes  /  Binary, Image, VarBinary  /  Binary, VarBinary  /  Binary, Image, VarBinary  /  Raw
+
+Boolean, bool?  /  Yes  /  Bit  /  Boolean  /  Bit  /  Byte
+
+Byte, byte?  /  Yes  /  TinyInt  /  -  /  TinyInt  /  Byte
+
+DateTime, DateTime?  /  Yes  /  DateTime, SmallDateTime  /  Date  /  Date, DateTime, SmallDateTime, Time  /  DateTime
+
+char, char?  /  Yes  /  Not supported  /  Char  /  Char  /  Byte
+
+Decimal, decimal?  /  Yes  /  Decimal, Money, SmallMoney  /  Decimal, Currency, Numeric	Decimal, Numeric  /  Number
+
+Double, double?  /  Yes  /  Float  /  Double  /  Double  /  Double
+
+Guid, Guid?  /  Yes  /  UniqueIdentifier  /  Guid  /  UniqueIdentifier  /  Raw
+
+Int16, Int16?  /  Yes  /  SmallInt  /  SmallIInt  /  SmallInt  /  Int16
+
+Int32, Int32?  /  Yes  /  Int  /  Integer  /  Int  /  Int32
+
+Int64, Int64?  /  Yes  /  BigInt  /  BigInt  /  BigInt  /  Number
+
+Single, Single?  /  Yes  /  Real  /  Single  /  Real  /  Float
+
+String  /  Yes  /  Char, Nchar, NVarchar, Text, VarChar	Char, VarChar  /  Char, NChar, NText, NVarChar, Text, VarChar  /  NVarChar, VarChar
+
+TimeSpan  /  No  /  Not supported  /  DBTime  /  Time  /  DateTime
+
+UInt16, UInt16?  /  yes  /  Int  /  -  /  -  /  UInt16
+
+UInt32, UInt32?  /  yes  /  Decimal  /  -  /  -  /  UInt32
+
+UInt64, UInt64?  /  yes  /  Decimal  /  -  /  -  /  Number

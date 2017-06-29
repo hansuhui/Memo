@@ -1,0 +1,120 @@
+[RecordSet - GetString]
+
+
+ADO GetString 관련글 -출처 MS
+
+데이터베이스의 쿼리를 실행하여 웹 페이지에 표시하는 작업은 레코드 수가많아질 때 ASP의 스크립트 프로세싱 타임을
+느리게 하는 원인이 된다. 예를 들어 테이블에 데이터를 나타낼 때 레코드셋의 EOF를 확인아여 DO...LOOP을 돌려
+데이터를 표시 했다. 하지만 ADO 2.0에서 제공하는 GetString을 이용하면 loop 이나 Eof의 Check없이 단 한번의
+Response.write로 데이터를 테이블에 표시할 수 있게 된다.
+
+
+------------------
+
+기존의 소스코드는 다음처럼 레코드셋을 만든다음... 루프를 돌면서 뿌려주었었습니다. 공부를 하신 분은 기억하시겠지요?
+다음과 같이 말입니다.. ( 게시판등 거의 모든 리스트를 보여주는 소스에는 이런 부분이 있습니다.)
+
+<%
+    i = 1
+    Do until rs.EOF or i > pagesize
+%>
+
+가져온 레코드를 화면에 출력하는 소스
+
+<%
+       rs.movenext
+       i = i + 1
+    Loop
+%>
+
+
+그러나 , 이 방법은 개인적으로는 MS에서 말한 속도면 !! 그것을 생각하지 않는다고 해도...또, 
+다른 하나의 불만(개인적인 생각)이 있었는데, 그것은... 바로 이 레코드셋의 데이터를 출력해줄 수 있는 곳이 이 Loop 구역안으로
+제한된다는 것이었슴다. 일단 한번 뿌려진 데이터를 다시 사용하려면 배열이나 그런 것을 사용해서.. 레코드 단위의 데이터를 각각
+배열에 담아두어야 한다는 것이었지요...
+
+또한,그렇게 할 경우 출력할 컬럼 수에 따라 배열의 사이즈도 동적으로 변해주어야 할 것이구요. 그런데, 그 문제도 GetString을
+사용하면 해결이 되네요... 이것은 아예 첨부터 배열에 동적으로 그 컬럼갯수에 따라 담아줄 수가 있으니까요...
+그럼 어떻게 그렇게 하느냐? 맘이 급하신 분들은 밑에 소스를 살펴보세요
+
+이제 이야기를 시작해 보겠습니다. 바로 위의 루프문 자체가 다음 코드 한줄로 바뀌는 것이지요...
+
+
+AllRes = RS.GetString(2,15)
+'첫번째 인자인 2는 adClipString를 의미한다.
+'두번째 인자는 15는 가져올 레코드이다. 여러분은 apgesize로 지정하면 될 것이다.
+
+이 한줄은 15개의 레코드를 모두 텍스트로 가져와서 AllRec이라는 변수에 넣으라는 의미입니다.
+
+
+[예제 소스]
+
+
+<%
+    Set Dbcon = Server.CreateObject("ADODB.Connection")
+    Dbcon.Open "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\temp\MyDb2.mdb" 
+
+    Set Rs = Server.CreateObject("ADODB.RecordSet")
+    SQL = " Select m_name, m_id, m_sex, m_email from MyFriend "
+    Rs.Open SQL, Dbcon
+%>
+<html>
+<head>
+<title>회원 리스트</title>
+</head>
+<body>
+<p align="center"><br>
+<font size="5"><b>사이트의 회원 리스트</b></font></p>
+<% if Rs.EOF then %>
+    <p>현재는 등록된 회원이 없습니다.</p>
+<% 
+else 
+   rs.movefirst
+   AllRec = RS.GetString(2, 15) 'RS.PageSize) 'adClipString
+   rows = split(AllRec,chr(13))
+%>
+   <div align="center"><center>
+   <table border="0" cellpadding="0" cellspacing="1" width="500"><tr>
+   <td width="100" height="25" align="center" bgcolor="#2D3155"><font face="돋움" size="2"
+   color="#FFFFFF"><b>이름</b></font></td>
+   <td width="100" height="25" align="center" bgcolor="#2D3155"><font face="돋움" size="2"
+   color="#FFFFFF"><b>아이디</b></font></td>
+   <td width="100" height="25" align="center" bgcolor="#2D3155"><font face="돋움" size="2"
+   color="#FFFFFF"><b>성별</b></font></td>
+   <td width="200" height="25" align="center" bgcolor="#2D3155"><font face="돋움" size="2"
+   color="#FFFFFF"><b>메일주소</b></font></td>
+   </tr>
+<%
+   for j=0 to Ubound(rows)-1
+      cols = split(rows(j),chr(9))
+      name = cols(0)
+      id = cols(1)
+      sex = cols(2)
+      mail = cols(3)
+%>
+   <tr><td width="100" height="20" style="border-bottom: 1 dashed rgb(138,143,193)"><p
+   align="center"><font face="돋움" size= "2"color="#2D3155"><%=name%></font> </td>
+   <td width="100" height="20" style="border-bottom: 1 dashed rgb(138,143,193)"><p
+   align="center"><font face="돋움" size= "2"color="#2D3155"><%=id%></font> </td>
+   <td width="100" height="20" style="border-bottom: 1 dashed rgb(138,143,193)"><p
+   align="center"><font face="돋움" size= "2"color="#2D3155"><%=sex%></font> </td>
+   <td width="200" height="20" style="border-bottom: 1 dashed rgb(138,143,193)"><p
+   align="center"><font face="돋움" size= "2"color="#2D3155"><%=mail%></font> </td>
+   </tr>
+<% next %>
+</table></center></div>
+<% end if %>
+</body>
+</html>
+
+
+
+
+
+
+결과는 그냥 RecordSet 을 루프돌 때와 똑같이 나올 겁니다. 
+하지만 속도는 훨씬 빠르게 출력이 되지요.. ^^ 어떤가요? 나름대로 깜찍함이 엿보이지 않나요???
+
+하하... 오늘도 좋은 하루 되세요~~ ^___^
+
+

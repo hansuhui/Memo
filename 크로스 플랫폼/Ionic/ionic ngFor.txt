@@ -1,0 +1,22 @@
+ MyPets = {
+    flash : {
+      kind : 'Cat',
+      color : 'white'
+    },
+    Happy : {
+      kind : 'Dog',
+      color : 'brown'
+    }
+  };
+
+
+get pets(){
+	return Object.keys(this.MyPets);
+ }
+
+
+<div *ngFor = "let name of pets; let i = index">
+    나의 {{ i + 1 }} 번째 애완동물 <br/>
+    <b>종류</b> : {{ MyPets[name]['kind'] }}<br/>
+    <b>색깔</b> : {{ MyPets[name]['color'] }}<br/>
+  </div>

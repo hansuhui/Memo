@@ -1,0 +1,377 @@
+[ ASP 페이지에서의 Stored Procedure 활용]
+
+
+자, 그럼...  이제까지 한 것들을 잠시 되돌아 볼까요??  처음에는 sp를 작성해서 
+그 유명한 "Hello World !!!" 프로그램을 작성해봤구요.. 그리고 다음에는 
+ASP로 같은 프로그램을 작성해 보았구요..  그리고 또 멀 했더라...
+
+아,,, 구구단을 했었죠??  그리고 주소록을 만들기 위해서 주소록 테이블을 만들었고, 
+데이터를 넣을 수 있는 sp를 작성해 보았습니다.
+
+오늘은 무엇을 할 것인가... 오늘은 그중에 제일 중요한 것입니다.  
+사실 이 부분이 없다면 이 강좌는 안하는 것이나 마찬가지이지요.. 
+바로 ASP에 sp를 붙이는 방법에 관한 것입니다.
+
+다시 한번 강조합니다. sp를 사용하는 이유는 간단히 다음과 같습니다.
+
+    *   SP는 DB에서 컴파일됩니다. 이것은 execution plan을 만드므로 당연히 속도가 빨라진다는 말입니다.
+    *   테이블이 sp에 의해서 수정될 수 있도록 했으므로 데이터를 좀 더 안전하게 핸들링할 수 있습니다.
+    *   ASP 코딩이 좀 더 간결해진다.
+    *   Parameter 를 여러개 받을 수 있고, 여러개를 리턴할 수 있다.
+    *   가장 중요한 것은 일반 SQL 문장보다는 훨씬 빠르다는 것입니다.
+
+그럼 간단한 sp를 ASP에서 호출하는 예제부터 시작하겠습니다
+
+
+Create Procedure sp_Example
+As
+Begin
+       Insert into Address ( name, tel, email, regid, sex ) 
+       values ( '깜찍이', '011-715-2918', 'parkley@opentown,net, '730205-1111111', 0)
+End
+
+
+의 sp가 하는 일은 무엇입니까?
+
+맞습니다. 바로 주소록 테이블에 한개의 레코드를 넣는 일을 합니다. 
+물론 파라미터는 아무것도 없죠.. 그럼 이걸 ASP에서 호출하는 예제를 보시겠습니다. 
+우선 C:\program files\common files\systems\ado\adovbs.inc 파일을 예제와 동일한 폴더에 복사를 하세요. 
+아시겠지만 상수를 사용할 수 있도록 하는 것입니다.
+
+
+   태오 커멘트
+
+ADO 상수들을 사용하기 위해서 Adovbs.inc 를 편입하는 방법보다는 타입 라이브러리를 직접 걸어주는 것이 더 바람직한 방법입니다. 아래의 강좌를 참고하시기 바랍니다.
+
+ http://taeyo.net/Columns/View.aspx?SEQ=238&PSEQ=16&IDX=2
+
+
+
+p_Example.asp
+
+<% Option Explicit %>
+<!-- #include file = "adovbs.inc"-->
+<%
+       Dim objCon
+       Dim strConnection
+       Set objCon = Server.CreateObject("ADODB.Connection")
+
+       strConnection = "Provider=SQLOLEDB;Data Source = 서버명;Initial Catalog = DB명;User id= 아이디; Password= 비밀번호;"  '한줄로 주욱씁니다.
+       objConn.Open strConnection
+
+       Dim objCmd
+       Set objCmd = Server.CreateObject("ADODB.Command")
+
+       With objCmd
+              .ActiveConnection = objCon
+              .CommandText = "sp_Example"
+              .CommandType = adCmdStoredProc
+
+              .Execute , , adExecuteNoRecords
+       End With
+
+       Set objCmd = Nothing
+       objCon.Close
+       Set objCon = Nothing
+%>
+
+
+
+자 이렇게 하시고 한번 실행해 보시죠..  브라우저에는 아무런 변화가 없고 하얀 화면만 나오죠?   
+"이게 뭐야 !!! 너 사기치는거지???" 라고 말씀하시려고 했죠??  하하하...
+
+당연히 아무런 반응이 없죠. ASP 소스에는 브라우저에 무엇을 쓰라는 명령이 아무것도 없으니까요.. 
+그럼 쿼리 분석기에 가셔서 Select * from Address 를 한번 실행해 보세요.. 
+
+앗!!!  그렇습니다.  한개의 레코드가 들어와 있습니다.   
+아까 말씀드린 것과 같이 ASP 소스 깔끔해지고 얼마나 좋습니까...    
+sp를 ASP에 넣는 방식은 이렇습니다.
+
+<<< 소스 설명 >>>
+<%Option Explicit%>
+-->변수 선언을 요구
+<!-- #include file = "adovbs.inc"-->
+-->파일을 include 한다.
+<%
+       Dim objCon
+       Dim strConnection
+       Set objCon = Server.CreateObject("ADODB.Connection")
+              -->ADODB 의 Connection 객체를 생성시킨다.
+                     이 객체는 DB와의 연결을 담당한다는 사실은 다 알고 계시죠??
+
+       strConnection = "Provider=SQLOLEDB;Data Source = 서버명;Initial Catalog = DB명;User id=아이디; Password= 비밀번호;"  '한줄로 주욱씁니다.
+              -->Connection String 입니다.
+                     여기에서는 ODBC를 설정하지 않고 바로 연결을 시켰습니다.
+                     한글로 써 있는 부분은 자신의 서버 세팅에 맞게 고쳐주세요.
+
+       objConn.Open strConnection
+              --> DB를 열어줍니다.
+
+       Dim objCmd
+       Set objCmd = Server.CreateObject("ADODB.Command")
+              -->ADODB 의 Command 객체를 생성시킨다.
+                     이 객체는 sp를 사용하는데 있어서는 짱입니다.
+                     궁합이 젤로 잘 맞는다는 말이지요.
+
+       With objCmd-->With 구문입니다. VB Script 에 익숙하신 분들이라면 모두들 아시겠죠?
+              .ActiveConnection = objCon-->Command객체에 Connection 객체를 연결시켜줍니다.
+              .CommandText = "sp_Example"-->sp의 이름을 지정해 줍니다.
+              .CommandType = adCmdStoredProc --> 실행종류가 sp라는 사실을 지정해줍니다.
+
+              .Execute , , adExecuteNoRecords
+                            -->sp를 실행시킵니다. 여기에서 adExecuteNoRecords는 약간 생소하신가요?
+                            Execute 라는 method는 RecordSet객체를 return 합니다. 
+                            하지만 이런 경우는 필요도 없는 객체를 리턴 받아서 자원을 낭비할 필요는 없지요?
+                            그런 경우에 쓰는 것이 세번째 파라미터에 이것을 써 주는 것입니다.
+       End With
+
+       Set objCmd = Nothing
+       objCon.Close
+       Set objCon = Nothing
+              -->사용한 객체를 닫아주고 소멸시킵니다.
+%>
+
+일부러 소스에 주석처리를 다 하지 않았습니다. 그러면 여러분들이 소스를 한번 더 보시고 도움이 되실 듯해서요..   
+소스를 그대로 코딩하고 확인하는 것 보다는 부디 흐름과 방법을 이해하시려 노력해 보시기 바랍니다. 
+방법을 알면 어려울 것이 없으니까요...
+
+sp를 만들어서 그걸 ASP에다가 붙이는걸 했었죠?
+하지만 그건 단순히 sp에 입력되어있는 레코드를 붙이는 것이구요..
+오늘 할 것은 form에서 받아와서 그 값을 DB에 반영시키는 것을 할 것입니다.
+눈 크게 뜨시구요..
+자 그럼 시작합니다.
+
+#########################################################
+Create Proc sp_Insert_Address
+       @strName       varchar(20),
+       @strTel              varchar(15),
+       @strEmail       varchar(50),
+       @strRegID       varchar(15),
+
+       @intIdx              int              output
+As
+Begin
+       Declare @intSex       tinyInt
+
+       Begin Tran
+              If ( subString( @strRegID, 8, 1 ) = '1' ) 
+                     Set @intSex = 0
+              else
+                     Set @intSex = 1
+
+              Insert Into Address ( name, tel, email, regid, sex )
+              values ( @strName, @strTel, @strEmail, @strRegID, @intSex )
+
+              Set @intIdx = @@identity
+
+       If ( @@error <> 0 ) 
+              RollBack Tran
+       else
+              Commit Tran
+End
+#########################################################
+
+
+자.. 위의 sp는 무엇일까요?
+맞습니다.
+2부에서 작성해 두었던 sp 입니다.
+이것을 갖고 놀겠습니다.
+우선 htm파일을 하나 만듭니다. 주소를 입력하는 페이지 이지요..
+
+<< address.write.htm >> 
+#########################################################
+<html>
+<head>
+<title>주소록 글쓰기</title>
+
+<script language=Javascript>
+       function CheckSubmit(f)
+       {
+              if(f.name.value.length==0)
+              {
+                     alert("이름을 입력하세요");
+                     f.name.focus();
+                     return false;
+              }
+       }
+</script>
+
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<form method=post name="writeform" action="address_write_ok.asp" OnSubmit="javascript:return CheckSubmit(this);">
+<table width="500" border="0" cellspacing="1" cellpadding="0">
+<tr>
+<td width="111">이름</td>
+<td width="386"><input type=text name="name"></td>
+</tr>
+<tr>
+<td width="111">전화번호</td>
+<td width="386"><input type=text name="tel"></td>
+</tr>
+<tr>
+<td width="111">이메일</td>
+<td width="386"><input type=text name="email"></td>
+</tr>
+<tr>
+<td width="111">주민등록번호</td>
+<td width="386"><input type=text name="regid"></td>
+</tr>
+</table>
+<table width="500" border="0" cellspacing="1" cellpadding="0">
+<tr>
+<td align="center">
+<input type="submit" value="업데이트">
+<input type="reset" value="취소">
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+
+#########################################################
+
+
+위의 소스는 설명을 생략해도 무방하겠죠?
+그리고 다음의 ASP 소스를 만듭니다.
+
+<< address.write_ok.htm >> 
+#########################################################
+<%       Option Explicit       %>
+
+<!-- #include file = "adovbs.inc"       -->
+
+<%       
+       Dim strName
+       Dim strTel
+       Dim strAddr
+       Dim strEmail
+       Dim strZip
+       Dim strRegid
+       
+       strName = Request.Form("name")
+       strTel = Request.Form("tel")
+       strEmail = Request.Form("email")
+       strRegid = Request.Form("regid")
+
+       Dim objCon
+       Dim strConnection
+       Set objCon = Server.CreateObject("ADODB.Connection")
+
+       strConnection = "Provider=SQLOLEDB;Data Source=자신의 아이피주소;Initial Catalog=데이터베이스이름;User id=사용자아이디; Password=사용자비밀번호;"
+       objConn.Open strConnection
+
+       Dim objCmd
+       Set objCmd = Server.CreateObject("ADODB.Command")
+
+       with objCmd
+              .ActiveConnection = objCon
+              .CommandText = "sp_Insert_Address"
+              .CommandType = adCmdStoredProc
+              .Parameters.Append .CreateParameter("@strName",advarwchar,adParamInput,20)
+              .Parameters.Append .CreateParameter("@strTel",advarwchar,adParamInput,15)
+              .Parameters.Append .CreateParameter("@strEmail",advarwchar,adParamInput,50)
+              .Parameters.Append .CreateParameter("@strRegID",advarwchar,adParamInput,15)
+              .Parameters.Append .CreateParameter("@intResult",adInteger,adParamOutPut,0)
+
+              .Parameters("@strName") = strName
+              .Parameters("@strTel") = strTel
+              .Parameters("@strEmail") = strEmail
+              .Parameters("@strRegID") = strRegID
+              .Parameters("@intResult") = 0
+
+              .Execute , , adExecuteNoRecords
+
+              Dim intResult
+              intResult = .Parameters("@intResult")
+
+       End with
+       Response.write intRecord
+
+       Set objCmd = Nothing
+       objCon.Close
+       Set objCon = Nothing
+
+       if ( intResult <> 0 ) then
+              Response.Write "데이터 저장중 에러가 발생했습니다. 다시 한번 시도해 주세요. <a href = ""javascript:history.back();"">확인</a>"
+       else
+              Response.Write "데이터 저장 성공 !!! <a href = ""address_write.htm"">확인</a>"
+       end if
+%>
+
+#########################################################
+
+
+안되시는 분은 C:\program files\common files\systems\ado\adovbs.inc 파일을 같은 폴더에 복사하시고 다시 해보세요.
+그럼 설명을 한번 해 볼까요?
+지난 강좌에 설명된 부분은 설명에서 제외를 하겠습니다.
+모르는 부분이 나오는 분은 빨리 지난강좌를 열어보세요..
+
+       with objCmd
+              .ActiveConnection = objCon
+              .CommandText = "sp_Insert_Address"
+              .CommandType = adCmdStoredProc
+
+              ' 바로 이 부분이 새로 추가된 부분입니다.
+              ' 말하자면 sp로 parameter를 전달해주는 역할이라고 할 수 있지요.
+              ' 첨보는 놈이 있습니다. 무엇이지요? 맞습니다. Parameters라는 놈입니다.
+              ' s 가 붙었으니 collection이라는 것은 맞는듯하고..
+              ' 무엇을 하는 collection일까요?
+              ' command 객체가 sp에 강한 이유가 바로 요놈 때문입니다.
+              ' parameters 객체에다가 쿼리문을 미리 넣어두고 sp를 돌리는 것이라고 간단하게 설명할 수 있습니다.
+              ' 쿼리문자체도 컴파일이 될 수 있다는 것을 아시는지요??
+              ' 그렇습니다. 컴파일이 되고 sp를 돌린다는 의미입니다.
+              ' CreateParameter의 문법은 다음과 같습니다.
+              ' 첫번째는 변수이름 ( sp의 변수는 @이 하나 붙는다고 했지요? )
+              ' 두번째는 변수타입 ( adovbs를 열어서 adVarWChar를 찾아보세요. 그 근처에 있는 것들이 여기에 들어가는 변수타입입니다.)
+              ' 세번째는 이 변수가 input( DB에 넘겨주는 변수)인지 output( DB에서 넘겨받는 변수)인지를 나타내는 키워드입니다.
+              ' 네번째는 변수의 길이이구요.( 참고로 integer는 0 입니다.)
+
+              .Parameters.Append .CreateParameter("@strName", adVarWChar, adParamInput, 20)
+              .Parameters.Append .CreateParameter("@strTel", adVarWChar, adParamInput,15)
+              .Parameters.Append .CreateParameter("@strEmail", adVarWChar, adParamInput,50)
+              .Parameters.Append .CreateParameter("@strRegID", adVarWChar, adParamInput,15)
+              .Parameters.Append .CreateParameter("@intResult", adInteger, adParamOutPut,0)
+
+              ' 이부분은 간단하게 보시면 됩니다.
+              ' input 일 경우에 그 값을 넣어주는 것입니다.
+              .Parameters("@strName") = strName
+              .Parameters("@strTel") = strTel
+              .Parameters("@strEmail") = strEmail
+              .Parameters("@strRegID") = strRegID
+              ' output 일 경우는 넣어주지 않아도 상관이 없습니다.
+              ' 하지만 전 초기화 한다는 의미에서 0으로 넣어줍니다.
+              .Parameters("@intResult") = 0
+
+              .Execute , , adExecuteNoRecords
+q
+              ' 이 부분도 첨 보는 문장이죠?
+              ' 바로 output으로 지정해 둔 것을 받는 부분입니다.
+              Dim intResult
+              intResult = .Parameters("@intResult")
+
+       End with
+       Response.write intRecord
+
+       if ( intResult <> 0 ) then
+              Response.Write "데이터 저장중 에러가 발생했습니다. 다시 한번 시도해 주세요. <a href=""javascript:history.back();"">확인</a>"
+       else
+              Response.Write "데이터 저장 성공 !!! <a href=""address_write.htm"">확인</a>"
+       end if
+
+
+자 어떻습니까? 조금씩 앞이 보이지 않습니까?  이제 얼마 남지 않았습니다. 
+조금만 더 참고 뛰세요.. 고생하신 만큼 값진 열매가 기다리고 있을겁니다.
+
+오늘은 여기까지 하고요.  담에 또 뵐께요.  좋은 하루 되세요..
+
+
+
+
+
+
+
+
+ 

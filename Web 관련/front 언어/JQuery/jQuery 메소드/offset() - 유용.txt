@@ -1,0 +1,74 @@
+
+[.offset()]
+
+.offset()은 선택한 요소의 좌표를 가져오거나 특정 좌표로 이동하게 합니다.
+
+선택한 요소의 좌표를 얻으려면 다음과 같이 합니다.
+
+.offset()
+
+예를 들어
+
+var jb = $( 'h1' ).offset();
+
+는 h1 요소의 좌표를 jb 변수에 저장합니다.
+선택한 요소를 특정 위치로 이동시키려면 다음과 같이 합니다.
+
+.offset( coordinates )
+
+예를 들어
+
+$( 'h1' ).offset( { left: 100, top: 50 } );
+
+은 h1 요소를 왼쪽에서 100px, 위에서 50px 위치로 이동시킵니다.
+
+- 예제 -
+
+h1과 h2 요소의 좌표를 출력하는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .offset()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        var jb1 = $( 'h1' ).offset();
+        var jb2 = $( 'h2' ).offset();
+        $( 'h2' ).after(
+          '<p>' + 'H1 - Left : ' + jb1.left + ', Top : ' + jb1.top + '</p>'
+          + '<p>' + 'H2 - Left : ' + jb2.left + ', Top : ' + jb2.top + '</p>'
+        );
+      } );
+    </script>
+  </head>
+  <body>
+    <h1>Lorem</h2>
+    <h2>Ipsum</h2>
+  </body>
+</html>
+
+- 예제 2 -
+h1 요소를 왼쪽에서 100px, 위에서 50px 위치로 이동시키는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .offset()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'h1' ).offset( { left: 100, top: 50 } );
+      } );
+    </script>
+  </head>
+  <body>
+    <h1>Lorem</h2>
+    <h2>Ipsum</h2>
+  </body>
+</html>
+

@@ -1,0 +1,20 @@
+https://www.w3schools.com/graphics/canvas_coordinates.asp
+
+[Canvas Coordinates]
+
+- Draw a Line -
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.moveTo(0,0);
+ctx.lineTo(200,100);
+ctx.stroke();
+
+
+- Draw a Circle -
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.beginPath();
+ctx.arc(95,50,40,0,2*Math.PI);
+ctx.stroke();

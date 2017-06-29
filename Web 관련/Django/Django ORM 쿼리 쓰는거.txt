@@ -1,0 +1,118 @@
+https://docs.djangoproject.com/en/1.7/topics/db/sql/
+
+
+class Person(models.Model):
+    first_name = models.CharField(...)
+    last_name = models.CharField(...)
+    birth_date = models.DateField(...)
+
+
+ for p in Person.objects.raw('SELECT * FROM myapp_person'):
+...     print(p)
+John Smith
+Jane Jones
+
+
+Person.objects.raw('SELECT id, first_name, last_name, birth_date FROM myapp_person')
+Person.objects.raw('SELECT last_name, birth_date, first_name, id FROM myapp_person')
+
+
+>>> name_map = {'first': 'first_name', 'last': 'last_name', 'bd': 'birth_date', 'pk': 'id'}
+>>> Person.objects.raw('SELECT * FROM some_other_table', translations=name_map)
+
+
+- Index lookups -
+
+first_person = Person.objects.raw('SELECT * FROM myapp_person')[0]
+first_person = Person.objects.raw('SELECT * FROM myapp_person LIMIT 1')[0]
+
+
+- Deferring model fields -
+
+people = Person.objects.raw('SELECT id, first_name FROM myapp_person')
+
+for p in Person.objects.raw('SELECT id, first_name FROM myapp_person'):
+...     print(p.first_name, # This will be retrieved by the original query
+...           p.last_name) # This will be retrieved on demand
+...
+John Smith
+Jane Jones
+
+
+- Adding annotations -
+
+
+>>> people = Person.objects.raw('SELECT *, age(birth_date) AS age FROM myapp_person')
+>>> for p in people:
+...     print("%s is %s." % (p.first_name, p.age))
+John is 37.
+Jane is 42.
+...
+
+
+- Passing parameters into raw() -
+
+lname = 'Doe'
+>>> Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s', [lname])
+
+
+[Executing custom SQL directly]
+
+from django.db import connection
+
+def my_custom_sql(self):
+    cursor = connection.cursor()
+
+    cursor.execute("UPDATE bar SET foo = 1 WHERE baz = %s", [self.baz])
+
+    cursor.execute("SELECT foo FROM bar WHERE baz = %s", [self.baz])
+    row = cursor.fetchone()
+
+    return row
+
+
+cursor.execute("SELECT foo FROM bar WHERE baz = '30%'")
+cursor.execute("SELECT foo FROM bar WHERE baz = '30%%' AND id = %s", [self.id])
+
+
+
+from django.db import connections
+cursor = connections['my_db_alias'].cursor()
+# Your code here...
+
+
+def dictfetchall(cursor):
+    "Returns all rows from a cursor as a dict"
+    desc = cursor.description
+    return [
+        dict(zip([col[0] for col in desc], row))
+        for row in cursor.fetchall()
+    ]
+
+
+
+>>> cursor.execute("SELECT id, parent_id FROM test LIMIT 2");
+>>> cursor.fetchall()
+((54360982L, None), (54360880L, None))
+
+>>> cursor.execute("SELECT id, parent_id FROM test LIMIT 2");
+>>> dictfetchall(cursor)
+[{'parent_id': None, 'id': 54360982L}, {'parent_id': None, 'id': 54360880L}]
+
+
+- Connections and cursors -
+
+with connection.cursor() as c:
+    c.execute(...)
+
+
+c = connection.cursor()
+try:
+    c.execute(...)
+finally:
+    c.close()
+
+
+
+
+

@@ -1,0 +1,10 @@
+[GET]
+
+request.GET.get('aid', '')
+request.GET['aid']
+
+
+[POST]
+
+request.POST.get('aid', '')
+request.POST['aid']

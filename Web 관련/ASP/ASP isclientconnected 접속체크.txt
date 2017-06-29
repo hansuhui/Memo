@@ -1,0 +1,13 @@
+asp로 무거운 작업을할때
+사용자가 작업시작 눌러놓고 페이지를 꺼버리면
+서버는 계속 작동을하다 결과가 나오면 버려버린다
+이것을 중간중간 접속체크해 접속이 없다면
+작업을 그만두게 한다.
+ 
+<%
+ response.buffer = true
+ 
+ if rsponse.isclientconnected then '접속중이라면
+  '하고 싶은 처리를 한다.
+ end if
+%>

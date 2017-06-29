@@ -1,0 +1,172 @@
+http://mrw0119.tistory.com/23
+
+[C# Func & Action 델리게이트]
+
+프로그램을 작성하던 중에 갑자기 무명 메소드가 필요해졌다고 생각 해보자.
+
+무명 메소드를 사용하기 위해서는 이를 참조할 수 있는 델리게이트 변수가 있어야 하며,
+
+또한 델리게이트 변수를 생성하기에 앞서 델이게이트 타입을 선언해야 한다.
+
+그러면 각기 다른 타입의 무명 메소드를 여러개 만들 때는 어떻게 해야 할까?
+
+당연히 무명 메소드마다 그 타입에 맞는 델리게이트 타입과 변수를 따로 선언해야 할 것이다.
+
+이는 매우 비효율적인 작업이기 떄문에 C#에서는 Func과 Action이라는 델리게이트를 제공한다.
+
+Func와 Action은 미리 선언된 델리게이트 변수로써 별도의 선언없이 사용가능하다.
+
+Func는 반환값이 있는 메소드를 참조하는 델리게이트 변수이고.
+
+Action은 반환값이 없는 메소드를 참조하는 델리게이트 변수이다.
+
+
+
+[Func 델리게이트]
+
+.NET Framework에는 총 17가지의 Func 데리게이트가 준비되어 있다.
+
+즉, 매게변수가 없는 메소드부터 매게변수가 16개인 메소드까지
+
+총 17개의 메소드를 참조 가능하다는 말이다.
+(무명 메소드 뿐만 아니라 일반 메소드도 참조 가능)
+
+이정도면 특별한 경우가 아니고서여 별도의 델리게이트를 만들어 쓸 필요가 없겠다.
+
+Func 델리게이트 변수를 선언하는 방법은 다음과 같다.
+
+//매개변수는 없고, 반환값은 float형
+Func<float> func0 = () => 0.1f;   // 0.1f를 반환
+
+//int형 매개변수를 1개 가지고 반환값은 float 형
+Func<int,float> func1 = (a) =>  a * 0.1f;
+
+//int형 매개변수를 2개 가지고 반환값은 float형
+Func<int,int, float> func2 = (a,b) =>  (a+b) * 0.1f;
+
+//int형 매개변수를 3개 가지고 반환값은 float형
+Func<int,int,int, float> func3 = (a,b,c) =>  (a+b+c) * 0.1f;
+
+
+//int형 매개변수를 4개 가지고 반환값은 float형
+Func<int,int,int, int, float> func4;
+func4 = (a,b,c,b) =>  (a+b+c+b) * 0.1f;
+
+매개변수와 반환값을 구분하기 위해 int 형과 float형으로 나누었다.
+
+보다시피 매개변수는 앞에서 지정하고, 반환값은 맨 뒤에 지정하는 것을
+확인할 수 있다.
+(Func는 반환값을 가진 메소드를 참조하는 델리게이트이기 때문에, 
+반환형을 반드시 지정해주어야 한다.)
+
+위와 같이 Func 델리게이트로 메소드를 참조하면 전처럼 델리게이트 
+타입을 선언하는 과정이 불필요해지므로 아주 간결하게 코드를 작성할 수 있다.
+
+그럼 이제 다음 예제를 작성해보자.
+
+--------------------------------------------------------------------------------------
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Console1
+{
+    class Func2
+    {
+        public void Main_ex(string[] s)
+        {
+            Func<float> func0 = () => 0.1f;
+            Func<int, float> func1 = (a) => a * 0.1f;
+            Func<int, int, float> func2 = (a, b) => (a + b) * 0.1f;
+            Func<int, int, int, float> func3;
+
+            func3 = new Func<int, int, int, float>(temp);
+
+            Console.WriteLine("func{0} 반환값 : {1}", 0, func0());
+            Console.WriteLine("func{0} 반환값 : {1}", 1, func1(10));
+            Console.WriteLine("func{0} 반환값 : {1}", 2, func2(10,10));
+            Console.WriteLine("func{0} 반환값 : {1}", 3, func3(10, 10,10));
+        }
+
+        static float temp(int a, int b, int c)
+        {
+            return (a + b + c) * 0.1f;
+        }
+    }
+
+
+}
+
+
+--------------------------------------------------------------------------------------
+
+[Action 델리게이트]
+
+Action 델리 게이트는 Func와 똑같다. 다만 참조하는 메소드의 반환값이 없을 뿐이다.
+
+
+//매개변수 없음 
+Action act() = () => Console.Write("Action 델리게이트");
+
+//string형 매개변수 1개
+Action<string> act1 = (name) => Console.WriteLine(name);
+
+//string형 매개변수 2개
+Action<string,string> act2;
+act2 = (name,age) => Console.WriteLine(name+age)
+
+//int형 매개변수 3개
+int sum = 0;
+Action<int,int,int> act3 = (a,b,c,) => sum = a+b+c;
+
+반환값이 없다는것 빼고느 Func랑 똑같음
+
+
+--------------------------------------------------------------------------------------
+
+[예제 소스]
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Console1
+{
+    class Action_Ex
+    {
+        static void temp(string name) {
+            Console.WriteLine("name : {0}", name);
+        }
+        public void Main_Ex(string[] args)
+        {
+            int sum = 0;
+
+            Action act0 = () => Console.WriteLine("name: act0");
+            Action<string> act1 = new Action<string>(temp);
+            Action<string, string> act2 = (name,age) => 
+            {
+                Console.WriteLine("name : {0}", name);
+                Console.WriteLine("age : {0}", age);
+            };
+
+            Action<int, int, int> act3 = (a, b, c) => sum = a + b +c;
+
+            act0();
+            act1("act1");
+            act2("act1","29");
+            act3(100, 20, 3);
+
+            Console.WriteLine("sum : {0}", sum);
+
+        }
+    }
+}
+
+
+--------------------------------------------------------------------------------------

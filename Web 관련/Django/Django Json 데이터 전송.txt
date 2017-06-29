@@ -1,0 +1,16 @@
+http://stackoverflow.com/questions/2428092/creating-a-json-response-using-django-and-python
+
+
+
+import json
+
+from django.http import HttpResponse
+
+response_data = {}
+response_data['result'] = 'error'
+response_data['message'] = 'Some error message'
+
+return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+from django.http import JsonResponse
+return JsonResponse({'foo':'bar'})

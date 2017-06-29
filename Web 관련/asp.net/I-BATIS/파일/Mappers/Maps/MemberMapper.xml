@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<sqlMap namespace="EF4._14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ibatis.apache.org/mapping">
+  <alias>
+    <typeAlias alias="member"  type="hanyoung.Models.MemberModel" />
+  </alias>
+  <statements>
+    <!--회원가입-->
+    <insert id="insertMember" parameterClass="member">
+      INSERT INTO Member(
+      Site_ID,
+      User_Name,
+      User_ID,
+      Zip1_1,
+      Zip1_2,
+      Addr1_1,
+      Addr1_2,
+      Email,
+      User_PW,
+      Hp_Corp,
+      Hp,
+      IsReceive_Email,
+      IsReceive_SMS,
+      Mileage,
+      Point,
+      RegDate
+      )
+      VALUES (
+      #Site_ID#,
+      #User_Name#,
+      #User_ID#,
+      #Zip1_1#,
+      #Zip1_2#,
+      #Addr1_1#,
+      #Addr1_2#,
+      #Email#,
+      #User_PW#,
+      #Hp_Corp#,
+      #Hp#,
+      #IsReceive_Email#,
+      #IsReceive_SMS#,
+      #Mileage#,
+      #Point#,
+      #RegDate#
+      )
+    </insert>
+
+    <!--아이디로 해당멤버정보찾기-->
+    <select id="selectMember" resultClass="member">
+      SELECT
+      User_Name,
+      User_ID,
+      Zip1_1,
+      Zip1_2,
+      Addr1_1,
+      Addr1_2,
+      Email,
+      User_PW,
+      Hp_Corp,
+      Hp,
+      IsReceive_Email,
+      IsReceive_SMS
+      FROM
+      Member
+      WHERE
+      User_ID=#User_ID#
+    </select>
+
+    <!--로그인-->
+    <select id="login" resultClass="int" parameterClass="member">
+      SELECT
+      COUNT(*)
+      FROM
+      Member
+      WHERE
+      User_ID=#User_ID#
+      AND
+      User_PW=#User_PW#
+    </select>
+  
+    <!--회원정보수정-->
+    <update id="updateJoin" parameterClass="member">
+      UPDATE
+      Member
+      SET
+      User_Name= #User_Name#,
+      User_ID=#User_ID#,
+      Zip1_1=#Zip1_1#,
+      Zip1_2= #Zip1_2#,
+      Addr1_1=#Addr1_1#,
+      Addr1_2=#Addr1_2#,
+      Email= #Email#,
+      User_PW= #User_PW#,
+      Hp_Corp= #Hp_Corp#,
+      Hp= #Hp#,
+      IsReceive_Email=  #IsReceive_Email#,
+      IsReceive_SMS= #IsReceive_SMS#
+      where
+      User_ID=#User_ID#
+    </update>
+  </statements>
+</sqlMap>

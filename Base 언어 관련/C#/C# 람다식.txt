@@ -1,0 +1,79 @@
+http://mrw0119.tistory.com/22
+
+[람다식]
+
+람다식은 무명 메소드를 단순한 계산식으로 표현한 것이다.
+메소드는 크게 매개변수와 내부 식, 반환값으로 구성되어 있는데,
+이들만 가지고 메서드를 계산식으로 표현한다.
+
+무명 메소드에 비해 상당히 간결하게 표현되는 것을 확인할 수 있다.
+람다식은 매개변수로 전해지는 a,b의 타입까지도 생략이 가능하다.
+(똑똑한 컴파일러가 좌항의 델리게이트의 타입을 참고해서 타입을 유추하는 것이다.)
+
+- 예제 -
+
+using System;
+
+namespace Console1
+{
+    class Lamda_Ex
+    {
+        delegate int Lamda_del1(int a, int b);
+        delegate void Lamda_del2();
+        public void Main()
+        {
+            Lamda_del1 add = (a, b) => a + b;
+            Lamda_del2 lamda = () =>  Console.WriteLine("람다식 예제");
+
+            Console.WriteLine("Lamda_del1 - ",add(11,22));
+            lamda();
+
+        }
+            
+    }
+
+}
+
+
+
+=================================================================
+
+[문 형식의 람다식]
+
+지금까지의 람다식은 단순한 계산식 하나만을 표현하였다.
+그렇다면 람다식 내에서 메소드처럼 다양한 처리를 해줄 순없을까?
+당연히 가능하다. 그냥 메소드처럼 중괄호 내에 작성하면된다.
+
+- 예제 -
+
+using System;
+
+namespace Console1
+{
+    class Lamda_Ex
+    {
+        delegate int Lamda_del1(int a, int b);
+        delegate void Lamda_del2();
+        public void Main()
+        {
+            Lamda_del1 add = (a, b) =>
+            {
+                return a + b;
+            };
+            Lamda_del2 lamda = () =>
+            {
+                Console.WriteLine("이것 저것 작성하면 된다");
+                Console.WriteLine("람다식 예제");
+            };
+
+            Console.WriteLine("Lamda_del1 - ",add(11,22));
+            lamda();
+
+        }
+            
+    }
+
+}
+
+
+

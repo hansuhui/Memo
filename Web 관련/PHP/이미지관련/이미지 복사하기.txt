@@ -1,0 +1,170 @@
+php > 내가 만들어 쓰는 함수 > 이미지 복사하기 입니다.
+
+이전에는 getimagesize, image_type_to_extension, image_type_to_mime_type 등의 함수에 대해 알아보았습니다.
+앞으로는 실질적인 예제와 함수 설명을 곁들여 진행하고자 합니다.
+
+앞으로 하는 예제들은 실제로 해보는 것이 중요하니,
+자신의 컴퓨터에 apmsetup이라는 프로그램을 설치하여 테스트 환경을 만드는 것이 좋을 것 같습니다.
+
+apmsetup의 다운로드는 http://apmsetup.com/download.php 여기에서 할수 있습니다.
+apmsetup을 다운받으셔서 설치하시고, C\APM_Setup\htdocs 안에 image_test 폴더를 만듭니다.
+index.php 파일을 만들고 그안에 '이미지 테스트' 라고 써넣습니다. 그리고 저장합니다.
+브라우져에서 http://localhost/image_test/ 라고 넣고 띄워봅니다.
+정상적으로 '이미지 테스트' 라고 나온다면 테스트 할 준비가 다 되었습니다.
+
+이번 내용은 제목에서도 나와있듯이 이미지 복사하기 입니다.
+jpg 나 gif, png 타입의 이미지를 그대로 복사하여 새로운 파일명으로 저장하는 예제를 통해서 이미지 생성과 저장에 대해 알아보고자 합니다.
+
+먼저 첨부파일에 있는 sample_image.zip 을 다운받아 image_test 폴더에 압축을 풉니다.
+sample_image 폴더안에는 세개의 이미지가 있으며, 제가 테스트를 위해서 자료실에서 사진 한장을 다운받아 다른 확장자로 새로 저장한것입니다.
+
+예제1 : test1.php
+<?php
+
+//gif 이미지 복사.
+$im_gif = imagecreatefromgif('sample_image/test.gif');
+imagegif($im_gif, 'sample_image/test_copy.gif');
+imagedestroy($im_gif);
+
+if (is_file('sample_image/test_copy.gif')) echo "test_copy.gif 가 정상적으로 복사되었습니다. <br>\n";
+else echo "test_copy.gif 가 정상적으로 복사되지 못했습니다. <br>\n";
+
+//jpg 이미지 복사.
+$im_jpg = imagecreatefromjpeg('sample_image/test.jpg');
+imagejpeg($im_jpg, 'sample_image/test_copy.jpg');
+imagedestroy($im_jpg);
+
+if (is_file('sample_image/test_copy.jpg')) echo "test_copy.jpg 가 정상적으로 복사되었습니다. <br>\n";
+else echo "test_copy.jpg 가 정상적으로 복사되지 못했습니다. <br>\n";
+
+//png 이미지 복사.
+$im_png = imagecreatefrompng('sample_image/test.png');
+imagepng($im_png, 'sample_image/test_copy.png');
+imagedestroy($im_png);
+
+if (is_file('sample_image/test_copy.png')) echo "test_copy.png 가 정상적으로 복사되었습니다. <br>\n";
+else echo "test_copy.png 가 정상적으로 복사되지 못했습니다. <br>\n";
+
+?>
+
+
+위의 예제를 test1.php 에 저장한다음 http://localhost/image_test/test1.php 로 확인을 해보면
+test_copy.gif 가 정상적으로 복사되었습니다.
+test_copy.jpg 가 정상적으로 복사되었습니다.
+test_copy.png 가 정상적으로 복사되었습니다.
+
+와 같은 결과를 볼수 있습니다.
+sample_image 폴더를 열어보면 세개의 파일이 복사되었음을 알수 있습니다.
+
+
+imagecreatefromgif, imagecreatefromjpeg, imagecreatefrompng
+이 세개의 함수는 자신의 함수명과 동일한 이미지 타입의 이미지(파일 경로)를 인자로 받아서 그 이미지로 부터 이미지 리소스를 받아와서 반환하는 역활을 합니다.
+만약 인자로 받은 경로가 파일이 아니거나, 파일이 존재하지 않거나, 또는 같은 이미지 타입이 아닌 이미지일 경우 에러를 발생합니다.
+에러가 발생시의 반환되는 값은 false 입니다.
+
+
+imagegif, imagejpeg, imagepng
+이 세개의 함수는 이미지 리소스와 이미지(파일 경로)를 인자로 받아서, 함수이름과 동일한 이미지 타입의 이미지로 저장해주는 역활을 합니다.
+이미지 저장에 성공하면 true, 실패하면 false 반환합니다.
+
+※ 이미지 저장 경로를 생략 할수도 있는데, 그것은 파일로 저장시가 아니라 브라우져에 바로 출력시켜줄때 사용합니다.
+이 부분은 나중에 다른 예제와 함께 다시 설명하도록 하겠습니다.
+
+
+
+imagedestroy
+이 함수는 이미지 처리를 하기위해서 생성된 이미지 리소스를 메모리에서 지워주는 역활을 합니다.
+이미지 처리를 완료후 이 함수를 사용하지 않으면 이미지 리소스가 메모리를 계속 차지 하고 있어서 전체적으로 무거운 프로그램이 됩니다.
+이미지 리소스 제거에 성공하면 true, 실패하면 false 를 반환 합니다.
+
+
+is_file
+이 함수는 이미지 처리와는 별개지만 자주 나올수 있는 함수이므로 설명합니다.
+인자로 받은 파일이 실제로 파일인지 아닌지 판별해 주는 역활을 합니다.
+파일일 경우 true 파일이 아닐경우 false 를 반환합니다.
+
+
+이미지 처리 프로그램을 만들면서 발생되는 에러를 미연에 방지 하기 위하여 아래와 같이 사용 하는것이 일반적입니다.
+
+예제2 : test2.php
+<?php
+
+$path_file = 'sample_image/test.gif';
+$path_copyfile = 'sample_image/test_copy';//확장자 없이 파일이름까지만 사용한다.
+
+if (!is_file($path_file)) {
+
+   die("$path_file 는 파일이 아니어서 더이상 처리할수 없습니다. <br>\n");
+}
+ 
+$size = @getimagesize($path_file);
+if (empty($size[2])) {
+
+   die("$path_file 은 이미지 파일이 아니어서 더이상 처리할수 없습니다. <br>\n");
+}
+
+if ($size[2] != 1 && $size[2] != 2 && $size[2] != 3) {
+
+   die("$path_file 은 이 프로그램에서 지원하지 않는 이미지 타입니다. <br>\n이 프로그램에서는 gif, jpg, png 타입의 이미지만 사용가능합니다. <br>\n");
+}
+
+$extension = image_type_to_extension($size[2]);
+$path_copyfile .= $extension;
+
+switch($size[2]){
+
+  case 1 : //gif
+
+    $im = @imagecreatefromgif($path_file);
+
+    if ($im === false) {
+
+       die("$path_file 에서 이미지 리소스를 가져오는 것에 실패하였습니다. <br>\n");
+    }
+
+    $result_save = @imagegif($im, $path_copyfile);
+
+    break;
+
+  case 2 : //jpg
+
+    $im = @imagecreatefromjpeg($path_file);
+
+    if ($im === false) {
+
+       die("$path_file 에서 이미지 리소스를 가져오는 것에 실패하였습니다. <br>\n");
+    }
+
+    $result_save = @imagejpeg($im, $path_copyfile);
+
+    break;
+
+  case 3 : //png
+
+    $im = @imagecreatefrompng($path_file);
+
+    if ($im === false) {
+
+       die("$path_file 에서 이미지 리소스를 가져오는 것에 실패하였습니다. <br>\n");
+    }
+
+    $result_save = @imagepng($im, $path_copyfile);
+
+    break;
+}
+
+@imagedestroy($im);
+
+if ($result_save === false) {
+
+   die("$path_file 을 $path_copyfile 로  복사하는 것에 실패하였습니다. <br>\n");
+}
+
+if (is_file($path_copyfile)) echo "$path_copyfile 가 정상적으로 복사되었습니다. <br>\n";
+else echo "$path_copyfile 가 정상적으로 복사되지 못했습니다. <br>\n";
+
+?>
+
+@ 는 함수명 바로 앞에 붙여서 사용합니다.
+함수가 실행되는 동안에 예기치 못한 에러가 발생할경우, 에러메시지를 출력하게 되는데 그것을 방지하는 역활을 합니다.
+즉, 에러가 나도 에러메시지를 출력하지 말고 강제로 실행하라 라는 의미입니다.

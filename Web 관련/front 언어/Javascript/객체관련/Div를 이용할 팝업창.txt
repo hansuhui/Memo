@@ -1,0 +1,27 @@
+// 현재날짜
+var cur_date = fn_CurrentDate2("-");
+var cur_height = 0;
+var ori_textAlign = "left";
+var obj_lastFocus;
+
+jQuery(function () {
+
+
+
+	/**********************************************************************************
+	*	Date : 2013.02.13 by zeus
+	*	Desc : 팝업기본 설정
+	**********************************************************************************/
+	var popHtml = "";
+	popHtml += '<div id="divPopup" style="display: none;">';
+	popHtml += '	<iframe id="ifrmPopup" name="ifrmPopup" style="width: 0px; height: 0px;" frameborder="0" marginheight="0" marginwidth="0"></iframe>';
+	popHtml += '</div>';
+	$("body").append(popHtml)
+	
+	$("#divPopup").dialog({
+		modal: true,
+		autoOpen: false,
+		show: "fade",
+		resizable: false
+	});
+});

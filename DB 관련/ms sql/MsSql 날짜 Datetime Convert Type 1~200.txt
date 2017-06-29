@@ -1,0 +1,63 @@
+http://blog.naver.com/chsmanager/140201010957
+
+
+
+
+datetime  : 2005년 01월 05일 9시38분
+ 
+============================================
+ 
+datetime convert type : 0 = 01  5 2005  9:38AM
+datetime convert type : 1 = 01/05/05
+datetime convert type : 2 = 05.01.05
+datetime convert type : 3 = 05/01/05
+datetime convert type : 4 = 05.01.05
+datetime convert type : 5 = 05-01-05
+datetime convert type : 6 = 05 01 05
+datetime convert type : 7 = 01 05, 05
+datetime convert type : 8 = 09:38:14
+datetime convert type : 9 = 01  5 2005  9:38:14:247AM
+datetime convert type : 10 = 01-05-05
+datetime convert type : 11 = 05/01/05
+datetime convert type : 12 = 050105
+datetime convert type : 13 = 05 01 2005 09:38:14:263
+datetime convert type : 14 = 09:38:14:263
+datetime convert type : 20 = 2005-01-05 09:38:14
+datetime convert type : 21 = 2005-01-05 09:38:14.293
+datetime convert type : 22 = 01/05/05  9:38:14 AM
+datetime convert type : 23 = 2005-01-05
+datetime convert type : 24 = 09:38:14
+datetime convert type : 25 = 2005-01-05 09:38:14.327
+datetime convert type : 100 = 01  5 2005  9:38AM
+datetime convert type : 101 = 01/05/2005
+datetime convert type : 102 = 2005.01.05
+datetime convert type : 103 = 05/01/2005
+datetime convert type : 104 = 05.01.2005
+datetime convert type : 105 = 05-01-2005
+datetime convert type : 106 = 05 01 2005
+datetime convert type : 107 = 01 05, 2005
+datetime convert type : 108 = 09:38:14
+datetime convert type : 109 = 01  5 2005  9:38:14:653AM
+datetime convert type : 110 = 01-05-2005
+datetime convert type : 111 = 2005/01/05
+datetime convert type : 112 = 20050105
+datetime convert type : 113 = 05 01 2005 09:38:14:687
+datetime convert type : 114 = 09:38:14:687
+datetime convert type : 120 = 2005-01-05 09:38:14
+datetime convert type : 121 = 2005-01-05 09:38:14.717
+datetime convert type : 126 = 2005-01-05T09:38:14.733
+datetime convert type : 130 = 25 ?? ?????? 1425  9:38:14:747
+datetime convert type : 131 = 25/11/1425  9:38:14:763AM 
+
+ 
+
+ 
+
+ 
+
+SELECT Convert(nvarchar(20), getDate(), 120)
+
+
+convert(varchar(10), DATEADD(MONTH,-1,GetDate()), 120);
+
+

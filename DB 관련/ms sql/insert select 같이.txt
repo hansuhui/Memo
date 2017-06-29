@@ -1,0 +1,49 @@
+( 
+Select distinct top 10 
+b.reComId 
+,(SELECT isNull(Sum(Moneys),0) FROM Mileage_TB WHERE Id=a.reComId And Flag=14 And Procs=1) AS 
+Moneys 
+,(Select count(reComId) from Member_TB where ReComId = b.reComId) as counter 
+From Member_TB as b WHERE b.Id <>"" And b.recomId <> "" And b.recomId Is Not Null) 
+
+즉, not in (select reComId,Moneys,counter) 와 같습니다. 
+
+이렇게 사용하시면 오류가 생깁니다. not in (값1,값2,값3) 같이 하실려면 
+
+not int ( 
+select 값1 
+union all 
+select 값2 
+union all 
+select 값3 
+) 
+
+처럼 row단위로 조회하시던지 아니면 
+
+not in ((select 값1),(select 값2), (select 값3)) 처럼 하셔야 합니다. 
+
+> 박용재 님이 쓰신 글 
+> ---------------------------------------------------------- 
+> OS : Microsoft Windows 2003 Server / Enterprise Server 
+> SQL : Microsoft SQL Server 2000 Standard / Enterprise Edition 
+> 
+> 쿼리문은 이렇습니다.... 
+> select distinct top 20 reComId, (SELECT isNull(Sum(Moneys),0) FROM Mileage_TB WHERE Id=a.reComId 
+And 
+> Flag=14 And Procs=1) AS Moneys, 
+> (Select count(reComId) from Member_TB where ReComId = a.reComId) as counter 
+> FROM Member_TB as a 
+> WHERE a.Id <>"" And a.recomId <> "" And a.recomId Is Not Null 
+> And reComId Not in (Select distinct top 10 b.reComId,(SELECT isNull(Sum(Moneys),0) FROM Mileage_TB 
+> WHERE Id=a.reComId And Flag=14 And Procs=1) AS Moneys,(Select count(reComId) from Member_TB where 
+> ReComId = b.reComId) as counter From Member_TB as b WHERE b.Id <>"" And b.recomId <> "" And 
+b.recomId 
+> Is Not Null) 
+> 
+> 에러내용은 
+> 메시지 116, 수준 16, 상태 1, 줄 2 
+> 하위 쿼리를 EXISTS로 정의하지 않은 경우에는 SELECT 목록에서 식을 하나만 지정할 수 있습니다. 
+> 
+> 따로따로 해서 검색하면 나오는데 합쳐서 검색하면 저런 에러가 나오는데 원인을 모르겠네요 ㅠㅠ 고수님들 확인해 
+주 
+> 세요 ㅠㅠ 

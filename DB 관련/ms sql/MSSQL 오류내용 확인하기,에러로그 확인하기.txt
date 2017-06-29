@@ -1,0 +1,21 @@
+
+ - MSSQL 에러로그 리스트 확인방법
+ 
+   MASTER..SP_ENUMERRORLOGS
+?
+ 
+ - 예제 1
+   에러로그 리스트를 조회하시오.
+ 
+ 
+ - 예제 1 쿼리 
+   MASTER..SP_ENUMERRORLOGS
+
+ - MSSQL 에러로그 확인방법
+  SP_READERRORLOG [로그번호]
+
+- 예제 2
+   첫번째 로그의 내용을 조회하시오. 
+ 
+ - 예제 2 쿼리
+   SP_READERRORLOG 0

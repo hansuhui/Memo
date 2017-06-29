@@ -1,0 +1,33 @@
+	@functions {
+
+		// 에러 메시지 출력
+		public string GetErrorState(string state)
+		{
+			string msg = string.Empty;
+
+			switch (state)
+			{
+				case "":
+					msg = "발송중";
+					break;
+				case "0":
+					msg = "성공";
+					break;
+				case "1":
+					msg = "타임아웃";
+					break;
+				case "2":
+					msg = "전화번호 오류";
+					break;
+				case "u":
+					msg = "바코드 생성 실패";
+					break;
+				default:
+					msg = "오류";
+					break;
+			}
+
+
+			return msg;
+		}
+	}

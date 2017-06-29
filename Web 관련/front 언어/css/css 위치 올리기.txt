@@ -1,0 +1,3 @@
+position:absolute; 최상위로 올린다
+z-index 숫자가 클수록 제일 위로 올라옴
+

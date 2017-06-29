@@ -1,0 +1,22 @@
+// 옵션 지우기
+$("select[name='sel']").find('option').each(function() {
+   $(this).remove();
+  });
+
+<select id='ttt'>
+ <option value='01'>111</option>
+<option value='02'>222</option>
+<option value='03'>333</option>
+<option value='04'>444</option>
+</select>
+
+
+
+다음처럼 select 와 option 이 구성 되어 있을때
+444 처럼 option value='04' 인 녀석을 삭제하고 플때.
+$('#ttt').children("[value='04']").remove();
+그리고 select에 05 split이란 녀석을 추가 하고 플때.
+
+
+
+$('#ttt').append('<option value="05">Split</option>');

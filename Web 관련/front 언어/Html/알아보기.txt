@@ -1,0 +1,24 @@
+required  나오는 값 변경
+
+min, max 쓰는법
+
+multiple  사용값
+
+
+richzeus @ gmail.com
+	<div>
+		<input type="submit" id="btnSearch" class="btn_01" value="검색" />
+		<input type="button" id="btnReset" class="btn_01" value="취소" onclick="reset()" />
+	</div>
+
+	<div style="text-align:right">
+		<input type="button" class="btn_01" id="Shopsidelete" value="삭제">
+		<input type="button" id="btnExcel" class="btn_01" value="엑셀" onclick="fn_Excel();" />
+		<!--
+			<input type="button" id="btnReset" class="btn_01" value="초기화" onclick="window.location.href = 'ShopRegAffiliate'" />
+			<input type="button" class="btn_01" value="신규" onclick="document.location.href = './ShopRegStoreNew';" />
+			-->
+	</div>
+	<input type="button" class="btn_01" id="Shopsubmit" value="저장">
+	<input type="button" id="btnReset" class="btn_01" value="취소" onclick="reset()" />
+</form>

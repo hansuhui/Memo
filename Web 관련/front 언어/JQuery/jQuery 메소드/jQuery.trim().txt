@@ -1,0 +1,7 @@
+[jQuery.trim()]
+
+jQuery.trim()은 문자열에 있는 공백(whitespace)을 제거해줍니다. 
+주의할 점은 문자열 앞과 뒤에 있는 공백은 제거하지만, 
+문자열 중간에 있는 공백은 제거하지 않는다는 것입니다.
+
+jQuery.trim( str )

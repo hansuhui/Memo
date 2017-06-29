@@ -1,0 +1,20 @@
+
+document.onsubmit = function () {
+    var Injection = ";,/*,*/,@@,@,char,nchar,varchar,nvarchar,alter,begin,cast,create,cursor,declare,delete,drop,end,exec,execute,fetch,insert,kill,open,select,sys,sysobjects,syscolumns,table,update,<script,</script>,'";
+    InjectionList = Injection.split(',');
+    for (var i = 0; i < document.forms.length; i++) {
+        for (var s = 0; s < document.forms[i].elements.length; s++) {
+            if (submitValCheck(document.forms[i].elements[s].value)) {
+                for (var Check in InjectionList) {
+                    var val = document.forms[i].elements[s].value;
+                    if (val.indexOf(InjectionList[Check]) != -1) {
+                        alert('사용 할수 없는 문자가 있습니다.[' + InjectionList[Check] + ']');
+                        document.forms[i].elements[s].focus();
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+}

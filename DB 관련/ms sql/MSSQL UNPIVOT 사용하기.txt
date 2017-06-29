@@ -1,0 +1,30 @@
+- UNPIVOT 이란?
+  테이블의 데이터중 컬럼을 데이터 형태로 변경하여 표시하며 PIVOT과 반대의 역활을 합니다.
+
+	select * from (
+	  select SEQ,Name from MemberS
+	  )a UNPIVOT (기존컬럼SEQ for  데이터가된컬럼명 in (SEQ)) as b
+
+ 
+
+ - MSSQL SELECT 사용방법 
+   SELECT [별칭] FROM [테이블명] UNPIVOT (
+    [집계될 데이터의 별칭] FOR [데이터가 될 컬럼의 별칭] IN ([UNPIVOT할 컬럼명])
+   ) AS [UNPIVOT 테이블 별칭]
+
+?  
+  예제
+   UNPIVOT을 사용하여 성적 테이블의 국어, 수학, 영어를 과목으로 묶고 점수를 표시하시오.
+
+ 
+ 
+
+? 
+
+ - 예제 쿼리 
+   SELECT 반정보, 과목, 점수 FROM dbo.성적 UNPIVOT (
+      점수 FOR 과목 IN (국어, 수학, 영어)
+   ) AS UNPVT
+
+
+ 

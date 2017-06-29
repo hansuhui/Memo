@@ -1,0 +1,4 @@
+select bmidx - middle + 1 from (
+    select bmidx, nvl(bmidx -lag(bmidx) over(order by bmidx), 1) as middle from BoardMaster
+) a
+where middle > 1 and rownum =1

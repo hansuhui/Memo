@@ -1,0 +1,147 @@
+http://webstyledesign.tistory.com/entry/PHP-DB-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
+
+
+MsSQL 데이터베이스 관련 PHP 함수
+
+mysqli_connect() : 서버에 접속하는 함수
+
+mysqli_select_db() : 데이터베이스를 선택하는 함수
+
+mysqli_query() : 서버에 query를 보낸후 실행하는 함수
+
+mysqli_fetch_array() : 쿼리 실행후 결과를 필드이름색인 또는 숫자색인으로 된 배열로 반환하는 함수
+
+mysqli_free_result() : 결과값을 제거(해제)하는 함수
+
+mysqli_close() : 접속을 닫는 함수
+
+-------------예제------------------------
+
+mysqli_select_db($conn,"디비명") or die("데이터베이스를 잘못선택하였습니다");
+
+$qry_chk = mysqli_query($conn,"쿼리문");
+// 링크 식별자로 연결된 db에 query를 보낸후 해당 MySql에서 실행시킨다.
+// 링크 식별자를 입력하지 않으면 가장 최근에 열어진 링크식별자를 자동으로 사용하게 된다.
+// SELECT문 , INSERT문 , UPDATE문, DELETE문 모두 사용 가능하다.
+// 리턴되는 값은 성공이면 참(TRUE),거짓이면 거짓(FALSE)를 리턴한다
+
+if($qry_chk){
+//성공
+}else{
+//실패
+}
+
+
+
+-------------예제------------------------
+
+$conn = mysqli_connect("주소","아이디","암호");
+
+mysqli_select_db($conn,"디비명") or die("데이터베이스를 잘못선택하였습니다");
+
+
+$qry_result = mysqli_query($conn,"select문");
+
+$qry_row = mysqli_fetch_array($qry_result);
+//$qry_result 변수값에서 select 쿼리에 결과 레코드등중 첫번째 레코드를 한줄 가져와서
+// 배열형태로 $qry_row변수에 넣습니다.
+
+echo $qry_row["칼럼명"];
+// 대입한 배열변수에서 출력할 단일 컬럼명을 이용해 데이터를 출력한다.
+
+
+후에 접속해제처리
+
+
+-------------예제------------------------
+
+//레코드 수가 다수일때 
+
+$conn = mysqli_connect("주소","아이디","암호");
+
+mysqli_select_db($conn,"디비명") or die("데이터베이스를 잘못선택하였습니다");
+
+$qry_result = mysqli_query($conn,"select문");
+
+while($qry_row = mysqli_fetch_array($qry_result))
+{
+
+echo $qry_row["각각의 컬럼명"];
+
+}
+
+-------------예제------------------------
+
+//레코드 수가 다수일때 
+
+$conn = mysqli_connect("주소","아이디","암호");
+
+mysqli_select_db($conn,"디비명") or die("데이터베이스를 잘못선택하였습니다");
+
+$qry_result = mysqli_query($conn,"select문");
+
+$qry_row = mysqli_fetch_array($qry_result);
+
+//mssql_query함수에 리턴값인 result(데이터셋)에 내용을 모두 제거한다.
+// 사실 안해줘야 되지만 이렇게 있다는 것을 알아두자
+mysql_free_result($qry_result);
+
+
+
+
+=================================================================================
+
+
+
+http://lyn.gray.1008.postype.com/post/26977/
+
+
+==============================[예제1]==================================================
+
+$conn = mysqli_connect("주소","아이디","암호");
+
+if($conn){
+ //성공!!
+}else{
+ //실패!!
+}
+
+
+=================================[예제2]==================================================
+
+
+$conn = mysqli_connect("주소","아이디","암호");
+
+$db_id = mysqli_select_db($conn,"디비명");
+
+if($db_id){
+ //db 선택 성공!!
+}else{
+ //db 선택 실패!!
+}
+
+
+
+=================================[예제3]==================================================
+
+
+$conn = mysqli_connect("주소","아이디","암호");
+
+$db_id = mysqli_select_db($conn,"디비명");
+
+$sql = "쿼리문";
+
+//쿼리 실행문(입력문,테이블 생성등등 , 데이터를 받지 않는 쿼리문)
+mysqli_query($conn,$sql);
+
+$sql = "insert into history values(2, '남대문')";
+mysqli_query($conn,$sql );
+
+
+
+
+
+
+
+
+

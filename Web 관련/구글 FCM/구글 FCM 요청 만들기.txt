@@ -1,0 +1,67 @@
+https://firebase.google.com/docs/cloud-messaging/http-server-ref
+
+
+요청 서버 
+https://fcm.googleapis.com/fcm/send
+
+
+예러코드 페이지
+https://firebase.google.com/docs/cloud-messaging/http-server-ref#error-codes
+
+
+
+==========================================================================================
+
+
+using Newtonsoft.Json;
+
+
+ HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+            request.Method = "POST";
+            request.ContentType = "application/json;charset=utf-8;";
+            request.Headers.Add(string.Format("Authorization: key={0}", GoogleAppID));
+
+            var postData =
+            new
+            {
+                notification = new
+                {
+                    title = title,
+                    body = message,
+                },
+                data = new
+                {
+                    Test= "Test",
+                },
+                // FCM allows 1000 connections in parallel.
+                to = Token
+            };
+
+            //Linq to json
+            string contentMsg = JsonConvert.SerializeObject(postData);
+
+            Byte[] byteArray = Encoding.UTF8.GetBytes(contentMsg);
+            request.ContentLength = byteArray.Length;
+
+            Stream dataStream = request.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+
+            try
+            {
+                WebResponse response = request.GetResponse();
+                Stream responseStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(responseStream);
+                resultStr = reader.ReadToEnd();
+                Debug.WriteLine("response: " + resultStr);
+                reader.Close();
+                responseStream.Close();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                resultStr = ex.Message;
+                Debug.WriteLine(ex.Message);
+            }
+
+            MessageBox.Show(resultStr, "결과");

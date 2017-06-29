@@ -1,0 +1,119 @@
+* 변환형식
+
+number => to_char() => char
+date => to_char() => char
+char => to_number() => number
+char => to_date() => date
+* format 날짜형식
+
+YYYY : 년도를 숫자로 표시
+YEAR : 년도를 영문으로 표시
+MM : 월을 숫자로 표시
+MONTH : 월을 영문으로 표시
+MON : 월을 영문3자리 축약표시
+DY : 요일을 영문3자리 축약표시, 한글에서는 한글 1자 표시
+DAY : 요일을 영문으로 표시 한글에서는 한글 3자 표시
+DD : 일을 숫자로 표시
+* format 시간형식
+
+AM & PM : 오전또는 오후 표시
+A.M. & P.M. : 오전또는 오후 표시
+HH & HH12 & HH24 : 시간 또는 12시간 혹은 24시간으로 표시
+MI : 분(0~59)
+SS : 초(0~59)
+SSSSS : 자정이후 초(0~86399)
+* format 기타형식
+
+/ . , : 구분자 표시
+"of the" : 결과에 추가할 문자열
+TH : 서수 표시 (예: DDTH => 4TH)
+SP : 영문 기수 표시 (예: DDSP => FOUR)
+SPTH & THSP : 영문 기수 표시 (예: DDSPTH => FOURTH)
+* format 숫자형식
+
+9 : 숫자로 표시
+0 : 숫자 앞부분에 0으로 표시
+$ : 달러 표시
+L : 지역 화폐단위 표시
+. : 소숫점 표시
+, : 1000단위 구분자 표시
+?
+1
+select to_char(REGDATE, 'yyyymmdd HH24MISS') as thisdime from member;
+TO_CHAR(date, date_fmt) - date를 date_fmt 타입으로 변환한 값을 반환
+
+?
+1
+2
+3
+4
+5
+-- 사원테이블에서 입사일을 0을 제외한 일, 문자형 달, 네자리 년으로 변환한 값까지 검색하라. 
+select empno, ename, hiredate, to_char(hiredate, 'fmdd month yyyy') from emp;
+ 
+-- 사원들의 급여를 \xx,xxx.00 단위로 변환하라. 
+select empno, ename, sal, to_char(sal, 'l99,999.00')급여 from emp;
+* 숫자형 함수
+
+ABS(n) - 절대값 출력
+SIGN(n) - 음수,양수 판별. n이 0보다 크면 1, 아니면 -1
+ROUND(n,i) - i번째까지 반올림
+TRUNC(n1,n2) - n1를 n2자리에서 잘라냄
+CEIL(n) - n과 같거나 큰 가장 작은 정수
+FLOOR(n) - CEIL과 반대로 작거나 가장 큰 정수 반환
+MOD(n2,n1) - n2를 n2으로 나눈 나머지 값을 반환. n1가 0이면 n2 그대로 반환
+* Null 관련 함수
+
+NVL(expr1, expr2) - expr1 값이 null이면 expr2를 반환.
+NVL2(expr1, expr2, expr3) - expr1 값이 null이면 expr3을, null이 아니면 expr2 값을 반환.
+NULLIF(expr1, expr2) - expr1과 expr2가 같으면 null을, 같지 않으면 expr1을 반환.
+COALESCE(expr1, expr2, ...) - expr1, expr2, ... 등의 파라미터 리스트 중에서 첫 번째로 null이 아닌 파라미터를 반환.
+LNNVL(condition) - condition을 체크하여 조건결과 값이 FALSE나 UNKNOWN일 경우 TRUE를,
+CASE x WHEN y THEN z - x가 y일 경우 z를 반환. (WHEN y, THEN z 부분은 복수개 사용가능)
+?
+1
+2
+3
+4
+5
+case job 
+when 'analyst' then sal*1.1
+when 'clerk' then sal*1.2
+when 'salesman'
+then sal*1.3
+* 날짜형 함수
+
+SYSDATE - 운영체제의 현재시간을 반환
+?
+1
+2
+3
+4
+5
+-- ex1. 사원테이블에서 사원들의 입사일 후 몇 주가 경과되었는지를 검색하라.
+select empno, ename, (sysdate - hiredate)/7 as week from emp; 
+ 
+-- ex.2 사원테이블에서 사원들의 입사일 후 몇 월이 경과되었는지를 검색하라.
+select empno, ename, months_between(sysdate, hiredate) from emp;
+ADD_MONTHS - 임의의 날짜에 개월 수를 더한 뒤 그 결과를 반환.
+?
+1
+2
+-- 사원테이블에서 사원번호가 7839번인 사원이 입사 6개월 후의 날짜를 검색하라.
+select empno, ename, hiredate, add_months(hiredate, 6) from emp where empno = 7839; 
+NEXT_DAY(date,char) - date 이후의 날짜 중에서 주중에 char로 명시된 첫 번째 일자를 반환
+
+?
+1
+2
+-- 사원테이블에서 사원들의 입사일 후 첫번째 수요일이 며칠인지 검색하라.
+select empno, ename, hiredate, next_day(hiredate, '수') from emp;
+LAST_DAY(date) - date와 같은 달의 마지막 날짜를 반환.
+ROUND(date, fmt) - date 날짜를 포맷모델 fmt에 의해 명시된 단위로 반올림한 결과를 반환.
+?
+1
+2
+3
+-- 입사일을 월단위로 반올림
+select empno, ename, hiredate, round(hiredate, 'month') from emp;
+--

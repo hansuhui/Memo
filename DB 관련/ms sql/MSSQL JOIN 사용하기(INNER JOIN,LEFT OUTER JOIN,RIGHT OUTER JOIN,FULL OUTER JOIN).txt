@@ -1,0 +1,82 @@
+MSSQL JOIN 사용하기(INNER JOIN,LEFT OUTER JOIN,RIGHT OUTER JOIN,FULL OUTER JOIN) 
+
+
+ - JOIN 문이란?
+?   두개 이상의 테이블을 하나의 테이블로 합쳐서 사용하는데 이용됩니다.
+   JOIN의 종류로는 INNER JOIN, LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN등이 있습니다.
+?
+ 
+ - MSSQL JOIN 사용방법
+?   SELECT [별칭].[컬럼] FROM [테이블] AS [별칭] [조인문] [테이블] AS [별칭] ON [조건절]
+?
+ 
+ - 출석부 테이블 생성
+   CREATE TABLE dbo.출석부 (
+       일련번호 int NOT NULL,
+       이름 varchar(6) NOT NULL
+   )
+?
+ 
+ - 데이터 입력
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (1, '홍길동')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (2, '일지매')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (3, '임꺽정')
+   INSERT INTO dbo.출석부 (일련번호, 이름) VALUES (1, '이순신')
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.출석부
+ 
+ 
+ - 성적 테이블 생성
+   CREATE TABLE dbo.성적 (
+       일련번호 int NOT NULL,
+       점수 int NOT NULL
+   )
+?
+ 
+ - 데이터 입력
+   INSERT INTO dbo.성적 (일련번호, 점수) VALUES (1, 90)
+   INSERT INTO dbo.성적 (일련번호, 점수) VALUES (2, 95)
+   INSERT INTO dbo.성적 (일련번호, 점수) VALUES (4, 80)
+ 
+ 
+ - 테이블 입력 결과 확인?
+   SELECT * FROM dbo.성적
+ 
+
+ - 예제 1 
+   출석부테이블과 성적테이블중 일련번호가 같은 레코드를 INNER JOIN하시오.
+ 
+ 
+ - 예제 1 쿼리 
+   SELECT A.일련번호, A.이름, B.점수 FROM dbo.출석부 AS A INNER JOIN dbo.성적 AS B ON A.일련번호 = B.일련번호
+
+ 
+ [참고사항] INNER JOIN 
+   ?INNER JOIN은 조건절에 해당하는 레코드만을 표시하는 역활을 합니다.
+ 
+ 
+ - 예제 2 
+   출석부테이블과 성적테이블중 일련번호가 같은 레코드를 LEFT OUTER JOIN하시오.
+ 
+ 
+ - 예제 2 쿼리 
+   SELECT A.일련번호, A.이름, B.점수 FROM dbo.출석부 AS A LEFT OUTER JOIN dbo.성적 AS B ON A.일련번호 = B.일련번호
+ 
+ [참고사항] LEFT OUTER JOIN / RIGHT OUTER JOIN 
+   LEFT OUTER JOIN은 왼쪽 테이블의 레코드에 조건이 맞는 오른쪽 테이블의 값을 추가하고 조건이 맞지 않는 경우
+   NULL을 추가하는 역활을 합니다. (RIGHT OUTER JOIN은 반대로 오른쪽 테이블을 기준으로 합니다)
+ 
+ 
+ - 예제 3 
+   출석부테이블과 성적테이블중 일련번호가 같은 레코드를 FULL OUTER JOIN하시오.
+ 
+ 
+ - 예제 3 쿼리
+   SELECT A.일련번호 AS A일련번호, A.이름, B.일련번호 AS B일련번호, B.점수 
+   FROM dbo.출석부 AS A FULL OUTER JOIN dbo.성적 AS B ON A.일련번호 = B.일련번호
+  
+[참고사항] FULL OUTER JOIN 
+   FULL OUTER JOIN은 왼쪽과 오른쪽 테이블의 모든 레코드를 표시하는데 조건이 맞지 않은 경우에는 NULL값을 추가합니다.
+

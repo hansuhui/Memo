@@ -1,0 +1,77 @@
+//주석
+
+
+//변수
+$primary-color: #333;
+
+body {
+  background-color: $primary-color;
+}
+
+
+.contatiner {width : 100%;}
+
+article[role="main"]{
+  float : left;
+   width : 600px / 960px * 100%;
+}
+
+aside[role="complementary"]{
+  float : right;
+  width : 300px / 960px * 100%;
+}
+
+
+
+
+//내장함수
+
+$buttonColor : #2ecc71;
+$buttonDark : darken($buttonColor,10%);
+$buttonDarker : darken($buttonDark,10%);
+
+
+
+
+button{
+  background : $buttonColor;
+  border-radius: 3px;
+  box-shadow: 0px 5px 0px $buttonDark;
+  border: 0;
+  color: white;
+  font-size: 17px;
+  padding: 10px 30px;
+  display: inline-block;
+  outline: 0;
+  &:hover {
+    background: $buttonDark;
+    box-shadow: 0px 5px 0px $buttonDarker;
+  }
+  &:active {
+    box-shadow: none;
+    margin-top: 5px;
+  }
+}
+
+
+
+
+//중첩
+.container {
+   width: 100%;
+   h1 {
+     color : red;
+   }
+}
+
+
+a {
+   color : black;
+   &:hover {
+     text-decoration : underline;
+     color : gray;
+   }
+   &:visited {
+      color : purple;
+   }
+}

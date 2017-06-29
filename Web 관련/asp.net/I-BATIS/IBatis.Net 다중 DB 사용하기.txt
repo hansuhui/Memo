@@ -1,0 +1,58 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+ 
+// Add
+using IBatisNet.DataMapper;
+using IBatisNet.DataMapper.Configuration;
+ 
+namespace Coast.Framework.Base
+{
+    /// <summary>
+    /// <b>■SqlMaps 클래스</b><br/>
+    /// - 작  성  자 : 강문성<br/>
+    /// - 최초작성일 : 2009년 10월 05일<br/>
+    /// - 주요변경로그<br/>
+    /// 2009년 10월 05일 생성<br/>
+    /// </summary>
+    /// <Remarks>없음</Remarks>
+    public static class SqlMaps
+    {
+        /// <summary>
+        /// DB Connection
+        /// </summary>
+        /// <returns></returns>
+        public static ISqlMapper SqlMapsCoastNew()
+        {
+            ISqlMapper mapper;
+            try
+            {
+                DomSqlMapBuilder dom = new DomSqlMapBuilder();
+                mapper = dom.Configure(@".\App_Code\OracleMappers\SqlMap.config");
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something bad happended while building the SqlMapclient instance." + e, e);
+            }
+            return mapper;
+        }
+        /// <summary>
+        ///  Etc DB Connection
+        /// </summary>
+        /// <returns></returns>
+        public static ISqlMapper SqlMapsCoast()
+        {
+            ISqlMapper mapper;
+            try
+            {
+                DomSqlMapBuilder dom = new DomSqlMapBuilder();
+                mapper = dom.Configure(@".\App_Code\OracleMappers\SqlMapEtc.config");
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Something bad happended while building the SqlMapclient instance." + e, e);
+            }
+            return mapper;
+        }
+    }
+}

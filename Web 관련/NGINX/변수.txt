@@ -1,0 +1,96 @@
+[예제]
+
+아래와 같은 URL로 접근 했을 때 환경 변수는 아래와 같다.
+
+http://opentutorials.org:80/production/module/index.php?type=module&id=12
+
+$host : opentutorials.org
+$uri : /production/module/index.php
+$args : type=module&id=12
+server_addr : 115.68.24.88
+server_name : localhost
+server_port : 80
+server_protocol : HTTP/1.1
+$arg_type : module
+$request_uri : /production/module/index.php?type=module&id=12
+$request_filename : /usr/local/nginx/html/production/module/index.php
+
+
+[$arg_PARAMETER]
+PARAMETER는 파라미터 변수의 이름을 의미한다. 
+예를들어 http://opentutorials.org?mode=course 라는 요청이 있을 때 
+mode의 값은 $arg_mode를 통해서 알아낼 수 있다
+
+
+[$host]
+현재 요청의 호스트명. 호스트명은 일반적으로 머신이 위치하는 IP나 도메인을 의미한다.
+아래와 같은 요청이 있을때 $host, $uri,$args의 갑은 아래와 같다.
+
+[$uri]
+현재 요청의 URI. 호스트명과 파라미터는 제외 된다.
+
+[documet_uri]
+$uri와 동일
+
+[$args]
+URL의 질의 문자열
+
+[$binary_remote_addr]
+전송된 바디의 바이트 수
+
+
+[$content_length]
+HTTP 요청헤더의 Content-Length와 동일
+
+[$content_type]
+HTTP 요청헤더의 Content_Type과 동일
+
+[$document_root]
+
+현재 요청의 document root 값이 root 지시어와 동일
+
+[$http_HEADER]
+
+HTTP 헤더의 값을 소문자로 대시 밑즐로 변환한 값.
+예를들어 아래와 같은 요청이 있을 때
+
+GET http://192.168.125.143/course/module/index.html?mode=egoing HTTP/1.1
+Host: 192.168.125.143
+User-Agent: Mozilla/5.0 (Windows NT 6.2; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: ko-kr,ko;q=0.8,en-us;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Cache-Control: max-age=0
+
+
+변수는 아래와 같다.
+
+$http_host : 192.168.125.143
+$http_connection : keep-alive
+
+[$scheme]
+HTTP의 구조로 http, https를 의미한다.
+
+[$server_addr]
+서버주소
+
+[$server_name]
+서버이름
+
+[$server_port]
+서버포트
+
+[$server_protocol]
+HTTP 요청 프로토콜(HTTP/1.0 혹은 HTTP/1.1)
+
+[$cookie_COOKIE]
+
+cookie의 값을 알아내는 데 사용하는 변수. COOKIE의 값으로 cookie의 이름을 사용하면 해당 쿠키의
+값을 얻을 수 있다. 예를들어 cookie_mode는 이름이 mode인 쿠키의 값을 의미한다.
+
+
+
+
+
+

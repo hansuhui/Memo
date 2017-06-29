@@ -1,0 +1,13 @@
+select * from Product a , GiftDesign b where a.DesignCode = b.DesignCode and a.Pcode = '10000003'
+
+(nolock) 은 사용시 잠기는데 자주쓰는건 잠기면 에러나니까 nolock을 걸어야함
+
+정식 조인문 
+
+테이블 a join 테이블 b (nolock) on (a.조건 = b.조건)
+
+Row_number 로 날자로 내린차순 순서주고 조인문 조건은 DesignCode
+
+
+
+select ROW_NUMBER() over(order by a.RegDate desc) as RowNumber , a.RegDate, a.Pcode, '1'as kind ,a.Title, b.Jong, '1' as IsUse from Product a , GiftDesignFile b where a.DesignCode = b.DesignCode

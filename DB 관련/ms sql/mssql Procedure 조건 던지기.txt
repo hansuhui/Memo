@@ -1,0 +1,42 @@
+set @Search =  
+'
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+exec usp_common_openkey;
+
+With SaleDetGroup (SaleCode,Jong,Ptype,CustName)
+as
+(select SaleCode,Jong,Ptype,CustName from SaleDtl group by SaleCode, Jong,Ptype,CustName
+ ) 
+
+
+select 
+a.ReqDate
+,a.Code
+,a.SaleCode
+,dbo.uf_DecData(b.GiftNo) as GiftNo
+,b.Amount
+,isnull(b.CurAmt,0) as CurAmt
+,isnull(f.CustName,'''') as CustName
+,a.MobileNo
+,e.coName as PaymentType
+,h.coName as RefundState
+,g.coName as Jong
+,isnull(b.FeeAmt,0 ) as FeeAmt
+from SaleCancelMst a 
+join SaleCancelDtl b on  (a.Code = b.Code) 
+join (select GiftNo,SendMobileNo,IsSend from SaleDtl ) c on  (dbo.uf_DecData(b.GiftNo) = dbo.uf_DecData(c.GiftNo)) 
+left outer join 
+(select a.SaleCode, a.PaymentType from SalePayments a,
+(select SaleCode,min(Seq) as Seq from SalePayments group by SaleCode) b
+where a.SaleCode = b.SaleCode and a.Seq = b.Seq) d on(a.SaleCode = d.SaleCode)
+left outer  join CodeDetail e on (d.PaymentType = e.coCode and e.coGroup = 16)
+join SaleDetGroup f on (a.SaleCode = f.SaleCode)
+left outer join CodeDetail g on (f.Jong = g.coCode and g.coGroup = 12)
+join CodeDetail h on (a.RefundState = h.coCode and h.coGroup = 15) 
+ ' + @Search
+exec sp_executesql @Search
+
+
+
+exec usp_return_ExpireList 'where  a.ReqDate between ''2013-04-01'' and ''2014-04-01'''

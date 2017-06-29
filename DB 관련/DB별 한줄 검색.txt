@@ -1,0 +1,3 @@
+mysql : select * from [테이블명] limit 1
+mssql : select top 1 * from [테이블명]
+oracle : select * (select * from [테이블명]) where rownum = 1

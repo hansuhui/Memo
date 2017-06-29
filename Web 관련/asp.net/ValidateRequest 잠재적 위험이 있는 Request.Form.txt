@@ -1,0 +1,17 @@
+엑션메서드 부분에 ValidateInput(false) 추가 로 문제를 해결 할수 있다
+[AcceptVerbs(HttpVerbs.Post), ValidateInput(false)]
+ 
+
+하지만 ValidateInput(false)  추가로 인하여 스크립트 공격이나 보안상의 위험도 같이 발생할수 있어
+스크립트 블럭 은 변경해주는것이 좋다
+ 
+
+content = content.Replace("<script", "[script").Replace("</script>","[/script]");
+
+
+
+최상위 web.Config 파일에
+
+<system.web>
+<httpRuntime requestValidationMode="2.0"/>    
+</system.web>

@@ -1,0 +1,22 @@
+			var list = db.SelectSendForGiftList(qty, saleCode);
+
+			string dfileName = string.Empty;
+			//¿¢¼¿ Ã³¸®
+			HttpFileCollectionBase files = Request.Files;
+
+			foreach (string file in files)
+			{
+				if (files[file].ContentLength > 0)
+				{
+
+					var fileName = System.IO.Path.GetFileName(files[file].FileName);
+					//var path = System.IO.Path.Combine(Server.MapPath(Æú´õ °æ·Î), fileName);
+					var path = System.IO.Path.Combine(Server.MapPath("~" + GetDataFolerToExcel), fileName);
+					files[file].SaveAs(path);
+
+					dfileName = string.Format("{0}/{1}", GetDataFolerToExcel, fileName);
+
+
+
+				}
+			}

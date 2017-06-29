@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone"/>
+    <_locTag _loc="locData">Title</_locTag>
+    <_locTag _loc="locData">Description</_locTag>
+    <_locTag _loc="locData">Author</_locTag>
+    <_locTag _loc="locData">ToolTip</_locTag>
+</_locDefinition>
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>테스트</Title>
+                        <Shortcut></Shortcut>
+			<Description>테스트</Description>
+			<Author>한수희</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+                                <Literal>
+                                	<ID>SchemaName</ID>
+                                	<ToolTip>스키마 이름</ToolTip>
+                                	<Default>dbo</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>FunctionName</ID>
+                                	<ToolTip>함수 이름</ToolTip>
+                                	<Default>FunctionName</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Param1</ID>
+                                	<ToolTip>입력 매개 변수 이름</ToolTip>
+                                	<Default>param1</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Datatype_Param1</ID>
+                                	<ToolTip>입력 매개 변수의 데이터 형식</ToolTip>
+                                	<Default>int</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Param2</ID>
+                                	<ToolTip>입력 매개 변수 이름</ToolTip>
+                                	<Default>param2</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Datatype_Param2</ID>
+                                	<ToolTip>입력 매개 변수의 데이터 형식</ToolTip>
+                                	<Default>char(5)</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Column1</ID>
+                                	<ToolTip>열 이름</ToolTip>
+                                	<Default>c1</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Datatype_Column1</ID>
+                                	<ToolTip>열의 데이터 형식</ToolTip>
+                                	<Default>int</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Column2</ID>
+                                	<ToolTip>열 이름</ToolTip>
+                                	<Default>c2</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>Datatype_Column2</ID>
+                                	<ToolTip>열의 데이터 형식</ToolTip>
+                                	<Default>char(5)</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>TableName</ID>
+                                	<ToolTip>테이블 이름</ToolTip>
+                                	<Default>SampleTable</Default>
+                                </Literal>
+                                <Literal>
+                                	<ID>TableVarName</ID>
+                                	<ToolTip>함수에서 반환한 테이블 변수 이름</ToolTip>
+                                	<Default>returntable</Default>
+                                </Literal>
+			</Declarations>
+			<Code Language="SQL"><![CDATA[
+CREATE FUNCTION [$SchemaName$].[$FunctionName$]
+(
+    @$Param1$ $Datatype_Param1$,
+    @$Param2$ $Datatype_Param2$
+)
+RETURNS @$TableVarName$ TABLE 
+(
+	[$Column1$] $Datatype_Column1$,
+	[$Column2$] $Datatype_Column2$
+)
+AS
+BEGIN
+    INSERT @$TableVarName$
+    SELECT @$Param1$, @$Param2$
+    RETURN 
+END
+]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

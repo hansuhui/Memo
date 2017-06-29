@@ -1,0 +1,20 @@
+http://blog.danggun.net/4286
+
+[인터페이스]
+
+
+interface inter {
+    One : string;
+    To : string;
+}
+
+
+function greeter(On: inter) {
+    var h1 = document.createElement("h1");
+    h1.textContent = On.One + On.To;
+    return h1;
+}
+
+var inter = { One: "지금 ,", To: "이순간" }
+
+document.body.appendChild(greeter(inter));

@@ -1,0 +1,56 @@
+http://mrw0119.tistory.com/21
+
+[이벤트]
+
+델리게이트 타입을 선언하면 델리게이트 변수도 생성할 수 있지만,
+이벤트 변수도 생성할 수 있다. 이베트 변수는 간단히 event 한정자만 붙여주면 된다.
+
+//델리게이트 타입 선언
+delegate void MyDelegate(int a);
+
+//델리게이트 변수 선언
+MyDelegate A;
+
+//이벤트 변수 선언
+event MyDelegate B;
+
+이벤트 변수는 델리게이트 변수와 마찬가지로 메소드를 참조하는ㄷ데, 단지 성격이 약간 다르다.
+간단히 말해 델리게이트 변수가 public 이라면 이벤트 변수는 private 같은 느낌이랄까?
+
+델리게이트 변수는 자신이 속한 클래스 외부에서도 호출이 가능하지만.
+이벤트 변수는 외부에서 호출이 불가능하다.
+
+오직 변수가 속한 클래스 내부에서만 사용하도록 제한된 것이다.
+잘은 모르겠지만 보안적인 이유에서 이런 구분이 필요한 것 같다.
+
+- 예제 -
+
+
+using System;
+
+namespace Console1
+{
+    class Event_Ex
+    {
+        public delegate void EvnetDel(int a);
+        public event EvnetDel eventdel;
+        static void EvenNaber(int Num) { Console.WriteLine("EvenNaber-" + Num); }
+        public void Main()
+        {
+            eventdel = new EvnetDel(EvenNaber);
+            foreach (int i in new int[] { 11, 22, 33, 44 }) {
+                eventdel(i);
+            }
+
+
+        }
+            
+    }
+
+}
+
+위의 에제에서는 숫자가 입력됬을 때 , 짝수인 경우에만 이벤트를 호출하도록 하고 있다.
+이벤트는 이처럼 특정 조건이 충족됬을때 (특정 사건(이벤트)이 발생했을 때)
+자동으로 메소드를 호출하는 용도로 사용된다.
+
+

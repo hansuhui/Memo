@@ -1,0 +1,24 @@
+ try
+            {
+                Mapper.Instance().BeginTransaction();
+
+
+
+
+
+
+                int Thread = Mapper.Instance().QueryForObject<int>("MaxThread", Board.Board_ID);
+		return (List<ProductModel>)Mapper.Instance().QueryForList<ProductModel>(Search.SelectId, Search);
+               
+
+                Mapper.Instance().Insert("id", parameterClass);
+		Mapper.Instance().update("id", parameterClass);
+		Mapper.Instance().delete("id", parameterClass);
+
+
+                Mapper.Instance().CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                Mapper.Instance().RollBackTransaction();
+            }

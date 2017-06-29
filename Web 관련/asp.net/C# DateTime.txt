@@ -1,0 +1,308 @@
+
+@String.Format("{0:yyyy-MM-dd}", item.SentDate)
+
+using System;
+namespace Concepts2Code.Utilities
+{
+    /// 
+
+
+    /// Common DateTime Methods.
+
+    /// 
+
+
+    /// 
+
+
+    public enum Quarter
+    {
+        First = 1,
+        Second = 2,
+        Third = 3,
+        Fourth = 4
+    }
+
+    public enum Month
+    {
+        January = 1,
+        February = 2,
+        March = 3,
+        April = 4,
+        May = 5,
+        June = 6,
+        July = 7,
+        August = 8,
+        September = 9,
+        October = 10,
+        November = 11,
+        December = 12
+    }
+
+    public class DateUtilities
+    {
+        #region Quarters
+
+        public static DateTime GetStartOfQuarter( int Year, Quarter Qtr )
+        {
+            if( Qtr == Quarter.First )    // 1st Quarter = January 1 to March 31
+
+                return new DateTime( Year, 1, 1, 0, 0, 0, 0 );
+            else if( Qtr == Quarter.Second ) // 2nd Quarter = April 1 to June 30
+
+                return new DateTime( Year, 4, 1, 0, 0, 0, 0 );
+            else if( Qtr == Quarter.Third ) // 3rd Quarter = July 1 to September 30
+
+                return new DateTime( Year, 7, 1, 0, 0, 0, 0 );
+            else // 4th Quarter = October 1 to December 31
+
+                return new DateTime( Year, 10, 1, 0, 0, 0, 0 );
+        }
+
+        public static DateTime GetEndOfQuarter( int Year, Quarter Qtr )
+        {
+            if( Qtr == Quarter.First )    // 1st Quarter = January 1 to March 31
+
+                return new DateTime( Year, 3, 
+                       DateTime.DaysInMonth( Year, 3 ), 23, 59, 59, 999 );
+            else if( Qtr == Quarter.Second ) // 2nd Quarter = April 1 to June 30
+
+                return new DateTime( Year, 6, 
+                       DateTime.DaysInMonth( Year, 6 ), 23, 59, 59, 999 );
+            else if( Qtr == Quarter.Third ) // 3rd Quarter = July 1 to September 30
+
+                return new DateTime( Year, 9, 
+                       DateTime.DaysInMonth( Year, 9 ), 23, 59, 59, 999 );
+            else // 4th Quarter = October 1 to December 31
+
+                return new DateTime( Year, 12, 
+                       DateTime.DaysInMonth( Year, 12 ), 23, 59, 59, 999 );
+        }
+
+        public static Quarter GetQuarter( Month Month )
+        {
+            if( Month <= Month.March )
+            // 1st Quarter = January 1 to March 31
+
+                return Quarter.First;
+            else if( ( Month >= Month.April ) && ( Month <= Month.June ) )
+            // 2nd Quarter = April 1 to June 30
+
+                return Quarter.Second;
+            else if( ( Month >= Month.July ) && ( Month <= Month.September ) )
+            // 3rd Quarter = July 1 to September 30
+
+                return Quarter.Third;
+            else // 4th Quarter = October 1 to December 31
+
+                return Quarter.Fourth;
+        }
+
+        public static DateTime GetEndOfLastQuarter()
+        {                 
+            if( (Month)DateTime.Now.Month <= Month.March )
+            //go to last quarter of previous year
+
+                return GetEndOfQuarter( DateTime.Now.Year - 1, Quarter.Fourth);
+            else //return last quarter of current year
+
+                return GetEndOfQuarter( DateTime.Now.Year, 
+                  GetQuarter( (Month)DateTime.Now.Month));
+        }
+
+        public static DateTime GetStartOfLastQuarter()
+        {
+            if( (Month)DateTime.Now.Month <= Month.March )
+            //go to last quarter of previous year
+
+                return GetStartOfQuarter( DateTime.Now.Year - 1, Quarter.Fourth);
+            else //return last quarter of current year
+
+                return GetStartOfQuarter( DateTime.Now.Year, 
+                  GetQuarter( (Month)DateTime.Now.Month));
+        }
+
+        public static DateTime GetStartOfCurrentQuarter()
+        {
+            return GetStartOfQuarter( DateTime.Now.Year, 
+                   GetQuarter( (Month)DateTime.Now.Month ));
+        }
+
+        public static DateTime GetEndOfCurrentQuarter()
+        {
+            return GetEndOfQuarter( DateTime.Now.Year, 
+                   GetQuarter( (Month)DateTime.Now.Month ));
+        }
+        #endregion
+
+        #region Weeks
+        public static DateTime GetStartOfLastWeek()
+        {
+            int DaysToSubtract = (int)DateTime.Now.DayOfWeek + 7;
+            DateTime dt = 
+              DateTime.Now.Subtract(System.TimeSpan.FromDays( DaysToSubtract ) );
+            return new DateTime( dt.Year, dt.Month, dt.Day, 0, 0, 0, 0 );
+        }
+
+        public static DateTime GetEndOfLastWeek()
+        {
+            DateTime dt = GetStartOfLastWeek().AddDays(6);
+            return new DateTime( dt.Year, dt.Month, dt.Day, 23, 59, 59, 999 );
+        }
+
+        public static DateTime GetStartOfCurrentWeek()
+        {
+            int DaysToSubtract = (int)DateTime.Now.DayOfWeek ;
+            DateTime dt = 
+              DateTime.Now.Subtract( System.TimeSpan.FromDays( DaysToSubtract ) );
+            return new DateTime( dt.Year, dt.Month, dt.Day, 0, 0, 0, 0 );
+        }
+
+        public static DateTime GetEndOfCurrentWeek()
+        {
+            DateTime dt = GetStartOfCurrentWeek().AddDays(6);
+            return new DateTime( dt.Year, dt.Month, dt.Day, 23, 59, 59, 999 );
+        }
+        #endregion
+
+        #region Months
+
+        public static DateTime GetStartOfMonth( Month Month, int Year )
+        {
+             return new DateTime( Year, (int)Month, 1, 0, 0, 0, 0 );
+        }
+
+        public static DateTime GetEndOfMonth( Month Month, int Year )
+        {
+            return new DateTime( Year, (int)Month, 
+               DateTime.DaysInMonth( Year, (int)Month ), 23, 59, 59, 999 );
+        }
+
+        public static DateTime GetStartOfLastMonth()
+        {
+            if( DateTime.Now.Month == 1 )
+                return GetStartOfMonth( 12, DateTime.Now.Year - 1);
+            else
+                return GetStartOfMonth( DateTime.Now.Month -1, DateTime.Now.Year );
+        }
+
+        public static DateTime GetEndOfLastMonth()
+        {
+            if( DateTime.Now.Month == 1 )
+                return GetEndOfMonth( 12, DateTime.Now.Year - 1);
+            else
+                return GetEndOfMonth( DateTime.Now.Month -1, DateTime.Now.Year );
+        }
+
+        public static DateTime GetStartOfCurrentMonth()
+        {
+            return GetStartOfMonth( DateTime.Now.Month, DateTime.Now.Year );
+        }
+
+        public static DateTime GetEndOfCurrentMonth()
+        {
+            return GetEndOfMonth( DateTime.Now.Month, DateTime.Now.Year );
+        }
+        #endregion
+
+        #region Years
+        public static DateTime GetStartOfYear( int Year )
+        {
+            return new DateTime( Year, 1, 1, 0, 0, 0, 0 );
+        }
+
+        public static DateTime GetEndOfYear( int Year )
+        {
+            return new DateTime( Year, 12, 
+              DateTime.DaysInMonth( Year, 12 ), 23, 59, 59, 999 );
+        }
+
+        public static DateTime GetStartOfLastYear()
+        {
+            return GetStartOfYear( DateTime.Now.Year - 1 );
+        }
+
+        public static DateTime GetEndOfLastYear()
+        {
+            return GetEndOfYear( DateTime.Now.Year - 1 );
+        }
+
+        public static DateTime GetStartOfCurrentYear()
+        {
+            return GetStartOfYear( DateTime.Now.Year );
+        }
+
+        public static DateTime GetEndOfCurrentYear()
+        {
+            return GetEndOfYear( DateTime.Now.Year );
+        }
+        #endregion        
+
+        #region Days
+        public static DateTime GetStartOfDay( DateTime date )
+        {
+            return new DateTime( date.Year, date.Month, date.Day, 0, 0, 0, 0 );
+        }
+
+        public static DateTime GetEndOfDay( DateTime date )
+        {
+            return new DateTime( date.Year, date.Month, 
+                                 date.Day, 23, 59, 59, 999 );
+        }
+        #endregion
+      }
+}
+[출처] [펌] C# DateTime Library|작성자 용쓰
+
+
+
+
+DateTime.Compare() 는 두날짜의 크기비교를 위한 함수입니다.
+즉, 작으면 -1, 크면 1 같으면 0 이타입의 데이터만 나타나게 됩니다.
+원하시는 기간은 Subtract 라는 녀석을 사용하시면 됩니다.
+
+1.  STRING 값을 날짜 형식으로 변경하기
+
+        DateTime dt1 = Convert.ToDateTime("2008-08-08");
+        DateTime dt2 = DateTime.Now;   
+        DateTime DT  = DateTime.Parse(ultraGrid1.Rows[k].Cells["DT"].Value.ToString());   
+ 
+2. 날짜 데이터의 차이 구하기
+ 
+        TimeSpan dt3 = dt1.Subtract(dt2);
+        TimeSpan T_DIFF = T_END - T_START;
+ 
+3. 값 비교 
+ 
+        int Result = Math.Abs(dt3.Days);
+        Response.Write(Result.ToString());
+ 
+
+// DateTime Class에 대한 여러가지 내용~ //
+
+// 오늘 날짜를 가져오는 방법: (3월 8일 목요일)
+
+DateTime today = DateTime.Today;
+
+ 
+      // 1일 날짜를 가져오는 방법: (3월 1일 목요일)
+      DateTime first_day = today.AddDays(1 - today.Day);
+ 
+      // 첫번째 주의 일요일을 가져오는 방법: (2월 25일 일요일)
+      DateTime first_sunday = first_day.AddDays(0 - (int)(first_day.DayOfWeek));
+ 
+      // 첫번째 주의 일수를 가져오는 방법: (3일)
+      int first_week_day_count = 7 - (int)(first_day.DayOfWeek);
+ 
+      // 말일 날짜를 가져오는 방법: (3월 31일 토요일)
+      DateTime last_day = today.AddMonths(1).AddDays(0 - today.Day);
+ 
+      // 마지막 주의 일요일을 가져오는 방법: (3월 25일 일요일)
+      DateTime last_sunday = last_day.AddDays(0 - (int)(last_day.DayOfWeek));
+ 
+      // 마지막 주의 일수를 가져오는 방법: (7일)
+      int last_week_day_count = last_day.DayOfYear - last_sunday.DayOfYear + 1;
+ 
+      // 이번 달의 주수를 가져오는 방법: (5주)
+      int this_month_week_count = ((last_sunday.DayOfYear - first_sunday.DayOfYear) / 7) + 1;
+

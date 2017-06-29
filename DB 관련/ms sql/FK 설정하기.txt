@@ -1,0 +1,12 @@
+ALTER TABLE testB
+ADD CONSTRAINT FK_testB FOREIGN KEY (d)   REFERENCES testA(a)
+
+해설
+alter table testb  
+ADD CONSTRAINT FK명 FOREIGN KEY (FK를 설정할 칼럼)  
+REFERENCES 참조할 테이블(참조할 테이블의 PK)
+
+
+
+alter table BoardMaster
+add COnstraint FK_boardmaster Foreign key (btidx)  REFERENCES BoardType (btidx)

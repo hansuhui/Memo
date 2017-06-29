@@ -1,0 +1,8 @@
+if ( navigator.appName == "Microsoft Internet Explorer" )
+		{ 
+		if(agent.search("msie 7.0") > -1) {}		
+		else if(agent.search("msie 8.0") > -1) {}	
+		else if(agent.search("msie 9.0") > -1) {}
+		else if(agent.search("msie 10.0") > -1) {}
+		else{} 
+	}

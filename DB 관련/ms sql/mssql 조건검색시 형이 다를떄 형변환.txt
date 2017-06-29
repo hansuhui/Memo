@@ -1,0 +1,4 @@
+and (case @KeyCode 
+			when 'GiftNo' then dbo.uf_DecData(a.GiftNo)
+			when 'SendMobileNo' then b.SendMobileNo
+			else '' end) like (case when @Keyword = '' then '' else @Keyword  end)

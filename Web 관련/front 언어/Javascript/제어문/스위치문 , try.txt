@@ -1,0 +1,365 @@
+[switch]
+
+switch문은 표현식을 평가한 값과 일치하는 case 문장을 수행합니다.
+일치하는 case를 만나면 그 아래 있는 모든 문장을 수행
+
+형태
+switch(표현식){
+case 표현식 : 문장 리스트옵션
+default : 문장 리스트옵션
+}
+
+소스 텍스트에 작성한 순서로 switch 표현식을 평가한 값과 case 표현식을 평가한 값을
+비교합니다. 일치하는 case가 있으면 case 문장을 수행하고 일치하는 case가 없으면
+default를 수행합니다. case를 다수 작성할 수 있습니다. default는 하나만 작성할 수 있으며
+필수가 아닌 옵션이므로 작성하지 않아도 됩니다.
+
+var exp = 2 , result;
+switch(exp){
+ case 1 : 
+      result = 'case1';
+
+ case 2 : 
+      result = 'case2';
+
+};
+
+alert(result);
+
+
+
+-switch문 수행 과정
+
+1.switch(표현식)에서 표현식을 평가하여 값을 구합니다.
+{코드}switch(exp)
+{설명}exp 변수에 2를 할당했으므로 값은 2가 됩니다.
+
+2.소스 텍스트에 작성한 순서로 case를 전부 추출합니다.
+{설명} exp 변수에 2를 할당했으므로 값은 2가 됩니다.
+
+3.추출한 case를 읽습니다.
+{설명}더 이상 읽을 case가 없으면 default를 찾습니다.
+default가 있을 때만 default를 수행하므로 작성하지 않더라도 에러가 발생하지 않습니다.
+
+4.switch 표현식을 평가한 값과 case 표현식을 평가한 값을 비교합니다.
+{설명}데이터 타입을 포함한 일치 === 연산자로 비교합니다.exp 변수의 값이 숫자 2이고
+case "2"와 같이 문자로 작성하면 값은 같지만, 데이터 타입이 다르므로 case 2 문장을 수행하지 않습니다.
+
+5. 값이 같지 않으면 3번으로 분기하여 다음 case를 읽습니다.
+
+6.case 문장을 수행합니다.
+
+7.소스 텍스트 끝까지 실행합니다.
+{설명}switch 표현식 값과 일치하는 case가 있으면 case 아래의 모든 문장을 실행합니다.
+따라서 일치하는 case에서 더 이상 처리하지 않고 종료하려면 case에 break 문을 작성해야 합니다.
+
+
+-break 문 작성
+
+var exp =1 , result;
+switch(exp){
+case 1:
+    result = 'case1';
+
+case 2:
+    result = 'case2';
+
+case 3:
+    break;
+    result = 'case3';
+}
+
+
+alert(result);
+
+
+결과 : case2
+
+exp 변숫값이 1이므로 case 1: 문장을 수행하게 됩니다. 따서러 결과는 case 1이 출력되어야 하나
+case2가 출력 되었습니다. switch문은 일치하는 case를 만나면 그 아래에 있는 모든 문장을 수행합니다.
+단, break 문이 있으면 그 위치에서 switch 문을 종료합니다.
+case 1: 문장에서 result에 case1을 할당하고 아래로 내려가 result에 case2를 할당하며 다시 아래로
+내려가게 됩니다. case 3:문장에서 break 문을 만나 종료하게 되므로 case2가 출력됩니다.
+
+-default에 breack문 누락
+
+var exp = 7 , result;
+
+switch(exp){
+   case 1: 
+	result = 'case1';
+   default : 
+	result = 'default';
+   case 3: 
+	result = 'case3';
+}
+
+alert(result);
+
+결과 : case3
+
+exp 변수에 7을 할당했으며 case 7이 존재하지 않으므로 default 문장을 수행하게 됩니다.
+default가 출력되지 않고 case3이 출력된 것은 default 문장을 수행한 후 아래에 있는 
+case3: 문장을 수행하기 때문입니다. 의도적인 처리가 아니라면 default 문장에
+break;를 작성해야 case 3: 문장이 수행되지 않습니다.
+
+
+
+-소스 텍스트 중간에 default 작성
+
+var exp=3 , result;
+switch(exp){
+   case 1:
+	result = 'case1';
+   default : 
+	result = 'default';
+	break;
+   case 3: 
+	result = 'case3';
+}
+
+결과 : case3
+
+자바스크립트는 switch 문에서 default를 작성한 형태와 작성하지 않은 형태를 나누어서 처리합니다.
+default를 작성하면 우선 default 앞의 모든 case를 소스 텍스트에 작성한 순서로 리스트를 만들며
+이어서 default 이후의 case 리스트를 만듭니다. default를 작성하지 않으면 전체가 case이므로
+구분할 필요가 없습니다.
+
+먼저 앞 기준 리스트에서 switch 표현식 값에 일치하는 case를 찾고 존재하지 않으면
+이후 기준 리스트에서 찾습니다. 일치하는 case 문장을 수행한 후 아래에 default가 있으면 수행 합니다.
+소스에는 default가 있지만 case 3: 위에 있어 default를 수행하지 않으므로 결과는 case3이 됩니다.
+
+
+
+
+-OR(||) 형태의 case문
+
+var exp = 2 , result
+switch(exp){
+   case 2 :
+   case 3 : 
+   result = 'case23';
+}
+
+
+결과 : case23
+
+
+
+[with]
+
+with문은 오브젝트를 사용하여 문장을 수행합니다.
+
+형태 with(오브젝트){문장}
+
+var sports = {player : '11명', time = '90분'};
+
+for(var pty in sports){
+alert(sports[pty]);
+}
+
+결과
+1. 11명
+2. 90분
+
+
+var sports = {player : '11명', time : '90분'};
+
+with(sports){
+   alert(player);
+   alert(time);
+}
+
+결과
+1. 11명
+2. 90분
+
+
+with 문의 파라미터에 sports 오브젝트를 지정하면 {player : '11명', time : '90분'} 형태의
+오브젝트가 설정됩니다. with 블록에 player , time과 같이 프로퍼티 이름만 작성했는데 값이
+출력되었습니다. with 문의 파라미터에 지정한 오브젝트에서 프로퍼티 값을 구하려면
+오브젝트를 작성하지 않고 프로퍼티 이름만 작성합니다.
+
+for-in 문은 오브젝트의 프로퍼티를 하나씩 읽어가면서 반복하므로 블록 문장에서 프로퍼티 값을 
+추려내는 처리를 프로퍼티 단위로 할 수 있습니다. with 문의 오브젝트 프로퍼티 전체를 
+펄쳐 놓은 모습이므로 프로퍼티 값을 추려내려면 대상 프로퍼티 이름을 하나씩 작성해야합니다.
+
+한편 프로퍼티 이름만으로 값을 구할 수 있도록 하기 위해서는 자바스크립트 내부에서 이에 맞도록
+환경을 만들어야 합니다. 그런데 환경을 만드는 것이 자바스크립트 구조에 맞지 않습니다. 이에 대한
+논리는 사전 설명이 필요하며 "24.8절 오브젝트 환경 레코드"에서 다루고 있습니다.
+
+-strict 모드
+
+strict 모드느 ES5에서 제시된 것으로 단어 의미 그대로 엄격하게 자바스크립트 문법을 적용합니다.
+첫 번째 줄이 'use strict';형태로 작성합니다.
+
+'use strict';
+
+with({player : '11명', time : '90분'}){
+   alert(player);
+   alert(time);
+}
+
+위 코드를 실행하면 에러가 발생하여 값이 출력되지 않습니다. 브라우저의 개발자 도구 콘솔 창에
+strict 모드에서 with문을 사용할 수 없다는 메시지가 표시됩니다.
+이는 되도록 with문을 사용하지 말라는 권고입니다. 이에 대한 논리는 사전 설명이 필요하며
+"23장 스코프"에서 다루고 있습니다.
+
+
+
+[try-catch-finally]
+
+try문은 예외 발생을 인식하고 대응합니다.
+
+형태
+try {} catch(식별자){}
+try {} finally{}
+try {} catch(식별자){} finally{}
+
+
+프로그램 실행 중에 에러가 발생하면 프로그램이 중단되지만 try블럭에 작성한 코드에서
+에러가 발생하면 프로그램이 중단되지 않습니다. 따라서 에러가 발생할 가능성이 있는 
+코드는 try 블록에 작성해야 합니다.
+
+catch 블록에 발생한 예외를 받아 처리하는 코드를 작성합니다. try 블럭에서 예외가 발생하면 자동으로
+catch 블럭이 실행되고 예외가 발생하지 않으면 실행되지 않습니다.
+예외 발생 여부와 관계없이 finally 블록이 있으면 실행됩니다.
+
+
+var sports;
+
+try{
+alert('try');
+sports = swim;
+}catch(e){
+ alert('catch');
+}finally{
+ alert('finally');
+}
+
+
+1.try
+2,catcg
+3.finally
+
+try블록에서 sports 변수에 swim 변숫값을 할당할 때 swim 변수가 존재하지 않으므로 에러가 발생합니다.
+에러가 발생하면 catch 블록을 수행하므로 2번에 catch가 출력되었습니다. 3번이 출력된 것은 에러가 
+발생하더라도 finally 블럭을 수행하기 때문입니다. try-catch-finally문은 아래와 같은 순서와
+방법으로 예외를 처리합니다.
+
+-try문
+선언하지 않은 변수를 사용하면 에러가 발생하여 프로그램이 중단됩니다. 이때 try문을 사용하여 예외를
+발생 시키면 프로그램이 중단되지 않습니다. try문은 블럭{}애 문장을 작성하며 블록을 생략할 수 없습니다.
+
+코드는 try문을 설명하기 위해 작성한 것으로 좋은 코딩이 아닙니다. swim변수를 작성하지 않아 에러가
+발생하게 된다는 것을 알 수 있을 때는 try문 앞에서 처리하는 것이 좋은 코딩입니다.
+
+
+-catch(식별자) 블록
+
+catch 블록은 try 블록에서 예외가 발생했을 때 자동으로 실행됩니다. catch(e) 파라미터에 e를
+작성했으며 예외 오브젝트가 e에 설정됩니다. e는 식별자로 error과 같이 임의의 이름을
+작성할 수 있습니다. 
+
+e파라미터에 속성을 보면 message 프로퍼티가 있으며 예외가 발생한 이유가 텍스느로 작성되어 있습니다.
+하지만 영문 텍스트이고 브라우저마다 메시지가 다르므로 한국에서 message를 그대로 사용하기에는 
+어려움이 있습니다. 다음 절의 throw문을 사용하여 한글로 메시지를 표시할 수 있습니다.
+
+
+-finally 블록
+
+finally 블록은 예외 발생과 관계없이 작성되어 있으면 실행됩니다. catch 블록과 finally 블록 중에서
+하나는 반드시 작성해야 하며 모두 작성할 수도 있습니다. 모두 작성했을 때 예외가 발생하면
+catch블록을 수행한 후 finally 블록을 수행합니다. 예외가 발생했을 때 catch 블록을 작성하지 않고
+finally 블록만 작성하면 finally 블록을 수행한 후 프로그램이 중단되므로 catch 블록을 작성해야 합니다.
+
+[throw]
+
+throw 문은 인위적으로 예외를 발생시킵니다.
+
+형태 throw 표현식;
+
+throw 문에서 값을 던지면 catch 블록이 받습니다. throw 문의 표현식을 평가한 값이
+catch(e) 블록의 파라미터 e에 설정됩니다. 표현식에 문자열, 숫자 , 오브젝트와 같은 데이터
+타입을 지정할 수 있으며 표현식을 평가한 값이 이와 같은 데이터 타입이어도 됩니다.
+try문에 throw 문을 작성하지 않고 별도로 작성할 수도 있습니다. 이에 대해 하나씩 살펴보겠습니다.
+
+-문자열 표현식
+
+var sports;
+
+try{
+ if(!sports){
+  throw 'sports에 값 없음';
+ }
+}catch(e){
+alert(e);
+}
+
+결과 : 'sports에 값 없음'
+
+sports 변수를 선언만 했으므로 throw 문을 수행하게 되며 결과 throw문에 작성한 문자열이
+출력되었습니다. thow 문에서 표현식 평가 결과를 던지면 catch(e) 블록에서 받으며
+평가한 값이 catch(e) 문의 e에 설정됩니다. try 블럭에서 throw 문을 사용하지 않았을 때
+Error 오브젝트가 catch(e) 문의 e에 설정되는 것과는 차이가 있습니다.
+
+줄을 불리하여 throw와 표현식을 작성하면 throw 끝에 자바스크립트가 세미콜론을 
+자동삽입하므로 한줄에 작성해야 합니다.
+
+-오브젝트 표현식
+
+var sports;
+
+try{
+	if(!sports){
+	throw {message:'에러', reason : '변수를 선언만 함'};
+	}
+}catch(e){
+alert(e.message);
+alert(e.reason);
+}
+
+
+결과
+1.에러
+2.변수를 선언만 함
+
+throw 문의 표현식에 오브젝트를 작성할 수 있습니다. catch(e)의 e에 오브젝트가 설정되므로
+e.message와 같이 프로퍼티 이름으로 값을 구할 수 있습니다. 오브젝트이므로
+message , reason과 같이 다수의 프로퍼티를 작성할 수도 있습니다.
+
+
+-Error 인스턴스 생성
+
+var sports;
+
+try{
+	 if(!sports){
+	throw new Error('Error 인스턴스');
+	}
+
+}catch(e){alert(e.message);}
+
+
+결과 : Error 인스턴스
+
+throw 문에서 new 연산자로 Error 인스턴스(Instance)를 생성하였으며, catch 블록에서
+e.message로 인스턴스를 생성할 때 파라미터에 지정한 문자열 값을 출력하였습니다.
+
+
+-별도 함수 사용
+
+function showError(name){
+	throw name + '를 선언하지 않았습니다.';
+};
+
+try{
+ if(typeof sports == 'undefined'){showError('sports');}
+}catch(e){
+alert(e);
+}
+
+결과 : sports를 선언하지 않았습니다.
+
+try블록에서 함수를 호출하고 호출된 함수에서 throw 문으로 표현식 평가 결과를 던지면
+catch 블록이 받아 실행합니다. 이때 throw 문의 표현식 평가 결과가 catch 블록의 파라미터에 설정됩니다.

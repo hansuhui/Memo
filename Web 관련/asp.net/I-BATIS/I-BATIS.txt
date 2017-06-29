@@ -1,0 +1,33 @@
+파일은 hanyoung 프로젝트꺼
+
+참조 
+
+http://cusmaker.tistory.com/93
+
+
+<typeAlias alias="str" type="java.lang.String" /> 
+ 
+<typeAlias alias="int" type="java.lang.Integer" />
+ 
+<typeAlias alias="id" type="com.board.beans.Board" />
+
+<typeAlias alias="사용할 아이디값" type="클래스" />
+
+
+
+쿼리태그 
+
+
+<select id="Dao" parameterClass="파라미터" resultClass="반환할 클래스"> </select>
+ 
+<insert id=""  parameterClass ="" > </insert>
+ 
+<delete id=""  parameterClass ="" > </delete>
+ 
+<update id=""  parameterClass ="" > </update>
+
+
+
+
+
+

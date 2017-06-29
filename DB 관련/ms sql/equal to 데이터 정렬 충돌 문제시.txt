@@ -1,0 +1,27 @@
+참조 http://catchv.tistory.com/8
+
+문제
+equal to 작업에서의 "Latin1_General_CI_AI"과(와) "Korean_Wansung_CI_AS" 간의 데이터 정렬 충돌을 해결할 수 없습니다.
+
+
+첫번째
+ALTER TABLE tt_2
+    ALTER COLUMN name VARCHAR(10) COLLATE Korean_Wansung_CI_AS
+
+
+두번째
+
+select * from 
+(
+select COLUMN_NAME,isnull((upper(DATA_TYPE)+'('+cast(CHARACTER_MAXIMUM_LENGTH as varchar)+')'),upper(DATA_TYPE)) as DATATYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = 'ADMINMENU'
+) a  join
+(
+SELECT * FROM ::FN_LISTEXTENDEDPROPERTY(NULL, 'SCHEMA', 'DBO', 'TABLE', 'ADMINMENU', 'COLUMN', DEFAULT)
+) b on( a.COLUMN_NAME = b.objname )
+
+
+
+COLLATE Korean_Wansung_CI_AS
+
+이렇게 맞추어 준다
+

@@ -1,0 +1,18 @@
+1. 버튼생성
+template: '<button>My Button</button>'
+이렇게 버튼html을 쓰게 되면 버튼이 생성된다.
+
+template: '<button ion-button>My Button</button>'
+와 같이 ion-button을 추가해주면 버튼의 모양과 기능을 향상시켜준다.
+
+template: '<button ion-button (click)="onClick()">My Button</button>'
+와 같이 (click)="메소드명()"을 해주면 메소드명의 함수가 실행된다.
+
+
+ts파일에 onclick 이벤트를 넣어주면 해당메소드가 실행됨
+  onClick(){
+    alert('Hi');
+  }
+ 위와 같이 한다면 버튼 클릭 시 Hi라는 alert을 띄워줄 것.
+ 
+ 

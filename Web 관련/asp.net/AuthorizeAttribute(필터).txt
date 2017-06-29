@@ -1,0 +1,148 @@
+참조 사이트 https://msdn.microsoft.com/ko-kr/library/system.web.mvc.authorizeattribute(v=vs.118).aspx
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+using CargoInAdmin.Models;
+
+
+namespace CargoInAdmin.Common
+{
+    [Serializable]
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+    public class RoleCheck : AuthorizeAttribute
+    {
+        string Type = "";
+
+        public RoleCheck(string Type)
+        {
+            this.Type = Type;
+        }
+
+
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+
+            string Admin_ID = filterContext.HttpContext.Session["Admin_ID"].ToString();
+            int roleCode = (int)filterContext.HttpContext.Session["roleCode"];
+
+            //로그인 확인
+            if (null == Admin_ID || Admin_ID == "")
+            {
+                string script = string.Empty;
+                script += "<script>";
+                script += "	alert('로그인이 필요합니다..'); ";
+                script += " location.href = '/Account/Login'";
+                script += "</script>";
+                filterContext.HttpContext.Response.Write(script);
+                filterContext.HttpContext.Response.End();
+
+            }
+
+            if (roleCode > 0)
+            {
+                string Url = filterContext.HttpContext.Request.Url.AbsolutePath;
+                string[] menuID = Url.Split('/');
+
+                if (Type == "List")
+                {
+                    RoleModel model = new RoleModel();
+                    model.Admin_ID = Admin_ID;
+                    model.MENUID = menuID[1].ToUpper();
+                    model = new CargoCommon().roleAuthCheck(model);
+
+                    if (!model.isList)
+                    {
+                        roleAuthBack(filterContext);
+                    }
+
+
+                }
+                else if (Type == "Add")
+                {
+                    RoleModel model = new RoleModel();
+                    model.Admin_ID = Admin_ID;
+                    model.MENUID = menuID[1].ToUpper();
+                    model = new CargoCommon().roleAuthCheck(model);
+
+                    if (!model.isAdd)
+                    {
+                        roleAuthBack(filterContext);
+                    }
+                }
+
+                else if (Type == "Detail")
+                {
+                    RoleModel model = new RoleModel();
+                    model.Admin_ID = Admin_ID;
+                    model.MENUID = menuID[1].ToUpper();
+                    model = new CargoCommon().roleAuthCheck(model);
+
+                    if (!model.isDetail)
+                    {
+                        roleAuthBack(filterContext);
+                    }
+                }
+                else if (Type == "Update")
+                {
+                    RoleModel model = new RoleModel();
+                    model.Admin_ID = Admin_ID;
+                    model.MENUID = menuID[1].ToUpper();
+                    model = new CargoCommon().roleAuthCheck(model);
+
+                    if (!model.isUpdate)
+                    {
+                        roleAuthBack(filterContext);
+
+                    }
+                }
+                else if (Type == "Delete")
+                {
+                    RoleModel model = new RoleModel();
+                    model.Admin_ID = Admin_ID;
+                    model.MENUID = menuID[1].ToUpper();
+                    model = new CargoCommon().roleAuthCheck(model);
+
+                    if (!model.isDelete)
+                    {
+                        roleAuthBack(filterContext);
+                    }
+                }
+
+
+
+            }
+            else
+            {
+                string script = string.Empty;
+                script += "<script>";
+                script += "	alert('권한이 필요합니다..'); ";
+                script += " location.href = '/Account/Login'";
+                script += "</script>";
+                filterContext.HttpContext.Response.Write(script);
+                filterContext.HttpContext.Response.End();
+                HandleUnauthorizedRequest(filterContext);
+
+            }
+        }
+
+        public void roleAuthBack(AuthorizationContext filterContext)
+        {
+            string script = string.Empty;
+            script += "<script>";
+            script += "	alert('접근권한이 없습니다.');";
+            script += " history.back();";
+            script += "</script>";
+            filterContext.HttpContext.Response.Write(script);
+            filterContext.HttpContext.Response.End();
+
+            HandleUnauthorizedRequest(filterContext); //넘어가는거 죽이는거
+        }
+
+
+    }
+}

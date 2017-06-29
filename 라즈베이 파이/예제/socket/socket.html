@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html lang=ko>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>IoT</title>
+<script src="socketClient.js"></script>
+</head>
+<body>
+<section style="position: relative; left: 200px; top: 100x; width: 200px">
+   <form method="POST" action="/">
+      <p>LED 선택</p>
+      <div id="group">
+         <label><input type="radio" name="radio" value="on" />On</label> 
+         <label><input type="radio" name="radio" value="off" />Off</label> 
+      </div>
+   </form>
+</section>
+<ol id="result" style="position:absolute;left:450px;top:100px:width:400px;"></ol>
+</body>
+</html>

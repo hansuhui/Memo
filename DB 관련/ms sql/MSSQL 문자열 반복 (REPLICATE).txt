@@ -1,0 +1,7 @@
+ - MSSQL REPLICATE 란?
+   REPLICATE 는 입력된 문자열을 지정한 횟수만큼 반복하여 표시해주는 역활을 합니다.
+
+ - MSSQL REPLICATE 사용방법
+   REPLICATE('문자열', [반복 횟수])
+
+ 

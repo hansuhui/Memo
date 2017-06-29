@@ -1,0 +1,32 @@
+바스크립트 정규표현식 영문,숫자가 포함되어 있는지 체크 (한글만 입력) 예제
+ 
+ 
+실행결과 : [ jsfiddle ]
+ 
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+       <script type='text/javascript'>
+            var str = prompt('한글을 입력해주세요.');
+             // 숫자,영문이 포함되어 있는지 체크 합니다.
+            var regExp = /[A-Za-z0-9]/;
+            // 체크 하기위해 test 메소드 사용 ( 숫자,영문이 포함되어 있으면 true 반환 )
+            if ( regExp.test(str) ) {
+              document.write('한글 아니네요.')
+           } else {
+              document.write('한글 이네요');
+           }
+      </script>
+  </head>
+  <body>
+  </body>
+</html>
+ 
+ 
+ 
+ 
+사용된 속성 - ( 속성명 클릭시 상세 설명 확인 가능 )
+ 
+test  - 주어진 문자열이 정규표현식에 맞는지 체크하여 true ,false 를 반환 합니다.( RegExp 객체 메소드 )

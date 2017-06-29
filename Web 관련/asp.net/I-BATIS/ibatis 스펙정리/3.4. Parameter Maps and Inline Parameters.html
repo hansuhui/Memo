@@ -1,0 +1,207 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>3.4. Parameter Maps and Inline Parameters</title><link rel="stylesheet" href="html.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.72.0"><link rel="start" href="index.html" title="iBATIS.NET - DataMapper Application Framework"><link rel="up" href="ch03.html" title="Chapter 3. Working with Data Maps"><link rel="prev" href="ch03s03.html" title="3.3. Mapped Statements"><link rel="next" href="ch03s05.html" title="3.5. Result Maps"><link rel="copyright" href="ln-id368653.html" title="Legal Notice"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.4. Parameter Maps and Inline Parameters</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s03.html">Prev</a> </td><th width="60%" align="center">Chapter 3. Working with Data Maps</th><td width="20%" align="right"> <a accesskey="n" href="ch03s05.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="id380382"></a>3.4. Parameter Maps and Inline Parameters</h2></div></div></div><p>Most SQL statements are useful because we can pass them values at
+    runtime. Someone wants a database record with the <span class="database">ID
+    42</span>, and we need to merge that <span class="database">ID</span> number
+    into a select statement. A list of one or more parameters are passed at
+    runtime, and each placeholder is replaced in turn. This is simple but
+    labor intensive, since developers spend a lot of time counting symbols to
+    make sure everything is in sync.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Preceding sections briefly touched on inline parameters, which
+        automatically map properties to named parameters. Many iBATIS
+        developers prefer this approach. But others prefer to stick to the
+        standard, anonymous approach to SQL parameters by using parameter
+        maps. Sometimes people need to retain the purity of the SQL
+        statements; other times they need the detailed specification offered
+        by parameter maps due to database or provider-specific information
+        that needs to be used.</p></td></tr></table></div><p>A Parameter Map defines an ordered list of values that match up with
+    the placeholders of a parameterized query statement. While the attributes
+    specified by the map still need to be in the correct order, each parameter
+    is named. You can populate the underlying class in any order, and the
+    Parameter Map ensures each value is passed in the correct order.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Dynamic Mapped Statements (Section 3.9) can't use Parameter
+        Maps. Being dynamic, the number of parameters will change and defeat
+        the purpose of a Parameter Map. Depending on your provider, this may
+        hinder your ability to use Dynamic Mapped Statements if your provider
+        requires the use of some of the attributes, such as size or scale,
+        that a &lt;parameter&gt; provides.</p></td></tr></table></div><p>Parameter Maps can be provided as an external element and
+    <span class="emphasis"><em>inline</em></span>. Example 3.16 shows an external Parameter
+    Map.</p><div class="example"><a name="id380469"></a><p class="title"><b>Example 3.18. An external Parameter Map</b></p><div class="example-contents"><pre class="programlisting">&lt;parameterMap id="<span class="blue">parameterMapIdentifier</span>" 
+  [class="<span class="blue">fullyQualifiedClassName, assembly|typeAlias</span>"]
+  [extends="<span class="blue">[sqlMapNamespace.]parameterMapId</span>"]&gt;
+  &lt;parameter 
+    property ="<span class="blue">propertyName</span>" 
+    [column="<span class="blue">columnName</span>"]
+    [direction="<span class="blue">Input|Output|InputOutput</span>"]
+    [dbType="<span class="blue">databaseType</span>"] 
+    [type="<span class="blue">propertyCLRType</span>"]
+    [nullValue="<span class="blue">nullValueReplacement</span>"] 
+    [size="<span class="blue">columnSize</span>"] 
+    [precision="<span class="blue">columnPrecision</span>"] 
+    [scale="<span class="blue">columnScale</span>"]  
+    [typeHandler="<span class="blue">fullyQualifiedClassName, assembly|typeAlias</span>"]  
+  &lt;parameter ... ... /&gt;
+  &lt;parameter ... ... /&gt; 
+&lt;/parameterMap&gt;</pre></div></div><p><br class="example-break"></p><p>In Example 3.16, the parts in [brackets] are optional. The
+    parameterMap element only requires the <em class="parameter"><code>id</code></em>
+    attribute. The <em class="parameter"><code>class</code></em> attribute is optional but
+    recommended. The <em class="parameter"><code>class</code></em> attribute helps to validate
+    the incoming parameter and optimizes performance. Example 3.17 shows a
+    typical &lt;parameterMap&gt;. </p><div class="example"><a name="id380585"></a><p class="title"><b>Example 3.19. A typical &lt;parameterMap&gt; element</b></p><div class="example-contents"><pre class="programlisting">&lt;parameterMap id="insert-product-param" class="Product"&gt;
+  &lt;parameter property="<span class="blue">description</span>" /&gt;
+  &lt;parameter property="<span class="blue">id</span>"/&gt;
+&lt;/parameterMap&gt;
+
+&lt;statement id="insertProduct" parameterMap="insert-product-param"&gt;
+  insert into PRODUCT (<span class="blue">PRD_DESCRIPTION</span>, <span class="blue">PRD_ID</span>) values (?,?);
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Parameter Map names are always local to the Data Map definition
+        file where they are defined. You can refer to a Parameter Map in
+        another Data Map definition file by prefixing the
+        <em class="parameter"><code>id</code></em> of the Parameter Map with the namespace of
+        the Data Map (set in the &lt;sqlMap&gt; root element). If the
+        Parameter Map in Example 3.17 were in a Data Map named "Product", it
+        could be referenced from another file using
+        "Product.insert-product-param".</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id380652"></a>3.4.1. &lt;parameterMap&gt; attributes</h3></div></div></div><p>The &lt;parameterMap&gt; element accepts three attributes:
+      <em class="parameter"><code>id</code></em> (required), <em class="parameter"><code>class</code></em>
+      (optional), and <em class="parameter"><code>extends</code></em> (optional).</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380677"></a>3.4.1.1. id</h4></div></div></div><p>The required id attribute provides a unique identifier for the
+        &lt;parameterMap&gt; within this Data Map.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380690"></a>3.4.1.2. class</h4></div></div></div><p>The optional <em class="parameter"><code>class</code></em> attribute specifies an
+        object class to use with this &lt;parameterMap&gt;. The full classname
+        and assembly or an alias must be specified. Any class can be
+        used.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>The parameter class must be a property object or
+            <code class="interfacename">IDictionary</code> instance.</p></td></tr></table></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380727"></a>3.4.1.3. extends</h4></div></div></div><p>The optional <em class="parameter"><code>extends</code></em> attribute can be set
+        to the name of another parameterMap upon which to base this
+        parameterMap. All properties of the <span class="emphasis"><em>super</em></span>
+        parameterMap will be included as part of this parameterMap, and values
+        from the <span class="emphasis"><em>super</em></span> parameterMap are set before any
+        values specified by this parameterMap. The effect is similar to
+        extending a class.</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id380757"></a>3.4.2. &lt;parameter&gt; Elements</h3></div></div></div><p>The &lt;parameterMap&gt; element holds one or more parameter child
+      elements that map object properties to placeholders in a SQL statement.
+      The sections that follow describe each of the attributes.</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380774"></a>3.4.2.1. property</h4></div></div></div><p>The <em class="parameter"><code>property</code></em> attribute of
+        &lt;parameter&gt; is the name of a field or property of the parameter object.
+        It may also be the name of an entry in a
+        <code class="interfacename">IDictionary</code> object. The name can be
+        used more than once depending on the number of times it is needed in
+        the statement. (In an update, you might set a column that is also part
+        of the where clause.)</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380798"></a>3.4.2.2. column</h4></div></div></div><p>The <em class="parameter"><code>column</code></em> attribute is used to define to
+        the name of a parameter used by a stored procedure.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380814"></a>3.4.2.3. direction</h4></div></div></div><p>The <em class="parameter"><code>direction</code></em> attribute may be used to
+        indicate a stored procedure parameter's direction.</p><div class="table"><a name="id380830"></a><p class="title"><b>Table 3.3. Parameter direction attribute values</b></p><div class="table-contents"><table summary="Parameter direction attribute values" border="1"><colgroup><col><col></colgroup><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody><tr><td>Input</td><td>input-only</td></tr><tr><td>Output</td><td>output-only</td></tr><tr><td>InputOutput</td><td>bidirectional</td></tr></tbody></table></div></div><br class="table-break"></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380897"></a>3.4.2.4. dbType</h4></div></div></div><p>The <em class="parameter"><code>dbType</code></em> attribute is used to
+        explicitly specify the database column type of the parameter to be set
+        by this property. For certain operations, some ADO.NET providers are
+        not able to determine the type of a column, and the type must be
+        specified.</p><p>This attribute is normally only required if the column is
+        nullable. Although, another reason to use the dbType attribute is to
+        explicitly specify date types. Whereas .NET only has one Date value
+        type (<code class="classname">System.DateTime</code>), most SQL databases have
+        more than one. Usually, a database has at least three different types
+        (<span class="database">DATE</span>, <span class="database">DATETIME</span>,
+        <span class="database">TIMESTAMP</span>). In order for the value to map
+        correctly, you might need to specify the column's dbType,</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>Most providers only need the dbType specified for nullable
+            columns. In this case, you only need to specify the type for the
+            columns that are nullable.</p></td></tr></table></div><p>The <em class="parameter"><code>dbType</code></em> attribute can be set to any
+        string value that matches a constant in the specific data type enum of
+        the used provider such as <code class="classname">System.Data.SqlDbType</code>
+        for Microsoft Sql Server. Section 3.6 describes the types that are
+        supported by the framework.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id380962"></a>3.4.2.5. type</h4></div></div></div><p>The <em class="parameter"><code>type</code></em> attribute is used to specify the
+        CLR type of the parameter's <em class="parameter"><code>property</code></em>. This
+        attribute is useful when passing InputOutput and Output parameters
+        into stored procedures. The framework uses the specified
+        <em class="parameter"><code>type</code></em> to properly handle and set the parameter
+        object's properties with the procedure's output values after
+        execution.</p><p>Normally, the type can be derived from a property through
+        reflection, but certain mappings that use objects such as a Map cannot
+        provide the property type to the framework. If the attribute type is
+        not set and the framework cannot otherwise determine the type, the
+        type is assumed to be an Object. Section 6 details the CLR types and
+        available aliases that have pre-built support in the framework.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id381002"></a>3.4.2.6. nullValue</h4></div></div></div><p>The <em class="parameter"><code>nullValue</code></em> attribute can be set to any
+        valid value (based on property type). The
+        <em class="parameter"><code>nullValue</code></em> attribute is used to specify an
+        outgoing null value replacement. What this means is that when the
+        value is detected in the object property, a <span class="database">NULL</span>
+        will be written to the database (the opposite behavior of an inbound
+        null value replacement). This allows you to use a
+        <span class="emphasis"><em>magic</em></span> null number in your application for types
+        that do not support null values (such as <code class="classname">int</code>,
+        <code class="classname">double</code>, <code class="classname">float</code>). When
+        these types of properties contain a matching null value (&#8211;9999), a
+        <span class="database">NULL</span> will be written to the database instead of
+        the value.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id381056"></a>3.4.2.7. size</h4></div></div></div><p>The <em class="parameter"><code>size</code></em> attribute sets the maximum size
+        of the data within the column.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id381072"></a>3.4.2.8. precision</h4></div></div></div><p>The <em class="parameter"><code>precision</code></em> attribute is used to set
+        the maximum number of digits used to represent the property
+        value.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id381089"></a>3.4.2.9. scale</h4></div></div></div><p>The <em class="parameter"><code>scale</code></em> attribute sets the number of
+        decimal places used to resolve the property value.</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="id381106"></a>3.4.2.10. typeHandler</h4></div></div></div><p>The <em class="parameter"><code>typeHandler</code></em> attribute allows the use
+        of a Custom Type Handler (see the Custom Type Handler section). This
+        allows you to extend the DataMapper's capabilities in handling types
+        that are specific to your database provider, are not handled by your
+        database provider, or just happen to be a part of your application
+        design. You can create custom type handlers to deal with storing and
+        retrieving booleans and Guids from your database for example.</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id381132"></a>3.4.3. Inline Parameter Maps</h3></div></div></div><p>If you prefer to use inline parameters instead of parameter maps,
+      you can add extra type information inline too. The inline parameter map
+      syntax lets you embed the property name, the property type, the column
+      type, and a null value replacement into a parametrized SQL statement.
+      The next four examples shows statements written with inline
+      parameters.</p><div class="example"><a name="id381141"></a><p class="title"><b>Example 3.20. A &lt;statement&gt; using inline parameters</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="insertProduct" parameterClass="Product"&gt;
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION)
+  values (<span class="blue">#id#</span>, <span class="blue">#description#</span>)
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><p>The following example shows how dbTypes can be declared
+      inline.</p><div class="example"><a name="id381178"></a><p class="title"><b>Example 3.21. A &lt;statement&gt; using an inline parameter map with a
+        type</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="insertProduct" parameterClass="Product"&gt;
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION)
+  values (<span class="blue">#id:int#</span>, <span class="blue">#description:VarChar#</span>)
+&lt;/statement&gt;</pre></div></div><br class="example-break"><p>The next example shows how dbTypes and null value replacements can
+      also be declared inline.</p><div class="example"><a name="id381217"></a><p class="title"><b>Example 3.22. A &lt;statement&gt; using an inline parameter map with a null
+        value replacement</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="insertProduct" parameterClass="Product"&gt;
+  insert into PRODUCT (PRD_ID, PRD_DESCRIPTION)
+  values (<span class="blue">#id:int:-999999#</span>, <span class="blue">#description:VarChar#</span>)
+&lt;/statement&gt;</pre></div></div><br class="example-break"><p>Like the DataMapper for Java, there is an alternate inline syntax
+      that allows the specification of the property, type, dbType, and null
+      value replacement. The following example shows that syntax in
+      use.</p><div class="example"><a name="id381253"></a><p class="title"><b>Example 3.23. A &lt;statement&gt; using alternate inline syntax with
+        property, type, dbType, and null value replacement</b></p><div class="example-contents"><pre class="programlisting">&lt;update id="UpdateAccountViaInlineParameters" parameterClass="Account"&gt;
+ update Accounts set
+ Account_FirstName = #FirstName#,
+ Account_LastName = #LastName#,
+ Account_Email = #EmailAddress,type=string,dbType=Varchar,nullValue=no_email@provided.com#
+ where
+ Account_ID = #Id#
+&lt;/update&gt;</pre></div></div><br class="example-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td align="left" valign="top"><p>When using inline parameters, you cannot specify the null
+          value replacement without also specifying the dbType. You must
+          specify both due to the parsing order.</p><p>For <span class="emphasis"><em>round-trip</em></span> transparency of null
+          values, you must also specify database columns null value
+          replacements in your Result Map (see Section 3.5).</p><p>Inline parameter maps are handy for small jobs, but when there
+          are a lot of type descriptors and null value replacements in a
+          complex statement, an industrial-strength, external parameterMap can
+          be easer.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id381310"></a>3.4.4. Standard Type Parameters</h3></div></div></div><p>In practice, you will find that many statements take a single
+      parameter, often an <code class="classname">Integer</code> or a
+      <code class="classname">String</code>. Rather than wrap a single value in
+      another object, you can use the standard library object
+      (<code class="classname">String</code>, <code class="classname">Integer</code>, et
+      cetera) as the parameter directly. Example 3.22 shows a statement using
+      a standard type parameter. </p><div class="example"><a name="id381337"></a><p class="title"><b>Example 3.24. A &lt;statement&gt; using standard type parameters</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="getProduct" parameterClass="System.Int32"&gt;
+  select * from PRODUCT where PRD_ID = <span class="blue">#value#</span>
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><p>Assuming <span class="database">PRD_ID</span> is a numeric type, when a
+      call is made to this Mapped Statement, a standard Integer object can be
+      passed in. The <em class="parameter"><code>#value#</code></em> parameter will be replaced
+      with the value of the Integer instance. The name
+      <code class="varname">value</code> is simply a placeholder, you can use another
+      moniker of your choice. Result Maps support primitive types as results
+      as well.</p><p>For your convenience, primitive types are aliased by the
+      framework. For example, <code class="classname">int</code> can be used in place
+      of <code class="classname">System.Integer</code>. For a complete list, see
+      Section 3.6, "Supported Types for Parameter Maps and Result
+      Maps".</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="id381393"></a>3.4.5. Map or IDictionary Type Parameters</h3></div></div></div><p>You can also pass a <code class="interfacename">IDictionary</code>
+      instance as a parameter object. This would usually be a
+      <code class="classname">HashTable</code>. Example 3.23 shows a &lt;statement&gt;
+      using an <code class="interfacename">IDictionary</code> for a
+      parameterClass.</p><div class="example"><a name="id381420"></a><p class="title"><b>Example 3.25. A &lt;statement&gt; using a Map or IDictionary for a
+          parameterClass</b></p><div class="example-contents"><pre class="programlisting">&lt;statement id="getProduct" parameterClass="System.Collections.IDictionary"&gt;
+  select * from PRODUCT
+  where PRD_CAT_ID = <span class="blue">#catId#</span>
+  and PRD_CODE = <span class="blue">#code#</span>
+&lt;/statement&gt;</pre></div></div><p><br class="example-break"></p><p>In Example 3.23, notice that the SQL in this Mapped Statement
+      looks like any other. There is no difference in how the inline
+      parameters are used. If a <code class="classname">HashTable</code> instance is
+      passed, it must contain keys named <span class="property">catId</span> and
+      <span class="property">code</span>. The values referenced by those keys must be
+      of the appropriate type for the column, just as they would be if passed
+      from a properties object.</p><p>For your convenience, <code class="interfacename">IDictionary</code>
+      types are aliased by the framework. So, <code class="classname">map</code> or
+      <code class="classname">HashTable</code> can be used in place of
+      <code class="classname">System.Collections.Hashtable</code>. For a complete list
+      of aliases, see Section 3.6, "Supported Types for Parameter Maps and
+      Result Maps".</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s03.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="ch03s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.3. Mapped Statements </td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top"> 3.5. Result Maps</td></tr></table></div></body></html>

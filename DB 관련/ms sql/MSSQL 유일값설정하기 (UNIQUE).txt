@@ -1,0 +1,12 @@
+ - UNIQUE 란?
+   UNIQUE 는 제약조건의 하나로 해당 컬럼에 동일한 값이 들어가지 않도록 하는 제약조건입니다.
+   같은 값이 들어가는 경우 오류를 발생시키면서 값의 입력을 거부하기 때문에 레코드별로 모두 값이 다르도록 유지시켜 줍니다.
+
+
+CREATE TABLE [테이블명] (
+       [컬럼명] [데이터형식] UNIQUE [제약조건]
+   			)
+
+   ALTER TABLE [테이블명] ADD CONSTRAINT [UNIQUE명] UNIQUE ([컬럼명])
+   ALTER TABLE [테이블명] DROP CONSTRAINT [UNIQUE명]
+

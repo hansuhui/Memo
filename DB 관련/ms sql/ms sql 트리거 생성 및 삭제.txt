@@ -1,0 +1,76 @@
+참조사이트 
+http://ollagaza.tistory.com/entry/MSSQL-%ED%8A%B8%EB%A6%AC%EA%B1%B0Trigger-%EC%97%AC%EB%9F%AC%EA%B0%80%EC%A7%80-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95
+
+
+[트리거 생성]
+
+CREATE TRIGGER 트리거 이름
+
+ON [DBO].[테이블]
+AFTER 행위 --실행될 트리거 [INSERT/DELETE/UPDATE]
+AS
+/*작업할 쿼리문*/
+INSERT INTO [테이블]
+SELECT USERID FROM 어쩌고
+
+[트리거 데이터 접근]
+입력,수정 /SELECT * FROM INSERTED 
+삭제 /SELECT * FROM DELETED
+
+
+
+--------다른 예제 --------
+
+CREATE TRIGGER [dbo].[test_tg] ON [dbo].[member] -- member라는 테이블의 Trigger
+FOR INSERT, UPDATE -- Insert나 Update시에 동작함
+AS
+ 
+SET NOCOUNT ON
+ 
+DECLARE @memberID varchar(20)
+ 
+select @memberID = memberID FROM INSERTED -- insert 된 테이블에서 memberID를 추출함
+ 
+INSERT INTO test(test) values (@memberID)-- test 테이블에 Insert된 memberID를 Insert함
+ 
+SET NOCOUNT OFF
+
+
+
+ ** ** ** ** 동시에 여러개의 레코드가 변경될때의 트리거(Trigger) ** ** ** ** 
+
+CREATE TRIGGER [dbo].[test_tg] ON [dbo].[member]
+FOR UPDATE, INSERT
+AS
+ 
+SET NOCOUNT ON
+ 
+DECLARE @memberID varchar(20)
+ 
+DECLARE trigger_cur CURSOR
+FOR SELECT memberID FROM INSERTED
+OPEN trigger_cur
+FETCH NEXT FROM trigger_cur 
+INTO @memberID
+WHILE (@@FETCH_STATUS=0)
+BEGIN
+   INSERT INTO test(test) values (@memberID)-- test 테이블에 Insert된 memberID를 Insert함
+ 
+FETCH NEXT FROM trigger_cur INTO @memberID
+END
+ 
+CLOSE trigger_cur
+ 
+DEALLOCATE trigger_cur
+ 
+SET NOCOUNT OFF
+
+
+
+[트리거 삭제하기]
+
+DPOP TRIGGER 이름
+
+[트리거 조회]
+
+sp_helptext[트리거name]

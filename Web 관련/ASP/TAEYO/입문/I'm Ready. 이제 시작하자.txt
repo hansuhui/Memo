@@ -1,0 +1,11 @@
+http://www.taeyo.net/Columns/View.aspx?SEQ=136&PSEQ=12&IDX=6
+
+
+1) OS의 설치
+
+이것은 여러분들에게 맡긴다. 설마 Windows 98 이나 Windows NT를 설치할 줄 모르시지는 않을 것이라는 생각에서다. 우리가 같이
+진행하려고 하는 것은 웹서버의 설치부터이다. 
+
+2) 웹 서버의 설치
+
+설치는 아니까 패스

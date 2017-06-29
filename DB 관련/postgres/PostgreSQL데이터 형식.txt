@@ -1,0 +1,1 @@
+http://www.w3ii.com/ko/postgresql/postgresql_data_types.html

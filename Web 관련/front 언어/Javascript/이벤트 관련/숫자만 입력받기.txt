@@ -1,0 +1,39 @@
+		function NuberVel(this) {
+			var f = document.frm;
+			if (isNaN(this.value)) {
+				alert("숫자만 입력이 가능합니다.");
+				this.value = "";
+			}
+		}
+
+
+  function check() {
+            var f = document.formDetails;
+            if (isNaN(f.strCel1.value)) {
+                alert("숫자만 입력이 가능합니다.");
+                f.strCel1.value = "";
+                f.strCel1.focus();
+            }
+            if (isNaN(f.strCel2.value)) {
+                alert("숫자만 입력이 가능합니다.");
+                f.strCel2.value = "";
+                f.strCel2.focus();
+            }
+            if (isNaN(f.strCel3.value)) {
+                alert("숫자만 입력이 가능합니다.");
+                f.strCel3.value = "";
+                f.strCel3.focus();
+            }
+        }
+
+
+ function check2() {
+            var f = document.formDetails;
+            if (!(event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105 || event.keyCode == 8)) {
+                alert("숫자만 입력이 가능합니다.");
+                event.returnValue = false;
+            }
+        }
+
+
+input 에는 onkeyDown  onblur

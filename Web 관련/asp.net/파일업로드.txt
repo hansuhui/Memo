@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Text;
+
+
+	string fileName = string.Empty;
+	string path = string.Empty;
+
+	HttpPostedFileBase 변수명 = Request.Files["파라미터값"];
+	if (객채.ContentLength > 0)
+	{
+		fileName = System.IO.Path.GetFileName(객채.FileName);
+		path = System.IO.Path.Combine(Server.MapPath("~" + GetDataFolerToShops), fileName);
+		businessFile.SaveAs(path);
+		shop.BusinessFile = GetDataFolerToShops + "/" + fileName;
+	}
+
+
+	HttpPostedFileBase businessFile = Request.Files["BusinessFile"];
+	if (businessFile.ContentLength > 0)
+	{
+		fileName = System.IO.Path.GetFileName(businessFile.FileName);
+		path = System.IO.Path.Combine(Server.MapPath("~" + GetDataFolerToShops), fileName);
+		businessFile.SaveAs(path);
+		shop.BusinessFile = GetDataFolerToShops + "/" + fileName;
+	}
+
+
+DocFile.FileName
+"C:\\Users\\Administrator\\AppData\\Local\\SwingBrowser\\Application\\LICENSE"
+fileName
+"LICENSE"
+path
+"D:\\work\\DeeteProject\\GCCProject\\Data\\Customers\\LICENSE"
+
+Db저장
+s.DocFile = GetDataFolerToCustomers + "/" + fileName;
+
+
+s.DocFile = "/Data/Customers/LICENSE"
+
+
+
+
+
+
+form enctype

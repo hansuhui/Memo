@@ -1,0 +1,44 @@
+[.load()]
+
+.load()는 다른 문서 등에서 내용을 가져와 현재 문서에 나타냅니다.
+
+.load( url [, data ] [, complete ] )
+
+예를 들어 a.html의 p 요소를 가져와 div 요소 안에 넣으려면 다음과 같이 합니다.
+
+$( 'div' ).load( 'a.html p' );
+
+load-02.html에서 id 값이 ab인 요소를 가져와서, 현재 문서의 id 값이 xy인 요소 안에 넣는 예제입니다.
+
+- load-01.html -
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .load()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( '#xy' ).load( 'load-02.html #ab' );
+      } );
+    </script>
+  </head>
+  <body>
+    <div id="xy"></div>
+  </body>
+</html>
+
+- load-02.html -
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .load()</title>
+  </head>
+  <body>
+    <p>Lorem</p>
+    <p id="ab">Ipsum Dolor</p>
+  </body>
+</html>

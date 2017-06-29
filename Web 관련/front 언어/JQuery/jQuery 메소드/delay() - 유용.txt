@@ -1,0 +1,14 @@
+[.delay()]
+
+.delay()는 실행 중인 함수를 정해진 시간만큼 중지(연기) 시킵니다.
+
+duration에는 중지할 시간이 들어갑니다. 숫자로 정할 때의 단위는 1/1000초이고, 
+slow 또는 fast로 정할 수 있습니다. slow는 600, fast는 200에 해당합니다.
+
+버튼을 클릭하면 문단이 위로 사라졌다가 1초 뒤에 아래로 나타나는 예졔입니다.
+
+    $( document ).ready( function() {
+        $( 'button' ).click( function() {
+          $( 'p' ).slideUp( 200 ).delay( 2000 ).slideDown( 200 );
+        } );
+      } );

@@ -1,0 +1,344 @@
+http://mrw0119.tistory.com/25
+
+[여러개의 데이터 범위 지정하기]
+
+잘 알다시피 LINQ 쿼리식의 from 절은 검색할 데이터의 범위를
+지정하는 역할을 한다.
+
+그럼 만약에 지정한 데이터 범위 내에서 한번 더 데이터 범위를 지정
+하려면 어떻게 해야할까?
+
+그때에는 from 절즐 중첩해서 사용하면 된다.
+
+Student[] StudeuntList = {
+   new Student() { name ="값",score = new int[]{11,22,33}}.
+   new Student() { name ="값",score = new int[]{11,22,33}}.
+   new Student() { name ="값",score = new int[]{11,22,33}}
+};
+
+var Students = from student in studentList
+	         from score in student.scoe
+ 		 where score > 89;
+               select new {student.name , failScore = score};
+
+
+우선 첫번째 from 에서 학생리스트로 범위를 지정하고.
+두번째 from에서 학생리스트 내의 점수(Score)를 데이터 범위를 지정하였다.
+(from 에서 범위를 지정하는 대상은 배열이나 컬렉션이어야 한다.)
+
+마지막으로 추출된 점수 데이터를 가지고 90점 이상인 점수를 걸려서 
+이름과 점수를 추출한다.
+
+- 예제 -
+
+    using System;
+    using System.Linq;
+
+
+    namespace Console1
+    {
+        class Student
+        {
+            public string name { get; set; }
+            public int[] score { get; set; }
+        }
+        class LINQ_Ex2
+        {
+            public void Main()
+            {
+                Student[] StudentList = {
+                    new Student() { name="아라",score= new int[] { 88,73,66,91} },
+                    new Student() { name="민희",score= new int[]{10,20,50,11}},
+                    new Student() { name="현아",score= new int[]{48,73,16,31}},
+                    new Student() { name="수지",score= new int[]{ 100, 100, 100,100}}
+                };
+
+
+                var Student_arr = from student in StudentList
+                                  from score in student.score
+                                  where score > 89
+                                  select new
+                                  {
+                                      Name = student.name
+                                     ,Score = score
+                                  };
+
+                foreach (var i in Student_arr)
+                {
+                    Console.WriteLine("{0} : {1}", i.Name, i.Score);
+                }
+
+            }
+        }
+    }
+
+
+
+=====================================================================================
+
+[group by로 데이터 분류하기]
+
+많은 데이터가 중구난방으로 섞여있는 데이터 배열이 있다.
+그리고 나는 이 배열을 특정 기준에 따라 두 그룹으로 나누고 싶다!!
+이럴 때에 사용하는 키워드가 group ~ by ~ into 이다.
+
+group A by B into C : A를 B 기준에 따라 분류하여 C로 저장한다.
+(C 안에는 기준에 따라 두개의 그룹으로 나눠서 저장된다.)
+
+- 예제 - 
+
+
+using System;
+using System.Linq;
+
+
+namespace Console1
+{
+    class Person
+    {
+        public string sex { get; set; }
+        public string name { get; set; }
+    }
+    class LINQ_Ex3
+    {
+        public void Main()
+        {
+            Person[] PersonList = {
+                    new Person() { sex="여자",name="아라"},
+                    new Person() { sex="남자",name="성희"},
+                    new Person() { sex="여자",name="현아"},
+                    new Person() { sex="남자",name="혁이"}
+                };
+
+
+            var Person_arr = from person in PersonList
+                             group person by person.sex == "남자" into data
+                             select new
+                             {
+                                 sexCheck = data.Key
+                                 , people = data
+                              };
+
+            foreach (var i in Person_arr)
+            {
+                if (i.sexCheck)
+                {
+                    Console.WriteLine("<남자 리스트>");
+                    foreach (var m in i.people)
+                    {
+                        Console.WriteLine("이름 :" + m.name);
+                    }
+
+                }
+                else {
+                    Console.WriteLine("<남자 리스트>");
+                    foreach (var m in i.people)
+                    {
+                        Console.WriteLine("이름 :" + m.name);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+
+=====================================================================================
+
+[join - 두 데이터 합치기]
+
+서로 다른 두개의 데이터가 있는데, 두 개의 데이터가 서로 통합될 수 
+있는 유사성을 가진다면 굳이 따로따로 처리하기 보다는 하나의 데이터로
+통합하여 처리하는 것이 휠씬 효율적이겠다.
+
+LINQ는 이를 위해 데이터를 톱합하는 기능을 제공하는데, 그 기능을 하는 
+키워드가 join 이다.
+
+join은 LINQ 퀴리식에서 서로 다른 두 데이터를 합치는 기능을 수행한다.
+join에는 내부 조인과 외부 조인이 있으며, 이들을 하나씩 알아보자.
+
+
+(1) 내부 조인
+
+내부 조인은 두 데이터를 비교해서 특정 조건이 일치하는 경우에만 추출하여 통합한다.
+예를 들어 1번 데이터에는 A,B,C,D 학생의 인적사항이 담겨있고
+2번 데이터에는 B,C,D,E 학생의 성적 정보가 담겨있다면,
+
+학생이 일치하는 조건으로 둘을 내부 조인했을때 , B,C,D 학생의 데이터만
+추출하여 통합한다.
+
+내부 조인을 LINQ의 쿼리식으로 작성하면 다음과 같다.
+from a in A
+join b in B on a.XX equals b.YY
+//a.XX 와 b.YY가 일치하는 a,b 데이터만 추출
+
+join으로 일치되는 a,b 데이터를 추출한 후에, 무명형식을 만들어서
+통합시켜주면 된다.
+
+- 예제 -
+using System;
+using System.Linq;
+
+
+namespace Console1
+{
+    class Profile
+    {
+        public string name { get; set; }
+        public int age { get; set; }
+    }
+    class Score
+    {
+        public string name { get; set; }
+        public int math { get; set; }
+        public int english { get; set; }
+    }
+    class LINQ_Join_Ex
+    {
+        public void Main()
+        {
+            Profile[] ProfileList = {
+                    new Profile() {name="아라",age=11},
+                    new Profile() {name="성희",age=22},
+                    new Profile() {name="현아",age=33},
+                    new Profile() {name="혁이",age=44}
+                };
+
+
+            Score[] ScoreList = {
+                    new Score() {name="아라",math=11,english=11},
+                    new Score() {name="성희",math=22,english=22},
+                    new Score() {name="현아",math=33,english=33},
+                    new Score() {name="혁이",math=44,english=44}
+                };
+
+            var Students_arr = from profile in ProfileList
+                               join score in ScoreList on profile.name equals score.name
+                             select new
+                             {
+                                 Name = profile.name
+                                ,Age = profile.age
+                                ,Math = score.math
+                                ,English= score.english
+                             };
+
+            foreach (var s in Students_arr)
+            {
+                Console.WriteLine(s);
+            }
+
+        }
+    }
+}
+
+
+
+위 예제를 보면 profileList 와 scoreList에서 이름이 일치하는 경우에만 데이터를 추출해서
+무명형식으로 데이터를 통합하였다.
+
+------------------------------------------------------------------
+
+(2) 외부 조인
+
+외부 조인은 기본적으로 내부 조인과 비슷하다.
+
+다만 내부 조인은 조건이 일치하는 데이터만 추출 통합했던 것과 달리,
+외부조인은 조건이 일치하지 않더라도, 기준데이터를 하나도 누락시키지 않고 그대로 
+추출한 후에, 빈 데이터를 채워서 통합한다.
+
+LINQ 쿼리식에서 외부조인을 작성하는 방법은 다음과 같다.
+
+from a in A
+join b in B on a.x equals b.y into temp
+//a.x 와 b.y가 일치하는 a,b 데이터를 추출하여 temp에 저장
+//a. 데이터는 하나도 누락되지 않는다.
+from b in  temp.DefaultlfEmpty(new a(){empty="공백"})
+//temp에서 비어있는 데이터를 채운 후 , 다시 b 데이터로 가져온다.
+
+
+이렇게 작성한 후에 무명 형식을 만들어서 통합시키면 된다.
+
+- 예제 -
+
+
+using System;
+using System.Linq;
+
+
+namespace Console1
+{
+    class Profile
+    {
+        public string name { get; set; }
+        public int age { get; set; }
+    }
+    class Score
+    {
+        public string name { get; set; }
+        public int math { get; set; }
+        public int english { get; set; }
+    }
+    class LINQ_Join_Ex
+    {
+        public void Main()
+        {
+            Profile[] ProfileList = {
+                    new Profile() {name="아라",age=11},
+                    new Profile() {name="성희",age=22},
+                    new Profile() {name="현아",age=33},
+                    new Profile() {name="혁이",age=44}
+                };
+
+
+            Score[] ScoreList = {
+                    new Score() {name="나와",math=11,english=11},
+                    new Score() {name="성희",math=22,english=22},
+                    new Score() {name="너의",math=33,english=33},
+                    new Score() {name="혁이",math=44,english=44}
+                };
+
+            var Students_arr = from profile in ProfileList
+                               join score in ScoreList on profile.name equals score.name
+                             select new
+                             {
+                                 Name = profile.name
+                                ,Age = profile.age
+                                ,Math = score.math
+                                ,English= score.english
+                             };
+
+            foreach (var s in Students_arr)
+            {
+                Console.WriteLine(s);
+            }
+
+            Console.WriteLine("===============[외부조인]=============");
+
+
+            var Students_arr2 = from profile in ProfileList
+                               join score in ScoreList on profile.name equals score.name into temp
+                               from score in temp.DefaultIfEmpty(new Score() { math=100,english=100})
+                               select new
+                               {
+                                   Name = profile.name,
+                                   Age = profile.age,
+                                   Math = score.math,
+                                   English = score.english
+                               };
+
+            foreach (var s in Students_arr2)
+            {
+                Console.WriteLine(s);
+            }
+
+        }
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+
+
+String sValue = "abcd";
+int nValue = 123;
+long lValue = 123L;
+float fValue = 123.4567F;
+double dValue = 123.4567;
+ 
+System.out.println(String.format("%s", sValue));
+ 
+System.out.println(String.format("%d", nValue));
+System.out.println(String.format("%5d", nValue));
+System.out.println(String.format("%05d", nValue));
+ 
+System.out.println(String.format("%d", lValue));
+System.out.println(String.format("%5d", lValue));
+System.out.println(String.format("%05d", lValue));
+ 
+System.out.println(String.format("%f", fValue));
+System.out.println(String.format("%5.5f", fValue));
+System.out.println(String.format("%05.05f", fValue));
+ 
+System.out.println(String.format("%f", dValue));
+System.out.println(String.format("%5.5f", dValue));
+System.out.println(String.format("%05.05f", dValue));
+
+
+abcd
+
+123
+  123
+00123
+
+123
+  123
+00123
+
+123.456703
+123.45670
+123.45670
+
+123.456700
+123.45670
+123.45670

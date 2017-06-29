@@ -1,0 +1,26 @@
+ASP에서 REFERER 를 이용한 페이지 직접 접근 막기 
+
+referer는 어떤링크를 타고 들어왔나를 확인할수 있게 해주는 내장변수입니다. asp뿐만 아니라, jsp, php, 자바스크립트 
+등등에서도 제공을 해주죠. ASP에서는 다음과 같이 구할 수 있습니다. Request.ServerVariables("HTTP_REFERER")
+역시 referer도 ServerVariables 콜렉션에서 제공을 해 줍니다.
+
+페이지에 바로 접근하면 이전 url이 있을리 없으니 referer로 이전 페이지의 경로 또한 당연히 구할 수 없습니다. 
+그럼 요청한 이전 페이지가 있다면 무조건 referer 로 이전 페이지의 
+경로를 구할 수 있을까요? 링크가 자바스크립트로 구현되
+어 있는 부분을 타고 넘어왔다면 referer 로 이전 페이지 경로를 구할 수 없습니다. 
+referer 를 구해야 하는 페이지라면 자바스크립트의 location.href 등은 자제하여야 합니다.
+
+아래는 페이지 직접 접근을 막는 간단한 샘플입니다.
+
+<%
+IF Len(Request.ServerVariables("HTTP_REFERER")) = 0 Then
+   response.write "<script>alert('그냥 접근했네???');</script>"
+   response.End
+END IF
+%>
+
+PS: 봇을 이용해 광고글을 계속 도배하는 위인이 있길래, 
+위와 비슷한 페이지를 공통으로 삽입하고 이제 못하겠지!! 
+기대 만빵이였는데 도배는 여전 하더군요. 
+아이피 제한하면 다른 아이피로 계속 도배합니다. 
+결국에는 특정값 하나 더 입력하게 해서 막았습니다. 

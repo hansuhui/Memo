@@ -1,0 +1,533 @@
+http://funnygangstar.tistory.com/39
+
+
+iBATIS.NET은 닷넷 기반 어플리케이션 개발시 데이터베이스를 엑세스하기 위한 기술 중의 하나이며, 
+iBatis 프레임워크는 자바 환경에서 먼저 개발되어져서 현재까지 널리 사용되고 있다. Ibatis.net은 이의 닷넷 버전이다.
+흔히들, iBatis 프레임워크를 ORM 프레임윅의 범주에 넣어 다른 ORM 프레임워크들과 비교를 하곤 하는데,
+필자의 생각은 물론, iBatis 개발팀 또한 iBats 프레임워크를 ORM으로 보기엔 적합하지 않다고 한다.
+그래서, 이름 붙여진 것이 Data Mapper Framework이다.
+보통의 ORM 프레임워크들이 데이터베이스 테이블과 대응하는 객체를 맵핑해서 직접 쿼리를 작성하지 
+않아도 되게끔 하는데 반해서 iBatis 프레임워크는 개발자가 손수 쿼리를 작성해야 한다.
+그렇다면, iBatis  프레임워크가 제공해주는 역할은 무엇일까?
+결론부터 말하면, iBatis 프레임워크는 쿼리 결과와 객체를 맵핑해준다.
+그럼 이제부터 iBatis.Net이 제공해주는 각종 기능들과 사용법에 대해서 알아 보도록 하자.
+
+[iBatis.Net을 사용한 간단한 예제 작성]
+
+이런 런 설명보다 간단한 예제를 보게 되면 iBatis.net이 무엇인지에 대해서 쉽게 감이 올 것이다.
+예제에서 사용할 환경은 아래와 같다.
+
+-    Visual Studio 2008 ASP.NET MVC 1.0
+-    MS-SQL 2005 (Northwind Database)
+-    iBATIS.NET DataMapper 1.6.1
+
+iBatis.net은 따로 설치 과정이 필요하지 않으며, 프로젝트에서 관련 DLL 파일을 참조하기만 하면된다.
+
+먼제 ASP.NET MVC 프로젝트를 새로 생성한 후 iBatisNet.Common.dll 과 
+iBatisNet.DataMapper.dll 파일을 참조하도록 하자.
+
+
+다음엔, providers.config 파일을 참조해야 하는데, 이 파일은 ibatis.net을 사용해서
+접속할 데이터베이스의 드라이버를 설정해주는 역할을 한다.
+다운받은 ibatis.net 폴더에 보면 이미 providers.config 파일이 있으므로 이를 프로젝트에 추가하고 우리가 사용할
+MS-Sql 서버에 대한 사용여부를 enabled = "true"로 변경해 주는것만 하면된다.
+provider.config 파일은 웹프로젝트의 root에 위치시켜 놓도록 하자.
+
+
+
+----- 리스트 1. providers.config ------------------------
+<provider
+    name="sqlServer2.0"
+    enabled="true"
+    description="Microsoft SQL Server, provider V2.0.0.0 in framework .NET V2.0"
+    assemblyName="System.Data,Version=2.0.0.0,Culture=neutral, PublicKeyToken=b77a5c561934e089"
+    connectionClass="System.Data.SqlClient.SqlConnection"
+    commandClass="System.Data.SqlClient.SqlCommand"
+    parameterClass="System.Data.SqlClient.SqlParameter"
+    parameterDbTypeClass="System.Data.SqlDbType"
+    parameterDbTypeProperty="SqlDbType"
+    dataAdapterClass="System.Data.SqlClient.SqlDataAdapter"
+    commandBuilderClass=" System.Data.SqlClient.SqlCommandBuilder"
+    usePositionalParameters = "false"
+    useParameterPrefixInSql = "true"
+    useParameterPrefixInParameter = "true"
+    parameterPrefix="@"
+    allowMARS="false"
+    />
+------------------------------------------------------------
+
+
+다음은 접속할 데이타베이스의 커넥션 정보를 설정할 SqlMap.config 파일을 추가하도록 한다.
+이 파일 역시 다운받은 폴더에 보면 샘플 파일이 있으므로 이를 활용하도록 하고 우리는 리스트2.에서
+처럼 providers.config의 위치와 데이터베이스 접속 정보만 본인의 환경에 맞게 변경한다.
+
+
+
+----- 리스트 2. SqlMap.config ----------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<sqlMapConfig
+  xmlns="http://ibatis.apache.org/dataMapper"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ 
+  <settings>
+    <setting useStatementNamespaces="false"/>
+  </settings>
+ 
+  <!-- DB 접속 정보 기재 -->
+  <!-- provider 엘리먼트의 name 요소에는 providers.config 에서
+       사용하기로 한 DB provider의 이름을 기재한다. --> 
+  <database>
+    <provider name="sqlServer2.0"/>
+    <dataSource name="Northwind"
+connectionString="Data Source=(local);Initial Catalog=Northwind;Integrated Security=True"/>
+  </database>
+ 
+  <!-- SQL 쿼리를 기재할 파일을 지정한다 -->
+  <sqlMaps>
+    <sqlMap resource="./Models/Customers.xml"/>
+  </sqlMaps>
+ 
+</sqlMapConfig>
+-----------------------------------------------------------------------------
+
+이제 간단한 쿼리를 작성하고 쿼리 결과와 맵핑될 클래스 파일을 작성하도록 하자.
+ibatis.net은 데이터베이스 쿼리를 xml 파일에 작성해야 한다.
+
+이 방법은 코드에 쿼리를 작성할 때보다 몇가지 장점이 있는데, 시스템 운영중에도 중단없이 쿼리를 변경할 수 있다는
+것과 클래스 파일에서 문자열 변수에 쿼리를 저장할때 보다 가독력이 좋아진다는 것, 쿼리문의 재사용성이 좋아 진다는 점.
+검색 조건의 다이나믹한 추가 제거가 가능하다는 점 등이 그것이다. 이에 대한 자세한 내용은 후반부에 자세히 알아보도록 하겠다.
+
+리스트 2.의 SqlMap.config 파일 하단에 지정한 것처럼 Models 폴더 하위에 Customers.xml 파일을 프로젝트에 추가하고
+리스트 3과 같이 구성한다.
+
+
+----- 리스트 3. Customers.xml -------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+ 
+<sqlMap namespace="iBatisSample" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+ 
+  <!-- 쿼리 결과를 리턴할 객체의 이름을 지정 -->
+  <alias>
+    <typeAlias alias="customers" type="iBatisSample.Models.Customers" />
+  </alias>
+ 
+  <!-- 쿼리를 작성한다 -->
+  <!-- 쿼리 결과를 Customers 객체에 바인딩한다 -->
+  <statements>
+    <select id="SelectCustomers" resultClass="customers" >
+      select top 5 * from customers
+    </select>
+  </statements>
+ 
+</sqlMap>
+----------------------------------------------------------------------------
+
+
+리스트 3.과 같은 파일을 iBatis.net 에서는 맵핑 파일이라고 부르며, 이 파일들에 필요한 각종 쿼리를 기재하게 된다.
+ibatis.net 기반으로 개발할 경우 사실상 가장 자주 사용할 파일이 되겠다.
+다음으로는 리스트 4.와 같이 쿼리 결과를 반환할 엔티티 클래스를 작성한다.
+
+
+
+----- 리스트 4. Customers.cs -----------------------------------------------
+// Models 폴더 하위에 생성한다.
+namespace iBatisSample.Models
+{
+    public class Customers
+    {
+        public string CustomerID { get; set; }
+        public string CompanyName { get; set; }
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+    }
+}
+-------------------------------------------------------------------------------
+
+이제 ibatis.net과 관련된 부분은 모두 작성하였다.
+이제는 xml 파일에 작성한 쿼리를 호출하고 View 페이지에 바인딩하는 기능만 삽입하면 된다.
+
+리스트 5 처럼 HomeController 컨트롤러 클래스의 엑션 메소드에서 쿼리를 호출한다.
+
+
+
+----- 리스트 5. HomeController.cs ---------------------------------------
+namespace iBatisSample.Controllers
+{
+    [HandleError]
+    public class HomeController : Controller
+    {
+        public ActionResult Index()
+        {
+            // XML 파일상의 쿼리를 호출하기 위해 iBATIS.NET은 Mapper 클래스를 제공한다.
+            // 쿼리 결과는 Customers 타입의 IList 형태로 반환된다.
+            ViewData.Model = Mapper.Instance().QueryForList<Customers>("SelectCustomers", null);
+ 
+            return View();
+        }
+ 
+        public ActionResult About()
+        {
+            return View();
+        }
+ 
+    }
+}
+---------------------------------------------------------------------
+
+
+컨트롤러 클래스의 index() 액션 메소드에서 반환한 ViewData를 index.aspx에 바인딩 한다.
+Type화된 View를 쉽게 만드는 방법은 index() 액션 메소드에서 마우스 오른쪽 버튼을 클릭하면 제공하는 자동 View 추가 기능을
+통하면 손쉽게 View 화면을 구현할 수 있다.
+
+
+
+
+----- 리스트 6. Index.aspx ---------------------------------------
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<iBatisSample.Models.Customers>>" %>
+ 
+<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
+           Index
+</asp:Content>
+ 
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+ 
+    <h2>Index</h2>
+ 
+    <table>
+        <tr>
+            <th></th>
+            <th>CustomerID</th>
+            <th>CompanyName</th>
+            <th>ContactName</th>
+            <th>ContactTitle</th>
+        </tr>
+ 
+    <% foreach (var item in Model) { %>   
+        <tr>
+            <td>
+                <%= Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) %> |
+                <%= Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })%>
+            </td>
+            <td>
+                <%= Html.Encode(item.CustomerID) %>
+            </td>
+            <td>
+                <%= Html.Encode(item.CompanyName) %>
+            </td>
+            <td>
+                <%= Html.Encode(item.ContactName) %>
+            </td>
+            <td>
+                <%= Html.Encode(item.ContactTitle) %>
+            </td>
+        </tr>   
+    <% } %>
+    </table>
+    <p>
+        <%= Html.ActionLink("Create New", "Create") %>
+    </p>
+ 
+</asp:Content>
+--------------------------------------------------------------------
+
+
+여기까지 문제없이 작성하였다면 프로젝트를 실행하게 되면 Customers 테이블의 데이터가 바인딩 되었을 것이다.
+
+간단한 예제를 통해서 ibatis.net을 어떻게 사용하는지 대략 이해가 갔으리라고 본다.
+예제를 통해 본 ibatis.net의 기능을 간략히 요약해보면 다음과 같다.
+
+ - 데이터베이스 쿼리는 클래스 파일이 아는 xml 파일에 작성하게 되며
+ - 데이터베이스가 변경되더라도 쿼리를 호출하는 메소드는 변경할 필요가 없으며,
+ - 쿼리 결과를 객체에 자동 맵핑 시켜준다.
+
+
+살펴본 바와 같이 ibaits.net은 기존에 우리가 사용하던 데이터엑세스 프레임 워크들,
+Enterprise Library, Helper(SqlHelper, OracleHelper 등) 이나 ORM( NHibernate,Linq,Entity Framework 등) 프레임워크의
+중간 정도에 있는 프레임워크라고 할 수 있다.
+
+[맵핑 파일 작성하기]
+
+ibatis.net을 사용하면서 가장 많이 사용되는 파일은 아무래도 쿼리를 작성하는 xml 파일일 것이다. 그러면
+이 파일을 작성하는 방법 및 몇가지 편리한 기능들에 대해서 보도록 하자.
+
+먼저 맵핑 파일의 구성은 크게
+
+- Entity 클래스에 대한 별칭 선언
+- result map 클래스 선언 (필요할 경우)
+- parameter map 클래스 선언(필요할 경우)
+- 쿼리문 작성
+
+으로 구성 된다.
+
+리스트 7은 전형적인 맵핑 파일의 모습을 보여주고 있다.
+
+
+
+
+
+
+----- 리스트 7. SQL 맵핑 파일 -----------------------------
+<?xml version="1.0" encoding="utf-8"?>
+ 
+<sqlMap
+namespace="iBatisSample"
+xmlns="http://ibatis.apache.org/mapping"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+ 
+// 쿼리 결과를 반환할 엔티티 객체의 별칭을 선언한다.
+  <alias>
+    <typeAlias alias="customers" type="iBatisSample.Models.Customers" />
+  </alias>
+ 
+  // 필요할 경우 엔티티 객체의 각 프로퍼티와 테이블의 컬럼을 맵핑한다.
+  <resultMaps>
+    <resultMap id="customersResultMap" class="customers">
+      <result column="CustomerID" property="CustomerID"/>
+      <result column="CompanyName" property="CompanyName"/>
+      <result column="ContactName" property="ContactName"/>
+      <result column="ContactTitle" property="ContactTitle"/>
+    </resultMap>   
+  </resultMaps>
+ 
+  // 필요할 경우 쿼리의 파라미터로 사용될 객체와 테이블의 컬럼명을 맵핑한다.
+  <parameterMaps>
+    <parameterMap id="customersParameterMap" class="customers">
+      <parameter column="CustomerID" property="CustomerID"/>
+      <parameter column="CompanyName" property="CompanyName"/>
+      <parameter column="ContactName" property="ContactName"/>
+      <parameter column="ContactTitle" property="ContactTitle"/>
+    </parameterMap>
+  </parameterMaps>
+ 
+  // <statements> 엘리먼트 내부에 쿼리문을 기재한다.
+  <statements>
+    <select id="SelectCustomers" resultMap="customersResultMap" >
+      select top 5 * from customers
+    </select>
+ 
+    <insert id="InsertCustomers" parameterMap="customersParameterMap" >
+      insert into customers(CustomerID, CompanyName, ContactName, ContactTitle)
+      values (#CustomerID#, #CompanyName#, #ContactName#, #ContactTitle#)
+    </insert>
+ 
+    <update id="UpdateCustomers" parameterMap="customersParameterMap">
+      update customers set
+CompanyName=#CompanyName#,
+ContactName=#ContactName#,
+ContactTitle=#ContactTitle#
+      where CustomerID = #CustomerID#
+    </update>
+ 
+    <delete id="DeleteCustomers" parameterMap="customersParameterMap">
+      delete from customers where CustomerID = #CustomerID#
+    </delete>
+  </statements>
+ 
+</sqlMap>
+--------------------------------------------------------
+
+
+
+<resultMaps> 이나 <parameterMaps> 같은 경우는 데이터베이스 테이블의 컬럼 이름이 C#명명 관례와 다를 경우에 유용하다
+예를 들면 , 컬럼 이름을 CUSTOMER_ID 라고 정한 경우에 이 이름을 C#의 클래스에서도
+프로퍼티 이름으로 그대로 쓰는 것은 바람직하지 않다. 이런 경우에
+<result column="CUSTOMER_ID" property="CustomerID"/> 와 같이 맵핑 시켜주면
+각각의 시스템에 충실한 명명규칙을 사용할 수 있을 것이다.
+
+
+SQL 맵팽 파일은 주로 테이블당 1개씩 작성하거나, 비즈니스 로직별로 구분지어 사용할 수 있다.
+어떤게 더 바람직한 지는 어플리케이션 마다 다를 수 있겠지만, 쿼리의 재활용 관점에서는 테이블별로 작성하는것을
+권장하고 싶다.
+
+쿼리를 호출하기 위해서는 인자값을 넘겨야 할 경우에는 # 표시를 사용해서 프로퍼티 이름의 앞뒤를 감싸주면 되며,
+인자값의 형태는 객체형 참조 형태나 기본형 모두 가능하다.
+또한 리스트 8.처럼 HashTable 과 같은 키-값 형태의 컬렉션 형태도 가능하다.
+
+
+----- 리스트 8. HashTable 형태로 인자값을 넘기는 경우 -------------------
+<insert id="InsertCustomers" parameterClass="System.Collections.Hashtable" >
+      insert into customers(CustomerID, CompanyName, ContactName, ContactTitle)
+      values (#CustomerID#, #CompanyName#, #ContactName#, #ContactTitle#)
+</insert>
+-----------------------------------------------------------------------------------
+
+
+[디아나믹 SQL 작성하기]
+
+SQL 맵핑 파일에서는 XML을 사용해 다양한 형태의 조건을 추가할 수 있다.
+예를 들어, Where 조건식에서 특정 조건을 추가 또는 삭제 해야 하는 경우이다.
+리스트 9.에 작성된 쿼리를 보면 쉽게 이해가 갈 것이다.
+
+
+----- 리스트 9. 다이나믹 SQL을 사용하는 쿼리 -------------------------
+<select id="SelectCustomers" resultMap="customersResultMap" >
+  SELECT TOP 5 *
+    FROM CUSTOMERS
+  <dynamic prepend="WHERE">
+    <isNotNull prepend="AND" property="CustomerID">
+      CustomerID = #CustomerID#
+    </isNotNull>
+  </dynamic>
+</select>
+-------------------------------------------------------------------------------
+
+
+쉽게 눈치 챌 수 있겠지만, 파라미터로 넘어온 값중에 CustomerID 변수가 Null이 아니라면 검색 조건이 추가되는 것이다.
+필자의 경우에는 클래스 파일에서 if ~ else ~ 를 남발할 때 보다 이러한 방식이 더욱 가독력이 있어보였다.
+ibatis.net이 제공하는 다이나믹 SQL 기능은 isNotNull 이외에도 다음과 같은 조건을 사용할 수 있다.
+
+- <isEqual> : 특정 property의 값이 지정한 값과 동일할 경우
+- <isNotEqual> : 특정 property의 값이 지정한 값과 상이한 경우
+- <isGreaterThan> : 특정 property의 값이 지정한 값보다 큰 경우
+- <isLessEqual> : 특정 property의 값이 지정한 값보다 작은 경우
+- <isEmpty>  : 특정 property의 값이 null이거나 빈 값인 경우
+
+
+[프로그래밍 지원]
+
+
+SQL을 기제한 XML 파일에서 원하는 SQL을 호출하기 위해서는 Mapper 클래스를 사용한다.
+이 클래스를 사용하여 Mapper.Instance() 메소드를 호출하면 SqlMap.config에 지정한 데이터베이스를 디폴트로 연결하게된다.
+만일, 파일 이름이 SqlMap.config가 아니고 개발자가 임의로 지정한 파일이름이라면리스트 10과 같이 파일명을 지정해
+주어야 한다.
+
+
+----- 리스트 10. 임의로 지정한 config 파일을 지정하는 코드 ---------
+DomSqlMapBuilder dom = new DomSqlMapBuilder();
+ISqlMapper sqlMapper = dom.Configure(@".\OracleMap.config");
+-------------------------------------------------------------------------------
+
+
+Mapper.Instance() 메소드를 사용하면 퀴리 결과를 리턴받을 수 있는 몇가지 메소드를 제공해 준다.
+
+- QueryForList() : 결과를 IList 형태로 반환
+
+- QueryForList<>() : 결과를 타입화된 IList<> 형태로 반환
+
+- QueryForObject() : 결과를 Object 형태로 반환
+
+- QueryForObject<>() : 결과를 타입화된 Object 형태로 반환
+
+또한 데이터 조작성 쿼리는 Insert() , Delete() , Update() 메소드를 통해 지원해준다.
+
+IBatis.net을 사용할 경우 트랜잭션은 Mapper.Instance()에서 제공하는 트랙잰션 기능을 사용한다.
+사용법은 리스트 11. 에 보이는 것처럼 간단하다.
+
+
+--- 리스트 11. iBATIS.NET에서 제공하는 트래잭션----------
+try
+  {
+      Mapper.Instance().BeginTransaction();
+     
+      Mapper.Instance().Insert("insert", paramObject);
+ 
+      Mapper.Instance().Update("update", paramObject);
+ 
+      Mapper.Instance().CommitTransaction();
+  }
+catch {
+      Mapper.Instance().RollBackTransaction();
+}
+-----------------------------------------------------------------
+
+
+
+[팁 & 테크]
+
+iBatis.net을 통해서 개발하다보면 XML 파일을 자주 사용하게 된다.
+이럴때 비쥬얼 스튜디오에서 인텔리전스 기능을 사용하려면 다운받은 ibatis.net 폴더에서
+SqlMap.xad , SqlMapConfig.xsd, providers.xsd 세가지 파일을 여러분들의 비쥬얼스튜디오 설치 폴더로 복사해
+놓으면 된다. 설치시 특별히 경로를 변경하지 않았다면 C:\Program Files\Microsoft Visual Studio 8\Xml\Schemas
+폴더에 위의 세가지 파일을 옮겨 놓으면 된다.
+
+
+이외에도 쿼리 로깅시 쿼리를 원래 모양대로 편하게 보는 방법, MyGeneration을 사용한 Entity 클래스 자동 생성법,
+ibatis.net 관련 설정 시 몇가지 주의 사항 등에 관해서는 지면상  지면상 필자의 블로그(http://funnygangstar.tistory.com)를 참조해주기 바란다.
+
+
+[Data Access 기술들 비교]
+
+지금까지 iBatis.net을 사용하는 방법에 대해서 간략히 알아보았다.
+iBatis.net은 사용 목적에 따라서 단순한 쿼리 호출 및 객체 바딘딩용으로 사용해도 좋으며,
+ORM의 대용으로 사용하더라도 충분한 기능을 발휘할 수 있다. 다만 이경우엔 N+1 문제를 비롯한 몇가지 해결해야할 문제들이
+존재한다.
+
+개인적으로 필자는 iBatis.net을 주로 단순 퀴리 호출 및 객체 바인딩용으로 사용한다.
+ibatis.net 이 어차피 ORM 영역이 아닌 이상 ORM 툴과 같은 효과를 보려면 차라리 여타 ORM 전문 툴을 사용하는 것이
+더 낫다는 관점에서인데, 이는 개인마다 생각이 다를수 있다고 본다.
+
+어쨋든, 이 기사 한 꼭지만으로도 ibatis.net의 주요 기능을 대부분 살펴볼 수 있고, 쉽게 사용할 수 있을 정도로
+ibatis.net이 어차피 ORM 영역이 아닌 이상 ORM 툴과 같은 효과를 보려면 차라리 여타 ORM 전문 툴을 
+사용하는 것이 더 낫다는 관점에서인데,이는 개인마다 생각이 다를수 있다고 본다.
+
+어쨋든, 이 기사 한 꼭지만드으로도 ibatis.Net의 주요 기능을 대부분 살펴볼 수 있고, 쉽게 사용할수 있을 정도로
+ibatis.net은 사용하기에 쉽다.
+즉,ibatis.net 프레임워크를 사용하기 위한 학습곡선이 높지 않다는 것인데, 이는 다수의 개발자로 팀을 이루고 있을 경우
+복잡하고 어려운 프레임워크를 사용할 대 드는 시간적 비용을 줄일 수 있는 장점이기도 하다.
+
+ORM을 제외한 데이터엑세스 기술 중에는 MS에서 오픈 소스로 제공해 주는 
+Enterprise Library의 DAAB(Data Access Application Block)가 자주 사용된다.
+DAAB는 닷넷 1.0의 SqlHelper 클래스에서부터 계속해서 발전해 왔으며, 현재까지 MS에서도 적극적으로 지원을 하고 있으며
+닷넷 기반 여러 프로젝트에서도 잘 사용되고 있다.
+그러나, DAAB는 ibatis.net 처럼 쿼리 결과를 객체의 자동 맵핑해주지 않으므로 개발자가 직접 바인딩하는 코드들을
+일일이 구현해야한다. 또한, 프로시져를 사용하지않고 인라인코드에 쿼리를 직접 작성할 때에는
+스트링 변수에 쿼리르 담아 놓는 지저분한 코드가 양산이 되기도 한다.
+
+결론적으로 여타 DataAccess 기술들이나 ORM 프레임워크들에 비교해서 필자는 iBatis.net 장점을
+다음과 같이 정리하고 싶다.
+
+- 여타 ORM 프레임 워크들보다 배우기 쉽다.
+- 쿼리 결과와 객체간 맵핑 작업이 필요 없다.
+- 데이터베이스 쿼리의 장점을 그대로 사용할 수 있다.
+- 쿼리문만 따로 관리하므로 유지 보수가 용이하다.
+- Where 조건의 다이나믹한 추가 제거, 일부 쿼리문의 재사용성이 증가한다.
+- iBatis.net 제공하는 몇가지 쿼리 캐쉬 매커니즘을 사용할 수 있다.
+
+프로젝트에서 ORM 프레임워크가 아닌 직접 수작업으로 데이터베이스 쿼리를 작성해야 하는 경우라면, 여타 Data Access 프레임워크들보다
+iBatis.net을 사용할 경우 휠씬 깔끔한 코드를 유지시켜주며 개발자가 코딩해야할 양도 대폭 줄어들 수 있다는 것이 필자의 의견이다.
+
+이상으로 ibatis.net을 간편하게 사용하는 방법을 간략히 알아보았다.
+지난호에 소개했던 Spring.net 프레임워크와 더불어 ibatis.net 프레임워크는 헌재 닷넷 기반에서 사용할 수 있는
+오픈 소스중 단연 추천할 만한 기술들이다.
+이미 그 안정성과 효과를 자바 환경에서 입증했으며, 닷넷 환경에서도 충분히 실전에 사용될만한 기술들이라고
+할 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

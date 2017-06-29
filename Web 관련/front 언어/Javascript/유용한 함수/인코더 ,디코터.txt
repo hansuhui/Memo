@@ -1,0 +1,3 @@
+* encodeURI() : decodeURI()
+* encodeURIComponent() : decodeURIComponent()
+* escape() : unescape()

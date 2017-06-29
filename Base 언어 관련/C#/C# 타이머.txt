@@ -1,0 +1,10 @@
+참조 사이트 http://blog.daum.net/starkcb/117
+
+      System.Timers.Timer timer = new System.Timers.Timer();
+                timer.Interval = 300000;   //  1/1000  1000에 1초!!
+                timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+                timer.Start();
+
+정지하기 전까지 정한 시간만큼 마다 돌아감
+
+timer.Stop();

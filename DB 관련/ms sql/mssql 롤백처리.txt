@@ -1,0 +1,31 @@
+begin tran
+
+insert 문
+{
+}
+
+save tran first_tran
+
+update 문 
+{
+}
+
+save tran second_tran
+
+update 문 
+{
+}
+
+save tran third_tran
+
+
+나중에 중간에 하나가 잘못된다 하더라도 그 부분만 roll back 하면 됩니다.
+
+롤백시 rollback tran first_tran
+
+
+
+begin tran
+
+
+goto transSuccess

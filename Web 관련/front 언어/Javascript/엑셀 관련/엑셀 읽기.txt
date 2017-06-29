@@ -1,0 +1,28 @@
+			function getexceldata() {
+				var fm = document.formContent;
+				var Excel = new ActiveXObject('Excel.Application');
+				Excel.Visible = false;
+				var eobj = Excel.Workbooks.Open(fm.SendFile.value);
+				Excel.Application.Visible = true;
+				Excel.Application.Worksheets("전화번호").Activate;
+				oRange = Excel.Application.ActiveSheet.UsedRange;
+				alert("oRange.Rows.count " + oRange.Rows.count);
+				var CallNo;
+				for (var i = 2; i < oRange.Rows.count; i++)
+				{
+					alert(eobj.ActiveSheet.Cells(i, 3).Value);
+					CallNo += eobj.ActiveSheet.Cells(i, 3).Value + ",";
+					
+				}
+				CallNo = CallNo.split(',');
+				var Call = parseInt('@i');
+				for (var i = 0; i < Call; i++) {
+					alert(CallNo[i]+"콜");
+				}
+
+				Excel.Quit();
+			}
+
+
+<td style="padding-left:5px"><input type="file" id="SendFile" name="SendFile" value="" />
+<input value="입력" type="button" class="btn_01" onclick="javascript: getexceldata();" ></td>

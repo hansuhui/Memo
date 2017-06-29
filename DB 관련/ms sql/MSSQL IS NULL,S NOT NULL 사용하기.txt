@@ -1,0 +1,8 @@
+- IS NULL / IS NOT NULL 란? 
+   IS NULL 은 입력값을 확인하여 NULL이면 TRUE를 NULL이 아니면 FALSE를 리턴하며,
+   IS NOT NULL 은 IS NULL과는 반대로 입력값이 NULL이면 FALSE를 NULL이 아니면 TURE를 리턴합니다.
+
+ 
+- MSSQL IS NULL / IS NOT NULL 사용방법
+   WHERE [컬럼명] IS NULL
+   WHERE [컬럼명] IS NOT NULL 

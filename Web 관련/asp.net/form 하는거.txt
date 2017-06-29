@@ -1,0 +1,13 @@
+﻿ $("#btnSave").click(function () {
+                var f = document.formDetails;;              
+                f.submit();
+
+
+
+<form name="update" id="update" action="DesignRegUpdate" method="post" enctype="multipart/form-data">
+
+
+
+
+@Html.TextBoxFor(m => m.ImgHeight, new { @readonly = "true" })
+@Html.TextBox("RegUserId", Session["UserID"])

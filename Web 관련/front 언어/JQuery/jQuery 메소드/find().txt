@@ -1,0 +1,72 @@
+
+[.find()]
+
+.find()는 원하는 선택자를 찾아서 선택합니다.
+
+단순히 CSS 작업을 위한 선택은 CSS 선택자로 하는 게 편하지만, 
+사용자가 입력한 값에 따라 선택자가 바뀌는 등 변수를 이용해야 할 때 유용합니다.
+
+.find( selector )
+
+
+[.get()]
+
+.get()은 선택한 요소를 배열(Array)의 객체로 가져옵니다.
+
+선택한 모든 요소를 가져옵니다.
+
+.get( index )
+
+선택한 요소 중 특정한 것만 가져옵니다.
+
+- 예제 1 -
+
+모든 li 요소를 jb 배열로 가져온 후, 각 요소의 내용을 출력하는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .get()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        var jb = $( 'li' ).get();
+        for ( var i = 0; i < jb.length; i++) {
+          $( 'div' ).append( '<p>' + jb[i].innerHTML + '</p>' );
+        }
+      } );
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>Lorem</li>
+      <li>Ipsum</li>
+    </ul>
+    <div></div>
+  </body>
+</html>
+
+
+li 요소 중 첫번째만 가져와서 내용을 출력하는 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .get()</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+      $( document ).ready( function() {
+        var jb = $( 'li' ).get( 0 );
+        $( 'ul' ).after( '<p>' + jb.innerHTML + '</p>' );
+      } );
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>Lorem</li>
+      <li>Ipsum</li>
+    </ul>
+  </body>
+</html>

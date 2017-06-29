@@ -1,0 +1,534 @@
+※oracle에서는 날짜함수에(sysdate) 산술연산이 가능합니다.
+
+1일->1
+
+1시간->1/24
+
+1분->1/24/60
+
+1초->1/24/60/60
+
+SYSDATE + 1/24/60/60 > MY_DATA_TYPE_VAL
+
+ 
+
+ 
+
+
+-- *** 변환함수, case문 ***
+-- 1. to_char : 숫자를 문자로 변환 또는 날짜를 문자로 변환.
+
+select 3600000,
+        to_char(3600000, '$9,999,999,999'), -- 화폐단위
+        to_char(3600000, 'L9,999,999,999')  -- 화폐단위(local, 원화, 컴퓨터에 지정된 기본 통화)
+from dual;
+
+ 
+
+select ename "사원명", sal,
+        lpad( ltrim( to_char( nvl2(comm, sal+comm, sal)*12, '$9,999,999,999' ) ), 7, ' ') "연봉", -- 숫자는 오른쪽 정렬, 문자와 날짜는 왼쪽 정렬
+        -- ltrim( to_char( nvl2(comm, sal+comm, sal)*12, '$9,999,999,999' ) ) "연봉",
+        hiredate
+from emp;
+
+ 
+
+select to_char(sysdate, 'year'), to_char(sysdate, 'month'), to_char(sysdate, 'day')
+from dual;
+
+ 
+
+select to_char(sysdate, 'yyyy'), to_char(sysdate, 'mm'), to_char(sysdate, 'dd'),
+        to_char(sysdate, 'hh am'), to_char(sysdate, 'hh pm'), to_char(sysdate, 'hh24'),
+        to_char(sysdate, 'mi'), to_char(sysdate, 'ss')
+from dual;
+
+ 
+
+select to_char(sysdate, 'yyyy-mm-dd hh24:mi:ss')
+from dual;
+
+ 
+
+select to_char(sysdate, 'ddd'), -- 2012년 1월 1일부터 현재까지의 날자수
+        to_char(to_date('2012-01-03'), 'ddd') - 2012년 1월 1일부터 3일까지의 날자수
+from dual;
+
+ 
+
+select to_char(sysdate, 'dd') -- 이번달 첫째날부터 현재까지의 날자수
+from dual;
+
+ 
+
+select to_char(sysdate, 'd') -- 이번주 첫째날(일요일)부터 현재까지의 날자수
+from dual;                    -- 1:일요일, 2:월요일, 3:화요일 ... 7:토요일
+
+ 
+
+select to_char(sysdate, 'sssss') -- 오늘 0시 0분부터 현재까지의 초수
+from dual;
+
+ 
+
+select to_char(sysdate, 'q') -- 1월~3월 : 1분기, 4월~6월 : 2분기, 7월~9월 : 3분기, 10월~12월 : 4분기
+from dual;
+
+ 
+
+select to_char(sysdate, 'day'), -- 요일
+        to_char(sysdate, 'dy'),  -- 요일 약자
+        to_char(sysdate, 'd')    -- 날수
+from dual;
+
+ 
+
+-- 2. to_date : 문자를 날짜로 변환
+select to_date('2012-08-10 14:30:23', 'yyyy-mm-dd hh24:mi:ss')
+from dual;
+
+ 
+
+-- 3. to_number : 문자(숫자형식을 가지는 문자)를 숫자로 변환
+select to_number('       987')
+from dual;
+
+ 
+
+select to_char(sysdate, 'yyyy'), 
+        extract(year from sysdate), -- 숫자 형태로 출력(연월일만 가능, 시분초는 불가함)
+        to_char(sysdate, 'mm'),
+        extract(month from sysdate)
+from dual;
+
+ 
+
+-- 현재일로부터 1년 2개월 3일 4시간 5분 6초 뒤를 나타내세요
+select to_char(sysdate,  'yyyy-mm-dd hh24:mi:ss'),
+        to_char(
+        ad_months(sysdate, 1 * 12 + 2) + 3 + 4/24 + 5/(24*60) + 6/(24*60*60)
+        , 'yyyy-mm-dd hh24:mi:ss')
+from dual;
+
+ 
+
+select to_char(
+        sysdate + to_yminterval('01-02') -- 연월만 더해짐
+        + to_dsinterval('003 04:05:06')   -- 일시분초 더해짐
+        , 'yyyy-mm-dd hh24:mi:ss')
+from dual;
+
+
+-- *** case 문 *** --
+-- case when then else end
+-- 조건값과 비교값이 = 관계일 때
+select case 5-2  when 2 then '5-2=2 입니다' 
+                  when 3 then '5-2=3 입니다'
+                  else '나는 수학을 몰라요'
+        end
+from dual;
+
+ 
+
+-- 조건값이 없고 비교값이 >, < 관계일 때, 참이나 거짓
+select case when 10>20 then '10은 20보다 큽니다'
+             when 10=20 then '10과 20은 같습니다'
+             else '나는 수학을 몰라요'
+        end
+from dual;
+
+ 
+
+-- 첫번째 케이스문과 동일
+select decode(5-2, 2, '5-2=2 입니다',
+                    3, '5-2=3 입니다',
+                    '나는 수학을 몰라요')
+from dual;
+
+ 
+
+-- emp테이블에서 사원명과 성별을 출력하되 성별은 '남', '여'로 나타내세요.
+select ename, 
+        case substr(jubun, 7, 1) when '1' then '남' when '3' then '남' else '여' end "성별1",
+        decode( substr(jubun, 7, 1), '1', '남', '3', '남', '여') "성별2",
+        case when substr(jubun, 7, 1) in ('1', '3') then '남' else '여' end "성별3"
+from emp;
+
+ 
+
+--  사원명, 주민번호, 성별, 현재나이를 보여주기
+
+select ename "사원명", jubun "주민번호",
+        decode( substr(jubun, 7, 1), '1', '남', '3', '남', '여') "성별",
+        extract(year from sysdate)
+         - to_number(case when substr(jubun, 7, 1) in ('3', '4') then '20' || substr(jubun, 1, 2) else '19' || substr(jubun, 1, 2) end) + 1 "현재나이"        
+from emp;
+/*
+select   extract(year from sysdate)
+         - to_number(case when substr(jubun, 7, 1) in ('3', '4') then '20' || substr(jubun, 1, 2) else '19' || substr(jubun, 1, 2) end) + 1 "현재나이"        
+from emp;
+*/
+
+
+select ename "사원명", jubun "주민번호",
+-- 현재 나이는 (현재 년도 - 태어난 년도 + 1)
+       to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end "태어난년도",
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1 "현재나이",
+      to_char(add_months(sysdate, (60-
+             (
+             extract(year from sysdate) 
+             - (to_number(substr(jubun, 1, 2))
+             + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1
+             )
+            )
+           *12), 'yyyy') "60세가되는년도"
+from emp;
+
+ 
+
+-- 60세가 되어지는 년도
+select ename "사원명", jubun "주민번호",
+        to_number(to_number(substr(jubun, 1, 2)) + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 60 "정년"
+from emp;
+
+ 
+
+-- 35세 25년 뒤 to_char(add_months(sysdate, (60-35)*12), 'yyyy')
+-- 28세 32년 뒤 to_char(add_months(sysdate, (60-28)*12), 'yyyy')
+-- to_char(add_months(sysdate, (60-현재나이)*12), 'yyyy')
+-- to_char(add_months(sysdate, 
+--         (60
+--            -(
+--              (extract(year from sysdate) 
+--            - (to_number(substr(jubun, 1, 2))
+--            + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1
+--            )
+--         *12), 'yyyy')
+select
+
+from emp;
+
+ 
+
+-- sys에서 grant create view to scott;
+
+
+create view view_emp
+as
+select ename "사원명", jubun "주민번호",
+-- 현재 나이는 (현재 년도 - 태어난 년도 + 1)
+       extract(year from sysdate) "현재년도",
+       to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end "태어난년도",
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1 "현재나이"
+from emp;
+
+ 
+
+select *
+from view_emp;
+
+ 
+
+create view view_emp2
+as
+select ename "사원명", jubun "주민번호", 
+       case substr(jubun, 7, 1) when '1' then '남' when '3' then '남' else '여' end  "성별",
+-- 현재 나이는 (현재 년도 - 태어난 년도 + 1)
+       to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end "태어난년도",
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1 "현재나이"
+from emp;
+
+ 
+
+select *
+from view_emp2;
+
+ 
+
+-- sys에서 revoke create view from scott;
+
+ 
+
+create view view_emp3
+as
+select empno, ename, sal
+from emp;
+--- error
+
+ 
+
+-- *** inline view *** --
+-- create view 권한이 없을 때 등 사용
+select "T".*
+from
+(
+select empno as "사원번호", ename, sal "기본급"
+from emp
+) "T"
+-- as 생략가능
+where "T".기본급 >= 3000
+
+ 
+
+select "T".*,
+         to_char(add_months(sysdate, (60-"T".현재나이)*12), 'yyyy') "60세가되는년도"
+from
+(
+select ename "사원명", jubun "주민번호",
+       to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end "태어난년도",
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1 "현재나이"
+from emp
+) "T"
+
+
+-- *** 순위함수 ***
+select ename "사원명", sal "기본급", deptno "부서번호"
+from emp
+order by ename asc;
+-- 영어 > 한글, 대문자 > 소문자
+
+ 
+
+select ename "사원명", sal "기본급", deptno "부서번호"
+from emp
+order by "사원명" asc;
+-- asc 생략가능, 디폴트
+
+
+-- 칼럼 앨리아스로도 가능
+
+select ename "사원명", sal "기본급", deptno "부서번호"
+from emp
+order by 1;
+
+
+-- 칼럼 순서로도 가능
+
+select ename "사원명", sal "기본급", deptno "부서번호"
+from emp
+order by 2 desc;
+
+ 
+
+select ename "사원명", sal "기본급", deptno "부서번호"
+from emp
+order by 3, 2 desc;
+
+ 
+
+select ename "사원명", sal "기본급", deptno "부서번호",
+        rank() over(partition by deptno order by sal desc) "동일부서내등수",
+        rank() over(order by sal desc) "전체등수"
+from emp
+order by 3;
+
+ 
+
+-- emp 테이블에서 기본급여가 제일 많은 순서대로 1등부터 5등까지만 추출하세요
+select "T".*
+from 
+(
+select ename "사원명", sal "기본급",
+        rank() over(order by sal desc) "전체등수"
+from emp
+) "T"
+where "T".전체등수 <= 5
+-- rank()는 where 절에서 사용불가, 따라서 인라인 뷰로
+
+ 
+
+select ename, sal,
+        rank() over(order by sal desc),
+        dense_rank() over(order by sal desc)
+from emp
+-- dense_rank() 순위(partition by 사용할 수 있음), rank()는 석차
+
+
+-- 
+-- *** 그룹함수(집계함수) *** --
+-- 그룹함수(집계함수)는 널 값을 무조건 제외하고 계산한다
+select sum(sal)  -- 합계
+from emp
+
+ 
+
+select avg(sal)  -- 평균
+from emp
+
+ 
+
+select max(sal)  -- 최대치
+from emp
+
+ 
+
+select min(sal)  -- 최소치
+from emp
+
+ 
+
+select count(sal)  -- 행의 갯수
+from emp
+
+
+select sum(comm) -- null값이 있음
+from emp
+
+ 
+
+select avg(comm)  -- 평균
+from emp
+
+ 
+
+select max(comm)  -- 최대치
+from emp
+
+ 
+
+select min(comm)  -- 최소치
+from emp
+
+ 
+
+select count(comm)  -- 행의 갯수
+from emp
+
+ 
+
+select sum(sal)/count(sal), avg(sal)
+from emp
+
+ 
+
+select sum(comm)/count(comm), avg(comm) -- 널 값 제외하기 때문에, 전체 직원의 평균은 아님
+from emp
+
+ 
+
+select avg(nvl(comm, 0))  -- 널을 0으로 간주하고(nvl 함수 사용) 계산하면 전체 사원의 평균 구해짐
+from emp
+
+ 
+
+select count(sal), count(comm), count(nvl(comm, 0))  -- 해당 칼럼의 널값으로 인해 서로 다른 결과가 나옴
+from emp
+
+ 
+
+select count(*)  -- 어떤 테이블의 행의 갯수 참조하기 위해서 자주 사용됨
+from emp
+
+-- 부서별로 기본급의 함 조회하기
+
+
+select deptno, sum(sal)
+from emp
+group by deptno
+
+ 
+
+select job, sum(sal)
+from emp
+group by job
+
+ 
+
+-- emp테이블에서 부서번호별 sal의 합을 구하되 그 합이 9000 이상인 것만
+-- 부서번호, sal의 합을 나타내세요
+select deptno, sum(sal)
+from emp
+group by deptno
+having sum(sal) >= 9000
+order by 1
+
+ 
+
+-- where 조건절은 특정 행에 대해서만 메모리에 올리는 조건임
+
+
+-- 부서번호, 기본급대여폭, 인원수
+--   20        1600         2
+--   10         800         3
+
+--   20      1650-> 1600    
+--   20      1603-> 1600
+--   10       800->  800
+--   10       890->  800
+--   10       875->  800
+
+select deptno, trunc(sal, -2), count(*)
+from emp
+group by deptno, trunc(sal, -2)
+order by 1, 2
+-- trunc(sal, -2) 백단위, trunc(sal, 2) 소수점 둘째자리
+
+ 
+
+-- 연령대별 성별 인원수 구하기, 카페에 소스를 '과제'로 올리기
+
+/*
+        decode( substr(jubun, 7, 1), '1', '남', '3', '남', '여') "성별",
+        extract(year from sysdate)
+         - to_number(case when substr(jubun, 7, 1) in ('3', '4') then '20' || substr(jubun, 1, 2) else '19' || substr(jubun, 1, 2) end) + 1 "현재나이"       
+
+*/
+select "T".연령, "T".성별, count(*) 
+from
+(
+select trunc(
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1, -1) "연령",
+        decode( substr(jubun, 7, 1), '1', '남', '3', '남', '여') "성별"
+from emp
+) "T"
+group by 연령, 성별
+order by 1, 2
+
+
+/*
+select jubun, trunc(
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1, -1) "연령",
+        decode( substr(jubun, 7, 1), '1', '남', '3', '남', '여') "성별"
+from emp
+*/
+
+
+-- emp 테이블에서 연령대별 인원수에 따른 비율을 추출하세요
+-- <결과물>
+-- 연령대   인원수   비율
+--  0         2        14.3%
+-- 10         2        14.3%
+-- 20         4        28.6%
+-- 30         3        21.4%
+-- 40         2        14.3%
+--100         1         7.1%
+
+select "T".연령, count(*) "인원수", round((count(*)/(select count(*) from emp)) * 100, 1) || '%' "비율"
+from
+(
+select trunc(
+       extract(year from sysdate) 
+       - (to_number(substr(jubun, 1, 2))
+       + case when substr(jubun, 7, 1) in ('1','2') then 1900 else 2000 end) + 1, -1) "연령"
+from emp
+) "T"
+group by  "T".연령
+order by 1
+
+ 

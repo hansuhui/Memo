@@ -1,0 +1,9 @@
+오라클 변수 선언 및 사용
+
+
+DECLARE V_TEST VARCHAR2(10);
+V_TEST := 'AAA';
+BEGIN
+SELECT * FROM 테이블 WHERE 컬럼=@V_TEST
+END;
+[출처] MS-SQL , 오라클 DECLARE |작성자 산들바람

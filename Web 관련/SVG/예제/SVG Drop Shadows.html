@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+  
+<svg height="120" width="120">
+  <defs>
+    <filter id="f1" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+      <feBlend in="SourceGraphic" in2="offOut" mode="normal" />
+    </filter>
+  </defs>
+  <rect width="90" height="90" stroke="green" stroke-width="3"
+  fill="yellow" filter="url(#f1)" />
+</svg>
+
+
+<svg height="140" width="140">
+  <defs>
+    <filter id="f2" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+  </defs>
+  <rect width="90" height="90" stroke="green" stroke-width="3"
+  fill="yellow" filter="url(#f2)" />
+</svg>
+
+
+<svg height="140" width="140">
+  <defs>
+    <filter id="f3" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="20" dy="20" />
+      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+  </defs>
+  <rect width="90" height="90" stroke="green" stroke-width="3"
+  fill="yellow" filter="url(#f3)" />
+</svg>
+
+
+<svg height="140" width="140">
+  <defs>
+    <filter id="f4" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+      values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+  </defs>
+  <rect width="90" height="90" stroke="green" stroke-width="3"
+  fill="yellow" filter="url(#f4)" />
+</svg>
+
+ </body>
+</html>

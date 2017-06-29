@@ -1,0 +1,145 @@
+참조 
+https://technet.microsoft.com/ko-kr/library/h6bb9cz9(v=vs.80).aspx
+
+
+
+서비스에서 ASP.NET State Service 자동으로 하기
+
+web.config 에서 <system.web> 사이에 넣기
+
+<sessionState 
+    mode="[Off|InProc|StateServer|SQLServer|Custom]"
+    timeout="number of minutes"
+    cookieName="session identifier cookie name"
+    cookieless=
+         "[true|false|AutoDetect|UseCookies|UseUri|UseDeviceProfile]"
+    regenerateExpiredSessionId="[True|False]"
+    sqlConnectionString="sql connection string"
+    sqlCommandTimeout="number of seconds"
+    allowCustomSqlDatabase="[True|False]"
+    useHostingIdentity="[True|False]"
+    stateConnectionString="tcpip=server:port"
+    stateNetworkTimeout="number of seconds"
+    customProvider="custom provider name">
+    <providers>...</providers>
+</sessionState>
+
+
+
+[allowCustomSqlDatabase ]
+ 
+선택적 Boolean 특성입니다.
+
+세션 상태 SQL 데이터베이스를 ASP.NET 기본 데이터베이스 대신 사용자 지정 데이터베이스로 사용할 수 있는지 여부를 지정합니다. false이면 초기 카탈로그와 데이터베이스를 sqlConnectionString 특성의 값으로 지정할 수 없습니다. 기본 세션 상태 SQL 데이터베이스는 ASPState 데이터베이스입니다. 자세한 내용은 세션 상태 모드를 참조하십시오.
+
+이 특성은 .NET Framework 버전 2.0에서 새로 도입되었습니다.
+
+기본값은 false입니다.
+
+
+
+
+
+[cookieless]
+ 
+선택적 HttpCookieMode 특성입니다.
+
+웹 응용 프로그램에서 쿠키를 사용하는 방법을 지정합니다.
+
+cookieless  특성은 다음 값 중 하나일 수 있습니다. 기본값은 UseCookies입니다.
+
+-AutoDetect 
+ 
+ASP.NET에서 요청하는 브라우저나 장치에 쿠키가 지원되는지 여부를 확인합니다. 
+요청 브라우저 또는 장치에 쿠키가 지원되면 AutoDetect는 쿠키를 사용하여 
+사용자 데이터를 유지하고 그렇지 않으면 쿼리 문자열에 식별자가 사용됩니다. 
+브라우저 또는 장치에서 쿠키를 지원하지만 쿠키가 현재 비활성화되어 있는 경우에도 
+요청 기능에서 쿠키를 사용할 수 있습니다.
+ 
+
+-UseCookies 
+ 
+브라우저나 장치에서 쿠키를 지원하는지 여부에 관계없이 쿠키를 사용하여 사용자 데이터를 유지합니다.
+ 
+
+-UseDeviceProfile 
+ 
+ASP.NET에서는 HttpBrowserCapabilities 설정을 기반으로 하여 쿠키 사용 여부를 확인합니다. 
+HttpBrowserCapabilities에 브라우저나 장치에서 쿠키를 지원하도록 설정되어 있으면 쿠키를 
+사용하고 그렇지 않으면 쿼리 문자열에 식별자가 사용됩니다.
+ 
+
+-UseUri 
+ 
+호출 기능에서는 브라우저나 장치에서 쿠키를 지원하는지 여부에 
+관계없이 쿼리 문자열을 사용하여 식별자를 저장합니다.
+ 
+ 
+ 
+[cookieName]
+ 
+선택적 String 특성입니다.
+
+세션 식별자를 저장하는 쿠키의 이름을 지정합니다. 
+
+이 특성은 .NET Framework 버전 2.0에서 새로 도입되었습니다.
+
+기본값은 "ASP.NET_SessionId"입니다.
+ 
+
+
+[customProvider] 
+ 
+선택적 String 특성입니다.
+
+세션 상태 데이터를 저장하고 검색하는 데 사용할 사용자 지정 세션 상태 공급자의 이름을 지정합니다.
+
+해당 공급자는 providers 요소에 지정되어 있습니다. 세션 상태 모드가 Custom 값으로 설정되어 있는 
+
+경우에만 해당 공급자가 사용됩니다. 자세한 내용은 세션 상태 모드를 참조하십시오.
+
+이 특성은 .NET Framework 버전 2.0에서 새로 도입되었습니다.
+
+기본값은 빈 문자열("")입니다.
+
+
+
+
+[mode] 
+ 
+선택적 SessionStateMode 특성입니다.
+
+세션 상태 값을 저장할 위치를 지정합니다. 자세한 내용은 세션 상태 모드를 참조하십시오.
+
+mode 특성은 다음 값 중 하나일 수 있습니다. 기본값은 InProc입니다.
+
+
+-Custom 
+ 
+세션 상태에서 세션 상태 정보 저장에 사용자 지정 데이터 저장소를 사용합니다.
+ 
+
+-InProc 
+ 
+세션 상태가 ASP.NET 작업자 프로세스에서 처리됩니다.
+ 
+
+-Off 
+ 
+세션 상태를 사용할 수 없습니다.
+ 
+
+-SQLServer 
+ 
+세션 상태에서 상태 정보 저장에 out-of-process SQL Server 데이터베이스를 사용합니다.
+ 
+
+-StateServer 
+ 
+세션 상태에서 out-of-process ASP.NET 상태 서비스를 사용하여 상태 정보를 저장합니다.
+ 
+ 나머지는 참조사이트 
+
+
+
+ 

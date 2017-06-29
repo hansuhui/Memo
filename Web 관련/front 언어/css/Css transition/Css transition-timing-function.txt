@@ -1,0 +1,27 @@
+https://developer.mozilla.org/ko/docs/Web/CSS/transition-timing-function
+
+[transition-timing-function]
+
+
+* Keyword values */
+transition-timing-function: ease;
+transition-timing-function: ease-in;
+transition-timing-function: ease-out;
+transition-timing-function: ease-in-out;
+transition-timing-function: linear;
+transition-timing-function: step-start;
+transition-timing-function: step-end;
+
+/* Function values */
+transition-timing-function: steps(4, end);
+transition-timing-function: cubic-bezier(0.1, 0.7, 1.0, 0.1);
+transition-timing-function: frames(10);
+
+/* Multiple timing functions */
+transition-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1);
+
+/* Global values */
+transition-timing-function: inherit;
+transition-timing-function: initial;
+transition-timing-function: unset;
+

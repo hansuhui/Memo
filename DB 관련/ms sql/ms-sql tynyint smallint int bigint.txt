@@ -1,0 +1,18 @@
+참조 
+http://blog.naver.com/icanfind/110004632083
+	
+ms-sql tynyint smallint int bigint 의 최대값 
+
+bigint 
+길이가 8바이트이며 2^63(-9,223,372,036,854,775,808)부터 2^63-1(9,223,372,036,854,775,807)까지의 숫자를 저장
+ 
+integer 또는 int 
+길이가 4바이트이며 -2.147.483.648부터 2.147.483.647까지의 숫자를 저장
+ 
+smallint 
+길이가 2바이트이며 -32,768부터 32,767까지의 숫자를 저장
+ 
+tinyint 
+길이가 1바이트이며 0부터 255까지의 숫자를 저장
+[출처] ms-sql tynyint smallint int bigint 의 최대값 |작성자 뽀뽀로
+

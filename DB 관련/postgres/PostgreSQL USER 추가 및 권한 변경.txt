@@ -1,0 +1,446 @@
+http://forgiveall.tistory.com/179
+
+
+
+///// USER 관리하기
+
+리눅스에서 plsql 실행
+
+$ ./psql
+
+
+
+다음 상태가 되면, Query(쿼리) 또는 PSQL 명령어를 입력할 수 있다.
+
+postgres=# 
+
+
+
+등록되어 있는 user(사용자) 확인
+
+select * from PG_SHADOW; 또는 \du
+
+
+
+이름이 USERNAME인 사용자 생성
+
+create user USERNAME; 
+
+
+
+비밀번호가 PASSWORD이며 이름은 USERNAME인 사용자 생성
+
+create user USERNAME pasword 'PASSWORD'; 
+
+
+
+비밀번호가 PASSWORD이며 이름은 USERNAME이고 CREATEDB의 role을 갖는 사용자 생성
+
+create user USERNAME pasword 'PASSWORD' CREATEDB; 
+
+
+
+이름이 USERNAME인 사용자의 이름을 USERNAME2로 변경
+
+alter user USERNAME rename to USERNAME2;
+
+
+
+이름이 USERNAME2인 사용자의 비밀번호를 PASSWORD2로 변경
+
+alter user USERNAME2 with password 'PASSWORD2';
+
+
+
+이름이 USERNAME2인 사용자에게 CREATEUSER와 REPLICATION role을 추가
+
+alter user USERNAME2 with CREATEUSER, REPLICATION;
+
+
+
+이름이 USERNAME2인 사용자 삭제
+
+drop user USERNAME2
+
+
+
+
+
+
+
+///// DATABASE 관리하기
+
+리눅스에서 plsql 실행
+
+$ ./psql
+
+
+
+다음 상태가 되면, Query(쿼리) 또는 PSQL 명령어를 입력할 수 있다.
+
+postgres=# 
+
+
+
+등록되어 있는 database(데이터베이스) 확인
+
+select * from pg_database;  또는 \l
+
+
+
+이름이 DBNAME인 database 생성
+
+create database DBNAME;
+
+
+
+이름이 DBNAME이며 USERNAME이 소유하는 database 생성
+
+create database DBNAME owner USERNAME;
+
+
+
+이름이 DBNAME인 databse를 USERNAME2가 소유하도록 변경
+
+alter database DBNAME owner to USERNAME2;
+
+
+
+이름이 DBNAME인 database의 이름을 DBNAME2로 변경
+
+alter database DBNAME rename to DBNAME2;
+
+
+
+이름이 DBNAME2인 database 지우기
+
+drop database DBNAME2;
+
+
+
+///// SCHEMA 관리하기
+
+리눅스에서 plsql 실행
+
+$ ./psql
+
+
+
+다음 상태가 되면, Query(쿼리) 또는 PSQL 명령어를 입력할 수 있다.
+
+postgres=# 
+
+
+
+등록되어 있는 schema(스키마) 확인
+
+\dn
+
+
+
+이름이 SCHEMANAME인 schema 생성 (이름 미입력 시, USERNAME으로)
+
+create schema 'SCHEMANAME'; 
+
+
+
+이름이 SCHEMANAME이며 소유자는 USERNAME인 schema 생성
+
+create schema SCHEMANAME authorization USERNAME;
+
+
+
+이름이 SCHEMANAME인 schema의 소유자를 USERNAME으로 변경
+
+alter schema SCHEMANAME owner to USERNAME;
+
+
+
+이름이 SCHEMANAME인 schema의 이름을 SCHEMANAME2로 변경
+
+alter schema SCHEMANAME rename to SCHEMANAME2;
+
+
+
+SCHEMANAME2라는 schema 지우기
+
+drop schema SCHEMANAME2;
+
+
+
+
+
+
+
+
+///// PSQL 명령어
+
+\? psql 정보 
+
+\h 명령어 정보
+
+\l 데이터베이스 목록
+
+\d 데이터베이스 내 관계정보 확인
+
+\du user - user의 role을 확인할 수 있다.
+
+\dS System table
+
+\dt table 
+
+\di index
+
+\dv view
+
+\dn schema
+
+\db tablespace
+
+\df function
+
+\c DBNAME Database에 접속
+
+\q 나오기
+
+\e psql.edit 편집기 열림
+
+
+
+======================================================================
+
+
+
+http://blog.secretmuse.net/?p=12
+
+
+PostgreSQL에서 Role 및 권한 관리
+
+Role의 목록을 확인하는 방법
+
+PostgreSQL 의 프롬프트로 접속한다
+
+
+sudo -u postgres psql
+1
+sudo -u postgres psql
+다음 명령어 입력
+
+
+\du
+1
+\du
+다음과 같은 결과가 출력된다
+
+
+                             List of roles
+ Role name |                   Attributes                   | Member of 
+-----------+------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication | {}
+1
+2
+3
+4
+                             List of roles
+ Role name |                   Attributes                   | Member of 
+-----------+------------------------------------------------+-----------
+ postgres  | Superuser, Create role, Create DB, Replication | {}
+Role 생성 방법
+
+1. 커맨드 라인에서 생성
+
+\q 명령을 입력해서 커맨드 라인으로 나간 후 다음 명령어를 입력한다.
+
+
+sudo -u postgres createuser --interactive
+1
+sudo -u postgres createuser --interactive
+질문에 차례로 답하면 Role이 생성된다
+
+
+Enter name of role to add: test_role
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+1
+2
+3
+4
+Enter name of role to add: test_role
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+Role의 목록을 확인해 보자
+
+
+                              List of roles
+  Role name  |                   Attributes                   | Member of 
+-------------+------------------------------------------------+-----------
+ postgres    | Superuser, Create role, Create DB, Replication | {}
+ test_role   |                                                | {}
+1
+2
+3
+4
+5
+                              List of roles
+  Role name  |                   Attributes                   | Member of 
+-------------+------------------------------------------------+-----------
+ postgres    | Superuser, Create role, Create DB, Replication | {}
+ test_role   |                                                | {}
+2. POSTGRESQL 프롬프트에서 생성
+
+PostgreSQL의 프롬프트상에서 다음 명령어를 입력한다.
+
+
+CREATE ROLE <role name>;
+1
+CREATE ROLE <role name>;
+완료되면 다음과 같은 결과가 나온다
+
+
+CREATE ROLE
+1
+CREATE ROLE
+\du 명령으로 확인해 보자
+
+
+                              List of roles
+  Role name  |                   Attributes                   | Member of 
+-------------+------------------------------------------------+-----------
+ postgres    | Superuser, Create role, Create DB, Replication | {}
+ test_role   |                                                | {}
+ test_role_2 | Cannot login                                   | {}
+1
+2
+3
+4
+5
+6
+                              List of roles
+  Role name  |                   Attributes                   | Member of 
+-------------+------------------------------------------------+-----------
+ postgres    | Superuser, Create role, Create DB, Replication | {}
+ test_role   |                                                | {}
+ test_role_2 | Cannot login                                   | {}
+이렇게 생성한 Role은 기본적으로 로그인을 할 수 없다.
+로그인을 할 수 있도록 하려면 다음과 같이 입력한다
+
+
+CREATE ROLE <role name> WITH LOGIN;
+1
+CREATE ROLE <role name> WITH LOGIN;
+이미 생성된 Role에 로그인 권한을 삭제하려면 다음과 같이 입력한다
+
+
+ALTER ROLE <role name> WITH NOLOGIN;
+1
+ALTER ROLE <role name> WITH NOLOGIN;
+Role 삭제
+
+1. 커맨드 라인에서 삭제
+
+\q 명령을 입력해서 커맨드 라인으로 나간 후 다음 명령어를 입력한다.
+
+
+sudo -u postgres dropuser <role name>
+1
+sudo -u postgres dropuser <role name>
+2. POSTGRESQL 프롬프트에서 삭제
+
+PostgreSQL의 프롬프트상에서 다음 명령어를 입력한다.
+
+
+DROP ROLE <role name>;
+1
+DROP ROLE <role name>;
+완료되면 다음과 같은 결과가 나온다
+
+
+DROP ROLE
+1
+DROP ROLE
+삭제할 Role이 없을경우에 오류가 발생하는걸 피하려면 다음과 같이 입력한다.
+
+
+DROP ROLE IF EXISTS <role name>;
+1
+DROP ROLE IF EXISTS <role name>;
+ Role 비밀번호 설정
+
+PostgreSQL의 프롬프트상에서 다음 명령어를 입력한다.
+
+
+\password <role name>
+1
+\password <role name>
+Role에 권한 부여
+
+특정 테이블에 권한을 부여할 경우
+
+
+GRANT UPDATE, SELECT ON <table name> TO <role name>;
+1
+GRANT UPDATE, SELECT ON <table name> TO <role name>;
+모든 권한을 주고싶은 경우
+
+
+GRANT ALL ON <table name> TO <role name>;
+1
+GRANT ALL ON <table name> TO <role name>;
+모든 Role에 대해서 권한을 부여할 경우
+
+
+GRANT INSERT ON <table name> TO PUBLIC;
+1
+GRANT INSERT ON <table name> TO PUBLIC;
+데이터베이스에 모든 권한을 부여할 경우
+
+
+GRANT ALL ON DATABASE <database name> TO <role name>;
+1
+GRANT ALL ON DATABASE <database name> TO <role name>;
+권한을 수정한 다음엔 다음 명령으로 접근 권한을 확인해 볼 수 있다
+
+
+\z
+1
+\z
+Role에 권한 삭제
+
+“REVOKE”명령으로 권한을 삭제한다.
+
+
+REVOKE INSERT ON <table name> FROM <role name>;
+1
+REVOKE INSERT ON <table name> FROM <role name>;
+다른 Role을 사용해서 PostgreSQL에 접속
+
+커맨드 라인에서 다음과 같이 입력한다.
+
+
+psql <database name> <role name>
+1
+psql <database name> <role name>
+단 위처럼 로그인하기 위해서는 해당 Role에 로그인 권한이 있어야 하며
+pg_hba.conf file 파일 (/etc/postgresql/9.3/main/pg_hba.conf)에서 이런 부분을
+
+
+local   all             all                                peer
+1
+local   all             all                                peer
+이렇게 수정해야 한다
+
+
+local   all             all                                md5
+1
+local   all             all                                md5
+peer : OS의 사용자 이름을 가지고 와서 데이터베이스의 사용자 이름으로 사용한다.
+
+수정한 후에는 리스타트 한다.
+
+
+sudo service postgresql restart
+1
+sudo service postgresql restart
+ 

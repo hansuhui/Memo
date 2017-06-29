@@ -1,0 +1,7 @@
+tail -f /JSGlobal/tomcat7/logs/catalina.out
+
+/JSGlobal/tomcat7/shutdown.sh
+/JSGlobal/tomcat7/startup.sh
+
+
+/JSGlobal/tomcat7/logs

@@ -1,0 +1,134 @@
+[content]
+
+content 속성은 선택한 요소의 내용 앞이나 뒤에 컨텐트를 붙입니다.
+
+예를 들어 p 요소 내용 앞에 컨텐트를 넣으려면
+
+p:before {
+  content: xxx;
+}
+
+와 같이 하고, 뒤에 붙이려면
+
+p:after {
+  content: xxx;
+}
+
+와 같이 합니다.
+
+content 속성을 이용하여 XXX라는 문자열을 넣으려면 다음과 같이 합니다.
+
+p:before {
+  content: "XXX";
+}
+
+
+이미지를 넣고 싶다면 다음과 같이 합니다.
+
+
+p:before {
+  content: url( "path/abc.png" );
+}
+
+선택한 요소의 속성값을 출력할 수도 있습니다. 예를 들어 p 요소의 class 값을 나타내려면 다음과 같이 합니다.
+
+p:before {
+  content: attr( class );
+}
+
+
+다음은 위 세가지를 한 페이지에 담은 예제입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | content</title>
+    <style>
+      h1.st:before {
+        content: "String ";
+        color: red;
+      }
+      h1.ur:before {
+        content: url( "jb_dot.png" );
+        margin-right: 10px;
+      }
+      h1.at:before {
+        content: attr( class );
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="st">Lorem</h1>
+    <h1 class="ur">Ipsum</h1>
+    <h1 class="at">Dolor</h1>
+  </body>
+</html>
+
+
+[quotes]
+
+
+q 태그는 문단 안에서 사용하는 인용문입니다.
+기본 모양은 큰따옴표로 감싸는 것입니다.
+간단한 예는 다음과 같습니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | quotes</title>
+  </head>
+  <body>
+    <p>Lorem <q>Ipsum</q> Dolor</p>
+  </body>
+</html>
+
+
+인용문을 감싸는 큰따옴표를 다른 기호 또는 문자로 바꿔주는 것이 quotes 속성입니다. 
+예를 들어 <와 >로 바꾼다면 다음과 같이 합니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | quotes</title>
+    <style>
+      q {
+        quotes: "<" ">";
+      }
+    </style>
+  </head>
+  <body>
+    <p>Lorem <q>Ipsum</q> Dolor</p>
+  </body>
+</html>
+
+
+속성값을 4개 부여하면 앞의 두 개는 1단계 인용문, 
+뒤의 두 개는 2단계 인용문에 사용합니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>CSS | quotes</title>
+    <style>
+      q {
+        quotes: "<" ">" "(" ")";
+      }
+    </style>
+  </head>
+  <body>
+    <p>Lorem <q>Ipsum <q>Amet</q></q> Dolor</p>
+  </body>
+</html>
+
+
+인용 기호를 사용하지 않으려면 속성값을 none으로 합니다.
+
+quotes: none;

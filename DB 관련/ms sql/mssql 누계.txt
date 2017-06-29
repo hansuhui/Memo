@@ -1,0 +1,97 @@
+
+with RetnGroup (retnDate, saleCnt,retnCnt,saleAmt,retnAmt)
+as
+(
+
+	select 
+		retnDate
+		, sum(case when retnType = '2' then cnt else 0 end) as saleCnt
+		, sum(case when retnType = '1' then cnt else 0 end) as retnCnt
+		, sum(case when retnType = '2' then Amt else 0 end) as saleAmt
+		, sum(case when retnType = '1' then Amt else 0 end) as retnAmt
+	from (
+		select datename(YEAR,ReturnDate) +'-'+  datename(MONTH,ReturnDate)  as retnDate, count(*) as cnt, case when RemainAmt=0 then sum(Jong*1000) else sum(RemainAmt) end as Amt  , '1' as retnType from GiftMst where GiftState = '30' group by datename(YEAR,ReturnDate) +'-'+  datename(MONTH,ReturnDate),RemainAmt
+		union all
+		select datename(YEAR,DisuseDate) +'-'+  datename(MONTH,DisuseDate)  as retnDate, count(*) as cnt , sum(RemainAmt) as Amt  ,'1' as retnType from GiftMst where GiftState = '99' group by datename(YEAR,DisuseDate) +'-'+  datename(MONTH,DisuseDate)
+		union all
+		select datename(YEAR,SaleDate) +'-'+  datename(MONTH,SaleDate)  as retnDate, count(*) as cnt , sum(a.RemainAmt) as Amt  , '2' as retnType from GiftMst a group by datename(YEAR,SaleDate) +'-'+  datename(MONTH,SaleDate)
+		union all 
+		select datename(YEAR,a.RetnDate) +'-'+  datename(MONTH,a.RetnDate) as retnDate,'' as  cnt ,''as Amt  , '' as retnType from retnmst a with (nolock) group by datename(YEAR,a.RetnDate) +'-'+  datename(MONTH,a.RetnDate)  
+		union all 
+		select datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)  as retnDate ,'' as  cnt ,''as Amt  , '' as retnType   from SettlementDay a with (nolock) group by datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)
+		union all 
+		select datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate) as retnDate ,'' as  cnt ,''as Amt  , '' as retnType   from ExpiredSettlement a with (nolock) group by datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)    
+	) a
+	group by retnDate
+)
+
+
+
+	--미지급건,금액 누계
+	select distinct
+	a.RegDate
+	,  (select sum(saleCnt) from RetnGroup where a.RegDate >= retnDate) as saleCnt	
+	,  (select sum(retnCnt) from RetnGroup where a.RegDate >= retnDate) as retnCnt
+	,  (select sum(saleCnt) - sum(retnCnt) from RetnGroup where a.RegDate >= retnDate) as TotalCnt
+	,  (select sum(saleAmt) from RetnGroup where a.RegDate >= retnDate) as saleAmt	
+	,  (select sum(retnAmt) from RetnGroup where a.RegDate >= retnDate) as retnAmt
+	,  (select sum(saleAmt) - sum(retnAmt) from RetnGroup where a.RegDate >= retnDate) as TotalAmt
+	from 
+	(
+		select datename(YEAR,a.ReturnDate) +'-'+  datename(MONTH,a.ReturnDate) as RegDate  from GiftMst a where GiftState = '30' group by datename(YEAR,a.ReturnDate) +'-'+  datename(MONTH,a.ReturnDate)
+		union all  
+		select datename(YEAR,a.SaleDate) +'-'+  datename(MONTH,a.SaleDate) as RegDate from GiftMst a group by datename(YEAR,a.SaleDate) +'-'+  datename(MONTH,a.SaleDate) 
+		union all  
+		select datename(YEAR,a.DisuseDate) +'-'+  datename(MONTH,a.DisuseDate) as RegDate from GiftMst a where GiftState = '99' group by datename(YEAR,a.DisuseDate) +'-'+  datename(MONTH,a.DisuseDate)  
+		union all 
+		select datename(YEAR,a.RetnDate) +'-'+  datename(MONTH,a.RetnDate) as RegDate from retnmst a with (nolock) group by datename(YEAR,a.RetnDate) +'-'+  datename(MONTH,a.RetnDate)  
+		union all 
+		select datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)  as RegDate   from SettlementDay a with (nolock) group by datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)
+		union all 
+		select datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate) as RegDate   from ExpiredSettlement a with (nolock) group by datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)    
+	)a
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+with 테이블명(변수명)
+as
+(
+
+그 해당하는 날짜나 달에 값을 sum해서 가지고 나옴
+
+)
+
+
+
+	--미지급건,금액 누계
+	select distinct
+	a.RegDate
+	,  (select sum(saleCnt) from RetnGroup where a.RegDate >= retnDate) as saleCnt	
+	,  (select sum(retnCnt) from RetnGroup where a.RegDate >= retnDate) as retnCnt
+	,  (select sum(saleCnt) - sum(retnCnt) from RetnGroup where a.RegDate >= retnDate) as TotalCnt
+	,  (select sum(saleAmt) from RetnGroup where a.RegDate >= retnDate) as saleAmt	
+	,  (select sum(retnAmt) from RetnGroup where a.RegDate >= retnDate) as retnAmt
+	,  (select sum(saleAmt) - sum(retnAmt) from RetnGroup where a.RegDate >= retnDate) as TotalAmt
+	from 
+	(
+		select datename(YEAR,a.ReturnDate) +'-'+  datename(MONTH,a.ReturnDate) as RegDate  from GiftMst a where GiftState = '30' group by datename(YEAR,a.ReturnDate) +'-'+  datename(MONTH,a.ReturnDate)
+		union all  
+		select datename(YEAR,a.SaleDate) +'-'+  datename(MONTH,a.SaleDate) as RegDate from GiftMst a group by datename(YEAR,a.SaleDate) +'-'+  datename(MONTH,a.SaleDate) 
+		union all  
+		select datename(YEAR,a.DisuseDate) +'-'+  datename(MONTH,a.DisuseDate) as RegDate from GiftMst a where GiftState = '99' group by datename(YEAR,a.DisuseDate) +'-'+  datename(MONTH,a.DisuseDate)  
+		union all 
+		select datename(YEAR,a.RetnDate) +'-'+  datename(MONTH,a.RetnDate) as RegDate from retnmst a with (nolock) group by datename(YEAR,a.RetnDate) +'-'+  datename(MONTH,a.RetnDate)  
+		union all 
+		select datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)  as RegDate   from SettlementDay a with (nolock) group by datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)
+		union all 
+		select datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate) as RegDate   from ExpiredSettlement a with (nolock) group by datename(YEAR,a.StmDate) +'-'+  datename(MONTH,a.StmDate)    
+	)a
+
+

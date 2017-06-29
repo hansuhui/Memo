@@ -1,0 +1,24 @@
+
+
+CREATE OR REPLACE FUNCTION fn_delete_admin() RETURNS TRIGGER AS $fn_delete_admin$
+    BEGIN
+        IF (TG_OP = 'DELETE') THEN
+            DELETE FROM Admin_Menu_Order where admin_code = OLD.admin_code;
+            DELETE FROM Shop_Image where shop_code  = OLD.shop_code;
+            DELETE FROM Shop where shop_code  = OLD.shop_code;
+            RETURN OLD;
+         END IF;
+    END
+$fn_delete_admin$ LANGUAGE plpgsql;
+
+
+
+
+CREATE TRIGGER Admin_delete BEFORE DELETE ON Admin
+    FOR EACH ROW EXECUTE PROCEDURE fn_delete_admin();
+
+* 펑션 지우기
+DROP FUNCTION fn_delete_admin();
+
+* 트리거 지우기
+DROP TRIGGER Admin_delete ON Admin;

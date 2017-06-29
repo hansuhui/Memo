@@ -1,0 +1,10 @@
+[.not()]
+
+
+.not()은 지정한 선택자 이외의 것을 선택합니다.
+
+.not( selector )
+
+
+$( 'p' ).not( 'p.abc' ).css( 'color', 'green');
+은 abc를 클래스 값으로 가지지 않은 p 요소를 선택합니다.

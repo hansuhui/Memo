@@ -1,0 +1,72 @@
+[ASP 파일(File) 읽기 ]
+
+
+파일 전체읽기와 라인단위 읽기를 위한 짧은 예제입니다. 
+팁이라기 보다는 ASP기본 예제에 가깝지만 없는것 보단 낫겠다
+는 생각이 들어서 올려봅니다. 주석은 비교적 자세히 달았습니다.
+
+1) 전체읽기 
+
+<%
+Dim objFSO, objOpenedFile, Filepath, sRead 
+Const ForReading = 1, ForWriting = 2, ForAppending = 8
+
+Const FileName = " eadme.txt"
+"파일시스템 객체를 생성한다
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+Filepath = Server.MapPath(Filename)
+"파일이 존재하면
+If objFSO.FileExists(Filepath) Then
+"함수원형 object.OpenTextFile(filename[, iomode[, create[, format]]])
+"TristateUseDefault = -2, TristateTrue = -1, TristateFalse = 0
+"-2 시스템 기본값을 이용하여 파일을 연다, -1 유니코드 형식으로 파일을 연다, 0 ASCII 형식으로 파일을 연다
+
+Set objOpenedFile = objFSO.OpenTextFile(Filepath, ForReading, False, TristateUseDefault)
+
+sRead = objOpenedFile.ReadAll "ReadAll 메서드는 열린 파일 전체를 읽는다
+"sRead = objOpenedFile.ReadLine "ReadLine 메서드는 줄 바꿈 문자는 제외하고 줄 전체를 읽는다
+"sRead = objOpenedFile.Read(4) "Read 메서드는 열린 파일의 현재 위치에서 지정된 수의 문자를 읽는다
+
+Response.write "<pre>" & sRead & "</pre>"
+objOpenedFile.Close
+Set objOpenedFile = nothing
+
+Else
+Response.Write "파일명 " & Filename & " 파일이 없습니다."
+End If
+Set objFSO = nothing
+%>
+
+
+
+2) 라인단위 읽기
+<%
+
+Dim objFSO, objOpenedFile, Filepath, sRead 
+Const ForReading = 1, ForWriting = 2, ForAppending = 8
+
+Const FileName = " eadme.txt"
+"파일시스템 객체를 생성한다
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+Filepath = Server.MapPath(Filename)
+"파일이 존재하면
+If objFSO.FileExists(Filepath) Then
+Response.Write "<pre>"
+Set objOpenedFile = objFSO.OpenTextFile(Filepath, ForReading, False, TristateUseDefault)
+"라인단위로 읽는다
+Do While Not objOpenedFile.AtEndOfStream
+
+sRead = objOpenedFile.readline
+sRead = sRead & vbCRLF
+
+Response.write sRead 
+Loop
+
+Response.Write "</pre>"
+Set TextStream = nothing
+
+Else
+Response.Write "파일명 " & Filename & " 파일이 없습니다."
+End If
+Set objFSO = nothing
+%>

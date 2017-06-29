@@ -1,0 +1,39 @@
+[html5shiv - IE 8 이하에서 HTML5 태그 지원하게 해주는 라이브러리]
+
+HTML5에서 많은 태그가 추가되었습니다. 하지만, 
+그 태그들을 사용할 때 주의해야 할 점이 있습니다. 
+IE8 이하 등 구버전의 웹브라우저에서는 인식하지 못한다는 것입니다.
+
+웹브라우저가 해당 태그를 인식하지 못하면 인라인 요소처럼 처리를 합니다. 
+그리고 그 태그를 선택자로 하여 스타일을 작성할 수가 없습니다.
+
+예를 들어 figure는 HTML5에서 추가된 태그입니다.
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>JavaScript | html5shiv</title>
+    <style>
+      figure {
+        border: 1px solid #333333;
+      }
+    </style>
+  </head>
+  <body>
+    <span>Lorem ipsum dolor</span>
+    <figure>Lorem ipsum dolor</figure>
+    <span>Lorem ipsum dolor</span>
+  </body>
+</html>
+
+
+
+  <!--[if lt IE 9]>
+      <script src="html5shiv.js"></script>
+    <![endif]-->
+
+
+
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+

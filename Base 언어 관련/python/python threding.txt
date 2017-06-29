@@ -1,0 +1,82 @@
+
+[스레드를 다루는 threading 모듈]
+
+컴퓨터에서 동작하고 있는 프로그램을 프로세스(Process)라고 한다. 
+보통 1개의 프로세스는 1가지 일만 하지만, 스레드를 이용하면 한 프로세스 
+내에서 2가지 또는 그 이상의 일을 동시에 수행하게 할 수 있다. 간단한 예제로 설명을 대신하겠다.
+
+import threding
+import time
+
+def say(msg):
+    while True:
+        time.sleep(1)
+        print(msg)
+
+for msg in ['you', 'need', 'python']:
+    t = threading.Thread(target=say, args=(msg,))
+    t.daemon = True
+    t.start()
+
+for i in range(100):
+    time.sleep(0.1)
+    print(i)
+첫 번째 for문에서 ['you', 'need', 'python']이라는 리스트의 요소 개수만큼 
+스레드가 생성되고, 생성된 스레드는 say 메서드를 수행하게 되어 1초에 한 번씩 
+입력으로 받은 msg 변수값을 리턴한다. 두 번째 for문은 매 0.1초마다 0부터 99까지 숫자를 출력하는데, 
+바로 이 부분이 메인 프로그램이 되며 이 메인 프로그램이 종료되는 순간 
+생성된 스레드들도 함께 종료가 된다. t.daemon = True와 같이 daemon 플래그를 설정하면 
+주 프로그램이 종료되는 순간 데몬 스레드도 함께 종료된다.
+
+위 예제의 실행 결과값은 다음과 비슷할 것이다.
+
+0
+you
+need
+python
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+you
+need
+python
+11
+12
+...
+위 결과값에서 볼 수 있듯이 스레드는 메인 프로그램과는 별도로 실행되는 것을 확인할 수 있다.
+
+이러한 스레드 프로그래밍을 가능하게 해주는 것이 바로 threading.Thread 클래스이다. 
+이 클래스의 첫번째 인수는 함수 이름을, 두 번째 인수는 첫 번째 인수인 함수의 입력 변수를 받는다. 
+다음과 같이 스레드를 클래스로 정의해도 동일한 결과를 얻을 수 있다.
+
+import threading
+import time
+
+class MyThread(threading.Thread):
+    def __init__(self, msg):
+        threading.Thread.__init__(self)
+        self.msg = msg
+        self.daemon = True
+
+    def run(self):
+        while True:
+            time.sleep(1)
+            print(self.msg)
+
+for msg in ['you', 'need', 'python']:
+    t = MyThread(msg)
+    t.start()
+
+for i in range(100):
+    time.sleep(0.1)
+    print(i)
+스레드를 클래스로 정의할 경우에는 __init__ 메서드에서 
+threading.Thread.__init__(self)와 같이 부모 클래스의 생성자를 반드시 호출해야 한다. 
+MyThread로 생성된 객체의 start 메서드를 실행할 때는 MyThread 클래스의 run 메서드가 자동으로 수행된다.

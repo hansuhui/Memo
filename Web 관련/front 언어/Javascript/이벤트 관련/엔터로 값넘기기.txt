@@ -1,0 +1,22 @@
+onkeypress="ChkEnter();
+
+<input name="upw" type="password" id="upw" onkeypress="ChkEnter();" />
+
+        function ChkEnter() {
+            if (event.keyCode == 13) {
+                check();
+            }
+        }
+
+
+
+
+	function fn_keyCheck(obj) {
+		var objName = obj.name;
+		if (event.keyCode == 13) {
+			if (objName == 'UserID') {
+				$("#UserPW").focus();
+			}
+			else if (objName = 'UserPW') {
+				fn_submit();
+			}

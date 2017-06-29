@@ -1,0 +1,95 @@
+
+[.animate()]
+
+
+.animate()은 선택한 요소에 CSS 속성을 부여하고, 
+그 모양으로 변할 때 애니메이션 효과를 줍니다.
+
+.animate( properties [, duration ] [, easing ] [, complete ] )
+
+- properties -
+
+properties에는 요소에 부여할 CSS 속성이 들어갑니다. 
+font-size처럼 하이픈이 있는 속성은 fontSize처럼 하이픈을 없애고 하이픈 뒤의 첫글자를 대문자로 바꿉니다.
+애니메이션 효과를 줄 수 있는 속성은 다음과 같습니다.
+
+- backgroundPositionX
+- backgroundPositionY
+- borderWidth
+- borderBottomWidth
+- borderLeftWidth
+- borderRightWidth
+- borderTopWidth
+- borderSpacing
+- margin
+- marginBottom
+- marginLeft
+- marginRight
+- marginTop
+- outlineWidth
+- padding
+- paddingBottom
+- paddingLeft
+- paddingRight
+- paddingTop
+- height
+- width
+- maxHeight
+- maxWidth
+- minHeight
+- minWidth
+- fontSize
+- bottom
+- left
+- right
+- top
+- letterSpacing
+- wordSpacing
+- lineHeight
+- textIndent
+
+- duration -
+
+부여한 CSS 속성 모양으로 완성될 때까지 걸리는 시간을 정합니다.
+
+- easing -
+
+변환되는 방식을 정합니다. 기본값은 swing입니다.
+
+- complete -
+
+애니메이션이 끝난 후 효과를 추가할 수 있습니다.
+
+
+- 예제 -
+
+버튼을 클릭하면 글자가 커지고 테두리가 굵어지는 예제입니다.
+
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery Methods | .animate()</title>
+    <style>
+      p {
+        border: 1px solid #bcbcbc;
+      }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $( document ).ready( function() {
+        $( 'button' ).click( function() {
+          $( 'p' ).animate( {
+            fontSize: '50px',
+            borderWidth: '10px'
+          }, 400 );
+        } );
+      } );
+    </script>
+  </head>
+  <body>
+    <button>Click</button>
+    <p>Lorem Ipsum Dolor</p>
+  </body>
+</html>

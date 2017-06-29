@@ -1,0 +1,39 @@
+    function addOptionTr(prodFlag){
+        
+        var table = document.getElementById('tableName');
+        var row = null;
+        var cell1 = null;
+        var cell2 = null;
+        var cell3 = null;
+        var cell4 = null;
+        var cell5 = null;
+        var cell6 = null;
+        var cell7 = null;
+        var cell8 = null;
+        var cell9 = null;
+
+        
+        row = table.insertRow(mixIndex);
+        row.id = 'mRow'+mixIndex;
+        cell1 = row.insertCell(0);
+        cell2 = row.insertCell(1);
+        cell3 = row.insertCell(2);
+        cell4 = row.insertCell(3);
+        cell5 = row.insertCell(4);
+        cell6 = row.insertCell(5);
+        cell7 = row.insertCell(6);
+
+        cell1.innerHTML = '<input type="checkbox" name="mCkBox" id="mCkBox" />';                
+        cell2.innerHTML = '<input type="text" name="mOptionName" class="form-control input-sm" />';
+        cell3.innerHTML = '<input type="text" name="subOptionName" class="form-control input-sm" />';
+        cell4.innerHTML = '<input type="text" name="mOptionPrice" class="form-control input-sm" />';
+        cell5.innerHTML = '<input type="text" name="mOptionQuantity" class="form-control input-sm" />';
+        cell6.innerHTML = '<input type="text" name="mOptionManageCode" class="form-control input-sm" />';
+        cell7.innerHTML = '<select name="mUseYN" id="mUseYN">' + 
+                            '<option selected="selected" value="y">Y</option>' + 
+                            '<option value="n">N</option>' + 
+                            '</select>';
+        
+        
+				
+    }

@@ -1,0 +1,26 @@
+php.ini 파일에
+session 관련 설정이 가능함
+
+session.auto_start = 0 이면 시작함수를 넣고 1 이면 시작 함수 안해도 됨
+
+session.gc_maxlifetime = 세션 시간(초)
+
+변수명 = 세션명
+
+
+시작시 넣어야 함
+session_start();
+
+//세션 등록
+session_register(변수); //변수지만 $ 붙지 않음
+
+
+//세션 사용
+$HTTP_SESSION_VARS[세션명]
+
+//세션 삭제
+session_unregister(변수) //변수지만 $ 붙지 않음
+
+//세션 확인
+$세션명 = $HTTP_SESSION_VARS[세션명]
+session_is_registered(세션명)

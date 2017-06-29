@@ -1,0 +1,148 @@
+https://opentutorials.org/module/384/4337
+
+
+[URL을 통한 요청]
+
+웹서버와 웹프라우저는 URL을 통해서 통신을 주고 받는다. 그리고 웹서버의 기본적인 동작은 
+URL의 Path에서 요청하는 파일을 Document Root에서 찾아서 전달해주는 것이다. 만약 
+애플리케이션(php,python,ruby,perl..)을 요청하는 것이라면 URL뒤에 파라미터를 붙이기도 한다.
+
+
+[재작성]
+
+재작성(Rewrite)이랑 요청을 통해서 주어진 URL의 규칙을 변경해서 웹서비스를 보다 유연하게
+만드는 방법이다. 아파치 웹서버에서는 mod_rewrite라는 모듈을 통해서 할 수 있었던 작업이다.
+NGINX에서는 rewrite 모듈을 통해서 URL을 재작성 할 수 있다.
+
+
+[예제]
+
+URL으로 할 수 있는 일을 알아보자.
+
+1.의미론적 URL (semantic url)
+
+우선 , 의미론적 URL이 아닌 것을 먼저 보자.
+
+http://en.wikipedia.org/wiki/index.php?title=Semantic_URL
+
+위의 URL을 의미론적인 URL롤 바꾸면 아래와 같다.
+
+http://en.wikipedia.org/wiki/Semantic_URL
+
+의미록적이지 않은 URL을 의미론적으로 변경하기 위해서는 아래와 같이 한다.
+rewrite 규칙을 어떻게 적용하는지는 뒤에서 알아보겠다.
+
+
+아래와 같은 문법적인 구성을 통해서 재작성을 할 수 있다는 것만 살짝 맛보고 리다이렉션 규칙에
+대한 자세한 설명은 예제 다음에 나오는 리다이렉션 문법을 숙지 한 후에 다시 살펴보자.
+
+rewrite ^/wiki/(.*)$ /wiki/index.php?title=$1?;
+
+
+2.확장자의 치환
+
+정적인 파일과 동적인 파일
+
+우선, 동적인 파일의 예를 보자. 확장자가 php이다. 이것은 index.php 파일이 애플리케이션에
+의해서 실행된다는 것을 암시한다. 그것은 이 파일의 내용이 바뀔 가능성이 있다는 의미이기도 하다.
+검색엔진은 .php , .asp , .rb와 같은 동적인 파일보다. html과 같은 정적인 파일의 내용을
+더 선호하는 것으로 알려져 있다.
+
+http://opentutorials.org/index.php
+
+확장자의 변경
+
+아래 URL은 네이버의 URL이다. 확장자가 nhn이다. nhn이라는 언어는 존재하지 않는다. 네이버는
+자사가 사용하고 있는 기술이 무엇인지를 숨기기 위해서 php , jsp , asp 와 같은 확장자 대신에
+nhn을 사용하고이쓴 것이다. 이것의 장점은 서비스를 사용하는 사용자들에게 자사가 사용하고 있는
+기술을 숨길 수 있다는 점이다. 이것은 자연스럽게 보안이 높아지는 효과가 있다.
+
+http://endic.naver.com/search.nhn
+
+3.리다이렉션
+
+리다이렉션(redirection)은 사용자가 요청한 정보의 위치가 다른 곳으로 옮겨졌다는 것을
+의미한다. 예를들어서 아래 URL로 접근 했을 때 
+
+http://old_site.org/tutorials/javascript.html
+
+아래 URL로 보내고 싶다면
+
+http://opentutorials.org/course/48
+
+old_site.org의 NGINX 설정에서 다음과 같이 하면 된다.
+
+location ~ /tutorials/javascript.html {
+    rewrite ^ http://opentutorials.org/course/48;
+}
+
+
+4.내부 리다이렉션
+
+위에서 살펴본 리다이렉션을 외부 리다이렉션이다. 외부 리다이렉션은 웹서버가 웹브라우저에게 
+302,301 헤더 값을 전송하면 웹브라우저는 웹서버가 안내하는 페이지로 다시 재접속을 하는 
+방식이다. 즉 웹서버 외부에 존재하는 웹브라우저가 리다이렉션의 주체가 된다. 반대로
+내부 리다이렉션은 NGINX 내부에서 일어나는 리다이렉션이기 떄문에 더 빠르고 웹브라우저에게
+리다이렉션 자체를 숨길 수 있다.
+
+만약 아래와 같은 URL로 접근한다고 했을때
+
+http://test.com/docs/readme.html
+
+실제로 위의 파일은 아래의 위치에 존재한다면
+
+http://test.com/files/docs/readme.html
+
+다음과 같이 하면 된다. 
+location /docs/ {
+    rewrite ^/docs/(.*)$ /files/docs/$1;
+}
+
+모듈은 리다이렉션 할 URL에 http://가 포함되어 있으면 NGINX Rewrite 모듈은 자동으로 외부 
+리다이렉션을 사용한다.
+
+[리다이렉션의 디버깅]
+
+리다이렉션을 사용하는 방법을 알아보기 전에 리다이렉션을 디버깅하는 방법을 먼저 알아보자.
+그래야 테스트하기가 편리하다.
+
+error_log 지사자를 server 나 location 블록 아래에 위치시킨다. server 블록 아래에 두면 해당 
+가상 호스트 전체의 에러 메시지가 출력될 것이고 location 블록 아래에 두면 해당 경로에 대한 
+에러만 로그로 출력될 것이다. 예를들면 아래와 같다. 아래의 설정은 opentutorials.org 전체에
+대한 에러를 /var/log/opentutorials.org.error 파일에 기록한다. 또 php 파일에 대한 에러는
+/var/log/poentutorials.org.org.php.error에 기록한다. 뒤에 붙은 debug는 에러로그의 수위를
+나타내는데 rewrite에 대한 에러를 출력하려면 debug 레벨을 사용해야 한다.
+
+
+server {
+    server_name opentutorials.org
+    error_log /var/log/opentutorials.org.error debug;
+    location ~ /.php$ {
+        error_log /var/log/opentutorials.org.php.error debug;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

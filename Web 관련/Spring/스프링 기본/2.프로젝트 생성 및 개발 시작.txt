@@ -1,0 +1,173 @@
+http://addio3305.tistory.com/39
+
+이번글부터는 지난글까지 이야기했던 기본 프로젝트를 이용하여, 실제 프로젝트서 사용할 수 있는
+구조 및 아키텍처를 이야기합니다.
+
+스프링에서 제공하는 다양한 모듈들, 예를 들어 인터셉터,로깅, 트랜잭션 , 익셉션 및 MyBatis연동
+등 프로젝트의 전반적인 아키텍처 및 스프링 모듈을 하나씩 추가할 예정입니다.
+
+이번글에서는 지난글에서 생선했던 프로젝트의 구조를 변경하고 기초적인 설정에 대해서 
+이야기하는데, 처음에는 구조가 굉장히 복잡하게 느껴집니다.
+가능한 복잡한 구조를 풀어서 설명하고, 외 그런 구조가 필요한지에 대한 이유를 설명하겠습니다.
+
+
+[프로젝트의 구조]
+
+지난글에서 생성했던 first프로젝트는 스프링 기본 프로젝트였다, 따라서, 프로젝트의 구조나 설정
+등에 미흡한 부분이 많았다.
+지금부터는 프로젝트를 이용하여 우리가 최종적으로 만들려고 하는 프로젝트의 구조로 변경한다.
+
+
+[index.jsp 추가]
+
+기존에는 프로그램을 실행하면 기본적으로 home.jsp가 실행되었다.
+그렇지만 우리가 어떤한 웹사이트를 들어가 보면 보통 index.jsp가 실행된다.
+
+home.jsp가 실행되는것은 우리가 제어하기도 힘들고, 앞으로 개발할 구조에도 맞지않기 떄문에,
+웹사이트가 최초 보여주는 index.jsp를 추가하려고 한다.
+
+src/main/webapp 디렉토리 밑에 index.jsp를 만들자.
+
+
+이제 서블릿 설정을 통해서, 이 프로젝트가 시작되면 index.jsp를 호출하도록 바꾸겠다.
+web.xml에 다음의 내용을 추가한다.
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+이 위치는 web.xml의 <web-app></web-app> 태그 사이에 존재하면 된다. 
+즉, 이 태그는 web.xml의 아무곳에서나 선언하면된다. 
+여기서는 web.xml 맨 위에 위치하도록 하였다.
+
+
+[서블릿 설정 변경]
+
+서블릿(Servlet)이란 간단히 말해서 자바에서 동적 웹 프로젝트를 개발할 때, 사용자의 요청과
+응답을 처리해주는 역할을 한다. 서블릿에 대한 설명은 많은곳에서 찾을 수 있으니 여기서는
+자세한 설명은 넘어가려고 한다.
+보통 스프링에서는 servlet 설정이 .do로 되어있는데, 현재 기본 프로젝트에서는
+.do로 되어있지 않다. 따라서, 서블릿 설정을 간단히 바꿔주려고 한다.
+web.xml을 열어보면 다음과 같은 부분이 있다.
+
+
+<servlet>
+    <servlet-name>appServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+     
+<servlet-mapping>
+    <servlet-name>appServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+</servlet-mapping>
+
+
+이를 다음과 같이 바꾼다.
+
+
+<servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>
+                /WEB-INF/config/*-servlet.xml 
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+</servlet-mapping>
+
+
+여기서 볼 것은 <url-pattern>*.do</url-pattern> 부분이다.
+이는 앞으로 서블릿에 어떠한 요청을 할때, .do를 통해서만 요청을 전달하고, 다른 방식의 요청,
+예를 들어 .html의 직접적인 호출등은 이제 허락되지 않는다.
+
+그 다음 확인할 부분은 contextConfigLocation의 설정이다.
+기존에는 dispatcher의 설정인 contextConfigLocation이  
+/WEB-INF/spring/appServlet/servlet-context.xml에 존재하였는데,
+ 이를 /WEB-INF/config/action-servlet.xml로 변경하고, 
+인터셉터(Intercepter)도 추가하려는 목적이다. 인터셉터에 대한 설명은 다음 글에서 하려고 한다. 
+
+마지막으로, <context-param>을 수정한다.
+<context-param>에서 설정되어있던 root-context.xml은 모든 서블릿과 필터에서 사용되는 루트 스프링 컨테이너에 대한 설정이다
+(The definition of the Root Spring Container shared by all Servlets and Filters). 
+이 root-context.xml은 추후 다른곳에서 설정될 예정이므로 <param-value></param-value>안에 있던 /WEB-INF/spring/root-context.xml 부분은 다음과 같이 지운다.
+
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value></param-value>
+</context-param>
+
+완료된 소스
+========================================================
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+ 
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+     
+    <!-- Creates the Spring Container shared by all Servlets and Filters -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+ 
+    <!-- Processes application requests -->
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>
+                <!-- /WEB-INF/config/action-servlet.xml,
+                /WEB-INF/config/interceptor-servlet.xml -->
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+     
+    <!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value></param-value>
+    </context-param>
+</web-app>
+
+
+========================================================================
+
+
+[contextConfigLocation 변경]
+
+서블릿 설정 변경에서 기존의 servlet-context.xml의 이름을 action-servlet.xml로 바꾸고
+위치도 바꾸었다. 설정 파일은 변경되었으니, 이제 실제 소스를 바꾸려고 한다.
+
+
+1. 위에서 설정한것처럼 /WEB-INF 디렉토리 밑에 config 라는 폴더를 만든다.
+
+2./WEB-INF/spring/appServlet 디렉토리에 있는 servlet-context.xml을 복사해서
+ , /WEB-INF/config 폴더에 붙여넣고, 이름을 action-servlet.xml로 변경한다.
+
+3. /WEB-INF/에 있는 spring이라는 디렉토리를 삭제한다.
+
+
+

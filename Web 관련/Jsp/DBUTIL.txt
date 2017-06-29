@@ -1,0 +1,84 @@
+package dbUtil;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+public class dbUtil {
+	private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	private final String URL = "jdbc:mysql://192.168.123.54:3306/cafe";
+	private final String ID = "innobile";
+	private final String PWD = "xxxx";
+	public ResultSet rs = null;
+
+	public Connection getCon() {
+		Connection con = null;
+		try {
+			Class.forName(this.JDBC_DRIVER);
+			con = DriverManager.getConnection(URL, ID, PWD);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
+
+}
+
+
+
+
+====================사용시 ============================
+
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
+메소드 안에서
+sql 
+
+			con = dbUtil.getCon();
+			ps = con.prepareStatement(sql);
+
+
+this.rs = ps.executeQuery();
+try{
+
+makerList = new ArrayList<MakerDTO>();
+			while (this.rs.next()) {
+				makerDTO = new MakerDTO();
+				makerDTO.setCode(this.rs.getString("Code"));
+				makerDTO.setImage1(this.rs.getString("Image1"));
+				makerDTO.setCtgtitle(this.rs.getString("ctgTitle"));
+				makerDTO.setCompany(this.rs.getString("Company"));
+				makerDTO.setTitle(this.rs.getString("Title"));
+				makerDTO.setRegdate(this.rs.getString("RegDate"));
+				makerDTO.setIsdisplay(this.rs.getInt("IsDisplay"));
+				makerDTO.setIsdelete(this.rs.getString("IsDelete"));
+				makerList.add(makerDTO);
+			}
+}
+} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (Exception e) {
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+				}
+			}
+
+

@@ -1,0 +1,12 @@
+FOR 시작 TO 끝 STEP증가
+    반복되어 실행될 구문
+NEXT
+
+
+
+
+DIM intLoop
+FOR intLoop = 1 TO 10000 STEP 1
+    Response.write intLoop & "<BR>"
+NEXT
+

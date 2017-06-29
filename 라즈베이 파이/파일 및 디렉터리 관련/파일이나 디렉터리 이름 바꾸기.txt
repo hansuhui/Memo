@@ -1,0 +1,5 @@
+mv 명령을 사용해 파일과 디렉터리의 이름을 변경할 수 있다.
+
+mv myfile.txt myfile.rtf
+
+mv 원래파일명 변경파일명

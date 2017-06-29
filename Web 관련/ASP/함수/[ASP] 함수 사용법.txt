@@ -1,0 +1,41 @@
+http://delirussum.tistory.com/entry/ASP-%ED%95%A8%EC%88%98-%EC%82%AC%EC%9A%A9%EB%B2%95
+
+
+EX)
+------- Public.asp ------------
+<%
+Function shortStr(Str, LenStr, LastStr)
+    Dim RStr
+    RStr = Left(Str, LenStr)
+    RStr = RStr & LastStr
+    shortStr = RStr
+End Function
+%>
+------------------------------
+------- Test.asp --------------
+<!--#include file="Public.asp"-->
+<%
+RStr =  ShortStr("테스트입니다.", 3, "..." )
+Response.Write RStr
+%>
+------------------------------
+해설
+<%
+    Function shortStr(Str, LenStr, LastStr)
+    Dim RStr  '// 변수 선언
+    RStr = Left(Str, LenStr) '// 넘겨받은 글자를 왼쪽에서 부터 지정 숫자 만큼만 읽는다.
+    RStr = RStr & LastStr '// 짤린 글짜 오른쪽에 표시해줄 글자를 붙여서 한개의 변수에 담는다.  
+    '// 이부분은 값은 받은 인자를 데이타 처리 한 후 최종적으로 호출한 시점으로 Return 
+    '// 즉 값을 돌려보내기 위해 shortStr 이곳에 RStr  이라는 변수의 값을 넘기는 겁니다.
+
+    ShortStr  = RStr  '함수명과 동일하게 
+
+End Function 
+'// 호출 시에는 위에 선언한 펑션의 파라미터의 갯수를 맞게해서 호출하여야 호출이 되며..
+'// 이 펑션의 파라미터의 역활은 1. 값, 2. 제한 길이, 3. 제한 길이가 넘었을 경우 뒤에 표시해줄 문자
+'// 이 3가지를 이용해서 호출하게 되면 저 위에 빨간부분. 즉 리턴해준 값이 하단의 빨간 변수에 담기게 됩니다.
+RStr =  ShortStr("테스트입니다.", 3, "..." )  '받는 함수명은 임의데로  
+'// response.write 즉 데이타를 출력해보면 테스트입니다에서 3자리까지. "테스트" 부분에 ...이 합쳐져서
+'// 테스트... 가 출력됩니다.
+Response.Write RStr
+%>

@@ -1,0 +1,51 @@
+[정규식 검색]
+
+Function NumCheck(str)
+ Dim regEx, match, matches
+ 
+ SET regEx = New RegExp
+ regEx.Pattern = "[^-0-9 ]"
+ regEx.IgnoreCase = True
+ regEx.Global = True
+ SET Matches = regEx.Execute(str)
+ 
+ if 0 < Matches.count then
+  NumCheck = false
+ Else
+  NumCheck = true
+ end if
+End Function
+ 
+ 
+------------------------------------------
+ 
+ 
+response.write NumCheck("123") - true
+ 
+
+
+
+[정규식 문자 제거]
+
+
+링크 (http://yplue.tistory.com/72)
+Function RemoveTag(str)
+    patrn = "<([\w\s='/?&]+)>"
+    set regEx = New RegExp  ' 정규식
+    regEx.IgnoreCase = True ' 대/소문자 구분X
+    regEx.Global = True     ' 전체 문자열을 검색
+    regEx.Pattern = patrn   ' 패턴 설정
+ 
+    set matches = regEx.Execute(str)
+   
+    For Each match in matches
+        str = regEx.Replace(str, "")
+    Next
+   
+    set matches = nothing
+    set regEx = nothing
+ 
+    RemoveTag = trim(str)
+End Function
+ 
+Response.write RemoveTag("<a href=''>test</a>")

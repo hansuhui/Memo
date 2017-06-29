@@ -1,0 +1,14 @@
+- MSSQL POWER / SQRT 란?
+   POWER 는 입력된 숫자의 거듭제곱 값을 계산해주는 역활을 하며,
+   SQRT 는 입력된 숫자의 제곱근 값을 계산해주는 역활을 합니다.
+
+ 
+
+ - MSSQL POWER 사용방법
+   POWER([대상 숫자], [거듭제곱 횟수])
+ 
+
+ - MSSQL SQRT사용방법
+   SQRT([대상 숫자])
+
+ 

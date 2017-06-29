@@ -1,0 +1,254 @@
+php > 내가 만들어 쓰는 함수 > 정의한 함수 수정 및 내용 정리
+
+이전까지는 이미지 복사, 이미지 리사이즈, 이미지 크롭, 워터마크등을 다뤄보았습니다.
+이번에는 기존의 정의한 함수들에 대해 수정 및 내용 정리를 하고자 합니다.
+
+첨부파일에 두개의 파일을 올려두었습니다.
+image_proc.function.old.php 는 이전강의 까지 사용했던 내용이고, image_proc.function.php 은 제가 좀 더 다듬은 내용입니다.
+
+기존 내용과 달라진 점을 하나씩 살펴보고자 합니다.
+
+이름 : save_image_from_resource
+용도 : image resouce 를 가지고 파일로 저장
+성공시 리턴값 : true
+실패시 리턴값 : false
+
+인자 :
+==> $im : 이미지 리소스 id
+==> $path_save_file : 저장될 파일의 절대 경로 또는 상대경로
+==> $quality : 저장되는 파일의 질을 결정
+==> 100 이하의 정수로 지정, 높을수록 질이 높음
+==> 생략하면 자동으로 기본값은 70
+==> $save_force : 동일 경로에 이미 파일이 존재할때
+==> 0 이면 저장하지 않고 false 반환
+==> 1 이면 저장하지 않고 true 반환
+==> 2 이면 기존 것은 지우고 새로 저장
+==> 생략하면 자동으로 기본값은 0
+참고 :
+==> gif 이미지는 $quality 의 영향을 받지 않음
+
+새로운 인자가 추가 되엇습니다.
+이전에는 인자가 $im, $path_save_file 두개 였지만, $quality, $save_force 인자가 추가 되었습니다.
+
+$im : 이미지 리소스 id
+이부분은 이전에 설명할때는 그냥 이미지 리소스라고 설명했는데 약간의 차이가 있습니다.
+여러가지 내장함수를 통해 이미지를 생성할때, 이미지 리소스가 생성됩니다. 생성된 리소스는 메모리에 고유한 아이디를 가지고 저장됩니다. php는 그 고유한 아이디를 반환하여 줍니다. 우리는 그 아이디를 변수에 담아서 여러가지 이미지 처리에 필요한 행위들을 합니다.
+
+분명히 다른 말이지만, 이미지 관련해서 모든 처리는 이미지 리소스 id를 통해서 이루어 지므로 같다고 생각해도 무방합니다.
+
+$quality : 저장되는 파일의 질(quality)을 결정
+이 변수는 0부터 100 이하의 정수만 사용가능합니다.
+gif 이미지로 저장될때에는 적용되지 않습니다. 이유는 php 내장함수인 imagegif 에서 지원하지 않기 때문입니다.
+$quality 가 낮으면 낮을수록 이미지의 질이 떨어지며 동시에 용량도 줄어듭니다.
+
+$save_force : 동일한 경로에 동일한 이름의 파일이 이미 존재할때의 처리를 결정합니다.
+0 으로 설정하면, 처리 실패를 나타내는 false를 반환합니다.
+1 로 설정하면, 처리 성공을 나타내는 true를 반환하며, 새로 저장하지는 않습니다.
+2 로 설정하면, 기존의 파일은 지우고 새로 저장합니다.
+
+이렇게 옵션을 두는 이유는 실전에서 프로그램을 하다 보면 굉장히 많은 경우의 수가 생기기 때문입니다.
+기존에 이미지가 존재하더라도 새로 저장해야 할 경우도 생기고, 중복 처리를 하지 않기 위해 기존 이미지를 두는 경우, 중복되지 않는 이름으로 저장한다고 했지만, 예상치 못한 이유로 동일한 이름의 파일이 이미 저장되어있을 경우 등등...... 많은 경우 들이 존재합니다. 그러므로 그런 경우에 대처하기 쉽고 유연한 프로그램을 하기 위해서 이런 옵션을 설정합니다.
+
+이름 : get_size_by_rule
+용도 : 큰이미지의 너비와 높이를 가지고 정비율의 작은 이미지 너비 나 높이를 구함
+성공시 리턴값 : 0보다 큰 정수값
+실패시 리턴값 : false
+
+인자 :
+==> $src_w : 큰이미지의 너비, 0보다 큰 정수만 가능
+==> $src_h : 큰이미지의 높이, 0보다 큰 정수만 가능
+==> $dst_size : 작은 이미지의 정해진 너비 나 높이, 너비 일 경우 높이 반환, 높이 일 경우 너비 반환
+==> $rule : $dst_size 의 값이 너비 인지 높이인지 지정
+==> 값으로는 width, height 가 올수 있다.
+==> 생략하거나 height 가 아니면 모두 width로 인식
+
+
+인자에는 변화가 없지만 내부적으로 인자의 데이타 타입에 유동성을 주었습니다.
+정수로 받아야할 인자들이 ceil 같은 함수의 결과값으로 float 형이 들어올 경우도 있기 때문에, 그때마다 에러를 발생하는 것보다는 먼저 강제로 형변환을 한다음 조건을 체크하도록 하여 처리에 유연성을 주었습니다.
+
+이름 : get_bigsize_by_rule
+용도 : 작은 이미지의 너비와 높이를 가지고 정비율의 큰 이미지 너비 나 높이를 구함
+성공시 리턴값 : 0보다 큰 정수값
+실패시 리턴값 : false
+
+인자 :
+==> $dst_w : 작은이미지의 너비, 0보다 큰 정수만 가능
+==> $dst_h : 작은이미지의 높이, 0보다 큰 정수만 가능
+==> $src_size : 큰 이미지의 정해진 너비 나 높이, 너비 일 경우 높이 반환, 높이 일 경우 너비 반환
+==> $rule : $src_size 의 값이 너비 인지 높이인지 지정
+==> 값으로는 width, height 가 올수 있다.
+==> 생략하거나 height 가 아니면 모두 width로 인식
+
+인자에는 변화가 없지만, 이 함수와 쌍을 이루는 get_size_by_rule 의 인자배열과 달라 사용상 혼선이 있을수도 있을것 같아서 인자의 순서를 바꾸었습니다.
+기존에는 get_bigsize_by_rule($src_size, $dst_w, $dst_h, $rule='width') 이였지만, 수정된 내용에는 get_bigsize_by_rule($dst_w, $dst_h, $src_size, $rule='width')로 변경되었습니다.
+
+이름 : get_image_cropresize
+용도 : 원본의 리소스를 가지고 주어진 조건으로 크롭 후 리사이즈 처리한 이미지 리소스를 생성
+성공시 리턴값 : 썸네일 리소스 id
+실패시 리턴값 : false
+
+인자 :
+==> $src : 원본의 리소스 id
+==> $src_w : 원본의 너비
+==> $src_h : 원본의 높이
+==> $dst_w : 생성할 썸네일의 너비, 0 이상의 정수
+==> $dst_h : 생성할 썸네일의 높이, 0 이상의 정수
+==> 생략 가능하며 생략시에는 자동으로 0으로 값이 들어감
+==> $pos_width : 너비를 기준으로 크롭할때 어느부분을 크롭할지 지정
+==> 1 일경우에는 왼쪽을 기준으로 크롭
+==> 2 일경우에는 중앙을 기준으로 크롭
+==> 3 일경우에는 오른쪽을 기준으로 크롭
+==> 생략가능하며 생략시에는 자동으로 2 로 값이 들어감
+==> $pos_height : 높이를 기준으로 크롭할때 어느부분을 크롭할지 지정
+==> 1 일경우에는 상단을 기준으로 크롭
+==> 2 일경우에는 가운데를 기준으로 크롭
+==> 3 일경우에는 하단을 기준으로 크롭
+==> 생략가능하며 생략시에는 자동으로 2 로 값이 들어감
+
+참고 :
+==> $dst_w 와 $dst_h 모두 값이 0이 될수 없음
+==> 둘다 0보다 클 경우, 강제 리사이즈하여 썸네일 리소스 생성
+==> 둘중 하나가 0 이면, 0이 아닌 쪽을 기준으로 정비율로 리사이즈 하여 썸네일 생성
+
+새로운 인자가 추가 되엇습니다.
+이전에는 인자가 $src, $src_w, $src_h, $dst_w, $dst_h 네개 였지만, $pos_width, $pos_height 인자가 추가 되었습니다.
+
+$pos_width : 너비를 기준으로 크롭할때 높이의 어느부분을 크롭할지 지정
+위 인자 설명 대로 1일 경우에는 왼쪽, 2일 경우에는 중앙, 3일 경우에는 오른쪽 입니다.
+
+$pos_height : 높이를 기준으로 크롭할때 어느부분을 크롭할지 지정
+위 인자 설명 대로 1일 경우에는 상단, 2일 경우에는 가운데, 3일 경우에는 하단입니다.
+
+내부적으로는 get_bigsize_by_rule 의 사용법이 변경되었기 때문에 변경된 부분을 적용하였으며, 중복으로 나열되었던 부분을 변수를 통해서 간략하게 정리하였습니다.
+
+
+이상으로 함수의 변경사항에 대해 내용을 정리하였습니다.
+
+아래의 예제를 통해 다양한 위치에서 이미지를 크롭 및 리사이즈 처리하는 것을 살펴보도록 합니다.
+
+예제1> test12.php
+
+<?php
+
+//이미지 처리 함수 인클루드
+include_once 'lib/image_proc.function.php';
+
+$path_file = 'sample_image/test.jpg';//원본파일
+
+$path_crop_320X240_file = 'sample_image/test_crop_320X240.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+$path_crop_320X165_1_file = 'sample_image/test_crop_320X165_1.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+$path_crop_320X165_2_file = 'sample_image/test_crop_320X165_2.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+$path_crop_320X165_3_file = 'sample_image/test_crop_320X165_3.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+$path_crop_320X365_1_file = 'sample_image/test_crop_320X365_1.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+$path_crop_320X365_2_file = 'sample_image/test_crop_320X365_2.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+$path_crop_320X365_3_file = 'sample_image/test_crop_320X365_3.jpg';//크롭 및 리사이즈 처리되어 저장될 파일 경로
+
+//원본의 이미지 리소스를 받아온다.
+list($src, $src_w, $src_h) = get_image_resource_from_file ($path_file);
+if (empty($src)) die($GLOBALS['errormsg'] . "<br />\n");
+
+//320 X 240 처리, 정비율
+$dst_w = 320;
+$dst_h = 240;
+$dst_320X240 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h);
+if ($dst_320X240 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X240 = save_image_from_resource ($dst_320X240, $path_crop_320X240_file, 70, 2);//강제 저장
+if ($result_save_320X240 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X240);
+
+//320 X 165 상단 처리
+$dst_w = 320;
+$dst_h = 165;
+$dst_320X165_1 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h, 2, 1);
+if ($dst_320X165_1 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X165_1 = save_image_from_resource ($dst_320X165_1, $path_crop_320X165_1_file, 70, 2);//강제 저장
+if ($result_save_320X165_1 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X165_1);
+
+//320 X 165 가운데 처리
+$dst_w = 320;
+$dst_h = 165;
+$dst_320X165_2 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h, 2, 2);
+if ($dst_320X165_2 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X165_2 = save_image_from_resource ($dst_320X165_2, $path_crop_320X165_2_file, 70, 2);//강제 저장
+if ($result_save_320X165_2 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X165_2);
+
+//320 X 165 하단 처리
+$dst_w = 320;
+$dst_h = 165;
+$dst_320X165_3 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h, 2, 3);
+if ($dst_320X165_3 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X165_3 = save_image_from_resource ($dst_320X165_3, $path_crop_320X165_3_file, 70, 2);//강제 저장
+if ($result_save_320X165_3 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X165_3);
+
+//320 X 365 처리 왼쪽
+$dst_w = 320;
+$dst_h = 365;
+$dst_320X365_1 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h, 1, 1);
+if ($dst_320X365_1 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X365_1 = save_image_from_resource ($dst_320X365_1, $path_crop_320X365_1_file, 70, 2);//강제 저장
+if ($result_save_320X365_1 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X365_1);
+
+//320 X 365 처리 중앙
+$dst_w = 320;
+$dst_h = 365;
+$dst_320X365_2 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h, 2, 1);
+if ($dst_320X365_2 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X365_2 = save_image_from_resource ($dst_320X365_2, $path_crop_320X365_2_file, 70, 2);//강제 저장
+if ($result_save_320X365_2 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X365_2);
+
+//320 X 365 처리 왼쪽
+$dst_w = 320;
+$dst_h = 365;
+$dst_320X365_3 = get_image_cropresize($src, $src_w, $src_h, $dst_w, $dst_h, 3, 1);
+if ($dst_320X365_3 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+$result_save_320X365_3 = save_image_from_resource ($dst_320X365_3, $path_crop_320X365_3_file, 70, 2);//강제 저장
+if ($result_save_320X365_3 === false) die($GLOBALS['errormsg'] . "<br />\n");
+
+@imagedestroy($dst_320X365_3);
+
+@imagedestroy($src);
+
+//성공하였다면 이미지 출력
+
+?>
+원본 이미지 <br />
+<img src='<?=$path_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 240px <br />
+<img src='<?=$path_crop_320X240_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 165px 상단 <br />
+<img src='<?=$path_crop_320X165_1_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 165px 가운데 <br />
+<img src='<?=$path_crop_320X165_2_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 165px 하단 <br />
+<img src='<?=$path_crop_320X165_3_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 365px 왼쪽 <br />
+<img src='<?=$path_crop_320X365_1_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 365px 중앙 <br />
+<img src='<?=$path_crop_320X365_2_file?>'> <br />
+
+썸네일 이미지 - 크롭 및 리사이즈 320px X 365px 오른쪽 <br />
+<img src='<?=$path_crop_320X365_3_file?>'> <br />

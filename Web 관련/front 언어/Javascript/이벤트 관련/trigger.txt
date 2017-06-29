@@ -1,0 +1,16 @@
+
+
+.trigger() 함수는 이벤트가 발생할 때 실행될 함수나 .bind() 함수로 연결된 어떤 이벤트 핸들러를 강제로 실행시켜 줍니다. A call to .trigger() 함수를 사용해서 사용자가 일으킬 이벤트를 임의적으로 순서에 따라 발생시킬 수 있습니다.
+
+
+$('#foo').bind('click', function() {
+      alert($(this).text());
+    });
+    $('#foo').trigger('click');
+
+
+
+$('#foo').bind('custom', function(event, param1, param2) {
+  alert(param1 + "\n" + param2);
+});
+$('#foo').trigger('custom', ['Custom', 'Event']);

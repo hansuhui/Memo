@@ -1,0 +1,9 @@
+<%
+
+cul5 = Replace (cul5, Chr(13), "<br>")
+response.write cul5
+
+&>
+
+이상입니다~
+

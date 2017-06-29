@@ -1,0 +1,4 @@
+   function toclipboard(str) {
+            window.clipboardData.setData('Text', str);
+            alert("클립보드에 복사 되었습니다.");
+        }

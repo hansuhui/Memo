@@ -1,0 +1,8 @@
+http://shstarkr.tistory.com/120
+
+[ASP] 반올림(ROUND), 버림(FIX)
+
+
+반올림 : round() 함수
+
+버림 : fix() 함수

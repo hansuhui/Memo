@@ -1,0 +1,278 @@
+http://blog.saltfactory.net/develop-hybrid-app-using-with-ionic-framework/
+
+
+[Ionic Framework를 이용하여 하이브리드앱 개발하기]
+
+
+우리가 ionic을 선택한 이유는 다음과 같다.
+
+- 모바일 앱을 개발하기에 최적화된 UI가 기본적으로 제공된다.
+
+- HTML으로 UI를 만들고 Javascript의 데ㅇ이터 업데이트를 빠르게 적용할 수 있다.
+
+- MVC 개발을 할 수 있는 환경을 제공한다.
+
+- 네이티브 자원을 사용할 수 있는 plugins 사용을 허용한다.
+
+- 크로스 플랫폼 빌드를 제공한다.
+
+- Node.js 기반으로 개발할 수 있는 환경을 지원한다.
+
+- 활발한 개발자 포럼을 지원한다.
+
+
+ionic framework 로 개발하기 위해서는 다음과 같은 사전 지식이 필요하다.
+
+- Node.js
+
+- AngularJS
+
+- PhoneGap (Cordova)
+
+위의 기술에 대한 소개글은 인터넷에서 쉽게 찾아볼 수 있기 때문에 각각 해당하는 기술을 소개하는
+글은 생략한다. ionic을 설치하기 위해서는 Node.js 가 설치 되어 잇어야 한다.
+
+Node.js가 설치가 되어 있으면 다음은 PhoneGap과 Cordova를 npm으로 설치한다. 
+ionic은 cordova를 패키징하고 있지만 이후에 cordova 명령어를 자주 이용할 
+수 있기 때문에 설치하는 것이 좋다
+
+npm install -g cordova phonegap  
+
+마지막으로 ionic framework를 설치한다.
+
+npm install -g ionic
+
+
+ionic을 사용하기 위한 준비는 모두 끝낳다. 의외로 매우 간단하다. ionic 뿐만 아니라 cordova, phonegap 역시
+모두 Node.js 기반으로 개발환경을 바구었기 때문에 이렇게 간단하게 설치할 수 있게 되었다.
+npm으로 global로 ionic을 설치하면 ionic 명령어를 사용할 수있게 된다.
+ionic은 지금 정식 1.0 릴리즈를 앞두고 여러가지 기능과  컴포넌트를 빠르게 업데이트 하고 있다.
+항상 버신 버전을 업데이트 하는게 중요하다.
+
+명령어 옵션은 이후에 하나씩 사용하면서 설명하도록 한다.
+
+이제 ionic 프로젝트를 한번 만들어 보자. ionic의 명령어 중에 프로젝트를 생성하는 것은 start라는 명령이다.
+다음과 같이 ionic start {프로젝트명}을 입력하고 새로은 ionic 프로젝트를 만들어보자.
+
+ionic start sf-hybrid-demo  
+
+ionic start로 새로운 프로젝트를 만들면 git에서 sample 소스가 다운로드 되어 풀리면서 
+앱을 개발하는데 기본적으로 필요한 파일들이 프로젝트 이름으로 만들어진 디렉토리에 저장된다.
+ionic은 bower를 사용하여 웹 라이브러리를 다운 받을 수 있게 지우너하고 있으며, gulpjs를 이용해서
+자동화할 수 있는 환경을 제공하고 있다 또한 기본 디렉토기 구조는 PhoneGap(Cordova) 프로젝트와
+동일하다 ionic은 크로스 플랫폼 빌드를 지원하기 위해서 내부적으로 cordova를 사용하고 있기 때문이다.
+또한 개발에 필요한 Node.js 모듈을 사용하기 위해서 package.json 파일이 존재하는 것도 볼 수 있다.
+즉, ionic은 Node.js 기반으로 개발하고 Cordova를 사용하고 있다는 것을 확인 할 수 있다.
+이러한 이유로 Cordova(PhoneGap)을 사용해서 개발해본 경험이 있다면 매우 친군하게 개발을 할 수 있다.
+guplfile.js를 열어 보면 scss 파일을 컴파일하는 자동화 task가 정의된 것을 확인할 수 있다.
+css 개발을 scss를 이용하여 할 수 있는 환경도 가지고 잇다. 또한 plugins 디렉토리에는 
+cordova plugins을 저장하는 곳으로 ionic이 하이브리드 앱을 개발하기 위한 framework라는 것을 확인 할 수 있다.
+
+ionic은 점점 자동화와 여러가지 편리한 개발 환경을 추기하고 있다. 이전 버전에는 없었지만 이젠 
+ionic 프로젝트를 웹에서 관리할 수 잇는 기능도 추가적으로 개발하고 있는 것으로 확인된다.
+ionic 프로젝트에 대한 설정을 명시하기 위해서 ionic.project 파일에 프로젝트 정보를 입력한다.
+ionic.project 파일을 열어서 다음과 같이 수정한다.
+
+- name: 프로젝트 이름을 입력한다.
+
+- emila : ionic 계정에 등록된 email을 입력한다.
+
+- app_id : 프로젝트의 유일한 id로 이후에 iOS나 Android에 UUID로 사용 되는 아이디를 입력한다.
+
+- package_name : 이후에 android에 사용될 package 이름을 입력한다.
+
+예제 
+
+{
+  "name" : "ProjectName",
+  "email" : "poixgks@naver.com",
+  "app_id" : "net.saltfactory.tutorial.ionic.poixgksDamo",
+  "package_name" : "net.saltfactory.tutorial.ionic"
+}
+
+프로젝트에 관한 전체 설정은 config.xml을 사용하여 설정한다. config.xml을 열어보자.
+ionit start로 만들어진 프로젝트라는 starter라는 이름으로 만들어진다.
+
+
+<?xml version='1.0' encoding='utf-8'?>  
+<widget id="com.ionicframework.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">  
+    <name>HelloCordova</name>
+    <description>
+        An Ionic Framework and Cordova project.
+    </description>
+    <author email="hi@ionicframework" href="http://ionicframework.com/">
+      Ionic Framework Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+
+    <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage
+         to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
+    -->
+    <preference name="BackupWebStorage" value="none" />
+
+    <feature name="StatusBar">
+      <param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
+</widget>  
+
+
+widget id는 이후 iOS나 android 프로젝트에서 앱의 UUID로 지정된다. 그리고 widget name은
+각 플랫폼의 앱의 이름으로 지정된다. 이 두가지를 우리가 원하는 정보로 변경해야 합ㄴ다.
+아래는 우리가 원하는 정보를 변경한 config.xml이다. 이 정보는 이후 각 플랫폼에 사용될 config.xml로 지정된다.
+
+
+<?xml version='1.0' encoding='utf-8'?>  
+<widget id="net.saltfactory.tutorial.ioinc.sfhybridemo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">  
+    <name>SFHybridDemo</name>
+    <description>
+        Ionic Framework를 이용한 하이브리드 앱 데모
+    </description>
+    <author email="saltfactory@gmail.com" href="http://blog.saltfactory.net">
+      하이브레인넷 부설연구소 모바일 서비스 연구지원
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+
+    <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage
+         to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
+    -->
+    <preference name="BackupWebStorage" value="none" />
+
+    <feature name="StatusBar">
+      <param name="ios-package" value="CDVStatusBar" onload="true" />
+    </feature>
+</widget>  
+
+
+프로젝트를 생성한 이후 우리는 이제 우리가 원하는 iOS와 Android 앱을 개발하려고 한다. cordova를 사용하여
+개발해본 경험이 있다면 cordova 프로젝트를 생성한 이후 target 플랫폼을 추가하는 명령어를 사용해서
+플랫폼을 추가한다는 것을 알 것이다. ionic도 cordova를 기본으로 만들어진 것이기 떄문에 cordova와 
+동일하게 target 플랫폼을 추가하는 명령어를 그대로 사용하고 있다.
+
+다음과 같이 각각 iOS와 android 플랫폼을 추가한다.
+
+ionic platform add ios  
+ionic platform add android  
+
+lonic patform add 명령어로 플랫폼을 추가하면 ionic 프로젝트에 개발되는 플랫폼이 추가되는 것을 
+확인할 수 있다. 우리가 만든 ionic 프로젝트 디렉토리 밑에 있는 platforms 라는 디렉토리 및에 
+android 와 ios 디렉토리가 생성된 것을 확인 할 수 있고 각각 해당되는 파일들이 만들어진 것을 
+확인 할 수 있다.
+
+ionic은 cordova를 이용하여 만들어진 framewokr이기 떄문에 cordova의 명령어를 동신에 사용할 수 있다.
+현재 프로젝트에 설치된 platform이 어떤 것이 있었는지 확인하기 위해서 cordova의 명령어로 확인할 수 있다.
+
+cordova platform list 
+
+cordova platforma list 라는 명령어를 사용해서 확인하면 현재 ionic 프로젝트에 android와 ios 플랫폼이
+성치되어 있고 cordova 3.5.0으로 만들어진 것을 확인할 수 있다.
+
+이제 iOS 디바이스로 빌드를 해보자. 다음과 같이 ionic 프로젝트를 iOS 플랫폼으로 빌드 할 수 있다.
+
+ionic build ios  
+
+
+에러 없이 빌드가 성공하면 * BUILD SUCCEEDED * 라는 메세지를 받게 된다.
+빌드가 성공적으로 끝나면 앱이 성공적으로 빌드 되었는지 시뮬레이터를 이용해서 확인할 수 있다. 
+다음과 같이 ionic emulate 명령어로 iOS 앱을 실행해보자.
+
+ionic emulate ios  
+
+
+ionic emulate ios 명령어를 실행하면 build된 앱이 ios 시뮬레이터에 설치가 되어서 
+기본적으로 만들어진 앱이 동작하는 것을 확인할 수 있다.
+
+다음은 android 플랫폼을 빌드해보자.
+
+ionic build android  
+
+android 플랫폼 역시 빌드가 성공적으로 마치면 BUILD SUCCEEDED 라는 
+메세지를 보게 되는데 성공적으로 빌드가 마치면 android 에뮬레이터로 실행해보기로 한다.
+
+ionic emulate android  
+
+ionic emulate android 명령어로 android 플랫폼에 빌드에 성공한 앱을 성공적으로 샐행해서 확인할 수 있다.
+하지만 android 에물레이터는 정말...최악으로 느리다. 아마 에물레이터 android 앱을 개발하는 개발자는 
+없을 것 같다. 그래서 android는 디바이스로 실행시켜서 확인하는 작업이 반드시 필요하다.
+
+ionic run은 안드로이드 디바이스로 실행시켜서 확인하는 작업이 반드시 필요하다.
+
+lonic run 명령어를 이용해여 앱을 android 디바이스로 설치할 수 있다. 먼저
+android 디바이스를 컴퓨터에 USB로 연결한 뒤 다음 명령어를 실행해보자.
+
+lonic run android
+
+lonic 명령어로 빌드하고 에물레이터나 디바이스로 실행시켜서 앱의 구동을 확인 할 수 있다.
+하지만 하이브리드 앱을 개발하면 HTML이나 JavaScript, CSS와 같이 빌드가 새로 필요하지 않은 
+웹 자원 개발을 하는데 변경되 때마다 디바이스로 빌드하고 확인하는 작업은 정말 개발 생산을 떨어트린다.
+실제 빌드하여 설치하는 시간은 최소 몇분은 기다려야하기 때문이다. KTH에서 개발햇던 Appspresso에서는
+이러한 시간을 단축하기 위해서 On the fly라는 기능을 제공하였다. 이것은 가상의 서버를 동작시켜 
+HTML, JavaScript,CSS 와 같이 컴파일이 필요하지 않은 웹 자원의 수정 사항을 업데이트하면 바로 확인할 수
+있게 해서 개발 생산성을 놀라울 정도로 올려주었다. ionic에서는 이와 비슷한 개념으로 cordova나 PhoneGap이
+제공하는 serv 기능을 사용하면 된다.
+ionic 프로젝트 디렉토리에서 ionic serve 라는 명령어를 실행해보자.
+
+ionic serve 
+
+이 명령어는 cordova가 가지고 있는 내장 서버가 동작하면서 웹 자원을 브라우저에서 업데이트를 확인
+할 수 있게 도와준다. 위 명령어를 실행하면 서버가 동작하면서 컴퓨터의 디폴트 부라우저가 열리면서
+앱이 실행되는 것을 확인할 수 있다.
+
+또한 이렇게 브라우저를 통해서 동작하는 앱을 Web inspector를 이용해서 디버깅과 개발을 
+진행할 수 있다.
+
+이렇게 ionic serve로 동작한 웹 앱은 웹 자원의 수정 사항이 있을 경우 자동으로 reloading을 하게 되어서
+변경된 내용을 바로 웹에서 적용해서 변경된 사항을 확인할 수 있다.  
+
+dash의 내용을 수정하기 위해서 www/templates/tab-dash.html의 파일을 열어서 다음과 같이 수정한다
+
+<ion-view title="Dashboard">  
+  <ion-content class="has-header padding">
+    <h1>ionic을 이용한 하이브리드 앱 개발</h1>
+  </ion-content>
+</ion-view>  
+
+HTML 파일을 수정하면 ionic serve는 변경된 파일을 감지하고 reloading를 실행한다. 그래서 브라우저에서
+refresh 필요 없이 브라우저로 이동하면 다음과 같이 변경된 내용이 적용된 것을 확인할 수 있다.
+
+이 기능은 하이브리드 앱 개발에서 매우 유용한 기능이다. 하이브리드 앱의 대부분 코드는 웹 코드로
+진행되기 때문인데 네이티브 자원을 변경하지 않는 경우는 이렇게 쉽게
+변경된 사항을 확인할 수 있기 때문이다. 주의할 점은 웹에서 네이비티 코드의 사항을 확인할 수 없다.
+디바이스의 자원을 사용한 네이티브코드는 웹 브라우저에서 동작하지 않기 떄문이다.
+
+
+[결론]
+
+하이브리드 앱 개발의 기술 발전은 PhoneGap(Cordova)와 AngularJS로 보다 편리하고 확정성있는
+개발 프레임워크를 점점 발전시켜가고 있다. 이전에 하이브리드 앱을 개발하기 위해서는 크로스 플랫폼 개발
+프레임워크로 PhoneGap(Cordova)를 따로 사용하고 UI 개발을 위해서 AngularJS나 Sencha를 이용했지만
+Ionic Framework는 이 두가지 개발환경을 통합해서 하이브리드 앱 개발에 최적화된 환경을 제공하고 있다.
+앞으로 계속 연재로 Ionic Framework를 사용하여 하이브리드 앱 개발학 위한 방법을 소개하겠지만 
+Appspresso 이후 하이브리드 앱 개발에 가장 최적화된 프레임워크가 이닌가 생각이 된다. 
+
+좀더 자세히 Ionic framework를 이용하여 Cordova와 AngularJS를 기반의 
+하이브리드 앱을 개발하는 방법을 소개하고 이 두가지를 가지고 있는 Ionic framework의 장점을 소개하려고 한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

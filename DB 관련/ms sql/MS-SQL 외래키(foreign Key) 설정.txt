@@ -1,0 +1,22 @@
+참조 사이트
+http://blog.naver.com/diceworld/220217471190
+
+
+생성
+CREATE TABLE [테이블명] (
+       [컬럼명] [데이터형식] FOREIGN KEY REFERENCES [테이블명] ([컬럼명])
+   )
+?
+
+
+수정
+alter Table CodeDetail ADD CONSTRAINT FK_CodeGroup foreign key (COGROUP) references [CodeGroup](COGROUP)
+
+
+ ALTER TABLE [테이블명] ADD CONSTRAINT [FOREIGN KEY명] FOREIGN KEY ([컬럼명]) REFERENCES [테이블명] ([컬럼명])
+
+
+
+
+삭제
+ALTER TABLE [테이블명] DROP CONSTRAINT [FOREIGN KEY명]

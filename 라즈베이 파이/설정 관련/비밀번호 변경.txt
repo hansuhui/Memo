@@ -1,0 +1,8 @@
+
+유틸리티 실행
+sudo raspi-config 
+
+메뉴중에 change_pass 옵션 선택
+
+
+

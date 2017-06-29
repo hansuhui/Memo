@@ -1,0 +1,6 @@
+$("#EDate").datepicker(
+    {
+        showOn: "button",
+        buttonImage: "/images/admin/Calendar.png",
+        buttonImageOnly: true
+    });

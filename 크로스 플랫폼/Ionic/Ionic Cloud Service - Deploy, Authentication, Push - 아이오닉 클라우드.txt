@@ -1,0 +1,536 @@
+https://docs.google.com/document/d/1ALelsRisY6ZgcIhkjOD6DgijrbDMDbCgLz8RG_jYlAQ/edit
+
+[Ionic Cloud Service - Deploy, Authentication, Push - 아이오닉 클라우드]
+
+
+- App ID 생성 -
+
+클라우드 설정을 하기 전에 app ID를 먼저 생성한다.
+해당 프로젝트 폴더로 들어가서 ,
+
+ionic io init 
+
+이와 같이 하면 아이오닉 홈페이지의 dashboard에 ionic 앱이 생성된다.
+
+- 이 때, 앱 이름은 ionic.config.json에 있는 이름이 된다.
+
+즉, 홈페이지에서 앱 생성 할 필요 없이, ionic cli에서 바로 생성 할 수 있는 것이다.
+
+이렇게 하면 ionic.io.bumdle.min.js에 app_id와 app_key를 지정한다고 하는데,
+
+실제로는 .io.config.json 과 ionic.config.json 파일에 앱 관련 정보가 저장된다.
+
+- 만약 새로운 앱 ID를 만들고 싶다면, io-config.json을 지우고 , ionic.config.json에서 
+  app id를 지우면 된다.
+
+참고 : 이미 App ID가 생성되어져 있으면 그냥 
+-  ionic.config.json에 app id를 입력하고, name을 변경하고
+-  .io-config.json에 app id와 Legacy API의 public ket를 입력하면 된다.
+
+
+[Ionic Cloud Service 사용을 위한 모듈 설치]
+
+ionic 2 앱 프로젝트 소스 폴더에서 아래와 같이 클라우드 이용에 필요한 모듈을 설치한다.
+
+npm install @ionic/cloud-angular --save
+
+- 참고 : 이것은 ionic 클라우드 사용에 필요한 모듈을 설치하는 것이다.
+   	 굳이 ionic 2 frame이 아니라. 다른 프레임워크에서도 사용이 가능하다.
+
+- ionic Cloud 를 사용하는 모든 앱에 이 과정을 해야한다.
+
+- 한번만 하면 모든 ionic Cloud 서비스를 사용 할 수 있다.
+
+앱의 프로젝트 설정을 하고 난 다음에는 앱이 Cloud Service를 할 수 있도록 기본 사용
+준비를 한다.
+
+참고) @ionic/cloud-angular 를 설치하면 아래와 같이 ionic-native를 설치하므로 
+ionic 해킹을 할때 , 주의 하도록 한다.
+
+ 
+
+==================================================================
+
+[인증서 - cerificate 등록]
+
+http://ionic.io 에서 앱을 선택하고 Dashboard > Settings > Cerificates > New Security Profile 메뉴를
+클릭해서 새로운 프로필을 만든다.
+
+- 이때  , Type 에는 Production 을 선택한다.
+
+인증서 Edit 을 클릭해서 keystore 파일을 등록한다.
+- 따라서 app에서 keystore 파일을 먼저 생성해야 한다.
+예제) keytool -genkey -v -keystore study.keystore -alias study -keyalg RSA -keysize 2048 -validity 10000
+
+keytool -genkey -v -keystore Camera.keystore -alias Han -keyalg RSA -keysize 2048 -validity 10000
+
+ -study.keystore 대신에 자신의 앱 이름을 적어주면 된다.
+- study 대신에 앱 이름을 적어주면 된다.
+
+
+
+==================================================================
+
+[app.module.ts 수정]
+
+import { NgModule } from '@angular/core';
+
+아래와 같이 클라우드 정보를 등록한다.
+
+
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': '2e401812'
+  }
+};
+@NgModule({
+  imports: [
+     CloudModule.forRoot(cloudSettings)
+  ]
+})
+export class IonicApiModule { }
+
+이렇게 하면 클라우드 서비스를 사용 할 준비가 되었다
+
+- 주의 : Auth 와 User 와 같은 모듈을 import 하고 providers : [] 에 등록하면 에러가 발생한다.
+
+- 참고 : CloudModule 의 type definition 파일을 보면 provideAuth, 
+         provideUser, providerDeploy 등을 통해서 자동으로 providing 하는 것 같다
+
+
+
+
+==================================================================
+
+[Package]|
+
+- 패키징은 소스 코드로 부터 binary 파일을 만드는 것이다.
+
+원도우즈에서 iOS 바이너리를 만들고 싶거나 Android 릴리즈 버전을 만들고 싶으면
+Package를 하면 된다.
+
+- 패키징은 deplay를 바탕으로 하므로 , 먼저 deploy를 해야한다.
+
+
+- ionic Cloud 패키징 과정 -
+
+패키지 하기 위해서 먼저 Deploy를 한다.
+
+1. 앱 클라우드 Deploy 하기 위해서는 단순히 "ionic upload 만 하면 끝난다."
+ 이 앱 업로드 명령은 앱 루트 폴더에서 하면 된다. www 폴더에서 하는 것이 아님
+
+$ ionic upload  또는 
+$ ionic upload --note "some note" -- deploy production
+
+- 로그인이 안 되어져 있으면 이메일 과 비밀번호를 물어온다.
+- 업로드는 ionic.conifg.js app_id를 보고 자동으로 해당 앱 프로젝트에 하는 것 같다.
+- 참고로 --deploy production을 해야 하지만 , 앱에서 업데이트를 한다.
+- 대시보드의 deploy에 업로드한 앱을 볼 수 있다.
+- 이것으로 deploy는 끝났다.
+
+
+2.인증서를 등록한다. 
+(keystore 생성하고 Dashboard 에 등록한 것을 말함, 프로젝트 설정 과정에서 미리 했어야 함).
+
+3. 업로드된 앱을 빌드한다.(이것이 패키징 하는 과정이다)
+
+ionic package build android --profile helper_certificate --release
+
+- 위에서 helper_certificate 값은 lonic cloud console의 Certificate 페이지의 Tag 값이다.
+- 이렇게 빌드를 하는 것이 패키징을 하는 것이며 Dashboard의 Package 메뉴에 패키징된
+  바이너리를 다운로드 할 수 있다.
+
+; Your app has been successfully submitted to Ionic Package!
+; Build ID: 1
+; We are now packaging your app.
+
+- 이렇게 빌드를 하면 jarsigner 나 zippalign 을 할 필요가 업ㅄ다.
+  자동으로 ionic cloud가 하는 것이다.
+
+4. 컴파일된 바이너리 파일 다운로드 하기
+
+ionic package download 3
+
+-또는 ionic console에서 바로 다운로드 해도 된다.
+
+
+==================================================================
+
+[패키징과 Deploy 관계]
+
+최초 패키징을 1회 하고 바이너리가 device에 들어가면,
+그 이후 부터는 계속해서 deploy로 업데이트를 하면 된다.
+그런데 만약 deploy를 잘못해서 앱이 크리티컬 에러 상태로 빠지면,
+앱을 다시 바이너리로 만들어서 device에 넣어야 한다.
+구글 play 스토어에는 새로운 앱 APK를 등록하면 자동으로 업데이트를 한다.
+
+- 패키지 정보 보기 - 
+
+앱이 비동기적으로 패키징 되므로 정보를 보고자 할 때, 아래와 같이 ionic package list를
+할 수 있다.
+
+
+- 패키지 ID 별 정보 보기 - 실패 사유 등 -
+$ ionic package info 1
+
+
+
+==================================================================
+
+[Deploy - 배포]
+
+
+순서 
+
+1. ionic Cloud 설정
+
+2. Deploy 모듈 설치
+
+3. deply 프로그래밍
+
+4. 소스 코드 수정 후 Deploy 테스트 
+
+
+- 참고 : 동작 환경
+Cordova 에서만 동작하는 것 같다. 웹에서는 동작 안 함
+  Deploy plugin 이 웹브라우저에서 실행되면 에러가 발생한다.
+Cordova 에서 모두 동작하는지
+   GenyMotion 과 AVD 에서 되는가?
+   AndyOS에서는 되는 것 같다.
+
+참고 : Ionic Deploy 와 <base href=’’> 관련 사항
+
+
+==================================================================
+
+[ionic Cloud Dashboard 에서 프로젝트 생성]
+
+새로운 프로젝트를 하나 시작한다.
+
+- 앱 프로젝트 설정 -
+
+앱 생성 후 모듈에 설정
+
+- Deploy Module 설치 - Deploy 를 사용 할 수 있도록 하는 준비(설정) -
+
+Android 와 iOS 장치에서 앱을 업데이트 할 수 있도록 해주는 ionic-plugin-deploy 모듈을 설치한다.
+
+cordova plugin add ionic-plugin-deploy
+
+
+- 루트 컴포넌트에 Deploy 를 Injecting -
+
+app.component.ts 에 아래와 같이 injection을 한다.
+
+import { Deploy } from '@ionic/cloud-angular';
+constructor( public deploy: Deploy ) {}
+
+그리고 아래와 같이 코딩을 한다.
+- 주의 아래는 테스트용으로 30초 마다 업데이트를 확인하도록 했는데,
+   실제로는 10분에 한번씩 또는 1분에 한번씩 확인하게 하면 된다.
+
+import { Router } from 'express';
+ 
+ 
+  constructor(
+    private router: Router,
+    public deploy: Deploy
+    ) {
+    document.addEventListener("deviceready", () => this.onDevinceReady(), false);
+  }
+  onDevinceReady() {
+    console.log("yes, I am running in cordova.");
+    this.updateApp();
+  }
+  updateApp() {
+    this.updateNewSnapshot();
+    setInterval( () => this.updateNewSnapshot(), 30 * 1000 );
+  }
+  updateNewSnapshot() {
+    console.log("MyApp::updateSnapshot()");
+      this.deploy.check().then( (snapshotAvailable: boolean) => {
+        if ( snapshotAvailable ) { // snapshotAvailable 이 true 이면, 새로운 snapshot 을 사용 할 수 있다.
+          let opt : DeployDownloadOptions = {
+              onProgress: p => {
+                  console.info('Downloading = ' + p + '%');
+              }
+          };
+          this.deploy.download( opt ).then( () => { // 새로운 snapshot 을 다운로드
+            let opt : DeployDownloadOptions = {
+                onProgress: p => {
+                    console.info('Extracting = ' + p + '%');
+                }
+            };
+            return this.deploy.extract( opt ) // snapshot 압축 해제
+              .then( () => {              
+                this.router.navigateByUrl( '/' ); // base href='' 때문에 안전하게 home 으로 가서 load() 함.
+                setTimeout( () => {
+                  this.deploy.load(); // reload 해서 새로운 snapshot 을 적용
+                }, 1234);
+              } );
+          });
+        }
+      });
+  }
+ 
+
+
+- 위와 같이 하면 사실 상 끝난 것이다.
+
+- 위와 같이 했으면 ionic cloud 에 deploy 하면 자동으로 업데이트 된다.
+
+- 참고로 angular routing 을 위해서 base hredf 를 지정하는데, 기본 값이 빈 분자열이어서 
+  앱을  홈(루트) 경로로 이동 한 다음 업데이트를 한다.
+
+
+
+==================================================================
+
+[Ionic Could Deploy ⇒ 패키징 ⇒ 앱 다운로드 ⇒ 스마트폰 설치 및 실행]
+
+이제 부터는 그냥 deploy 하면된다.
+
+$ ionic upload
+
+앱을 다운로드 해서 Genymotion에서 실행한다.
+
+
+==================================================================
+
+[소스코드 수정 - Deploy 테스트]
+
+- VSCode 에서 소스를 수정하고
+  (준비 과정 없이 그냥 루트폴더에서 ionic upload 하면 된다. 그러면 ionic app id에
+   맞는 곳에 그냥 업데이트 한다.)
+
+-  ionic run build --prod 와 같이 production verstion 으로 www 에 배포 파일을 생성한다.
+ (이거 안하고 , www 폴더 내용을 다 지우고 하니 에러가 난다.)
+ ( 반드시, --prod 빌드를 해야 한다.)
+
+- ionic upload --note"update 5" --deploy production와 같이 deploy를 한다.
+  
+
+- 주의 : 이 때 , packaging 은 필요 없다.
+         패키징은 맨 처음 한번만 하는 것이고
+         업데이트는 deploy만 하는 것이다.
+
+끝 테스트 잘 되면 끝난 것이다.
+
+
+주의 : 아주 중요 : HTML 에러 등 작은 에러에도 앱은 critical error 상태로 빠지며 
+       동작하지 않는다.
+
+예를 들어 Heading 태그를 P 태그에 넣었는데, 앱에서는 이것이 허용되지 않는다.
+그래서 앱이 멈추었는데 화면만 나타나고 아루먼 동작을 하지 않는다.
+강제 종료 , 새로운 deploy , 이전 deploy 등을 해도 안된다.
+따라서 작은 에러가 큰 재앙을 불러 올 수 있으므로 매우 주의 해야 한다.
+
+
+[참고:Deploy 구현 방법]
+
+앱이 deploy 방식을 동작하기 위해서는 다음과 같은 순서로 진행 되어야 한다.
+
+- Check if a new shapshot has been deployed
+
+- Apply the snapshot
+
+- Reload the app : 중요 앱이 자동적으로 reload 하도록 load() 함수를 사용한다
+
+
+[참고:채널 - Channels]
+
+버전 관리 비슷한 것이다. 기본적으로 production 이 된다.
+
+이래와 같이 하면 로컬 앱을 서버에 업로드 하고 snapshot을 만든다.
+
+ionic upload --note "NOTE_MESSAGE"
+
+
+- 채널로 바로 deploy 하기 - 
+
+deploy 를 사용하지 않으면 dashboard 에서 수동으로 채널에 deploy 해야 한다.
+
+아래와 같이 하면 채널에 바로 deploy 한다.
+
+ionic upload --note "메모" --deploy CHANNEL_TAG
+
+CHAANEL_TAG 는 production 으로 하면 된다.
+
+채널을 변경하기 위해서는 deploy 관련 코드를 사용하기 전에 먼저와 같이 하면 된다.
+
+this.deploy.channel = "dev";
+
+기본적으로 production 모드가 사용된다.
+만약 존재하지 않는 channel을 사용하면 자동으로 production 으로 fallback 된다.
+
+
+
+[참고 : Snapshot 관리하기]
+
+Listing , Removing , Metadata 등을 할 수 있다.
+
+- 기타 -
+
+Deploy 와 Cloud 플러그인 설치
+
+cordova plugin add ionic-plugin-deploy --save
+npm install @ionic/cloud-angular --save
+
+- App module 에서 colud 와 deploy 설정
+
+- 수정 할 페이지에서 Deploy 를 inject 한다.
+
+- 수정된 소스 코드를 ionic Cloud로 업로드
+
+ionic upload --note"메모" --deploy production
+
+- 테스트 : 다운로드한 apk 파일을 genymotion의 에뮬레이터로 드래그해서
+           집어 넣는다.
+
+
+
+
+==================================================================
+
+[Push Notification]
+
+ionic 의 Push 는 Android 의 경우 , Google firevase를 바탕으로 한다.
+
+
+- 클라이언트 앱의 ionic cloud 셋업 -
+
+프로그램 중인 앱 소스 폴더에 ionic cloud 셋업한다.
+
+1. 새로운 프로젝트를 생성하거나 기존 프로젝트의 "app id"를 얻어야 한다.
+
+2. 개발 프로젝트에서 @ionic/cloud-angular 설치한다
+
+3. app.module.ts 에 ionic cloud 설정 코드를 추가해야 한다.
+
+4. ionic console에 가서 fcm 서버키를 등록한다.
+
+- App module 에 등록  -
+
+Module에 아래와 같이 등록한다.
+
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'APP_ID',
+  },
+  'push': {
+    'sender_id': 'SENDER_ID',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434'
+      }
+    }
+  }
+};
+
+APP_ID : ionic app id
+
+SENDER_ID 구글 firebase push notification setting의 sender_id 이다.
+
+그리고 Server Key는 ionic Cloud 설정에 저장되어져 있다.
+
+
+
+- Cordova 플러그인 설치 -
+
+push를 위한 cordova 플러그인을 설치한다.
+
+$ cordova plugin add phonegap-plugin-push --variable SENDER_ID=xxxxx --save
+
+위에서 sender_id는 Google Firebase 의 FCM sender id 이다.를 입력하면 된다.
+
+위와 같이 하면 ionic 프로젝트의
+ platforms/android/platform_www/plugins/phonegap-plugin-push 를 볼 수 있다.
+
+그러면 아래와 같이 config.xml에 저장이 된다.
+
+<plugin name="phonegap-plugin-push" spec="~1.9.1">
+    <variable name="SENDER_ID" value="55749236444"/>
+  </plugin>
+
+- API Token API - HTTP Request 를 하기 위한 api token -
+
+설정이 끝났으면, 실제로 ionic cloud 와 대화(질의)를 통해서 push 관련 정보를 송/수신한다.
+
+이 때, 인증을 위해서 사용할 api token이 필요하다
+
+아래와 같이 ionic cloud 설정에서 새로운 토근을 만든다.
+
+
+
+- Push Notification Coding -
+
+공식 문서 - EndPoint API 문서
+ 
+본 문서는 중요하다.
+ 
+http://docs.ionic.io/api/endpoints/push.html 에 보면, EndPoint URL 의 설명이 있다.
+
+Register - 장치를 등록
+ 
+공식 문서 : http://docs.ionic.io/services/push/#registering-device-tokens
+
+
+가장 먼저 해야 할 것은 장치를 Ionic Cloud 에 등록하는 것인데,
+
+push.register() 와 같이 하면 된다.
+
+중요한 것은
+
+- (공식문서에서) 앱이 실행될 때 마다 이것을 하라고 한다.
+  이렇게 함으로써 장치가 항상 등록되고 push notification을 받을 수 있는 
+  상태가 된다고 한다.
+
+- ionic Auth를 사용하면 ....
+
+- ionic Auth를 사용하지 않으면 saveToken()의 옵션에 ignore_user 속성을 지정하라고
+  한다
+
+
+- Handling Notification -
+
+아래와 같이 subscribe()를 하면 (누군가 메세지를 전송할 떄,) 자동으로 메세지가 수신된다.
+
+
+import {  Push,  PushToken} from '@ionic/cloud-angular';
+
+push.rx.notification()
+    .subscribe( (msg) => {
+        alert(msg.title + ‘:’ + msg.text);
+    });
+
+
+- 메세지 보내기 -
+ 
+공식 문서 : http://docs.ionic.io/services/push/#sending-pushes
+ 
+메시지는 대시보드에서 전체 메세지를 보낼 수 있다.
+
+개별적으로 보내려면 프로그래밍 작업이 필요하다.
+
+메세지를 보낼 상대 디바이스 토큰을 알아야하는데,
+이것은 각 회원 별로 장비를 register() 하고 받은 토큰을 회원 정보에 저장하므로서 가능하다.
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
