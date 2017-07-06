@@ -1,0 +1,11 @@
+https://msdn.microsoft.com/ko-kr/library/bt727f1t(v=vs.100).aspx
+
+
+비주얼 스튜디오 설치 된 곳에 Remote Debugger 폴더를 복사하여
+원격 서버에서 붙여 넣는다 
+
+버전에 맞는 msvsmon.exe 를 실행한다. 그 후에 연결 대기증이면
+
+비주얼 스튜디오에서 프로세스 연결 창에서 연결을 한다.
+
+
