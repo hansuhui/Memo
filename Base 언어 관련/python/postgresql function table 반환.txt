@@ -1,0 +1,9 @@
+  CREATE OR REPLACE FUNCTION  get_lotto_100()  RETURNS TABLE (
+         num VARCHAR,
+         count integer
+   ) 
+   AS $$ 
+   	begin
+        RETURN QUERY  쿼리문 작성
+    end; $$
+   LANGUAGE 'plpgsql';
