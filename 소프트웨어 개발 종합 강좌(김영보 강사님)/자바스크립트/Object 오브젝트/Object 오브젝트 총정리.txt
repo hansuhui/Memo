@@ -1,0 +1,100 @@
+[object 오브젝트]
+
+-Object 형태 분류
+오브젝트{}
+빌트인 오브젝트
+네이티브 오브젝트(Native Object)
+호스트 오브젝트(Host Object)
+
+-네이티브 오브젝트
+Arguments 오브젝트와 같이
+자바스크립트 프로그램을 실행할 때 생성하는 오브젝트
+
+-호스트 오브젝트
+자바스크립트 실행 환경을 지워하기 위한 오브젝트
+네이티브 오브젝트를 제외한 오브젝트
+예 : DOM 오브젝트
+
+
+[new Object()]
+
+-인스턴스 생성 , 반환
+파라미터에 지정한 데이터 타입에 따라 오브젝트 타입 결정
+파라미터에 배열로 다수의 데이터 지정 가능
+파라미터 값이 undefined,null이면 빈 object 인스턴스 반환
+
+
+var obj = new object(); //기본오브젝트
+alert(obj); //[object Object]
+var obj = new object(12345); //넘버오브젝트
+alert(obj); //12345
+var obj = new object("String"); //스트링오브젝트
+alert(obj); //String
+var obj = new object(true); //블리언오브젝트
+alert(obj); //ture
+
+alert(new Object(undefined)); //[object Object]
+alert(new Object(null)); //[object Object]
+
+
+인스턴스지만 바로 값을 출력하는 이유는  내부적으로 Primitive 값을 반환하기 떄문이다.
+
+
+
+[오브젝트{}]
+
+-Object 인스턴스 생성
+var obj = {}
+var obj = new Object()와 같음
+{}표기를 Object Literal이라고 부름
+Hash, 연산 배열이라고 부르지만
+자바스크립트 정식 명칭은 오브젝트임
+
+
+
+[함수와 메소드]
+
+-함수와 메소드 구분
+함수 : 오브젝트에 연결
+예 : Object.create
+
+메소드 : 오브젝트.prototype에 연결
+예 : Object.prototype.toString
+
+
+-호출 방법
+함수(function) : Object.create();
+
+메소드 :Object.prototype.toString();
+또는 인스턴스를 생성하여 인스턴스.toString();
+
+
+
+함수는 오브젝트에 연결되는것이 함수!!!
+portotype에 있는것들이 연결되는것이 메소드!!!
+
+
+[Object.prototype 상속]
+
+-모든 인스턴스에 object 인스턴스 상속
+var obj = new Number(123);
+Object.prototype에 연결된 메소드로
+인스턴스를 생성하여 obj에 상속
+
+-Object의 메소드 호출 방법
+Object.prototype.toString() 메소드를
+Object를 지정하지 않고
+obj.toString() 형태로 호출
+
+var ss = 123;
+ss.__proto__; // object Number
+
+상속을 받아서 만들면 proto라는 곳에 
+메소드 및 값이 들어간다.
+
+var obj = new Number();
+obj.value = 123;
+
+
+object Number 상속
+object Number 는 이미 object Object 상속

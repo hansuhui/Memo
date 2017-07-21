@@ -1,0 +1,9 @@
+오브젝트 형식은 지워지지 않는데
+
+delete ObjTest false
+
+delete Number true
+
+delete String ture
+
+네이티브 오브젝트가 지워지면 복구하는법은?!

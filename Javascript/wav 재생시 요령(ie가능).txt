@@ -1,0 +1,11 @@
+
+
+Audio 함수로는 wav가 지원 안된다 
+
+
+<EMBED id='hiddens' SRC='../media/click.wav' AUTOSTART='true' HIDDEN='true' VOLUME='80%' LOOP='false'>
+
+$("#hiddens").remove();
+
+$("#hiddenSound").append("<EMBED id='hiddens' SRC='../media/click.wav' AUTOSTART='true' HIDDEN='true' VOLUME='80%' LOOP='false'>");
+					

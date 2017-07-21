@@ -1,0 +1,11 @@
+
+$("선택자").each(function(){
+반복하기
+})
+
+this.each(function(){
+			$(this).hover(function(){
+				audio.load();
+				audio.play();
+			}, function (){ alert("빠져나감"); } );
+		}) ;

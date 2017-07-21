@@ -1,0 +1,48 @@
+참조 
+
+http://blog.naver.com/zxcvb8842/220259863205
+
+fadeOut() : 서서히 나타는 애니매이션 slow,fast 사용 가능
+
+fadeIn() : 서서히 사라지는 애니매이션 slow,fast 사용 가능
+
+hide() : 확! 사라지는 애니메이션
+
+show() :나타나는 애니메이션 
+
+slideDown() : 아래로 내려오는 애니메이션 hide, fadeout 쓰임
+
+slideUp() : 위로 올라가는 애니메이션
+
+
+책설명
+
+jQuery animate() 메서드 사용법
+
+jQuery 객체의 animate() 메서드는 Dom 요소에 애니메이션을 설정하는 역활을 합니다
+
+첫번째 인자 값은 css표현식을 담은 객체 리터럴({})
+두번째 인자 값은 시간단위를 단취는 밀리초(1/1000초)
+
+$(선택자).animate({"color:""tan","font-size:""22px"},400);
+
+애니메이션이 처리되는 시간 뒤에는 함수 리터럴을 쓸 수있는데 이때 쓰이는 함수는 애니메이션을 마치고 처리할때 콜백 함수입니다.
+
+$(선택자).animate({"color:""tan","font-size:""22px"},400,function(){콜백});
+
+
+jQuery UI 플러그인을 확장할 때는 이징(easing)값을 확장해서 사용 가능
+
+$(선택자).animate({"color:""tan","font-size:""22px"},400,'ease-in',function(){콜백});
+
+
+참조 사이트 
+
+http://api.jquery.com/animate
+
+
+
+
+
+
+

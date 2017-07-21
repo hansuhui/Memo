@@ -1,0 +1,806 @@
+사파리에서 되지 않는것은 모바일에서도 되지 않는다
+
+
+-Global Attribute- / 공통 속성
+
+accesskey / 단축 키 값. 엘리먼트에 포커스
+class / 엘리먼트에 적용할 class 이름
+contenteditable / 텍스트 편집 여부 , true , false , in
+dir / 텍스트 방향 , 디폴트 , ltr(left to right), rtl, auto
+hidden / 엘리먼트의 다큐먼트 반영 여부 , ture/false 랜더링 자체를 하지 않음
+id / 엘리먼트 id 
+lang / 엘리먼트 콘텐츠 와 텍스트 표현의 주된 언어
+spellcheck / 맞춤법 문법검사 여부 , true / false
+style / CSS style
+tabindex / 포커스 네비게이션 순서(접근성)
+title / 엘리번트 추가 정보
+translate / 엘리번트의 속성 값과 텍스트의 번역 여부
+
+
+[accesskey]
+
+-단축 키 정의
+alt 또는 alt+shift 같이 사용
+스펙 예제는 Ctrl+Alt이나 브라우저에서 지원하지 않음
+속성 값에 영문 대소문자 , 숫자 지정 가능
+
+-단축 키를 누르면 엘리먼트 기능 수행
+<a>: 링크 기능 수행
+<input type="text"> 포커스가 엘리먼트로 이동
+
+-ie는 a엘리먼트 포커스가 잡힘
+
+
+[accesskey 브라우저 체크 실습]
+사진 있음
+
+
+[style]
+
+-엘리먼트에 CSS Style 적용
+
+-콘텐츠의 숨김 , 표시
+style속성을 사용하지 말고 HTML의 hidden 속성을 사용
+
+
+[class]
+
+-class 형태
+style을 하나로 묶어 작성
+style-element-class [ >>> class 이름
+
+-엘리먼트에 class의 style 적용
+공백으로 구분하며 다수의 class 지정 가능
+class 이름은 표현 측면이 아닌 성격 중심으로 이름 부여
+
+-DOM
+selector 프로파터 또는
+getElementsByClassName 으로 class 추출
+className , classList에 class 이름이 설정됨
+
+-class 작성 비법
+style 에 작성
+별도의 css 파일에 작성
+
+
+[Contenteditable]
+
+-텍스트 편집 여부
+true/빈문자열 : 편집 가능 , false : 편집 불가
+가장 가까운 선조 엘리먼트의 contentediable 값을 상속 받음
+inherit 상태가 되어 상속이 디폴트
+
+-작성 형태
+<ol contentediable=true>
+<li id="soccer">축구
+<li id="swim">수영
+</ol>
+
+
+[dir]
+-텍스트 방향 형식
+<p dir=rtl>1234578</p>
+ltr : 왼쪽에서 오른쪽으로
+rtl : 오른쪽에서 왼족으로
+
+<p style="direction: ltr; unicode-bidi: bidi-override; width: 200px">왼쪽</p>
+
+[hidden]
+-엘리먼트의 다큐먼트 반영 여부(display 와 같음)
+<p id="inputID" hidden> 콘텐츠 </p>
+document.getElementById("inputID").hidden = false;
+
+
+
+[id]
+-엘리먼트 식별자
+<p id="soccer">축구</p>
+다큐먼트 전체에서 유일한 값 지정
+공백을 포함할 수 없음
+영문자,숫자,하이폰,언더바 사용 가능
+다수가 존재하면 앞(위)에 작성한 것을 사용
+
+
+[lang]
+-엘리먼트 콘텐츠와 텍스트 표현의 주된 언어
+<p lang=en>Welcomd</p>
+BCP47 (http://www.ieft.org/rfc/bcp/bcp45.txt)에 정의된 언어 코드 지정
+지장하지 않으면 페어런트 엘리먼틔 lang 상속
+
+
+[spellcheck]
+
+-텍스트의 맞춤법, 문법 검사여부
+편집할 수 있는 텍스트 대상 , 영문 기준
+
+
+<p contenteditable=ture>
+<span spellcheck="ture">HellowW</span>
+</p>
+
+[tabindex]
+-focus 네이게이션 순서
+다큐먼트에서 0보다 큰 값 중에서 가장 작은 값에 먼저 포커스
+여기서 탭을 치면 다음으로 큰 값의 엘리먼트에 포커스
+<input tabindex=2>
+
+-tanindex를 지정하지 않으면 클릭이 되지 않음
+음수 값을 지정하면 클릭이 됨
+
+-입력 엘리먼트에 tabindex를 지정하지 않으면
+0를 지정한 엘리먼트에 먼저 포커스
+
+
+
+[title]
+
+-툴팁 형태로 엘리먼트의 추가 정보 제공
+추가 정보를 텍스트로 작성
+title을 작성하지 않으면 선조 엘리먼트의 title을 성속 받음
+<p title="좋은하루"></p>
+
+-주의:비추천
+이유 : 스펙의 title 기능을 브라우저에 되도록 지원하지 않으려고 하기 떄문
+마우스를 울려 놓으면 title이 포시 되지만 keyboard,touch는 표시 되지 않는다
+title 속성 지원의 일관성과 접근성 때문
+
+
+[translate]
+
+-엘리먼트의 속성 값과 텍스트의 번역 여부
+웹페이지가 지역화(localized)되어 있을 때
+<p translate=yes><p>
+
+
+[data-*]
+
+-커스텀(custom) 데이터 속성
+임의의 속성 이름을 * 위치에 작성
+data-와 작성한 이름을 결합하여 속성 이름으로 사용 data-name
+가시적으로 표시되지 않음
+
+-자바스크립트로 값을 인식할 때
+element.dataset 사용
+
+--예제
+window.onload= function (){
+		var qty,price,amount;
+		
+		el = document.getElementById("dataID");
+		
+		qty = el.dataset.qty;
+		price = el.dataset.unitPrice;
+		amount = Number(qty) * Number(price);
+		
+		alert(qty);
+		alert(price);
+		alert(amount);
+		
+	}
+	
+	</script>
+	
+	
+	<p id="dataID" data-qty="100" data-unit-price="123">수량 단가 데이터 포함</p>
+
+
+
+-Text-level semantics-
+
+
+[em]
+
+
+Categories / Flow content,Phrasing content,Palpable content.
+Contexts /
+Where phrasing content is expected.
+
+Content mode /
+Phrasing content.
+
+Content attributes / 
+Global attributes
+
+Tag omission in text/html /
+Neither tag is omissible
+
+-의미를 부여하여 콘텐츠 내용 강조
+강조하는 위치에 따랄 의미 , 뉘앙스가 달라짐
+<em> 안에</em>이 더욱 강조
+이태릭체로 표현됨
+문자를 이태릭체로 표현하려문 <i> 사용
+중요성을 나타내는 것은 아니며 이는 <strong> 사용
+
+
+[strong]
+
+-콘텐츠의 중요한,심각성,긴급성 표현
+강조하는 의미는 아님
+텍스트를 부각시키는 것이 중요 포인트
+<strong>을 제외하더라도 의미가 변하지 않음
+<strong>안의<strong>이 더욱 강조
+
+
+[small]
+
+-작은 글씨로 주석 표현
+작은 글씨로 콘텐츠가 주석이라는 점 부각
+작은 글씨는 표현의 형태
+복수의 문단:리스트와 같이 넣ㅂ은 범위가 아닌 짧은 문장에 사용
+저작권자 : 맨책사항,경고 , 법적제약 , 라이센스 표현에 사용
+텍스트의 강조 , 두각에 사용하지 않음
+
+[cite]
+
+-창조적인 작품의 잠초
+작품의 타이틀 , 저자 이름(개인/단체) , URL 포함
+이태릭체로 표시됨
+
+-창조적 작품 유형
+책,신문,시 , 시자나리오,영화,게임,연극,전시등
+
+
+[q]
+
+-인용문 표현
+인용 부호 ""를 사용해서 인용문을 표현할 수 있음
+인용문의 URL이 있으면 cite속성에 작성
+<q>에 작성한 텍스트를 브라우저가 큰따옴표("")안에 표시한다
+
+[q 속성]
+
+cite / 인용문의 URL
+
+-cite
+인용문의 대한 URL이 있으면 cite 속성에 작성
+필수가 아닌 선택
+
+
+
+[addr]
+
+-약어,약자 표현
+약자를 표기했던 <acronrmy>폐기하고 <addr> 통합
+DOM(Document Object Model)과 가이 소괄호로 약자 표현 가능
+
+-title 속성
+title 속성 전체 명칭을 작성할 수 있다.
+이런경우 <abbr>로 약자를 표현하지 않다도 된다.
+title은 글로벌 속성으로 모든 엘리먼트에서 사용가능
+
+
+[dfn]
+
+-용어에 대한 정의
+용어의 설정보다 정의가 중점
+title 속성에 설명 작성. 필수가 아닌 선택
+다른 엘리먼트에서 용어를 사용하고
+용어 정의를 <dfn> 엘리먼트로 연결할 수도 있다.
+이태릭체로 표시됨
+
+[time]
+
+-일자와 시간
+기계가 가독할 수 있는 일자 형식에 맞춰 datetime 속성에 작성
+형태 : UTC(헙정 세계시) 기준 일자 , 시각 , time-zone offset
+값이 표시되지 않으며, 표시하려면 별도로 텍스트 함께 작성
+datatime 속성을 작성하지 않으면 차일드를 가질 수 없음
+
+
+[time 속성]
+
+datetime / data 또는 time
+
+-datatime
+속성값이 표시되지 않음
+필요에 따라 텍스트 함께 작성
+
+
+[code]
+-컴퓨터 코드 표현
+프로그램 소스 , 파일 이름 등을 문자열로 작성
+일반적으로 자유롭게 작성 할 수 있는 <pre>와 함께 사용
+<pre>는 블록 레벨, <code>는 텍스트 레벨
+<code>는 code를 설명하기 위한 내용 동반
+<pre>는 자체로 완료
+
+
+[var] - 베리어블
+
+-변수 표현
+변수를 나타내는 이름 작성
+변수: 수식,함수 파라미터 식별자 등
+<p>1과 2를 더해 <var>result</var>에 설정</p>
+<var>에 작성한 변수 이름이 이태릭체로 표현된다.
+
+
+
+[kbd]
+
+-사용자 입력 표현
+키보드 입력을 나타냄
+마우스, 보이스 입력에도 사용할 수 있음
+<kbd><kbd>Ctrl</kbd><kbd>+</kbd><kbd>c</kbd></kbd>
+
+
+[samp]
+
+-컴퓨터/프로그램에서 보낸 값 출력 표현
+출력:프로그램을 실행했을때 반환되는 메세지,결과등
+결과를 문자열로 표현
+
+
+[sup]
+-위첨자
+x의 차승과 같은 표현
+단지,위첨자를 나타내려는 목적이 아니라
+의미를 가잔 위첨자 표현이 목적
+수학적 표현은 되도록 MathML 사용추천
+간단한 수학적 표현에는 사용할 수 있음
+
+
+[sub]
+-아래첨자
+원소기호 H2O와 같은 형태
+단지, 아래첨자를 나타내려는 것이 목적이 아니라
+의미를 가잔 아래첨자 표현이 목적
+수학적 표현은 되도록 MathML 사용추천
+간단한 수학적 표현에는 사용할 수 있음
+
+
+[i]
+-이태릭체로 표현 가능한 범위
+음성, 무드(mode)를 나타내는 대체 텍스트 또는
+분류상의 명칭 , 전문용어, 타언어의 관용구, 생각
+의미를 부여하여 강조한 것은 아님
+우선 적절한 다른 엘리먼트 사용 검토
+Css Style로 <i>의 이태릭체를 변경할 수 있으므로
+반드시 <i>가 이태릭체로 표현되는 것은 아님
+
+
+[b]
+
+-볼드체로 표현할 수 있는 텍스트 범위
+중요한 내용이 아닌 일반적인 텍스트 구분
+구분을 쉽게 하기 위한 것임
+문서 개요의 키워드, 상품 사용 후기의 상품명
+Css Style로 <b>의 볼드체를 변경할 수 있으므르
+--반드시 <b>가 볼드체로 표현되는 것은 아님
+
+[u]
+
+-텍스트를 보다 명확하게 표현
+문자가 연결되 어 구분하기 어려울 때 문자를 구분하기 위해 사용
+띄어쓰기가 없는 중국어 , 일본어에 필요
+HTML, XHTML에서 텍스트의 언더라인으로 사용, HTML5 deprecated
+
+-사용에 있어 고려 사항
+언더라인은 <a>와 혼동되며 Style 사항
+대부분 다른 엘리먼트와 적절하므로 다른 엘리먼트 우선 사용
+비추천
+
+
+[mark]
+
+-관련성 참조 텍스트 표현
+관련성 있는 컨텍스트 참조를 목적으로 마크
+관련 콘텐츠가 별도로 존재하며 이를 나타내는 것이 주된 목절
+강조 의미가 아님
+
+
+[ruby]
+
+-루비 주석 그룹
+루비 주석을 표현하기 위한 레퍼 엘리먼트
+루비 주석 : 베이스(Base) 텍스트에 작은 문자로 주석을 다는 형태
+예: 한자에 한글로 음독을 작성한 모습
+
+[rd]
+
+-루비주석의 베이스 텍스트를 마크
+루비 주석 대상을 <rb>에 작성
+
+[rt]
+-루비 주석
+루비 주석 작성
+
+<ruby>
+	<rb>韓受熙</rb>
+	<rt>한수희</rt>
+</ruby>
+
+[rp]
+
+-루비 괄호
+루비 괄호로 루비 주석 표현
+인라인 루비라고 함
+풀백 지원 : 루비 주석을 지원하지 않는 부라우저에서 사용
+
+
+<ruby>
+	<rp>(</rp>
+	<rb>韓受熙</rb>
+	<rt>한수희</rt>
+	<rp>)</rp>
+</ruby>
+
+
+
+
+[rtc]
+
+-루비 주석의 베이스 텍스트에 대한 루비 텍스트 컨테이너
+읽기와 의미를 아래.위 형태의 루비 주석으로 표현
+이를 double0sided ruby라고 함
+
+-미지원 브라우저 다수
+
+<ruby>
+	<rb>센터</rb>
+	<rt>상</rt>
+	<rtc>하</trc>
+</ruby>
+
+
+
+[bdo]
+
+-텍스트 방향 형식 제어
+차일드에 작성한 텍스트의 방향 형식을 제어
+왼쪽에서 오른쪽으로 , 오른쪽에서 왼쪽으로
+
+[bdi]
+
+-양방향 텍스트 형식 표현
+<p><bdo dir="rtl">수량,<bdi dir="ltr">사과</bdi>:5개</bdo></p>
+
+
+[span]
+
+-인라인 그룹
+엘리먼트 자체는 의미를 갖지 않음
+차일드를 나타내는 것이 목적
+
+-개인 경험에서 본 일반적인 관례
+줄이 바뀌지 않아 한 줄에 텍스트를 표현할 때 사용
+class,style을 텍스트에 적용할 때 사용
+
+
+[br]
+
+-줄 바뀜
+의미를 부여하지 않음
+시의 줄 바꿈이 좋은 사례
+문단 안에서 주제를 구분하기 위해 사용하지 않는다.
+
+[wbr]
+
+-단어 분리 기회 표현
+스펙문장 : The wbr element repersents a line brake opportunuty.
+브라우저를 줄였을때 단어 단위로 줄이 분리됨
+영어 기준
+
+[data]
+
+-테이터 표현
+value 속성에 작성한 값을 테이터로 사용
+텍스트 노드에 가시적인 텍스트 작성
+
+
+-value 속성과 data-*속성 차이
+<data>의 value 속성은 정해진 형태이고
+data-*는 속성 이름이 가변적이므로
+value 속성은 기계가 읽을 수 있는 microfomat 또는 microdata에 사용
+
+[s]
+
+-콘텐츠가 더 이상 정확하지 않거나 관련이 없음
+콘텐츠가 삭제된 것을 나타내는 의미가 아님
+학설이 틀린 것으로 판명되었다는 시멘틱
+삭제는 <del> 사용
+중간 취소선이 표시됨
+
+
+[a]
+
+-하이퍼링크, 플레이스 홀더
+href 작성 : 하이퍼링크(hyperlink)
+href 미작성 : 플레이스 홀더(placeholder)
+
+[a 속성]
+
+href / 링크할 URL
+hreflang / 링크할 리소스의 언어 코드
+target / 하이퍼링크 네비게이션과 품 전송의 브라우징 콘텍스트
+download / 다운로드 하기 위한 하이퍼링크
+rel / 하이퍼 링크와 리소스를 포함된아큐먼트 관계
+rev / 없음
+relList / IDL속성 , rel 속성을 토큰 형태로 제공
+type / 링크할 리소스의 MIME 형식
+text / IDL 속성 텍스트 : DOM의 textContent와 같음
+
+
+
+-href
+하이퍼링크주소인 URL 작성
+ 
+[a - placeholder]
+
+-플레이스홀더
+a 엘리먼트의 href 속성을 작성하지 않은 형태
+href 속성에 url이 없으므로 오나전하게 해석할 수 없지만
+a를 렌더링하여 다큐먼트에 구조 형성
+다른 방법으로 href 속성 값을 작성할 것으로 기대
+<input>의 placeholder와 단어는 같지만 여기서는 형태를 나타냄
+
+[a엘리먼트 차일드 작성]
+
+a엘리먼트 아래 차일드에 a 속성을 입힐수 있다.
+
+<aside>
+<h2>여행</h2>
+<a href="aClick.html" target="_blank">
+<section>
+<h3>괌/사이판 여행</h3>
+<p>5일:489,000dnjs </p>
+</section>
+</a>
+</aside>
+
+[a- download]
+
+-다운로드 하기 위한 하이퍼 링크
+href 속성에 작성한 파일을 다운로드한다.
+
+
+
+[a-rel]
+4.8.4 링크 타입 참조해서 정리
+
+
+
+
+-Content Model-
+
+[DOM 트리]
+
+-DOM(Document Object Model)
+
+-DOM 트리
+엘리먼트(노드)가 구조적으로 연결된 형태
+선조,페어런트,자신 ,형제 , 차일드 , 자손
+HTML 4:DOM 트리의 구조 중심
+
+
+
+[HTML5 구성 개념]
+-구성 개념
+독립적인 형태로 다른 엘리먼트에 영향을 미치지 않음
+DOM트리는 ㅈㅇ간에 엘리먼트가 없어지면 영향을 미치지만
+구성은 독립적으므로 들어내더라도 영향을 미치지 않음
+
+-연상되는 이미지
+책 목차의 장.절.항 : 절이 빠져도 전체가 무너지지 않음
+주자창 : 차가 빠져나가고도 전체에 영향을 미치지 않음
+
+[section]
+-section
+DOM 트리에서 일부 노드로 구성된 컴테이너
+구조가 아닌 구성 개념으로 접근하기 위한 단위
+구성 단위는 엘리먼트에 따라 다름
+독립적으로 구성된다는 누위양스
+
+-각 섹션은 하나의 섹션 헤더를 가질 수 없다.
+헤더 기능을 하는 엘리먼트를 가질 수 있다면 섹션이 될 수 있다.
+갖는다는 것은 차일드 위치를 의미
+
+-네스트(nest)된 섹션을 포함할 수 있다.
+네스트 : DOM 트리를 전개한 모습으로
+엘리먼트 안에 엘리먼트가 있는 구조적인 모습
+즉, 센션안에 섹션이 존재할 수 있다.
+
+
+[콘텐츠 모델]
+-Content Model
+엘리먼트의 콘텐츠 요건을 설명한것
+모든 엘리먼트는 콘텐츠 모델을 갖음 template은 제외
+
+-갖는다(사용할)
+차일드 위치를 의미
+콘텐츠 모델은 차일드 위치에 작성할 콘텐츠 요건을 설명한 것
+
+-속한다 (사용될)
+엘리먼트 정의의 컨텍스트 (Content)
+
+
+[카테고리]
+-카테고리
+비슷한 특징을 가진 엘리먼트들을 모아 놓은 그룹
+엘리먼트는 0개 이상의 카테고리에 속함
+카테고리에 속하지 않는 엘리먼트도 있음 <li> <dt>등
+
+-카테고리 종류
+Metadata content
+Flow content
+sectioniong content
+Heading content
+Phrasing content
+embedded content
+interactive content : audio,video
+
+
+[카테고리 관계]
+
+-플로우 콘텐츠는 다른 케타고리 특징을 갖고 있음
+-중복된 것은 엘리먼트가 카테고리 특징을 중복해서 갖고 있다는 의미
+-예 : <ruby>의 카테고리는 플로우 콘텐츠와 프레이징 콘텐츠
+
+
+[Metadata content]
+
+-Metadata content
+연속되는 콘텐츠의 표시와 동작 설정
+다른 다큐먼트와 관련성 설정
+다른 영역에 정보 전달
+
+-엘리먼트
+base, link , meta , noscript , script , style, template , title
+
+
+[Flow Content]
+
+-Flow Content
+대부분의 엘리먼트가 플로우 콘텐츠 카테고리에 속함
+
+-엘리먼트
+a abbr address area (if it is a descendant of a map element) article aside audio b bdi bdo blockquote br button canvas cite code data datalist del dfn div dl em embed fieldset figure footer form h1 h2 h3 h4 h5 h6 header hr i iframe img input ins kbd keygen label main map mark math meter nav noscript object ol output p pre progress q ruby s samp script section select small span strong sub sup svg table template textarea time u ul var video wbr text(노드)
+
+
+[Sectioning content]
+
+-sectioning content
+헤딩(heading)과 푸터(footer) 범위를 정의하는 콘텐츠
+구조가 아닌 구성 개념으로 접근하기 위한 단위
+섹셔닝 콘텐츠 엘리먼트는 해당과 아웃라잇(outline)을 갖음
+섹셔닝 콤텐츠와 섹셔닝 루트는 다름
+
+-엘리먼트
+article,aside , nav, section 
+
+
+[Heading content]
+
+-Heading content
+섹션의 헤더를 정의하는 콘텐츠
+
+-엘리먼트
+h1 h2 h3 h4 h5 h6
+
+-예제
+<article>
+<h1>대한민국</h1> -- Heading content (영역에 하나만 존재)
+<h2>서울특별시</h2>
+<h3>중구</h3>
+</article>
+
+
+[Phrasing content]
+
+-Phrasing content
+다큐먼트의 텍스트. 단락 레벨의 텍스트를 표현하는 엘리먼트
+프로우 콘텐츠가 아닌 프레이징 콘텐츠 엘리먼트 포함 가능
+
+-엘리먼트
+a abbr area (if it is a descendant of a map element) audio b bdi bdo br button canvas cite code data datalist del dfn em embed i iframe img input ins kbd keygen label map mark math meter noscript object output progress q ruby s samp script select small span strong sub sup svg template textarea time u var video wbr text
+
+[Embedded content]
+
+-Embedded content
+다큐먼트에 다른 리소스(resouce)를 포함시키는 콘텐츠
+일부 콘텐츠는 fallback 콘텐츠를 가질 수 있음
+
+-엘리먼트
+audio canvas embed iframe img math object svg video
+
+[Interactive content]
+
+-Interactive content
+사용자와 상호작용(interactive)하는 콘텐츠
+
+-엘리먼트
+a audio (if the controls attribute is present) button embed iframe img (if the usemap attribute is present) input (if the type attribute is not in the hidden state) keygen label object (if the usemap attribute is present) select textarea video (if the controls attribute is present)
+
+
+[palpable content]
+
+-palpable content
+플로우 콘텐츠 또는 프레이징 콘텐츠 모델을 허용하는
+콘텐츠 모델의 엘리먼트는 펄퍼블 콘텐츠이다
+hidden이 아닌 콘텐츠에도 차일드 노드를 하나 이상 갖게 된다.
+일반적이며 엄격한 요건은 아니다
+정삭적으로 Empty 상태가 되는 케이스가 있기 때문
+예.placeholder 상태에서 채우지 않는 경우
+
+
+[script-supporting 엘리먼트]
+
+-script-supporting
+스크립트을 지원하기 위해 사용되는 엘리먼트
+
+-엘리먼트
+script template
+
+[Transparent content modeles]
+
+-Transparent content modeles
+콘텐츠 모델에 transparent로 작성된 엘리먼트
+자신이 아닌 페어런트의 콘텐츠 모델이 콘텐츠 모델이 된다.
+즉 , 페어런트와 차일드로 콘텐츠 모델을 구성
+nest된 엘리먼트가 Transparent이면 적용이 반봅된다.
+Transparent 엘리먼트의 페어런트가 없으면 Flow content를 적용
+
+-엘리먼트 
+a,audio, canvas, dei ,ins,map,object,video
+noscript(body)에 작성했을 때만
+
+
+[base]
+
+-다큐먼트의 링크 기준(base) URL 작성
+
+-Empty 콘텐츠
+차일드 엘리먼트 작성 불가
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

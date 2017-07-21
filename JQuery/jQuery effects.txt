@@ -1,0 +1,43 @@
+
+[jQuery effects]
+
+
+메서드
+
+show() : 문서 객체를 크게 하며 보여줌.
+
+hide(): 문서 객체를 작게 하며 사라지게 함.
+
+toggle() : show() 메서드와 hide() 메서드를 번갈아 실행함.
+
+slideDown() :  문서 객체를 슬라이드 효과와 함께 보여줌.
+
+slideUp() : 문서 객체를 슬라이드 효과와 함께 사라지게 함.
+
+slideToggle() : slideDown() 메서드와 slideUp() 메서드를 번갈아 실행함.
+
+fadeln() : 문서 객체를 선명하게 하며 보여줌.
+
+fadeout() : 문서 객체를 흐리게 하며 사라지게 함.
+
+fadeToggle() : fadeln() 메서드와 fadeOut() 메서드를 번갈아 실행함.
+
+animate() : 사용자 지정 효과를 생성함. 
+( opacity , height , width , top , bottom , left , right , margin , padding )
+ => $(selector).animate(object);
+ => $(selector).animate(object , speed);
+ => $(selector).animate(object , speed , easing);
+ => $(selector).animate(object , speed , easing , callback);
+
+
+clearQueue() : 큐의 내용을 제거 함.
+
+stop() : 효과와 애니메이션을 정지함.
+ => $(selector).stop()
+ => $(selector).stop(clearQueue) 
+ => $(selector).stop(clearQueue , goToEnd)
+
+
+delay() : 큐에 있는 명령을 잠시 중지함.
+ => $(this).delay(500).animate({ left:500 }, 'slow' ) 
+

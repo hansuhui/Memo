@@ -1,0 +1,27 @@
+
+easeIn - 처음에는 느리게 움직이다가 점차 가속도가 붙어 빨라집니다.
+
+easeOut - 처음에는 빠르게 움직이다가 점차 가속도가 떨어져 느려집니다
+
+easeInOut-처음과 끝이 느려지면서 멈추고 , 중간까지 빨라졌다가 중간이후느려짐
+
+3가지 키워드를 이해했다면 다은 키워드를 연상하여 붙이면 됩니다.
+
+키워드/풀네임/풀이
+
+Quad / Quadratic / 2차 곡선
+Cubic / Bounce / 입방체,세제곱
+Quart / Quartic / 4차 방정식
+Quint / Quintic / 5차 방정식
+Sine / Sinusidial / 사인 곡선
+Expo / Exponential / 지수 곡선
+Circ / Circular / 원형, 곡선
+Elasic / Elastic / 탄력
+Back / Back / 뒤
+Bounce / Bounce / 튕기기
+
+
+
+
+그래프 보는곳
+http://hosted.zeh.com.br/mctween/animationtypes.html 

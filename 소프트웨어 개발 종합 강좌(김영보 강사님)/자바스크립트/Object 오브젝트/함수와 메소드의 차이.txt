@@ -1,0 +1,47 @@
+
+[함수와 메소드]
+
+-함수와 메소드 구분
+함수 : 오브젝트에 연결
+예 : Object.create
+
+메소드 : 오브젝트.prototype에 연결
+예 : Object.prototype.toString
+
+
+-호출 방법
+함수(function) : Object.create();
+
+메소드 :Object.prototype.toString();
+또는 인스턴스를 생성하여 인스턴스.toString();
+
+
+
+함수는 오브젝트에 연결되는것이 함수!!!
+portotype에 있는것들이 연결되는것이 메소드!!!
+
+
+[Object.prototype 상속]
+
+-모든 인스턴스에 object 인스턴스 상속
+var obj = new Number(123);
+Object.prototype에 연결된 메소드로
+인스턴스를 생성하여 obj에 상속
+
+-Object의 메소드 호출 방법
+Object.prototype.toString() 메소드를
+Object를 지정하지 않고
+obj.toString() 형태로 호출
+
+var ss = 123;
+ss.__proto__; // object Number
+
+상속을 받아서 만들면 proto라는 곳에 
+메소드 및 값이 들어간다.
+
+var obj = new Number();
+obj.value = 123;
+
+
+object Number 상속
+object Number 는 이미 object Object 상속

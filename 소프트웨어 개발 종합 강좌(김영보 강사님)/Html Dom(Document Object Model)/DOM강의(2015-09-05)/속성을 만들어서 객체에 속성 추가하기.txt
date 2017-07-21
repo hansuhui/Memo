@@ -1,0 +1,11 @@
+document.createAttribute()
+
+
+
+var node = document.createAttribute("한글");
+
+node.nodeValue = "  한글";
+var el = document.getElementById("test");
+el.setAttributeNode(node);
+log("속성값:"+el.getAttribute("한글"));
+

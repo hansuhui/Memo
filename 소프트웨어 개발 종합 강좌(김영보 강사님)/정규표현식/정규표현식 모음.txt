@@ -1,0 +1,20 @@
+/^[a-zA-Z]+$/ - 영어 대소문자
+/^[a-zA-Z0-9]+$/ - 영어 대소문자 , 숫자
+/^[a-zA-Z0-9^@]+$/ - 영어 대소문자 , 숫자 ,@까지 인정
+/^+$/  - 처음부터 끝까지
+
+
+replace에 패턴을 쓰면 매우 유용
+replace(/-/g,"");
+
+
+
+
+var pattern = /(^[+-]?\d+)(\d{3})/;
+	function insertComma(val){
+		var str= val.toString();
+		while(pattern.test(str)){
+			str = str.replace(pattern,'$1'+','+"$2");
+		}
+		return str;
+	}

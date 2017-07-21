@@ -1,0 +1,10 @@
+-Array.isArray : 배열인지 확인하는 작업
+
+-토큰(Token) : 코드 최소 단위 "var" , "sport" , "=" , "tt" 등등  
+
+-값 타입 반환 : typoof value;
+
+typeof undefined = "undefined"
+typeof null = "object"
+typeof true = "boolean
+typeof 123 = number

@@ -1,0 +1,39 @@
+
+예제 사이트 http://www.nextree.co.kr/p8468/
+
+*{} 전체
+태그{}
+.class1 {} 클래스
+#id{} 아이디
+
+/* 하위 선택자 */
+section ul { border: 1px dotted black; }
+ 
+/* 자식 선택자 */
+section>ul { border: 1px dotted black; }
+
+ 
+/* 인접 형제 선택자 */
+h1+ul { background: yellowgreen; color: darkgreen; }
+ 
+/* 일반 형제 선택자 */
+h1~ul { background: darkgreen; color: yellowgreen; }
+
+
+속성 선택자
+
+/* E[attr]형식 */
+a[href] { background: yellowgreen; color: black; }
+ 
+/* E[attr="val"]형식 */
+input[type="text"] { width: 150px; border: 1px solid #000; }
+ 
+/* E[attr$="val"]형식 */
+a[href$=".xls"] { background: darkgreen; }
+ 
+<!-- HTML -->
+<a href="one.html">E[attr]형식</a>
+<input type="text" name="name">
+<a href="one.xls">E[attr$="val"]형식</a>
+
+

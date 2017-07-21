@@ -1,0 +1,264 @@
+[String ¿ÀºêÁ§Æ®]
+String
+new String() / ÀÎ½ºÅÏ½º »ý¼º
+
+String ÇÔ¼ö
+String() / ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+fromCharCode() / À¯´ÏÄÚµå¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+String ÇÁ·ÎÆÛÆ¼
+lenth / ¹®ÀÚ¿­ÀÇ ¹®ÀÚ ¼ö ¹ÝÈ¯
+
+String.protopype
+constructor / »ý¼ºÀÚ
+toString() / ¹®ÀÚ¿­·Î º¯È¯
+valueOf() / ÇÁ¸®¹ÌÆ¼ºê °ª ¹ÝÈ¯
+charAt() / ÀÎµ¦½º ¹øÂ° ¹®ÀÚ ¹ÝÈ¯
+... ³ª¸ÓÁö ¾Ë¾Æº¸±â
+
+
+[new String()]
+
+-°³¿ä
+»õ·Î¿î String ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ¿© ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ ÇÁ¸®¹ÌÆ¼ºê °ªÀÌ µÊ
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ºó ¹®ÀÚ¿­ ¼³Á¤
+¼ýÀÚ¸¦ ÁöÁ¤ÇÏ¸é ¹®ÀÚ¿­·Î ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ¿¡ ÇÁ¸®¹ÌÆ¼ºê °ª ÁöÁ¤
+
+-°³¹ß ÈùÆ®
+ÀÚ¹Ù½ºÅ©¸³Æ® °³¹ßÀÚ´Â var result = new String(123) ÇüÅÂ¸¦ »ç¿ëÇÏÁö ¾Ê°í
+var result = "123"; ÇüÅÂ »ç¿ë
+ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏÁö ¾Ê¾Æµµ String ¿ÀºêÁ§Æ®ÀÇ ¸Þ¼Òµå¸¦ È£ÃâÇÒ ¼ö ÀÖ±â ¶§¹®
+Áï ÀÎ½ºÅÏ½º.split()°¡ ¾Æ´Ñ "123".split()ÇüÅÂ·Î »ç¿ëÇÒ ¼ö ÀÖ±â ¶§¹®
+
+
+[String()]
+
+-°³¿ä
+ÆÄ¶ó¹ÌÅÍ °ªÀ» ¹®ÀÚ¿­ Å¸ÀÔÀ¸·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+»õ·Î¿î String ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏÁö ¾ÊÀ½
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ºó ¹®ÀÚ¿­À» ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ¿¡ º¯È¯ÇÒ °ª ÁöÁ¤
+
+-°³¹ß ÈùÆ®
+(""+123) ÇüÅÂ·Î ¼ýÀÚ¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÒ ¼ö ÀÖÀ¸¸ç
+°¡µ¶¼ºÀÌ ¶³¾îÁö¹Ç·Î String(123) ÇüÅÂ »ç¿ë ±ÇÀå
+
+[length ÇÁ·ÎÆÛÆ¼]
+¹®ÀÚ¿­ ¼ö·®À» ¾Ë·ÁÁØ´Ù.
+
+[toString()]
+
+-°³¿ä
+°ªÀ» ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+data À§Ä¡¿¡ String ÀÎ½ºÅÏ½º ¶Ç´Â ¹®ÀÚ¿­À» ÁöÁ¤ÇÏ¹Ç·Î
+¹®ÀÚ¿­ º¯È¯¿¡ ÀÇ¹Ì°¡ ¾ø´Ù°í ÇÒ ¼ö ÀÖ´Ù.
+
+±×·±µ¥µµ toString() ¸Þ¼Òµå°¡ String ¿ÀºêÁ§Æ®¿¡ Á¸ÀçÇÏ´Â °ÍÀº
+"123".toString() ÇüÅÂ·Î È£ÃâÇßÀ» ¶§
+String ¿ÀºêÁ§Æ®¿¡ toString()ÀÌ ¾øÀ¸¸é
+Object¿ÀºêÁ§Æ®ÀÇ toString()À» È£ÃâÇÏ±â ¶§¹®
+
+ÀÌ·± ÀÌÀ¯·Î ÀÎÇØ ´ëºÎºÐÀÇ ºôÆ®ÀÎ ¿ÀºêÁ§Æ®¿¡ toString()°ú valueOf°¡ ÀÖÀ½
+
+-ÀÛ¼º ¹æ¹ý
+dataÀ§Ä¡¿¡ String ÀÎ½ºÅÏ½º ¶Ç´Â ¹®ÀÚ¿­ ÁöÁ¤
+
+
+[valueOf()]
+ÇÁ¸®¹ÌÆ¼ºêº§·ù ¼Ó¼º °ªÀ» °¡Á®¿Â´Ù.
+
+[charAt()]
+
+-ÀÎµ¦½º ¹øÂ°ÀÇ ¹®ÀÚ ¹ÝÈ¯
+ÁöÁ¤ÇÑ ÀÎµ¦½º¿¡ ¹®ÀÚ°¡ ¾øÀ¸¸é ºó ¹®ÀÚ¿­ ¹ÝÈ¯
+¹®ÀÚ¿­ ±æÀÌº¸´Ù ÀÎµ¦½º °ªÀÌ Å©¸é undefined°¡ ¾Æ´Ñ ºó ¹®ÀÚ¿­ ¹ÝÈ¯
+--undefined¿Í ºó ¹®ÀÚ¿­Àº °ªÀÌ´Ù¸§
+
+
+[charCodeAt()]
+
+-°³¿ä
+ÀÎµ¦½º ¹øÂ°ÀÇ ¹®ÀÚ¸¦ À¯´ÏÄÚµå °ª ¹ÝÈ¯
+ÀÎµ¦½º°¡ ¹®ÀÚ¿­ ±æÀÌº¸´Ù ÀÛ°Å³ª Å©¸é NaN
+
+-ÀÛ¼º ¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ¿¡ °ªÀ» ¹ÝÈ¯ÇÒ ÀÎµ¦½º
+
+[fromCharCode()]
+
+-°³¿ä
+À¯´ÏÄÚµå °ªÀ» ¹®ÀÚ¿­·Î ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ¿¡ ÀÛ¼ºÇÑ ¼ø¼Ò·Î ¹®ÀÚ¿­À» ¿¬°áÇÏ¿©¹ÝÈ¯
+
+À¯´ÏÄÚµå ÇÑ±ÛÀÇ ½ÃÀÛÀº ¤¡(12593) 
+À¯´ÏÄÚµå ÇÑ±ÛÀÇ ³¡Àº ÆR(55203)
+
+À¯´ÏÄÚµå ÇÑ±Û ¹üÀ§ ¤¡(12593) ~ Èþ(55203)
+
+
+[concat()]
+
+-°³¿ä
+°ªÀ» ¿¬°áÇÏ¿© ¹®ÀÚ¿­·Î ¹ÝÈ¯
+ÆÄ¶óÆ¼¸Ó¿¡ ÀÛ¼ºÇÑ ¼ø¼­´ë·Î ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+dataÀ§Ä¡¿¡ ¿¬°áÇÒ ¹®ÀÚ¿­ ¶Ç´Â String ¿ÀºêÁ§Æ® ÁöÁ¤
+,ÄÞ¸¶·Î Ãß°¡ °¡´É
+
+
+[indexOf()]
+
+-°³¿ä
+¹®ÀÚ¿­¿¡¼­ ÁöÁ¤ÇÑ ¹®ÀÚ¿Í ÀÏÄ¡ÇÏ´Â °¡Àå ÀÛÀº ÀÎµ¦½º ¹ÝÈ¯
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ°¡ ¾øÀ¸¸é -1¹ÝÈ¯
+
+-°Ë»ö±âÁØ
+¹®ÀÚ¿­À» ¿ÞÂÊ¿¡¼­ ¿À¸¥ÂÊÀ¸·Î °Ë»ö
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ¸¦ ¸¸³ª¸é ´õ ÀÌ»ó °Ë»öÇÏÁö ¾Ê°í Á¾·á
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ¸é ÁöÁ¤ÇÑ ÀÎµ¦½ººÎÅÍ °Ë»ö
+ÁöÁ¤ÇÏÁö ¾Ê°Å³ª NaN, À½¼ö¸¦ ÁöÁ¤ÇÏ¸é Ã³À½ºÎÅÍ °Ë»ö
+¼ýÀÚ¸¦ ÁöÁ¤ÇÏ¸é ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© °Ë»ö
+
+
+[lastIndexOf()]
+
+-°³¿ä
+¹®ÀÚ¿­¿¡¼­ ÁöÁ¤ÇÑ ¹®ÀÚ¿Í ÀÏÄ¡ÇÏ´Â °¡Àå Å« ÀÎµ¦½º ¹ÝÈ¯
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ°¡ ¾øÀ¸¸é -1 ¹ÝÈ¯
+
+-°Ë»ö±âÁØ
+¹®ÀÚ¿­À» ¿À¸¥ÂÊ¿¡¼­ ¿ÞÂÊÀ¸·Î °Ë»ö
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ¸¦ ¸¸³ª¸é ´õÀÌ»ó °Ë»öÇÏÁö ¾Ê°í Á¾·á
+123°ú °°ÀÌ ¹®ÀÚ¿­ÀÌ °Ë»ö µÇ¾úÀ»¶§ 1ÀÇ ÀÎµ¦½º °ª ¹ÝÈ¯
+
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ¸é ÁöÁ¤ÇÑ ÀÎµ¦½ººÎÅÍ ½ÃÀÛ
+
+
+[localeCompare()]
+
+-°³¿ä 
+°ªÀÇ À§Ä¡¸¦ °ªÀ¸·Î ¹ÝÈ¯
+°ª : 1(¾Õ),0(°°À½), -1(µÚ)
+Unicode »çÀü ¼øÀ¸·Î ºñ±³
+
+-ºñ±³ ±âÁØ
+dataÀ§Ä¡¿¡ ºñ±³ ±âÁØ ´ë»ó ÀÛ¼º
+ÆÄ¶ó¹ÌÅÍ¿¡ ºñ±³ÇÒ °ª ÁöÁ¤
+data °ªÀ» ±âÁØÀ¸·Î ÆÄ¶ó¹ÌÅÍ °ªÀÇ À§Ä¡¸¦ ºñ±³
+
+
+
+[match()]
+
+-°³¿ä
+¸ÅÄ¡(match) °á°ú¸¦ ¹è¿­·Î ¹ÝÈ¯
+¸ÅÄ¡´Â Á¤±ÔÇ¥Çö½Ä ¿ë¾î
+¸ÅÄ¡ ´ë»ó¿¡ Á¤±Ô Ç¥Çö½ÄÀÇ ÆÐÅÏÀ» Àû¿ëÇÏ¿© ¸ÅÄ¡ÇÏ°í ¸ÅÄ¡ °á°ú¸¦ ¹ÝÈ¯
+¹®ÀÚ¿­À» ÁöÁ¤ÇÒ ¼ö ÀÖÁö¸¸ ¿£Áø¿¡¼­ Á¤±Ô Ç¥Çö½ÄÀ¸·Î º¯È¯ÇÏ¿© ¸ÅÄ¡
+¸ÅÄ¡µÇÁö ¾ÊÀ¸¸é null
+
+-Á¤±ÔÇ¥Çö½Ä
+ÀÚ¹Ù½ºÅ©¸³Æ® ½ºÆÑ¿¡ ±â¼úµÇ¾î ÀÖÀ½
+¹®ÀÚ¿­À» ´ë»óÀ¸·Î ÆÐÅÏÀ» ¸ÅÄ¡
+ÆÐÅÏ(patten)ÇüÅÂ : ^,$,*,+ µî
+String ¿ÀºêÁ§Æ®¿¡¼­ Á¤±Ô Ç¥Çö½ÄÀ» »ç¿ëÇÒ ¼ö ÀÖ´Â ¸Þ¼Òµå
+match(),replace(),serach(),split()
+
+
+[replace()]
+
+
+-°³¿ä
+¸ÅÄ¡ °á°ú¸¦ ÁöÁ¤ÇÑ °ªÀ¸·Î ´ëÃ¼ÇÏ¿© ¹ÝÈ¯
+
+-´ëÃ¼±âÁØ
+data À§Ä¡¿¡ ¸ÅÄ¡ ´ë»ó ÀÛ¼º
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ ¸ÅÄ¡ÇÒ Á¤±Ô Ç¥Çö½Ä ¶Ç´Â ¹®ÀÚ¿­ ÁöÁ¤
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ ¸ÅÄ¡µÇ¾úÀ» ¶§ ´ëÃ¼ÇÒ °ª ÁöÁ¤
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ°¡ ÇÔ¼öÀÌ¸é ÇÔ¼ö¸¦ È£ÃâÇÏ°í ÇÔ¼ö¿¡¼­ ¹ÝÈ¯ÇÑ °ªÀ¸·Î ´ëÃ¼
+data À§Ä¡¿¡ ÀÛ¼ºÇÑ ¹®ÀÚ¿­Àº º¯°æµÇÁö ¾ÊÀ½
+
+
+[trim()]
+
+-°³¿ä
+¹®ÀÚ¿­ ¾ÕµÚ¿¡ È­ÀÌÆ® ½ºÆäÀÌ½º »èÁ¦
+È­ÀÌÆ® ½ºÆäÀÌ½º(whitespace)´Â °ø¹é°ú °°ÀÌ º¸ÀÌÁö ¾Ê´Â ¹®ÀÚ
+ES5¿¡¼­ Ãß°¡µÊ
+
+
+[search()]
+
+-°³¿ä
+°Ë»öµÈ Ã¹¹øÂ° ÀÎµ¦½º ¹ÝÈ¯
+
+
+[substring()]
+
+-°³¿ä
+½ÃÀÛ ÀÎµ¦½º ³¡ ÀÎµ¦½º Á÷Àü±îÁö ¹ÝÈ¯
+
+-¹ÝÈ¯ ±âÁØ
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ³¡±îÁö ¹ÝÈ¯
+Ã¹¹øÂ°¿Í µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ¸ðµå ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ÀüÃ¼ ¹ÝÈ¯
+NaN À½¼ö °ªÀ» ÁöÁ¤ÇÏ¸é 0À¸·Î °£ÁÖÇÏ¿© Ã³¸®
+¹ÝÈ¯ ´ë»ó ¹®ÀÚ¿­ ¼öº¸´Ù ÆÄ¶ó¹ÌÅÍ °ªÀÌ Å©¸é ¹®ÀÚ¿­ »ç¿ë
+
+
+[substr()]
+
+-°³¿ä
+½ÃÀÛ À§Ä¡ºÎÅÍ ÁöÁ¤ÇÑ ¹®ÀÚ ¼ö¸¦ ¹ÝÈ¯
+
+-¹ÝÈ¯±âÁØ
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é 0À¸·Î °£ÁÖ
+°ªÀÌ À½¼öÀÌ¸é ÀüÃ¼ ±æÀÌ¿¡¼­ ÁöÁ¤ÇÑ °ªÀ» ´õÇÑ °ªÀÌ ½ÃÀÛ À§Ä¡°¡ µÊ
+
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ¾ç¼ö ¹«ÇÑ´ë Àû¿ë,Áï ³¡±îÁö ¹ÝÈ¯
+¹®ÀÚ¿­·Î ÁöÁ¤ÇÏ´õ¶óµµ °ªÀÌ ¼ýÀÚÀÌ¸é »ç¿ë °¡´É
+
+
+[slice()]
+
+-°³¿ä
+½ÃÀÛ ÀÎµ¦½ººÎÅÍ ³¡ ÀÎµ¦½º Á÷Àü±îÁö ¹ÝÈ¯
+
+-¹ÝÈ¯±âÁØ
+
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾È°Å³ª NaNÀÌ¸é 0À» »ç¿ë
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ÀüÃ¼ ¹®ÀÚ ¼ö »ç¿ë
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ À½¼öÀÌ¸é ÀüÃ¼ ¹®ÀÚ¼ö¿¡ ÁöÁ¤ÇÑ °ªÀ» ´õÇØ »ç¿ë
+±×·¡µµ ´õÇÑ °ªÀÌ À½¼öÀÌ¸é 0À» »ç¿ë
+½ÃÀÛ °ªÀÌ ³¡ °ªº¸´Ù Å©¸é ºó ¹®ÀÚ¿­À» ¹ÝÈ¯
+false, undefined , null, ºó¹®ÀÚ¿­Àº 0À» »ç¿ë
+
+
+[split()]
+
+-°³¿ä
+¹®ÀÚ¿­À» ±¸ºÐÀÚ·Î ºÐ¸®ÇÏ¿© ¹è¿­·Î ¹ÝÈ¯
+
+-¹ÝÈ¯ ±âÁØ
+±¸ºÐÀÚ´Â ¹ÝÈ¯µÇ´Â ¹è¿­¿¡ Æ÷ÇÔµÇÁö ¾ÊÀ½
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ÀüÃ¼¸¦ ¹è¿­·Î ¹ÝÈ¯
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ¸é ¾Õ¿¡¼­ ºÎÅÍ ¼ýÀÚ¸¸Å­ ¹ÝÈ¯
+
+
+[toLowerCase()]
+
+-°³¿ä
+¿µ¹® ´ë¹®ÀÚ¸¦ ¼Ò¹®ÀÚ·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+[toUpperCase()]
+
+-°³¿ä
+¿µ¹® ¼Ò¹®ÀÚ¸¦ ´ë¹®ÀÚ·Î º¯È¯ÇÏ¿© ¹ÝÈ¯

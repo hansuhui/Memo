@@ -1,0 +1,4 @@
+event.relatedNode // 관련된 노드
+envet.target //이벤트 대상
+
+알아보고 추가하기

@@ -1,0 +1,8 @@
+
+
+사운드 관련 태그
+<EMBED id='hovers' SRC='../media/hover.wav' 
+AUTOSTART='false'  VOLUME='80%' LOOP='false'>
+
+
+<audio controls ><source src="../media/iuPlay.mp3"></source></audio>

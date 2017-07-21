@@ -1,0 +1,673 @@
+===========================[IoT]===========================
+
+[타임 테이블]
+
+IoT 개요 /  IoT 개념 , 발전 방향 , W3C 의 Wo
+
+라즈베리파이 / 라즈베리파이 개요 , LED 센서 조립
+
+OS 설치 / Raspbian 설치 , 원격 접속을 위한 유틸리티 설치
+
+Linux / Raspbian를 제어하기 위한 Linux 기본 커멘트
+
+개발 환경 설정 / Samba(파일 공유) 설치 , FTP Tool(Cyberduck) 설치
+
+Node.js / 라즈베이 파이에 Node.js 설치 , git/nvm 설치
+
+GPIO / GPIO에 LED 연결 , LED on/off 코드 작성
+
+HTTP 통신 / Node.js와 HTTP 통신, 웹 페이지 값에 따른 LED on/off 코드 작성
+
+Socket 통신 / 라즈베이 파이와 웹 페이지 Socket 통신 , 값에 따른 LED on/off 코드 작성
+
+MongoDB / MongoDB 설치 , 데이터베이스 생성 ,데이터 CRUD 코드 작성
+
+
+ 
+[IotT]
+
+- Internet of Things
+
+- 사물을 인터넷에 연결하여 서비스
+
+- 키워드 : 사물, 인터넷 , 서비스
+
+- 연결 , 통합 , 융합
+
+
+[W3C 활동]
+
+- WoT
+Web of Things Community Group
+http://www.w3.org/community/wot/
+
+- 접근 방법
+요구사항 정의를 위한 usecase 수집
+고려사항 분석
+서비스 기술 정의
+오픈 마켓 서비스 요구 분석
+기존 표준 분석
+요구사항에 대한 표준 의뢰
+
+
+[오픈소스 하드웨어]
+
+
+- 라즈베리 파이(Raspberry bi)
+
+- 아두이노(arduino)
+
+- 비글보드(BeagleBoard)
+
+- 갈릴레오(Galileo)
+
+
+[라즈베리 파이]
+
+-라즈베리 파이
+ 영국의 라즈베리 파이 재단에서 개발
+ 학교에서 기본적인 컴퓨터 과학 교육을 이해 개발
+
+- 하드웨어
+ ARM 프로세서 , 싱글보드 컴퓨터
+ USB,LAN,Camra , HDMI , Display , Micro SD 카드 , GPIO 등
+
+- OS
+기본 OS 라즈비언 , 라즈베리 파이 전용으로 Linux
+Ubuntu Core , Windows 10 Iot Core , Risc OS 등
+
+- 소프트웨어
+JavaScript , Python , Java 등의 ARM Linux에서 실행 가능한 언어
+
+
+[GPIO 커넥터]
+
+- General Purpose Input / Oupput
+ 40핀으로 구성
+ 소프트웨어로 특정 핀의 전압을 읽거나 설정
+
+- SD 카드쪽 아래 부터 1번
+
+
+[브래드 보드]
+
+-breadboard
+ 빵판 , 선과 선 연결
+
+- 선 연결 기준
+ 적색 줄은 양극(+)으로 세로 방향으로 흐른다
+ 청색 줄은 음극(-)으로 세로 방향으로 흐른다
+ 노랑색 줄은 가로 방향으로 전기가 흐른다
+ 가운데 홈은 섹션 분리
+-- 섹션에 전기를 연결하려면 점퍼 선으로 연결한다.
+
+
+[전기 속성]
+
+- 전기 속성
+ 양극(+), 음극(-) , 건전지 형태
+
+- 전기 연결
+ 양극을 전기 공급에 연결
+ 음윽을 Ground에 연결
+
+- 전압
+  전기가 이동하는 힘의 크기 : 볼트(Volt)
+
+- 전류
+  흘라가는 전기의 양 : 암페어(Ampere)
+
+- 저항
+  전기의 흐름 제어(방해):옵(Ohm)
+
+
+[전기 흐름]
+
+- + 로 들어가 - 로 나감
+ 전기가 적색인 양극(+)으로 들어와서
+ 청색인 음극 (-)으로 흐른다
+
+ 가운데 홈에서 전기가 단절되므로
+ 선을 사용하여 전기 연결
+
+[LED]
+
+- Light Emitting Diode
+
+- 긴 다리가 양극(+)
+
+- 짧은 다리가 음극(-)
+
+[저항]
+
+- 저항(Ohm) 목적
+ 전기 흐름 제어(방해) , LED 보호
+
+- 저항 표시 , 저항 값 계산
+
+색 / 값
+
+검 / 0
+ 
+갈 / 1
+
+삘 / 2
+
+주 / 3
+
+노/ 4
+
+초 / 5
+
+파 / 6
+
+보 / 7
+
+회 / 8
+
+하 / 9
+
+은 / +-10%
+
+금 / +-5% 
+
+
+[LED 연결]
+
+- 청색 LED 1개
+
+- 330옴(주황,주황, 갈색) 1개
+
+[GPIO T-Cobbler]
+
+- 조립
+1. 브래드 보드의 적색선이 왼쪽선이 왼쪽 , 청색선이 오른쪽으로 오게 놓는다
+2. T-Cobbler를 브래드 보드에 결합시킨다.
+-- 브래드보드의 1번과 T-Cobbler 1번 핀을 일치 시킨다.
+-- 조금씩 흔들면서 힘들 주어 위에서 아래로 누른다
+
+3. 40핀 케이블을 T-Cobbler에 연결한다.
+4. 40핀 케이블을 GPIO에 연결한다.
+
+
+
+[전원 점퍼 선 연걸]
+
+- 외부 전기 연결을 단절시킨다.
+
+- 적색 점퍼 선을 T-Cobbler 2번 핀(5V0)에 연결
+  브래드 보드(1,i) 위치
+  1번 핀(3V3)에 연결할 수도 있다.
+
+- 적색 점퍼 선을 건너편 보드의 (9,A)에 연결
+
+[저항 연결]
+
+- 저항을 (9,C) 와 (15,C)에 꽂는다
+  330옴(주,주,갈)는다
+
+
+[LED 연결]
+
+- LED 긴 다리를 (15,E)에 꽂는다
+
+- (15,E) 와 저항 (15,C)에서 15가 같다
+
+- LED 짧은 다리를 (16,E)에 꽂는다
+
+[Ground 연결]
+
+- Ground(접지) 연결
+  T-Cobbler 39번에 검정색 점퍼 선 연결
+
+- 건너편 브래드보드(16,A)에 점퍼 선을 연결
+
+- (16,A)와 LED 짧은 다리(16,E)에서 16이 같다
+
+
+[Operation System]
+
+- Raspbian
+
+- 운영체제 (OS)
+  라즈베이 파이에 OS 설치되어 있지 않으므로 설치 필요
+
+- Raspbian (라즈비언)
+  
+
+[Micro SD 카드]
+
+- Micro SD 카드 포맷
+  SD Formatter 다운로드
+
+
+[IP Address 탐색]
+
+- ipcasn 24 다운로드
+  ip 범위를 스캔
+
+
+[Mac 원격 접속] 
+
+- 터미널
+ 애플리케이션 폴더 > 유틸리티 폴터 > 터미널 
+ ssh pi@raspberrypi.local
+ (yes/no)? 에서 "yes"
+ 자료를 참조한 것으로 확인은 하지 못했음
+
+
+[window 원격 접속  ]
+
+
+- ttssh2.osdn.jp/ 다운로드
+
+
+- 포로그램 실행 라즈베이 파이 ip 주소 입력 후 실행
+
+
+[upgrade]
+
+- sudo apt-get update
+  라즈베리 파이 시스템 소프트웨어 upgrade
+
+- sudo rpi-update
+ 
+
+[configuration]
+
+- sudo raspi-config
+   라즈베리 파이 시스템 환경 설정
+
+- configration 화면
+  적색 바탕색 라인이 선택 가능한 메뉴를 나타냄
+--  Enter 또는 Space 키를 누르면 실행
+
+[Expand FileSysyem]
+
+- Expand FileSysyem
+ SD 카드 전체 영역을 사용할 수 도록 확장
+ 처음 한 번은 실행 필요
+
+[poweroff]
+
+- sudo poweroff
+
+- sudo root
+
+
+[command prompt]
+
+- 명령 프롬프트 명령(command) 입력 가능 형태
+ 
+[groups]
+
+- 개요
+  유저는 반드시 하나 이상의 그룹에 속하게 됨
+ 새로운 만들면
+ -- 디폴트로 유저 이름으로 그룹을 생성하고
+ -- 생성한 그룹에 유저가 속하게 됨
+  그룹 별로 파일 악세스 제어
+
+- 관련 커맨드
+ groupadd : 새로운 그룹 생성 #groupadd new-group
+ groupdel : 그룹 삭제 #groupdel new-group
+ goupmod : 그룹 수정
+ 
+
+[hostname]
+
+-hostname 
+현재의 호스트 이름을 표시
+
+
+[pwd]
+
+- pwd
+ print Working Directory : 현재 디렉토리 표시
+
+- ~
+ 유저의 홈 디렉토리 나타냄
+
+
+[sudo]
+
+- 권한
+ $: 일반 유저 , # 슈퍼 유저 
+- root
+ 슈퍼권한을 가진 유저
+ 모든 유저의 파일 내용 보기 등을 할 수 있음
+
+- sudo
+ root 유저 권한을 일반적으로 사용
+ pi 유저가 poweroff 권한이 없지만 sudo poweroff로 가능
+ pi 유저가 sudo 그룹에 속해 있기 때문에 가능
+
+[pwd]
+
+현재 위치 경로 반환
+ 
+[ls]
+
+-ls 
+ 현재 디렉토리에 포함된 디렉토리 리스트 표시
+ ls 다음에 작성할 수 있는 옵션(option)이 20개가 넘음
+
+- 이름 자동 완성
+ 디렉토리 이름 일부를 입력하고 tap를 치면 자동 완성이 됨
+ 같은 이름이 있으면 표시되지 않음
+ 
+[rwx 퍼미션]
+
+- 퍼미션(permission)
+ 디렉토리 또는 파일의 Read , Write , Excution 설정
+
+- 디렉토리 퍼미션
+ r : 디렉토리 내용 표시를 허가
+ w : 디렉토리에 파일 생성 , 삭제 , 서브  디렉토리 생성허가
+
+
+[ls 파일 이름]
+
+ls > 파일이름.txt
+
+ls 내용 저장
+
+[cat]
+
+-cat  파일읽기
+
+[mv]
+
+파일 이동
+
+[rm]
+
+파일 및 디렉토리 삭제
+
+[Network]
+
+iwconfig 
+무선 네트워크 정보
+
+ifconfig 
+
+유/무선 네트워크 정보
+
+
+
+[개발 환경]
+
+- 개요 
+ 라즈베리 파이의 소스 파일을 사용하여
+ 클라이언트에서 프록램 작성을 위한 환경 필요
+
+
+- Server 접속용어
+
+FTP 
+SFTP
+WebDAV
+
+
+[Samba]
+
+- 개요 
+ 라즈베리 파이의 파일을 windows 환경에서 공유 필요
+
+- Samba
+ Microsoft의 Windows 네트워크 지원 소프트웨어
+ Windows ,Liunx , Unix 환경에서 파일 공유 프로토콜 제공
+ Windows 탐색기에서 직접 악세스 가능
+
+- 주요기능
+ 파일 서버L NAS(Network Attached Storage)
+ 프린트 서버
+
+- 설치
+
+sudo apt-get install samba samba-common-bin
+
+- Samba conf 파일 오픈
+
+sudo nano /etc/samba/smd.conf
+드 추가
+
+
+- 설정
+ 에디터의 마지막으로 이동
+Samba conf 파일에 코드 추가
+
+[pi]
+comment = Pi Samba User
+path = /home/pi
+valid user = pi
+writable = yes
+browseable = yes
+create mask = 0644
+directory mask =  0755 
+
+컨트롤 + X 누르고 저장
+
+- 유저 등록
+
+- Samba 유저 등록
+ sudo smbpasswd -a pi 
+암호는 : 현재 pi 유저의 암호
+
+- Restart
+ sudo service smbd restart
+
+- 연결
+
+탐색기에 가서 네트워크 공유가 되어있음 
+해당 아이디 / 암호 입력하면 완료!!
+
+
+[FTP Tool]
+
+- Cyberduck
+ FTP,SFTP 프로그램
+ Windows , Mac 에서 사용 가능
+ 이를 하기위해서는 FTP 프로그램 필요
+
+
+[Node.js]
+
+- 라즈베이 파이 3에는 Node.js가 기존에 설치 되어 있음
+
+[Git]
+
+- 설치 확인
+ git --version
+
+- 설치 명령어
+sudo apt-get install git 
+
+
+[nvm 설치]
+
+- nvm 설치 확인
+Node Version Manager
+Node.js 버전 업그레드 수순이 복잡하므로 nvm 필요
+Raspberry Pi 3 에 설치 되어 있지 않으므로 설치 필요
+nvm --version 확인
+
+- nvm 설치 디렉토리 설정
+sudo mkdir /usr/local/nvm 
+
+- nvm 퍼미션 설정
+sudo chmod 777 /usr/local/nvm
+
+- nvm.git에서 clone으로 작성
+ git clone https://github.com/creationix/nvm.git /usr/local/nvm
+
+- nvm 사용 설정
+
+source /usr/local/nvm
+nvm --version
+
+
+
+[최신 Node.js 설치]
+
+-최신 Node.js 표시
+ nvm ls-remote
+ Node.js 버전이 리스트 형태로 표시된
+
+- Node.js 설치
+ nvm install v5.11.0 (버전)
+
+- 설치된 Node.js 버전 확인
+ node -v
+
+
+
+[nvm.sh 설정]
+
+- 목적
+nvm.node가 자동으로 부팅되어
+Node.js를 즉시 사용할 수 있도록 하기 위함
+
+- nano 에디터 오픈
+ sudo nano /etc/profile.d/nvm.sh
+
+- nvm.sh에 추가
+source /usr/local/nvm/nvm.sh
+컨트롤 + x 로 저장
+
+- 디폴트 Node 버전 지정
+nvm alias default v5.11.0
+
+
+[sudo node 설정]
+
+- 목적
+ sudo 환경에 현재 유저의 command path를 설정한다
+ sudo node로 Node.가 실행 되도록 하기 위해서이다.
+
+- sudo
+ (에디터 실행)
+ sudo nano /etc/sudoers
+ Defaults secure_path 를 #을 붙여서 주석
+ 
+
+
+
+[Node.js 실행 확인-2]
+
+Pi 폴더에 iot 작성
+
+에디터로 아래 코드 작성
+
+var http = require("http");
+http.createServer(function (request , response){
+ response.writeHand(200,{"Content-Type":"text/plaind"})
+  response.end("수고 하셨습니다.")
+}).listen(3000);
+console.log("서버 접속 http://localhost:3000/");
+
+- 파일 저장
+ 만든 폴더에 first.js로 작성한 코드 저장
+ 인코딩 (uft-8)
+
+- 실행
+ cd 로 작성한 파일에 iot 폴더로 들어간다.
+ sudo node first.js 
+
+ 서버 접속 http://localhost:3000/ 이 찍힌다.
+
+
+[package.json 작성]
+
+-package.json
+ npm 으로 install 하는 package 이름을 저장하는 파일
+ sudo npm install "package-naem"  --save
+--위와 같이 --save를 사용하면 package.json에 저장됨
+
+-package.json 작성
+ node.js용으로 install한 package는
+ /pi/node-modeules 
+ pi 폴더에 작성
+
+- package.json 형태
+{
+ "name" : "server",
+ "version" : "1.0.0",
+ "description" : "IoT",
+ "author" : "한수희",
+ "dependencies" : {}
+}
+
+
+ 
+[GPIO 번호]
+
+-GPIO의 핀 번호 구분
+40개 핀 전체를 보드 번호, 핀번호 라고 부룬
+GPIO 번호 라고 부름
+프로그램으로 제어할 수 있음
+
+- GPIO 번호
+GPIO로 시작하는 핀 26개 2번1부터 27번까지
+번호 순서로 있지 않고 여기저기 흩어져 있음
+이유가 있지만 과정 범위 이외이므로 생략
+
+- 특별한 목적으로 사용하는 핀 번호
+GPIO4(7)이 바탕색이 아닌 바탱색 핀 번호
+Serial Peripheral Interface(SPI) : GPIO 7 ~ GPIO 11
+
+
+[johnny-five 설치]
+
+- Johnny-five 
+Firmate 프로토콜 기반의
+ IoT, Robotics 용 자바스크립트 프레임 워크
+Raspberry Pi, Arduino 등의 디바이스에서 사용가능
+express.js , socket.io 와 같이 사용 가능
+Arduino 기준으로 많은 예제가 있음
+
+- npm install johnny-five --save
+https://github.com/rwaldron/johnny-five
+
+
+[Raspi-io 설치]
+
+-Raspi-io
+
+johnny-five I/O 플러그인
+Paspbian 환경의 Firmata API
+
+
+- Raspberry에 설치
+npm install raspi-io --save
+
+[GPIO 연결]
+
+- 시나리오 
+1.GPIO22번에 LED를 연결한다
+--330 엄
+
+2. 0.5 초 간격으로 On/Off를 반복한다
+
+3.Node.js 환경에서 실행한다.
+
+-LED 조립 완료 후 소스 코드로 이동
+
+
+/home/pi/iot에 파일 작성
+
+ledBilnk.js
+
+var raspi = require("raspi-io");
+var five = require("johnny-five");
+var board = new five.Board({
+  io = new raspi()
+});
+
+board.on("ready",function(){
+ //GPIO 핀 번호를 지정할 수도 있음
+ var led  = new five.Led(13);
+ five.Led("GPIO13");
+ led.blink(500);
+});
+

@@ -1,0 +1,3 @@
+이런식으로 다중 가능
+
+$("선택자").hover(function(){}).click(function(){})

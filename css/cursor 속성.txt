@@ -1,0 +1,25 @@
+cursor 값
+
+crosshair  -  십자가
+
+pointer - 손가락
+
+move - 십자 화살표
+
+wait - 도는거
+
+default -  기본 마우스
+
+text - 글자 쓰는거
+
+auto - 글자랑 같음
+
+help - 마우스 커서에 물음표 붙음
+
+e-resize - 가로 조절 마우스 커서
+
+n-resize - 새로 마우스 조절
+
+s-resize - 새로 마우스 조절
+
+w-resizet - 가로 마우스 커서

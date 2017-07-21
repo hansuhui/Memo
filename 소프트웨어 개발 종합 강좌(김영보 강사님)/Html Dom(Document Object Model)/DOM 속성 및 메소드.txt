@@ -1,0 +1,21 @@
+DOM 속성 및 메소드
+
+element.attributes / 해당 엘리먼트에 속성들을 반환한다
+
+element.hasAttributes() / 해당 엘리먼트에 속성이 있는지 반환한다
+
+element.nextSibling / 해당 엘리먼트에 다음 노드를 반환한다
+
+element.nodeName / 해당 엘리먼트의 노드이름을 반환 
+
+element.nodeType / 해당 엘리먼트의 노드타입을 반환
+
+element.nodeValue / 해당 엘리먼트의 노드값을 반환
+
+element.parentNode / 해당 엘리먼트의 부모노드를 반환
+
+element.previousSibling / 해당 엘리먼트의 이전 노드를 반환
+
+element.textContent / 해당 엘리먼트를 택스트로 반환 (설정가능)
+
+ 

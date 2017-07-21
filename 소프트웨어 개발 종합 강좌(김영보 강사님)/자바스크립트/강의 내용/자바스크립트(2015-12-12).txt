@@ -1,0 +1,944 @@
+[object ¿ÀºêÁ§Æ®]
+
+-Object ÇüÅÂ ºÐ·ù
+¿ÀºêÁ§Æ®{}
+ºôÆ®ÀÎ ¿ÀºêÁ§Æ®
+³×ÀÌÆ¼ºê ¿ÀºêÁ§Æ®(Native Object)
+È£½ºÆ® ¿ÀºêÁ§Æ®(Host Object)
+
+-³×ÀÌÆ¼ºê ¿ÀºêÁ§Æ®
+Arguments ¿ÀºêÁ§Æ®¿Í °°ÀÌ
+ÀÚ¹Ù½ºÅ©¸³Æ® ÇÁ·Î±×·¥À» ½ÇÇàÇÒ ¶§ »ý¼ºÇÏ´Â ¿ÀºêÁ§Æ®
+
+-È£½ºÆ® ¿ÀºêÁ§Æ®
+ÀÚ¹Ù½ºÅ©¸³Æ® ½ÇÇà È¯°æÀ» Áö¿öÇÏ±â À§ÇÑ ¿ÀºêÁ§Æ®
+³×ÀÌÆ¼ºê ¿ÀºêÁ§Æ®¸¦ Á¦¿ÜÇÑ ¿ÀºêÁ§Æ®
+¿¹ : DOM ¿ÀºêÁ§Æ®
+
+
+[new Object()]
+
+-ÀÎ½ºÅÏ½º »ý¼º , ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ¿¡ ÁöÁ¤ÇÑ µ¥ÀÌÅÍ Å¸ÀÔ¿¡ µû¶ó ¿ÀºêÁ§Æ® Å¸ÀÔ °áÁ¤
+ÆÄ¶ó¹ÌÅÍ¿¡ ¹è¿­·Î ´Ù¼öÀÇ µ¥ÀÌÅÍ ÁöÁ¤ °¡´É
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ undefined,nullÀÌ¸é ºó object ÀÎ½ºÅÏ½º ¹ÝÈ¯
+
+
+var obj = new object(); //±âº»¿ÀºêÁ§Æ®
+alert(obj); //[object Object]
+var obj = new object(12345); //³Ñ¹ö¿ÀºêÁ§Æ®
+alert(obj); //12345
+var obj = new object("String"); //½ºÆ®¸µ¿ÀºêÁ§Æ®
+alert(obj); //String
+var obj = new object(true); //ºí¸®¾ð¿ÀºêÁ§Æ®
+alert(obj); //ture
+
+alert(new Object(undefined)); //[object Object]
+alert(new Object(null)); //[object Object]
+
+
+ÀÎ½ºÅÏ½ºÁö¸¸ ¹Ù·Î °ªÀ» Ãâ·ÂÇÏ´Â ÀÌÀ¯´Â  ³»ºÎÀûÀ¸·Î Primitive °ªÀ» ¹ÝÈ¯ÇÏ±â ‹š¹®ÀÌ´Ù.
+
+
+
+[¿ÀºêÁ§Æ®{}]
+
+-Object ÀÎ½ºÅÏ½º »ý¼º
+var obj = {}
+var obj = new Object()¿Í °°À½
+{}Ç¥±â¸¦ Object LiteralÀÌ¶ó°í ºÎ¸§
+Hash, ¿¬»ê ¹è¿­ÀÌ¶ó°í ºÎ¸£Áö¸¸
+ÀÚ¹Ù½ºÅ©¸³Æ® Á¤½Ä ¸íÄªÀº ¿ÀºêÁ§Æ®ÀÓ
+
+
+
+[ÇÔ¼ö¿Í ¸Þ¼Òµå]
+
+-ÇÔ¼ö¿Í ¸Þ¼Òµå ±¸ºÐ
+ÇÔ¼ö : ¿ÀºêÁ§Æ®¿¡ ¿¬°á
+¿¹ : Object.create
+
+¸Þ¼Òµå : ¿ÀºêÁ§Æ®.prototype¿¡ ¿¬°á
+¿¹ : Object.prototype.toString
+
+
+-È£Ãâ ¹æ¹ý
+ÇÔ¼ö(function) : Object.create();
+
+¸Þ¼Òµå :Object.prototype.toString();
+¶Ç´Â ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏ¿© ÀÎ½ºÅÏ½º.toString();
+
+
+
+ÇÔ¼ö´Â ¿ÀºêÁ§Æ®¿¡ ¿¬°áµÇ´Â°ÍÀÌ ÇÔ¼ö!!!
+portotype¿¡ ÀÖ´Â°ÍµéÀÌ ¿¬°áµÇ´Â°ÍÀÌ ¸Þ¼Òµå!!!
+
+
+[Object.prototype »ó¼Ó]
+
+-¸ðµç ÀÎ½ºÅÏ½º¿¡ object ÀÎ½ºÅÏ½º »ó¼Ó
+var obj = new Number(123);
+Object.prototype¿¡ ¿¬°áµÈ ¸Þ¼Òµå·Î
+ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏ¿© obj¿¡ »ó¼Ó
+
+-ObjectÀÇ ¸Þ¼Òµå È£Ãâ ¹æ¹ý
+Object.prototype.toString() ¸Þ¼Òµå¸¦
+Object¸¦ ÁöÁ¤ÇÏÁö ¾Ê°í
+obj.toString() ÇüÅÂ·Î È£Ãâ
+
+var ss = 123;
+ss.__proto__; // object Number
+
+»ó¼ÓÀ» ¹Þ¾Æ¼­ ¸¸µé¸é proto¶ó´Â °÷¿¡ 
+¸Þ¼Òµå ¹× °ªÀÌ µé¾î°£´Ù.
+
+var obj = new Number();
+obj.value = 123;
+
+
+object Number »ó¼Ó
+object Number ´Â ÀÌ¹Ì object Object »ó¼Ó
+
+[toString()]
+
+-°³¿ä
+ÀÎ½ºÅÏ½º Å¸ÀÔÀ» ¹®ÀÚ¿­ Ç¥½Ã ÇüÅÂ·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+-ÀÛ¼º ¹æ¹ý
+ÇÔ¼öÀÇ ÇÇ¶ó¹ÌÅÍ¿¡ º¯È¯ÇÒ °ªÀ» ÁöÁ¤ÇÏÁö ¾Ê°í
+object À§Ä¡¿¡ ¿ÀºêÁ§Æ®°¡ ¾Æ´Ñ ÀÎ½ºÅÏ½º ÁöÁ¤
+ÆÄ¶ó¹ÌÅÍ »ç¿ë ºÒ°¡
+
+-toString() ¸ÞÄ¿´ÏÁò
+´ëºÎºÐÀÇ ºôÆ®ÀÎ ¿ÀºêÁ§Æ®¿¡ toString()ÀÌ Á¸ÀçÇÏ¸ç
+¸ðµç ÀÎ½ºÅÏ½º¿¡ Object.prototype.toString()ÀÌ ÀÎ½ºÅÏ½º·Î »ó¼Ó µÊ
+ºôÆ®ÀÎ ¿ÀºêÁ§Æ®°¡ toString()À» °®°í ÀÖÀ¸¸ç
+ºôÆ®ÀÎ ¿ÀºêÁ§Æ®ÀÇ toString()ÀÌ È£ÃâµË´Ï´Ù.
+
+
+[toLocalseString()]
+-°³¿ä
+±¹°¡, Áö¿ª¿¡¼­ »ç¿ëÇÏ´Â ¹®ÀÚ·Î º¯È¯
+
+[valueOf()]
+
+-°³¿ä
+¿ÀºêÁ§Æ®ÀÇ ÇÁ¸®¹ÌÆ¼ºê °ª ¹ÝÈ¯
+ÇÁ¸®¹ÌÆ¼ºê °ªÀ» ¹ÝÈ¯ÇÏ´Â ¿ÀºêÁ§Æ®
+Boolean,Data,Number,String ¿ÀºêÁ§Æ®
+
+4°³ ¿ÀºêÁ§Æ®´Â ÀÚ½ÅÀÇ valueOf()°¡ È£ÃâµÈ´Ù
+
+
+[hasOwnProperty()]
+
+-°³¿ä
+ÀÎ½ºÅÏ½º ¼ÒÀ¯ÀÇ ÇÁ·ÎÆÛÆ¼ Á¸Àç ¿©ºÎ ¹ÝÈ¯
+ÀÎ½ºÅÏ½º ÆÄ¶ó¹ÌÅÍ ÀÌ¸§ÀÌ Á¸ÀçÇÏ¸é ture ¹ÝÈ¯
+Á¸ÀçÇÏÁö ¾ÊÀ¸¸é false ¹ÝÈ¯
+ÇÁ·ÎÆÛÆ¼ °ªÀ» Ã¼Å©ÇÏÁö ¾Ê°í Á¸Àç ¿©ºÎ¸¸ Ã¼Å©
+
+ÇÁ·ÎÆÛÆ¼°¡ __proto__¿¡ Á¸ÀçÇÏ´õ¶óµµ ÀÚ½ÅÀÌ ¸¸µç °ÍÀÌ ¾Æ´Ï¶ó
+»ó¼Ó ¹ÞÀº ÇÁ·ÎÆÛÆ¼ÀÌ¹Ç·Î false ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+object À§Ä¡¿¡ ¿ÀºêÁ§Æ®°¡ ¾Æ´Ñ ÀÎ½ºÅÏ½º ÁöÁ¤
+ÆÄ¶ó¹ÌÅÍ¸¦ ³»ºÎ¿¡¼­ ¹®ÀÚ¿­·Î º¯È¯ÇÏ¹Ç·Î ¼ýÀÚ ÁöÁ¤ °¡´É
+
+
+
+
+[prototype chain]
+
+-°³¿ä
+prototype ¿ÀºêÁ§Æ®¿¡ ¿ÀºêÁ§Æ®¸¦ ¿¬°áÇÏ°í
+¿¬°áµÈ ¿ÀºêÁ§Æ®ÀÇ prototype¿¡ ´Ù½Ã ¿ÀºêÁ§Æ®¸¦ ¿¬°á
+µû¶ó¼­ ¼¼ °³ÀÇ ¿ÀºêÁ§Æ®°¡ ¿¬°áµÈ ÇüÅÂ°¡ µÇ¸ç
+ÀÌ ÇüÅÂ¸¦ prototype chain ÀÌ¶ó°í ÇÕ´Ï´Ù
+
+object Number »ó¼Ó
+object Number ´Â ÀÌ¹Ì object Object »ó¼Ó
+ÀÌ·± °³³ä
+__proto__ ¾È¿¡ __proto__ ÀÌ·± °Ô³ä
+
+
+-¿¬°á
+¾Æ·¡´Â ÇÔ¼ö¸¦ prototype¿¡ ¿¬°áÇÑ ÇüÅÂ
+function Sports(){}
+Sports.prototype = {soccer :function(){}}
+
+
+-»ó¼Ó
+¾Æ·¡´Â ¿ÀºêÁ§Æ®¸¦ ÀÎ½ºÅÏ½º·Î »ý¼ºÇÏ¿© »ó¼Ó¹ÞÀº ÇüÅÂ
+function soccer(){}
+Sports.prototype = new soccer();
+var obj = new Sports();
+
+
+-new ¿¬»êÀÚÀÇ »ý¼º ±âÁØ
+Sports.prototype = new soccer();
+soccer.porotoype¿¡ ¿¬°áµÈ ¸Þ¼Òµå·Î ÀÎ½ºÅÏ½º »ý¼º
+var obj = new Sports();
+Sports.protoptye¿¡ ¿¬°áµÈ ¸Þ¼Òµå·Î ÀÎ½ºÅÏ½º »ý¼º
+
+
+
+
+[isPrototypeOf()]
+
+-°³¿ä
+ÆÄ¶ó¹ÌÅÍ¿¡ ÁöÁ¤ÇÑ ÀÎ½ºÅÏ½º¿¡
+object À§Ä¡¿¡ ÁöÁ¤ÇÑ "¿ÀºêÁ§Æ®.prototype"ÀÌ Á¸ÀçÇÏ¸é ture
+
+[propertyIsEnumerable()]
+
+-°³¿ä
+¿ÀºêÁ§Æ®¿¡¼­ ÇÁ·ÎÆÛÆ¼ ÀÌ¸§À» ¿­°ÅÇÒ ¼ö ÀÖÀ¸¸é true
+
+
+
+
+[±Û·Î¹ú ¿ÀºêÁ§Æ®]
+
+-±Û·Î¹ú ¿ÀºêÁ§Æ®(Global Object)
+Bulti-in ¿ÀºêÁ§Æ®
+ÀÚ¹Ù½ºÅ©¸³Æ®°¡ »ý¼º,°³¹ßÀÚ°¡ »ý¼º ºÒ°¡
+
+-ÀüÃ¼¸¦ ÅëÇØ ÇÏ³ª¸¸ Á¸Àç
+ÀüÃ¼ ±âÁØ : ¸ðµç<script>
+¿ÀºêÁ§Æ®¸¦ ÁöÁ¤ÇÏÁö ¾Ê°í ÇÔ¼ö,ÇÁ·ÎÆÛÆ¼ »ç¿ë
+
+ÀÎ½ºÅÏ¸¦ »ý¼ºÇÒ ¼ö ¾øÀ½, new ¿¬»êÀÚ »ç¿ë ºÒ°¡
+µû¶ó¼­ ¸Þ¼Òµå°¡ ¾Æ´Ñ ÇÔ¼ö
+prototype Á¸Àç ¿©ºÎ´Â ¿£Áø °³¹ßÀÚ¿¡°Ô ÀÏÀÓ
+
+
+-ÇÔ¼ö, ÇÁ·ÎÆÛÆ¼
+±Û·Î¹ú ¿ÀºêÁ§Æ®ÀÇ ÇÔ¼ö¸¦ ±Û·Î¹ú ÇÔ¼ö
+ÇÁ·ÎÆÛÆ¼¸¦ ±Û·¯¹ú ÇÁ·ÎÆÛÆ¼·Î ºÎ¸§
+
+-Àü¿ª °´Ã¼
+Àü¾× °´Ã¼¶ó°í ºÎ¸£Áö¸¸ ´µ¾Ó½º¿¡ Â÷ÀÌ ÀÖÀ½
+
+-windown ¿ÀºêÁ§Æ®¿Í °ü°è
+window ¿ÀºêÁ§Æ®°¡ ±Û·Î¹ú ¿ÀºêÁ§Æ®´Â ¾Æ´ÏÁö¸¸
+±Û·Î¹ú ¿ÀºêÁ§Æ®¸¦ ÂüÁ¶ÇÏµµ·Ï ºê¶ó¿ìÀú°¡ Á¦°øÇÏ¹Ç·Î
+window.NaNÀ¸·Î »ç¿ë°¡´É
+ES5ÀÇ ÀÏºÎ ¸Þ¼Òµå¿¡¼­´Â window¸¦ ÁöÁ¤ÇØ¾ß ÇÔ
+
+
+[±Û·Î¹ú ÇÁ·ÎÆÛÆ¼ ¸®½ºÆ®]
+
+¾Ë¾Æº¸±â
+
+
+
+[isNaN()]
+
+-°³¿ä
+°ªÀÌ NaNÀÌ¸é true¸¦, ¾Æ´Ï¸é false¸¦ ¹ÝÈ¯
+NaN === NaN °á°ú´Â false·Î ¼³°è ½Ç¼ö
+
+-ÀÛ¼º ¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ ¼ýÀÚ·Î º¯È¯µÇ¸é ¼ýÀÚ·Î ÀÎ½Ä
+ÆÄ¶ó¹ÌÅÍ °ª Å¸ÀÔÀÌ ¹®ÀÚ¿­ÀÌ¶óµµ ¼ýÀÚ·Î º¯È¯µÇ¸é ¼ýÀÚ·Î ÀÎ½Ä
+
+[isFinite()]
+
+-°³¿ä
+°ªÀÌ ¹«ÇÑ´ë , NaNÀÌ¸é false¸¦ ¾Æ´Ï¸é , ture;
+
+
+
+[parseInt()]
+
+-°³¿ä
+ÆÄ¶ó¹ÌÅÍ °ªÀ» Áø¼ö·Î Àû¿ëÇÑ Á¤¼ý°ªÀ¸·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ 123.45ÀÌ¸é 123À» ¹ÝÈ¯
+°ªÀÌ "123ABC"ÀÌ¸é 123À» ¹ÝÈ¯
+
+-ÀÛ¼º ¹æ¹ý
+object´Â ±Û·Î¹ú ¿ÀºêÁ§Æ®ÀÌ¹Ç·Î ÁöÁ¤ÇÏÁö ¾ÊÀ½
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ º¯È¯ÇÒ °ª ÁöÁ¤
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ Àû¿ëÇÒ Áø¼ö. µðÆúÆ® 10Áø¼ö
+°ªÀÌ 13ÀÌ°í 16ÀÎ¼ö ÀÏ¶© 19·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+
+[parseFloat()]
+
+-°³¿ä
+¹®ÀÚ¿­·Î ÁöÁ¤ÇÑ ½Ç¼ö°ªÀ» ½Ç¼ö·Î ¹ÝÈ¯
+ÀÚ¹Ù½ºÅ©¸³Æ® ±âº»ÀûÀ¸·Î ½Ç¼ö Ã³¸®ÀÌ¹Ç·Î
+½Ç¼ö·Î º¯È¯µÇ´Â °ÍÀÌ ÀÇ¹Ì°¡ ¾øÁö¸¸ ¹®ÀÚ¿­ °ª º¯È¯Àº ÀÇ¹Ì ÀÇ¹ÌÀÖÀ½
+
+
+-ÀÛ¼º ¹æ¹ý
+object´Â ±Û·Î¹ú ¿ÀºêÁ§Æ®ÀÌ¹Ç·Î ÁöÁ¤ÇÏÁö ¾ÊÀ½
+ÆÄ¶ó¹ÌÅÍ¿¡ º¯È¯ÇÒ °ªÀ» ¹®ÀÚ¿­·Î ÀÛ¼º
+¼ýÀÚ·Î ÀÛ¼ºÇÏ´õ¶óµµ ¹®ÀÚ¿­°í º¯È¯ÇÏ¿© Ã³¸®ÇÏ¹Ç·Î ÀÛ¼º°¡´É
+
+
+
+[String ¿ÀºêÁ§Æ®]
+String
+new String() / ÀÎ½ºÅÏ½º »ý¼º
+
+String ÇÔ¼ö
+String() / ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+fromCharCode() / À¯´ÏÄÚµå¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+String ÇÁ·ÎÆÛÆ¼
+lenth / ¹®ÀÚ¿­ÀÇ ¹®ÀÚ ¼ö ¹ÝÈ¯
+
+String.protopype
+constructor / »ý¼ºÀÚ
+toString() / ¹®ÀÚ¿­·Î º¯È¯
+valueOf() / ÇÁ¸®¹ÌÆ¼ºê °ª ¹ÝÈ¯
+charAt() / ÀÎµ¦½º ¹øÂ° ¹®ÀÚ ¹ÝÈ¯
+... ³ª¸ÓÁö ¾Ë¾Æº¸±â
+
+
+[new String()]
+
+-°³¿ä
+»õ·Î¿î String ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ¿© ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ ÇÁ¸®¹ÌÆ¼ºê °ªÀÌ µÊ
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ºó ¹®ÀÚ¿­ ¼³Á¤
+¼ýÀÚ¸¦ ÁöÁ¤ÇÏ¸é ¹®ÀÚ¿­·Î ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ¿¡ ÇÁ¸®¹ÌÆ¼ºê °ª ÁöÁ¤
+
+-°³¹ß ÈùÆ®
+ÀÚ¹Ù½ºÅ©¸³Æ® °³¹ßÀÚ´Â var result = new String(123) ÇüÅÂ¸¦ »ç¿ëÇÏÁö ¾Ê°í
+var result = "123"; ÇüÅÂ »ç¿ë
+ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏÁö ¾Ê¾Æµµ String ¿ÀºêÁ§Æ®ÀÇ ¸Þ¼Òµå¸¦ È£ÃâÇÒ ¼ö ÀÖ±â ¶§¹®
+Áï ÀÎ½ºÅÏ½º.split()°¡ ¾Æ´Ñ "123".split()ÇüÅÂ·Î »ç¿ëÇÒ ¼ö ÀÖ±â ¶§¹®
+
+
+[String()]
+
+-°³¿ä
+ÆÄ¶ó¹ÌÅÍ °ªÀ» ¹®ÀÚ¿­ Å¸ÀÔÀ¸·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+»õ·Î¿î String ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏÁö ¾ÊÀ½
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ºó ¹®ÀÚ¿­À» ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ¿¡ º¯È¯ÇÒ °ª ÁöÁ¤
+
+-°³¹ß ÈùÆ®
+(""+123) ÇüÅÂ·Î ¼ýÀÚ¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÒ ¼ö ÀÖÀ¸¸ç
+°¡µ¶¼ºÀÌ ¶³¾îÁö¹Ç·Î String(123) ÇüÅÂ »ç¿ë ±ÇÀå
+
+[length ÇÁ·ÎÆÛÆ¼]
+¹®ÀÚ¿­ ¼ö·®À» ¾Ë·ÁÁØ´Ù.
+
+[toString()]
+
+-°³¿ä
+°ªÀ» ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+data À§Ä¡¿¡ String ÀÎ½ºÅÏ½º ¶Ç´Â ¹®ÀÚ¿­À» ÁöÁ¤ÇÏ¹Ç·Î
+¹®ÀÚ¿­ º¯È¯¿¡ ÀÇ¹Ì°¡ ¾ø´Ù°í ÇÒ ¼ö ÀÖ´Ù.
+
+±×·±µ¥µµ toString() ¸Þ¼Òµå°¡ String ¿ÀºêÁ§Æ®¿¡ Á¸ÀçÇÏ´Â °ÍÀº
+"123".toString() ÇüÅÂ·Î È£ÃâÇßÀ» ¶§
+String ¿ÀºêÁ§Æ®¿¡ toString()ÀÌ ¾øÀ¸¸é
+Object¿ÀºêÁ§Æ®ÀÇ toString()À» È£ÃâÇÏ±â ¶§¹®
+
+ÀÌ·± ÀÌÀ¯·Î ÀÎÇØ ´ëºÎºÐÀÇ ºôÆ®ÀÎ ¿ÀºêÁ§Æ®¿¡ toString()°ú valueOf°¡ ÀÖÀ½
+
+-ÀÛ¼º ¹æ¹ý
+dataÀ§Ä¡¿¡ String ÀÎ½ºÅÏ½º ¶Ç´Â ¹®ÀÚ¿­ ÁöÁ¤
+
+
+[valueOf()]
+ÇÁ¸®¹ÌÆ¼ºêº§·ù ¼Ó¼º °ªÀ» °¡Á®¿Â´Ù.
+
+[charAt()]
+
+-ÀÎµ¦½º ¹øÂ°ÀÇ ¹®ÀÚ ¹ÝÈ¯
+ÁöÁ¤ÇÑ ÀÎµ¦½º¿¡ ¹®ÀÚ°¡ ¾øÀ¸¸é ºó ¹®ÀÚ¿­ ¹ÝÈ¯
+¹®ÀÚ¿­ ±æÀÌº¸´Ù ÀÎµ¦½º °ªÀÌ Å©¸é undefined°¡ ¾Æ´Ñ ºó ¹®ÀÚ¿­ ¹ÝÈ¯
+--undefined¿Í ºó ¹®ÀÚ¿­Àº °ªÀÌ´Ù¸§
+
+
+[charCodeAt()]
+
+-°³¿ä
+ÀÎµ¦½º ¹øÂ°ÀÇ ¹®ÀÚ¸¦ À¯´ÏÄÚµå °ª ¹ÝÈ¯
+ÀÎµ¦½º°¡ ¹®ÀÚ¿­ ±æÀÌº¸´Ù ÀÛ°Å³ª Å©¸é NaN
+
+-ÀÛ¼º ¹æ¹ý
+ÆÄ¶ó¹ÌÅÍ¿¡ °ªÀ» ¹ÝÈ¯ÇÒ ÀÎµ¦½º
+
+[fromCharCode()]
+
+-°³¿ä
+À¯´ÏÄÚµå °ªÀ» ¹®ÀÚ¿­·Î ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ¿¡ ÀÛ¼ºÇÑ ¼ø¼Ò·Î ¹®ÀÚ¿­À» ¿¬°áÇÏ¿©¹ÝÈ¯
+
+À¯´ÏÄÚµå ÇÑ±ÛÀÇ ½ÃÀÛÀº ¤¡(12593) 
+À¯´ÏÄÚµå ÇÑ±ÛÀÇ ³¡Àº ÆR(55203)
+
+À¯´ÏÄÚµå ÇÑ±Û ¹üÀ§ ¤¡(12593) ~ Èþ(55203)
+
+
+[concat()]
+
+-°³¿ä
+°ªÀ» ¿¬°áÇÏ¿© ¹®ÀÚ¿­·Î ¹ÝÈ¯
+ÆÄ¶óÆ¼¸Ó¿¡ ÀÛ¼ºÇÑ ¼ø¼­´ë·Î ¹ÝÈ¯
+
+-ÀÛ¼º¹æ¹ý
+dataÀ§Ä¡¿¡ ¿¬°áÇÒ ¹®ÀÚ¿­ ¶Ç´Â String ¿ÀºêÁ§Æ® ÁöÁ¤
+,ÄÞ¸¶·Î Ãß°¡ °¡´É
+
+
+[indexOf()]
+
+-°³¿ä
+¹®ÀÚ¿­¿¡¼­ ÁöÁ¤ÇÑ ¹®ÀÚ¿Í ÀÏÄ¡ÇÏ´Â °¡Àå ÀÛÀº ÀÎµ¦½º ¹ÝÈ¯
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ°¡ ¾øÀ¸¸é -1¹ÝÈ¯
+
+-°Ë»ö±âÁØ
+¹®ÀÚ¿­À» ¿ÞÂÊ¿¡¼­ ¿À¸¥ÂÊÀ¸·Î °Ë»ö
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ¸¦ ¸¸³ª¸é ´õ ÀÌ»ó °Ë»öÇÏÁö ¾Ê°í Á¾·á
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ¸é ÁöÁ¤ÇÑ ÀÎµ¦½ººÎÅÍ °Ë»ö
+ÁöÁ¤ÇÏÁö ¾Ê°Å³ª NaN, À½¼ö¸¦ ÁöÁ¤ÇÏ¸é Ã³À½ºÎÅÍ °Ë»ö
+¼ýÀÚ¸¦ ÁöÁ¤ÇÏ¸é ¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© °Ë»ö
+
+
+[lastIndexOf()]
+
+-°³¿ä
+¹®ÀÚ¿­¿¡¼­ ÁöÁ¤ÇÑ ¹®ÀÚ¿Í ÀÏÄ¡ÇÏ´Â °¡Àå Å« ÀÎµ¦½º ¹ÝÈ¯
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ°¡ ¾øÀ¸¸é -1 ¹ÝÈ¯
+
+-°Ë»ö±âÁØ
+¹®ÀÚ¿­À» ¿À¸¥ÂÊ¿¡¼­ ¿ÞÂÊÀ¸·Î °Ë»ö
+ÀÏÄ¡ÇÏ´Â ¹®ÀÚ¸¦ ¸¸³ª¸é ´õÀÌ»ó °Ë»öÇÏÁö ¾Ê°í Á¾·á
+123°ú °°ÀÌ ¹®ÀÚ¿­ÀÌ °Ë»ö µÇ¾úÀ»¶§ 1ÀÇ ÀÎµ¦½º °ª ¹ÝÈ¯
+
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ¸é ÁöÁ¤ÇÑ ÀÎµ¦½ººÎÅÍ ½ÃÀÛ
+
+
+[localeCompare()]
+
+-°³¿ä 
+°ªÀÇ À§Ä¡¸¦ °ªÀ¸·Î ¹ÝÈ¯
+°ª : 1(¾Õ),0(°°À½), -1(µÚ)
+Unicode »çÀü ¼øÀ¸·Î ºñ±³
+
+-ºñ±³ ±âÁØ
+dataÀ§Ä¡¿¡ ºñ±³ ±âÁØ ´ë»ó ÀÛ¼º
+ÆÄ¶ó¹ÌÅÍ¿¡ ºñ±³ÇÒ °ª ÁöÁ¤
+data °ªÀ» ±âÁØÀ¸·Î ÆÄ¶ó¹ÌÅÍ °ªÀÇ À§Ä¡¸¦ ºñ±³
+
+
+
+[match()]
+
+-°³¿ä
+¸ÅÄ¡(match) °á°ú¸¦ ¹è¿­·Î ¹ÝÈ¯
+¸ÅÄ¡´Â Á¤±ÔÇ¥Çö½Ä ¿ë¾î
+¸ÅÄ¡ ´ë»ó¿¡ Á¤±Ô Ç¥Çö½ÄÀÇ ÆÐÅÏÀ» Àû¿ëÇÏ¿© ¸ÅÄ¡ÇÏ°í ¸ÅÄ¡ °á°ú¸¦ ¹ÝÈ¯
+¹®ÀÚ¿­À» ÁöÁ¤ÇÒ ¼ö ÀÖÁö¸¸ ¿£Áø¿¡¼­ Á¤±Ô Ç¥Çö½ÄÀ¸·Î º¯È¯ÇÏ¿© ¸ÅÄ¡
+¸ÅÄ¡µÇÁö ¾ÊÀ¸¸é null
+
+-Á¤±ÔÇ¥Çö½Ä
+ÀÚ¹Ù½ºÅ©¸³Æ® ½ºÆÑ¿¡ ±â¼úµÇ¾î ÀÖÀ½
+¹®ÀÚ¿­À» ´ë»óÀ¸·Î ÆÐÅÏÀ» ¸ÅÄ¡
+ÆÐÅÏ(patten)ÇüÅÂ : ^,$,*,+ µî
+String ¿ÀºêÁ§Æ®¿¡¼­ Á¤±Ô Ç¥Çö½ÄÀ» »ç¿ëÇÒ ¼ö ÀÖ´Â ¸Þ¼Òµå
+match(),replace(),serach(),split()
+
+
+[replace()]
+
+
+-°³¿ä
+¸ÅÄ¡ °á°ú¸¦ ÁöÁ¤ÇÑ °ªÀ¸·Î ´ëÃ¼ÇÏ¿© ¹ÝÈ¯
+
+-´ëÃ¼±âÁØ
+data À§Ä¡¿¡ ¸ÅÄ¡ ´ë»ó ÀÛ¼º
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ ¸ÅÄ¡ÇÒ Á¤±Ô Ç¥Çö½Ä ¶Ç´Â ¹®ÀÚ¿­ ÁöÁ¤
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ ¸ÅÄ¡µÇ¾úÀ» ¶§ ´ëÃ¼ÇÒ °ª ÁöÁ¤
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ°¡ ÇÔ¼öÀÌ¸é ÇÔ¼ö¸¦ È£ÃâÇÏ°í ÇÔ¼ö¿¡¼­ ¹ÝÈ¯ÇÑ °ªÀ¸·Î ´ëÃ¼
+data À§Ä¡¿¡ ÀÛ¼ºÇÑ ¹®ÀÚ¿­Àº º¯°æµÇÁö ¾ÊÀ½
+
+
+[trim()]
+
+-°³¿ä
+¹®ÀÚ¿­ ¾ÕµÚ¿¡ È­ÀÌÆ® ½ºÆäÀÌ½º »èÁ¦
+È­ÀÌÆ® ½ºÆäÀÌ½º(whitespace)´Â °ø¹é°ú °°ÀÌ º¸ÀÌÁö ¾Ê´Â ¹®ÀÚ
+ES5¿¡¼­ Ãß°¡µÊ
+
+
+[search()]
+
+-°³¿ä
+°Ë»öµÈ Ã¹¹øÂ° ÀÎµ¦½º ¹ÝÈ¯
+
+
+[substring()]
+
+-°³¿ä
+½ÃÀÛ ÀÎµ¦½º ³¡ ÀÎµ¦½º Á÷Àü±îÁö ¹ÝÈ¯
+
+-¹ÝÈ¯ ±âÁØ
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ³¡±îÁö ¹ÝÈ¯
+Ã¹¹øÂ°¿Í µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ¸ðµå ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ÀüÃ¼ ¹ÝÈ¯
+NaN À½¼ö °ªÀ» ÁöÁ¤ÇÏ¸é 0À¸·Î °£ÁÖÇÏ¿© Ã³¸®
+¹ÝÈ¯ ´ë»ó ¹®ÀÚ¿­ ¼öº¸´Ù ÆÄ¶ó¹ÌÅÍ °ªÀÌ Å©¸é ¹®ÀÚ¿­ »ç¿ë
+
+
+[substr()]
+
+-°³¿ä
+½ÃÀÛ À§Ä¡ºÎÅÍ ÁöÁ¤ÇÑ ¹®ÀÚ ¼ö¸¦ ¹ÝÈ¯
+
+-¹ÝÈ¯±âÁØ
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é 0À¸·Î °£ÁÖ
+°ªÀÌ À½¼öÀÌ¸é ÀüÃ¼ ±æÀÌ¿¡¼­ ÁöÁ¤ÇÑ °ªÀ» ´õÇÑ °ªÀÌ ½ÃÀÛ À§Ä¡°¡ µÊ
+
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ
+°ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ¾ç¼ö ¹«ÇÑ´ë Àû¿ë,Áï ³¡±îÁö ¹ÝÈ¯
+¹®ÀÚ¿­·Î ÁöÁ¤ÇÏ´õ¶óµµ °ªÀÌ ¼ýÀÚÀÌ¸é »ç¿ë °¡´É
+
+
+[slice()]
+
+-°³¿ä
+½ÃÀÛ ÀÎµ¦½ººÎÅÍ ³¡ ÀÎµ¦½º Á÷Àü±îÁö ¹ÝÈ¯
+
+-¹ÝÈ¯±âÁØ
+
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾È°Å³ª NaNÀÌ¸é 0À» »ç¿ë
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ÀüÃ¼ ¹®ÀÚ ¼ö »ç¿ë
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ À½¼öÀÌ¸é ÀüÃ¼ ¹®ÀÚ¼ö¿¡ ÁöÁ¤ÇÑ °ªÀ» ´õÇØ »ç¿ë
+±×·¡µµ ´õÇÑ °ªÀÌ À½¼öÀÌ¸é 0À» »ç¿ë
+½ÃÀÛ °ªÀÌ ³¡ °ªº¸´Ù Å©¸é ºó ¹®ÀÚ¿­À» ¹ÝÈ¯
+false, undefined , null, ºó¹®ÀÚ¿­Àº 0À» »ç¿ë
+
+
+[split()]
+
+-°³¿ä
+¹®ÀÚ¿­À» ±¸ºÐÀÚ·Î ºÐ¸®ÇÏ¿© ¹è¿­·Î ¹ÝÈ¯
+
+-¹ÝÈ¯ ±âÁØ
+±¸ºÐÀÚ´Â ¹ÝÈ¯µÇ´Â ¹è¿­¿¡ Æ÷ÇÔµÇÁö ¾ÊÀ½
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ÀüÃ¼¸¦ ¹è¿­·Î ¹ÝÈ¯
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏ¸é ¾Õ¿¡¼­ ºÎÅÍ ¼ýÀÚ¸¸Å­ ¹ÝÈ¯
+
+
+[toLowerCase()]
+
+-°³¿ä
+¿µ¹® ´ë¹®ÀÚ¸¦ ¼Ò¹®ÀÚ·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+[toUpperCase()]
+
+-°³¿ä
+¿µ¹® ¼Ò¹®ÀÚ¸¦ ´ë¹®ÀÚ·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+
+
+
+[Number ¿ÀºêÁ§Æ®]
+
+[new Number()]
+-°³¿ä
+³Ñ¹ö ¿ÀºêÁ§Æ® »ý¼º
+
+[Number()]
+
+-°³¿ä
+
+¼ýÀÚ °ªÀ¸·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+Number ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏÁö ¾ÊÀ½
+ÆÄ¶ó¹ÌÅÍ °ªÀ» ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é 0
+¹®ÀÚ¿­ÀÎµ¥ ¼ýÀÚ¶ó¸é º¯È¯
+
+[Number »ó¼ö]
+
+Number MAX_VALUE 
+Number MIN_VALUE
+Number NaN
+Number POSITIVE_INFINITY
+Number NEGATIVE_INFINITY
+
+
+-°³¿ä
+»ó¼ö´Â º¯°æ, »èÁ¦ÇÒ ¼ö ¾øÀ½
+¿µ¹® ´ë¹®ÀÚ »ç¿ëÀÌ °ü·Ê
+ÀÎ½ºÅÏ½º¿¡ ÇÒ´çµÇÁö ¾ÊÀº ¿ÀºêÁ§Æ® ÇÁ·ÎÆÛÆ¼
+
+
+[toString()]
+
+-°³¿ä
+¹®ÀÚ¿­·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾Ê°Å³ª undefinedÀÌ¸é 10Áø¼ö Àû¿ë
+ºôÆ®ÀÎ ObjectÀÇ toString()Àº ¿ÀºêÁ§Æ® Å¸ÀÔÀ» ¹®ÀÚ¿­·Î º¯È¯
+Number ¿ÀºêÁ§Æ®ÀÇ toString()Àº ¼ýÀÚ¸¦ ¹®ÀÚ¿­·Î º¯È¯
+
+
+
+[valueOf()]
+
+-°³¿ä
+Number ÀÎ½ºÅÏ½ºÀÇ ÇÁ¸®¹ÌÆ¼ºê °ªÀ» ¹ÝÈ¯
+
+
+
+[toExponential()]
+
+-°³¿ä
+¼ýÀÚ °ªÀ» Áö¼ö Ç¥±â·Î º¯È¯ÇÏ¿© ¹®ÀÚ¿­·Î ¹ÝÈ¯
+Áö¼ö Ç¥±â : decimal , expontial notiation
+ÆÄ¶ó¹ÌÅÍ¿¡ 0¿¡¼­ 20±îÁö ¼Ò¼ö ÀÌÇÏ ÀÚ¸´¼ö ÁöÁ¤
+NaNÀÌ¸é NaN ¹ÝÈ¯
+
+
+var value = 34;
+value.toExponential(1); // 3.4e+1; ÇÑÀÚ¸®¸¦ ³»¸°´Ù!!!
+
+
+[toFixed()]
+
+-°³¿ä
+°íÁ¤ ¼Ò¼ýÁ¡ Ç¥±â·Î º¯È¯ÇÏ¿© ¹®ÀÚ¿­·Î ¹ÝÈ¯
+°íÁ¤ ¼Ò¼ýÁ¡ Ç¥±â : decimal fixed-point notation
+ÆÄ¶ó¹ÌÅÍ¿¡ 0¿¡¼­ 20±îÁö ¼Ò¼ö ÀÌÇÏ ÀÚ¸´¼ö ÁöÁ¤
+
+
+
+[toPrecision()]
+
+-°³¿ä
+°íÁ¤ ¼Ò¼ýÁ¡ ¶Ç´Â Áö¼ö Ç¥±â·Î º¯È¯ÇÏ¿© ¹ÝÈ¯
+toExponantial()°ú toFixed() ±â´ÉÀ» ÅëÇÕÇÏ¿© Á¦°ø
+ÆÄ¶ó¹ÌÅÍ¿¡ ÁöÁ¤ÇÒ ¼ö ÀÖ´Â ¹üÀ§°¡ ´Ù¸§
+
+-Ç¥½Ã¹æ¹ý
+À¯È¿ ¹üÀ§ : ¼Ò¼ö¸¦ Á¦¿ÜÇÑ Á¤¼ö ÀÚ¸´¼ö¿Í ºñ±³ °á°ú
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ º¯È¯ ´ë»ó °ªÀÇ À¯È¿ ¹üÀ§ÀÌ¸é
+°íÁ¤ ¼Ò¼ýÁ¡ Ç¥±â·Î º¯È¯
+¾Æ´Ï¸é Áö¼ö Ç¥±â·Î º¯È¯
+ÇÇ¶ó¹ÌÅÍ¿¡ 1¿¡¼­ 21±îÁö ÁöÁ¤ °¡´É
+
+
+[ES3 Array ¿ÀºêÁ§Æ®]
+
+-¹è¿­ ¿ÀºêÁ§Æ®(Array Object)
+[123,"ABC","°¡³ª´Ù"]¿Í °°ÀÌ ´ë°ýÈ£ ¾È¿¡ ÄÞ¸¶·Î ±¸ºÐÇÏ¿© ÀÛ¼º
+123,ABC °¡³ª´Ù ¸¦ ¹è¿­ ¿¤¸®¸ÕÆ®¶ó°í ÇÔ
+2ÀÇ32½Â-1°³ ÀÛ¼º °¡´É
+¹è¿­ ÀüÃ¼¸¦ ¿¤¸®¸ÕÆ® ¸®½ºÆ®(list)¶ó°í ÇÔ
+¹è¿­¿¡ ¿¤¸®¸ÕÆ®¸¦ Ãß°¡,»èÁ¦ °¡´É(ºÒ°¡´ÉÇÑ ¾ð¾îµµ ÀÖÀ½)
+
+
+-¹è¿­ Æ¯Â¡
+ÀÛ¼ºÇÑ ¼ø¼­°¡ ¼ø¼­ ÀÇ¹Ì¸¦ °¡Áü
+¿¤¸®¸ÕÆ® À§Ä¡¸¦ ÀÎµ¦½º(index)¶ó°í ºÎ¸§
+¿ÞÂÊºÎÅÍ 0¹ø ÀÎµ¦½º 1,¹ø ÀÎµ¦½º
+¼ø¼­¸¦ °¡Áö¹Ç·Î Ã³À½ºÎÅÍ ÀÐ°Å³ª ÀÎµ¦½º¸¦ ÁöÁ¤ÇÏ¿© ÀÐÀ» ¼ö ÀÖÀ½
+
+-¹è¿­ ÇüÅÂ
+1Â÷¿­ ¹è¿­ : [12,34,56]°ú °°ÀÌ ´ë°ýÈ£ ÇÏ³ª¿¡ ¿¤¸®¸ÕÆ®¸¦ ÀÛ¼ºÇÑ ÇüÅÂ
+2Â÷¿ø ¹è¿­ : [[12,34,56],[12,34,56]]°ú °°ÀÌ ¹è¿­ ¾È¿¡ ¹è¿­ÀÌ ÀÖ´Â ÇüÅÂ
+3Â÷¿ø ¹è¿­ : 2Â÷¿ø ¹è¿­°ú °°ÀÌ []°¡ ÁßÃ¸µÈ ÇüÅÂ
+
+
+-¹è¿­ ¿ÀºêÁ§Æ® »ý¼º
+´ë°ýÈ£[]·Î »ý¼º var sports = []
+new Array()·Î »ý¼º var sports = new Array();
+Array()·Î »ý¼º , var  sports = Array();
+
+-¹è¿­ ÃÊ±ê°ª ¼³Á¤
+var sports = ["Ãà±¸",³ó±¸]
+ÄÞ¸¶·Î ±¸ºÐÇÏ¿© ´Ù¼ö ÀÛ¼º °¡´É
+¹®ÀÚ¿­ Å¸ÀÔÀº Å«µû¿ÈÇ¥ ÀÛÀº µû¿ÈÇ¥ °¡´É
+
+
+[length ÇÁ·ÎÆÛÆ¼]
+
+-°³¿ä
+¹è¿­ÀÇ ¿¤¸®¸ÕÆ® ¼ö ¹ÝÈ¯
+[1,2,3]¿¡¼­ ¸¶Áö¸· ÀÎµ¦½ººz 2ÀÌ°í legnth °ªÀº 3
+Áï length-1 °ªÀÌ ¸¶Áö¸· ÀÎµ¦½º
+¹è¿­À» »ý¼ºÇÒ ¶§¸¶´Ù ¹è¿­ ¿ÀºêÁ§Æ®¿¡ length ÇÁ·ÎÆÛÆ¼ ¼³Á¤
+
+¿­°Å, »èÁ¦´Â ÇÒ¼ö ¾øÁö¸é º¯°æÀº °¡´É
+length ÇÁ·ÎÆÛÆ¼ °ªÀ» º¯°æÇÏ¸é ¹è¿­ÀÇ ¿¤¸®¸ÕÆ® ¼ö¿¡ ¹Ý¿µµÊ
+
+
+[¿¤¸®¸ÕÆ® Ãß°¡]
+
+-°³¿ä
+¹è¿­¿¡ ¿¤¸®¸ÕÆ® Ãß°¡
+»ðÀÔÇÒ À§Ä¡ÀÇ ÀÎµ¦½º¸¦ ÁöÁ¤ÇÏ¿© Ãß°¡
+
+[delete ¿¬»êÀÚ]
+
+-°³¿ä
+¿ÀºêÁ§Æ®¿¡¼­ ÇÁ·ÎÆÛÆ¼ »èÁ¦
+val·Î ¼±¾ðÇÑ º¯¼ö´Â »èÁ¦ ºÒ°¡
+»èÁ¦¸¦ ¼º°øÇÏ¸é true ¹ÝÈ¯ , ½ÇÆÐÇÏ¸é false ¹ÝÈ¯
+
+-ÀÛ¼º ¹æ¹ý
+object À§Ä¡¿¡ »èÁ¦ÇÒ ÇÁ·ÎÆÛÆ¼°¡ ÀÖ´Â ¿ÀºêÁ§Æ® ÁöÁ¤
+{key:value} ÇüÅÂ¿¡¼­ ÇÁ·ÎÆÛÆ¼ ÀÌ¸§À» ÁöÁ¤ delete sports.soccer;
+ES5¿¡¼­´Â ÇÁ·ÎÆÛÆ¼¸¦ »èÁ¦ÇÒ ¼ö ¾øµµ·Ï ÁöÁ¤ÇÒ ¼ö ÀÖÀ½
+¹è¿­ÀÇ ¿¤¸®¸ÕÆ®¸¦ »èÁ¦ÇÒ ¶§´Â ÀÎµ¦½º ÁöÁ¤. delete list[2];
+
+[new Array()]
+
+-°³¿ä
+»õ·Î¿î Array ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ¿© ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ¸¦ ÀÛ¼ºÇÑ ¼ö¿¡ µû¶ó ¹è¿­ »ý¼º ±âÁØÀÌ ´Ù¸§
+
+-ÀÛ¼º±âÁØ
+new Array()¿Í °°ÀÌ ÆÄ¶ó¹ÌÅÍ¸¦ ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ºó ¹è¿­ »ý¼º
+
+
+[toString()]
+¹è¿­À» , ¿¬°áÇÏ¿© StringÀ¸·Î ¹ÝÈ¯
+
+
+[concat()]
+
+-°³¿ä
+data À§Ä¡¿¡ ¹è¿­¿¡ ÆÄ¶ó¹ÌÅÍ °ªÀ» Ã·ºÎÇÏ¿© ¹ÝÈ¯
+»õ·Î¿î ¹è¿­À» »ý¼ºÇÏ¿© ¹ÝÈ¯ÇÏ¹Ç·Î data À§Ä¡ÀÇ ¹è¿­Àº º¯ÇÏÁö¾Ê¹Ç
+ÆÄ¶ó¹ÌÅÍ¿¡ ¹è¿­À» ÁöÁ¤ÇÏ´õ¶óµµ °ª¸¸ ¹ÝÈº
+
+
+[push()]
+
+-°³¿ä
+data À§Ä¡ÀÇ ¹è¿­ ³¡¿¡ ÆÄ¶ó¹ÌÅÍ °ªÀ» Ã·ºÎÇÏ°í
+Ãß°¡ÇÑ ÈÄÀÇ length¸¦ ¹ÝÈ¯
+
+
+[unshift()]
+-°³¿ä
+data À§Ä¡ÀÇ ¹è¿­ Ã³À½¿¡ ÆÄ¶ó¹ÌÅÍ °ªÀ» »ðÀÔÇÏ°í
+Ãß°¡ÇÑ ÈÄÀÇ length¸¦ ¹ÝÈ¯
+¹è¿­¿¡ ÀÖ´ø ¿¤¸®¸éÆ®´Â µÚ·Î ÀÌµ¿
+
+
+[join()]
+
+-°³¿ä 
+¹è¿­À» ¿¬°áÇÏ¿© ¹®ÀÚ¿­·Î ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ°¡ ¾ø´Ù¸é ,·Î ¿¬°á
+ÀÖ´Ù¸é ÇØ´ç °ªÀ¸·Î ¿¬°á
+
+js.log(value.join("##"));
+
+
+[pop()]
+
+-°³¿ä
+¹è¿­ÀÇ ¸¶Áö¸· ¿¤¸®¸éÆ®¸¦ »èÁ¦ÇÏ°í »èÁ¦ÇÑ ¿¤¸®¸ÕÆ®¸¦ ¹ÝÈ¯
+»èÁ¦ÇÑ ¿¤¸®¸ÕÆ® °ªÀÌ undefined·Î ³²Áö ¾Ê°í ¿ÏÀüÈ÷ »èÁ¦µÊ
+µû¶ó¼­ length °¡ ÁÙ¾îµç´Ù.
+ºó ¹è¿­ÀÌ¸é »èÁ¦ÇÒ¼ö ¾øÀ¸¸ç undefined°¡ ¹ÝÈ¯µÊ
+
+[shift()]
+
+-°³¿ä
+¹è¿­ÀÇ Ã¹ ¹øÂ° ¿¤¸®¸ÕÆ®¸¦ »èÁ¦ÇÏ°í »èÁ¦ÇÑ ¿¤¸®¸ÕÆ®¸¦ ¹ÝÈ¯
+»èÁ¦ÇÑ ¿¤¸®¸ÕÆ® °ªÀÌ undefined·Î ³²Áö ¾Ê°í ¿ÏÀüÈ÷ »èÁ¦µÊ
+µû¶ó¼­ length °ªÀÌ ÇÏ³ª ÁÙ¾îµë
+ºó ¹è¿­ÀÌ¸é »èÁ¦ÇÒ¼ö ¾øÀ¸¸ç undefined°¡ ¹ÝÈ¯µÊ
+
+
+[sort()]
+
+-°³¿ä
+¹è¿­ÀÇ ¾ó¸®¸ÕÆ® °ªÀ» Á¤·ÄÇÏ¿© ¹ÝÈ¯
+
+-Á¤·Ä±âÁØ
+Á¤·Ä ±âÁØÀº ¿¤¸®¸ÕÆ®ÀÇ °ªÀÇ unicode
+unicode °ªÀÌ ÀÛÀ¸¸é ¾Õ¿¡ ¿À°í Å©¸é µÚ¿¡ ¿È
+data À§Ä¡¿¡ ÁöÁ¤ÇÑ ¹è¿­µµ Á¤·ÄµÇ¾î ¼ø¼­°¡ ¹Ù²ñ
+¿¤¸®¸ÕÆ® °ªÀÌ undefuned,nullÀÌ¸é ³¡À¸·Î ÀÌµ¿  nullÀÌ ¸ÕÀúÀÌ°í  ±× ´ÙÀ½ÀÌ undefuned 
+ÆÄ¶ó¹ÌÅÍ¿¡ ÇÔ¼ö¸¦ ÀÛ¼ºÇÏ¸é ÇÔ¼ö¸¦ È£ÃâÇÏ°í ¹ÝÈ¯µÈ °ªÀ¸·Î Á¤·Ä
+
+-¿ª¼ø sort Á¦°øÇÏÁö ¾ÊÀ½
+ÆÄ¸®¹ÌÅÍ ÇÔ¼ö¸¦ »ç¿ëÇÏ¿© ¿ª¼ø sort °¡´É
+
+
+var value = [101,26,7,1234];
+value.sort();
+	
+//sort °á°ú¸¦ º¸¸é »ç¶÷ÀÌ »ý°¢ÇÏ´Â °Í°ú ´Ù¸£´Ù.
+//[7,26,101,1234]°¡ »ç¶÷ÀÌ »ý°¢ÇÏ´Â sortÀÌ´Ù.
+//À¯´ÏÄÚµå¸¦ ±âÁØÀ¸·Î ºñ±³ÇÏ±â ¶§¹®¿¡ ¼ø¼­°¡ ´Ù¸£´Ù
+js.log(value);
+	
+//ÀÌ·¸°Ô Á¤·ÄµÈ ÀÌÀ¯´Â ÀÚ¹Ù½ºÅ©¸³Æ®°¡ ¼ýÀÚ¸¦ ¹®ÀÚ¿­·Î º¯È¯ÇÏ°í
+//¾Õ¿¡¼­ ºÎÅÍ ÇÏ³ª¾¿ À¯´ÏÄÚµå·Î ºñ±³ÇÏ¿© sortÇÏ±â ¶§¹®ÀÌ´Ù.
+	
+//Áï 101°ú 23¿¡¼­ 1ÀÌ 2º¸´Ù ÀÛ¤¸À¸¹Ç·Î ´ÙÀ½ °ªÀº ¹Ù±³ÇÏÁö ¾Ê°í
+//101ÀÌ 26º¸´Ù ÀÛ´Ù°í ÀÎ½ÄÇÏ±â ‹š¹®ÀÌ´Ù.
+	
+//µÎ¹øÂ° ÆÄ¶ó¹ÌÅÍ¿¡ ÇÔ¼ö¸¦ ÀÛ¼ºÇÏ¿©
+//»ç¶÷ÀÌ ÀÎ½ÄÇÏ´Â Á¤·Ä¹æ¹ýÀ¸·Î ¹Ù²ã¾ß ÇÑ´Ù.
+
+
+value = [101,26,7,1234];
+	
+	value.sort(function(one,two){
+		return one-two;
+	});
+
+**sort ¾Ë°í¸®Áò **
+
+1.sort()¿¡¼­ function(){}¸¦ È£ÃâÇÏ¸é 101°ú 26À» ÆÄ¶ó¹ÌÅÍ °ªÀ¸·Î ³Ñ°ÜÁØ´Ù.
+
+2.(101-26) °á°ú´Â ¾ç¼öÀÌ¸ç 0º¸´Ù Å« °ªÀ» ¹ÝÈ¯ÇÑ´Ù.
+-sort()´Â 0º¸´Ù Å« °ªÀÌ ¹ÝÈ¯µÇ¸é ¹è¿­¿¡¼­ °ªÀÇ À§Ä¡¸¦ ¹Ù²Û´Ù.
+-µû¶ó¼­ [26,101,7,1234]°¡ µÈ´Ù.
+
+3.´Ù½Ã ÇÔ¼ö¸¦ È£ÃâÇÏ¸é¼­ 101°ú 7À» ³Ñ°Ü ÁØ´Ù.
+-(101-7)Àº ¾ç¼öÀÌ¸ç 0º¸´Ù Å« °ªÀ» ¹ÝÈ¯ÇÑ´Ù.
+-¹ÝÈ¯ °ªÀÌ 0º¸´Ù Å©¹Ç·Î ¹è¿­¿¡¼­ °ªÀÇ À§Ä¡¸¦ ¹Ù²Û´Ù.
+-µû¶ó¼­ [26,7,101,1234]°¡ µÈ´Ù.
+
+4.´Ù½Ã ÇÔ¼ö¸¦ È£ÃâÇÏ¸é¼­ 101°ú 1234¸¦ ³Ñ°ÜÁØ´Ù.
+-(101-1234)´Â À½¼öÀÌ¸ç 0º¸´Ù ÀÛÀº °ªÀ» ¹ÝÈ¯ÇÑ´Ù.
+-sort() 0º¸´Ù ÀÛ°Å³ª °°À¸¸é ¹è¿­¿¡¼­ °ªÀÇ À§Ä¡¸¦ ¹Ù²ÙÁö ¾Ê´Â´Ù.
+-µû¶ó¼­ [26,7,101,1234]°¡ µÈ´Ù.
+
+5.ÀÌ¿Í °°Àº ¹æ¹ýÀ¸·Î ´Ù½Ã Ã³À½À¸·Î µ¹¾Æ°¡ ¹Ù²î´Â °ÍÀÌ ¾øÀ»¶§±îÁö
+  ¹è¿­ÀÇ ¿¤¸®¸ÕÆ® À§Ä¡¸¦ Á¶Á¤ÇÑ´Ù.
+
+
+//¿ª¼ø ÀÛ·Ä
+value = [101,26,7,1234];
+	
+	//¿ª¼øÀ¸·Î °è»êÇÏ±â
+	value.sort(function(one,two){
+		return -(one-two);
+	});
+	
+	js.log(value);
+
+
+Á¤¼ø¿¡ sort¿¡¼­ -À» ºÙÀÌ¹Ç·Î ¹Ý´ë·Î µ¹¾Æ°£´Ù°í »ý°¢ÇÏ¸é µÈ´Ù.
+-°¡ > +·Î ÀüÈ¯ µÇ´Ï±î!!!
+
+[reverse()]
+
+-°³¿ä
+¹è¿­ÀÇ ¿¤¸®¸ÕÆ® À§Ä¡¸¦ ¿ª¼øÀ¸·Î ¹Ù²Þ
+¿¤¸®¸ÕÆ® °ªÀÌ ¾Æ´Ñ ÀÎµ¦½º ±âÁØÀ¸·Î À§Ä¡¸¦ ¹Ù²Þ
+[1,7,5]¸¦ [5,7,1]·Î ¹Ù²Þ
+´ë»ó ¹è¿­·Î ¹Ù²ñ
+
+
+[slice()]
+
+-°³¿ä
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍÀÇ ÀÎµ¦½ººÎÅÍ
+µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍÀÇ ÀÎµ¦½º Á÷Àü±îÁö ¿¤¸®¸ÕÆ® º¯È¯
+ÆÄ¶ó¹ÌÅÍ¸¦ ¸ðµÎ ÀÛ¼ºÇÏÁö ¾ÊÀ¸¸é ¹è¿­ ÀüÃ¼¸¦ ¹ÝÈ¯
+
+-¹ÝÈ¯ ±âÁØ
+1.Ã¹¹øÂ° ÆÄ¶ó¹ÌÅÍ
+ÀÛ¼ºÇÏÁö ¾ÊÀ¸¸é 0À¸·Î °£ÁÖ
+À½¼ö °ªÀÌ¸é length ÇÁ¸®ÆÛÆ¼ °ªÀ» ´õÇØ ÀÎµ¦½º·Î »ç¿ë
+±×·¡µµ À½¼öÀÌ¸é 0À» »ç¿ë
+
+2.µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ
+ÀÛ¼ºÇÏÁö ¾ÊÀ¸¸é ¸¶Áö¸· ÀÎµ¦½º »ç¿ë
+º¯È¯ÇÑ ½ÃÀÛ ÀÎµ¦½º °°ÀÌ ³¡°ªº¸´Ù Å©¸é ºó ¹è¿­ ¹ÝÈ¯
+
+
+[splice()]
+
+-°³¿ä
+¹è¿­¿¡¼­ ¿¤¸®¸éÆ®¸¦ »èÁ¦ÇÏ°í »õ·Î¿î ¿¤¸®¸ÕÆ® »ðÀÔ
+»èÁ¦ÇÑ ¿¤¸®¸ÕÆ® ¹ÝÈ¯
+ÆÄ¶ó¹ÌÅÍ¿¡ ÁöÁ¤ÇÑ °ª¿¡ µû¶ó Ã³¸®°¡ ´Ù¸§
+
+-Ã¹ ¹øÂ° ÆÄ¸®¹ÌÅÍ
+»èÁ¦ ½ÃÀÛ ÀÎµ¦½º ÀÛ¼º
+À½¼ö °ªÀ» ÀÛ¼ºÇÏ¸é length °ªÀ» ´õÇØ »ç¿ë
+±×·¡µµ À½¼öÀÌ¸é 0À» »ç¿ë
+ÆÄ¶ó¹ÌÅÍ °ªÀÌ lengthº¸´Ù Å©¸é »èÁ¦ÇÏÁö ¾ÊÀ½
+ÆÄ¸®¹ÌÅÍ¸¦ ÀÛ¼ºÇÏÁö ¾ÊÀ¸¸é »èÁ¦ÇÏÁö ¾Ê°í ºó ¹è¿­ ¹ÝÈ¯
+
+-µÎ ¹øÂ° ÆÄ¶ó¹ÌÅÍ
+»èÁ¦ÇÒ ¿¤¸®¸ÕÆ® ¼ö ÀÛ¼º
+Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍÀÇ ÀÎµ¦½º ºÎÅÍ ÆÄ¶ó¹ÌÅÍ¿¡ ÀÛ¼ºÇÑ ¼ö¸¸Å­ »èÁ¦
+»õ·Î¿î ¹è¿­À» »ý¼ºÇÏ°í ¿¤¸®¸ÕÆ®¸¦ ¼³Á¤ÇÏ¿© ¹ÝÈ¯
+°ªÀ» ÀÛ¼ºÇÏÁö ¾ÊÀ¸¸é length¸¦ »ç¿ë
+
+-¼¼ ¹øÂ° ÀÌÈÄ ÆÄ¸®¹ÌÅÍ
+»èÁ¦ÇÑ ÀÎµ¦½º¿¡ »ðÀÏÇÒ ¿¤¸®¸ÕÆ® ÀÛ¼º
+ÄÞ¸¶·Î ±¸ºÐÇÏ¿© ´Ù¼ö ÀÛ¼º °¡´É
+
+[ES5 Array ÇÁ·ÎÆÛÆ¼ ¸®½ºÆ®]
+¾Ë¾Æº¸±â
+
+[isArray()]
+
+-°³¿ä
+Ã¼Å© ´ë½ÌÀÌ ¹è¿­ÀÌ¸é true
+
+
+[forEach()]
+
+-°³¿ä
+data À§Ä¡ÀÇ ¹è¿­ ¿¤¸®¸ÕÆ®¸¦ ÇÏ³ª¾¿ ÀÐ¾î°¡¸é¼­ ÄÝ¹é ÇÔ¼ö È£Ãâ
+ÄÝ¹é ÇÔ¼ö¿¡ ¿¤¸®¸ÕÆ® °ª, ÀÎµ¦½º, ÀüÃ¼ ¹è¿­ ¼ø¼­·Î ³Ñ°Ü ÁÜ
+¹Ýº¹ È½¼ö´Â ¸Þ¼Òµå¸¦ ½ÇÇàÇÏ´Â ½ÃÁ¡¿¡ °ÉÁ´µÊ
+
+-½ÇÇà Áß¿¡ data À§Ä¡ÀÇ ¹è¿­ÀÌ º¯°æµÇ¾úÀ» ¶§
+¿¤¸®¸ÕÆ®¸¦ Ãß°¡ÇÏ¸é Ã³¸®ÇÏÁö ¾ÊÀ½
+ÇåÀç ÀÎµ¦½ºº¸´Ù Å« ÀÎµ¦½ºÀÇ °ªÀ» º¯°æÇÏ¸é º¯°æµÈ °ªÀ» »ç¿ë
+ÇöÀç ÀÎµ¦½ºº¸´Ù ÀÛÀº ÀÎµ¦½ºÀÇ °ªÀ» º¯°æÇÏ¸é Ã³¸®ÇÏÁö ¾ÊÀ½
+ÇöÀç ÀÎµ¦½ºº¸´Ù Å« ÀÎµ¦½ºÀÇ ¿¤¸®¸ÕÆ®¸¦ »èÁ¦ÇÏ¸é Ã³¸®ÇÏÁö ¾ÊÀ½
+
+break ¹®°ú continue¹®À» »ç¿ëÇÒ ¼ö¾øÀ½
+ÄÝ¹é ÇÔ¼ö¿¡¼­ return; ¹®À» ¸¸³ª¸é ´ÙÀ½ ¹è¿­À» Ã³¸®
+
+
+[ÄÚµù ½Ç½À]
+
+-¿ä±¸ »çÇ×
+for()¿Í forEach()ÀÇ Â÷ÀÌÁ¡À» ±â¼úÇÏ¼¼¿ä
+Â÷ÀÌ°¡ ³ª´Â »óÈ²¿¡ ´ëÇÑ for()¿Í forEach()ÄÚµå¸¦ ÀÛ¼ºÇÏ°í
+Â÷ÀÌ ±Ù°Å¸¦ ±â¼úÇÏ¼¼¿ä
+´ÜÁ¡¿¡ ´ëÇØ °¡´ÉÇÏ´Ù¸é ´ë¾ÈÀ» Á¦½ÃÇÏ¼¼¿ä.
+
+-Â÷ÀÌÁ¡ »ç·Ê
+forEach()´Â ¹Ýº¹ ½ÃÀÛ ÀÎµ¦½º¸¦ ÁöÁ¤ÇÒ ¼ö ¾ø´Ù.
+for(var k=2;k<5;k++){}
+[1,2,3].foreach(function(){...})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

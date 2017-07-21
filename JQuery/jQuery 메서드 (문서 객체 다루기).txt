@@ -1,0 +1,44 @@
+
+[jQuery 메서드 (문서 객체 다루기)]
+
+
+
+addClass() : 클래스 추가
+
+removeClass() : 클래스 제거
+
+arrt() : 속성과 관련되 모든 기능을 수행함.
+
+removeAttr(name) : 문서 객체의 속성을 제거 함.
+
+css() : 스타일과 관련된 모든 기능 수행
+
+html() :  문서 객체 내부의 글자와 관련된 모든 기능을 수행함 (html 태그인식) 
+
+text() :  문서 객체 내부의 글자와 관련된 모든 기능을 수행함
+
+remove() : 특정 문서 객체를 제거.
+
+empty() : 특정 문서 객체의 후손을 모두 제거 함
+
+$() : 문서 객체를 생성함  $('<h1></h1>').html('내용').addendTo('body');
+
+$(a).appendTo(b) : a를 b의 뒷 부분에 추가함. (태그안)
+
+$(a).prependTo(b) :  a를 b의 앞 부분에 추가함. (태그안) 
+
+$(a).insertAfter(b) : a를 b의 뒷에 추가함.  (태그 밖)
+
+$(a).insertBefore(b) : a를 b의 앞에 추가함.  (태그 밖)
+
+$(a).append(b) :  b를 a안의 뒷 부분에 추가함.  
+
+$(a).prepend (b)  : b를 a안의 앞 부분에 추가함.
+
+$(a).after(b)  : b를 a의 뒷에 추가함.
+
+$(a).before(b) :  b를 a의 앞에 추가함.
+
+$(a).wrapAll(b);  b를 a의 안에 추가함.
+
+clone() : 문서 객체를 복사

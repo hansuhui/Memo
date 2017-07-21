@@ -1,0 +1,18 @@
+http://blog.naver.com/roboholic84/220366419105
+
+
+업데이트
+sudo apt-get update 
+
+원격  프로그램 설치
+sudo apt-get install xrdp
+
+
+1. LX Terminal을 실행하고 아래 커맨드 차례대로 입력하여 xrdp를 설치해줍니다.
+
+sudo apt-get update
+
+sudo apt-get upgrade (질문에서 Y, 10~15분정도 소요됩니다.)
+
+sudo apt-get install xrdp (질문에서 Y)
+.

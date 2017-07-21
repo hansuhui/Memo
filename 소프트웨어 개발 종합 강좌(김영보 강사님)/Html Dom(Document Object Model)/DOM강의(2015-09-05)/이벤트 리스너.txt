@@ -1,0 +1,26 @@
+
+DOM 리스너(핸들러)
+.addEventListener('이벤트타입',함수,캡쳐/버블)
+clickNode.addEventListener('click',handleClick,false)
+
+캡쳐 : true(정순) /버블 : false(역순)
+
+
+
+IE기준
+.attachEvent('이벤트타입',함수명);
+clickNode.attachEvent('onclick',handleClick);
+
+버블로 정해저 있음
+
+[리스너 해제] 
+해제란 더이상 그 이벤트를 작동 시키지 않는것
+
+-DOM 형태
+element.removeEventListner(이벤트타입,캡쳐/버블)
+
+-IE행태
+element.detachEvent(이벤트타입)
+
+버블로 정해저 있음
+

@@ -1,0 +1,5 @@
+Montez
+
+@import url(http://fonts.googleapis.com/css?family=Montez);
+
+h1 {font: 52px/1 'Montez';color:#a4834d;}

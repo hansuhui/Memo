@@ -1,0 +1,11 @@
+사이트
+
+http://is.gd/CO9Luw
+
+
+적용 하기
+
+<!--[if IE6]> 
+<script src="../js/libs/DD_belatedPNG.min.js"></script>
+<script>DD_belatedPNG.fix(".png_bg, img");</script>
+<![end if] -->

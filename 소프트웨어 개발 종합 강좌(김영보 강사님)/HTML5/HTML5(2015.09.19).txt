@@ -1,0 +1,648 @@
+-깊이를 이해한다
+-외우지 않고  감각을 만든다
+
+
+<시작태그 > 컨텐츠 모델 < 종료태그>
+컨텐츠 모델이 없는 경우 종료태그가 없다
+
+화이트 스페이스는 공백 
+
+[HTML5 핵심]
+
+-플랫폼
+-표준
+
+[HTML5 기술]
+
+통합된 요소 기술로 플랫폼 구축
+
+HTML  / HTML4 + Mark up
+canvas / 2차원 그래픽 
+
+[HTML5 분류]
+
+마크업  > 추가 - 콘텐츠 모델(구성) / video , scetion 등
+
+	재정의 - div , i , b 등 / css 대체 , alt 속성 등
+
+
+API >  직접표현 > canvas , svg 등
+          간접 표현 > Web sockets 등 , Js로 제어
+
+
+[HTML5 Elements]
+
+http://www.corechain.com/
+
+[기술적 소요]
+
+- Makrup
+
+- 하이퍼링크 (HyperLink)
+
+- 구조 , 구성 개념
+
+- 콘텐츠 모델( Content Model)
+
+- 시멘틱 (Semantic) : 의미 ,의미론적인
+
+- 오브젝트(Object)
+
+- 데이터(Data)
+
+
+[HTML5 접근 관점]
+
+HTML5는 HTML이 아니다.
+
+애플리케이션(Application)이다.
+
+
+[HTML5 공부 방법]
+
+- HTML5 스펙 목차에서 엘리먼트 리스트 출력
+
+- HTML5 스펙 정독
+전문 용어이므로 사전적 의미와 다를 수 있음
+HTML5 스펙의 예제 이해
+
+-검색
+태그 사용 : 조심
+요소 사용 : 체크 필요
+엘리먼트 사용 : 신뢰성 높음
+
+
+[TODO]
+
+-나만의 소스 코드 정리
+
+-내용 검증
+
+-검증된 내용만 작성
+
+-정확하고 자세하게 작성
+
+-지속적으로 반영
+표준이므로 변화가 크지 않음
+
+
+[염두해 둘 사항]
+
+- 엘리먼트를 만들때 생각해야 하는것
+
+- 사용자(user)
+
+- 장애우 / 접근성 ( 스크린리더 등  장애우 도구 )
+
+- 검색 엔진 , 스펙의 정확한 이해 필요
+
+- 브라우저/ 렌더링
+
+
+[HTML] - Language( 소통하는 언어)
+
+-HT : Hypertext
+다수의 문장 , 다큐먼트를 서로 연결
+
+-Mr : Mark up
+컴퓨터가 이해할 수 있는 기준으로
+텍스트 파일에 기술(작성)
+
+
+[주석]
+
+-주석 : Comment
+웹 페이지에 표시되지 않음
+
+-주석 작성 방법
+<!-- 주석 -->
+
+
+[Document]
+
+- Document 범위
+
+<html>에서 </html> 까지
+
+
+[엘리먼트 형태]
+
+- <div>
+시작 태그
+
+-</div>
+종료 태그
+
+- <div> 가나다 </div>
+엘리먼트 (Element) 요소 (직역으로 사용 억제)
+가나다 텍스트요소(TextNode)
+
+- 속성
+<div id="st" class="class">
+HTML에서는 프로퍼티가 아닌 속성이라고 부름
+
+
+[!DOCTYPE]
+
+-<!DOCTYPE html>
+제일 첫번째 줄에 선언
+
+-DTD 선언
+Document Type Declaration
+
+-HTML5 표준 모드 DTD
+<!DOCTYPE html>
+
+-대소문자 구분하지 않음
+관례로 대문자 사용
+
+
+[html]
+
+카테고리 / None
+컨텍스트 / 다큐먼트의 루트 엘리먼트
+콘텐츠 모델 /  <hard> <body> 순서로 작성
+태그 생략 / <html>의 첫 문장이 주석이 아니면 시작 태그 생략 가능
+	   <html>바로 다음이 주석이 아니면 종료 태그 생략 가능
+	   
+-다큐먼트의 루트(Root)를 나타냄
+다큐먼트의 시작
+
+-다큐먼트의 모든 엘리먼트가 <html>에 속함
+
+
+[html 속성]
+
+-mainfest : 애플리케이션 캐시 (5.7.2)
+
+-<html lang=ko>
+다큐먼트에 적용할 언어
+스크린 리더의 발음 사용 기준 , 번역을 기준
+lang은 글로벌( Global) 속성 - 모든 영역에서 사용가능
+모든 엘리먼트에 작성할 수 있는 속성
+
+[엘리먼트 정의 정보]
+
+카테고리 / None
+컨텍스트 / 다큐멘트의 루트 엘리먼트
+콘텐츠 모델 / <hard><body> 순서로 작성
+
+-엘리먼트 정의(defintion) 정보란?
+엘리먼트를 작성하면 포험되는 정보
+즉, 이 정보를 기준으로 엘리먼트를 작성해야 한다
+HTML4에 없던 개념
+HTML5에 있는 중요한 개념
+
+[카테고리]
+
+-엘리먼트가 속한 content 타입
+
+
+[컨텍스트]
+
+카테고리 / None
+컨텍스트 / 다큐먼트의 루트 엘리먼트
+
+-컨텍스트(Content)
+엘리멘트가 사용되는 컨텍스트
+
+[콘텐츠 모델]
+
+카테고리 / None
+컨텍스트 / 다쿠먼트의 루트 엘리먼트
+콘텐츠 모델 / <hard><body> 순서로 작성
+
+-콘텐츠 모델(Content Model)
+차일드 또는 자손 위치에 포함할 수 있는 Content
+여기서 Content는 0개 이상의 엘리먼트를 의미
+
+- DOM( Document Object Model) 이해 필요
+DOM으로 컨텍스트와 콘텐츠 모델을 접근
+HTML를 명확하게 이해하려면 DOM 이해 필요
+
+
+[h1]
+
+섹션의 헤더 이다 !!!
+
+[head]
+
+-다큐먼트에 대한 matabata 칼렉션을 나타냄
+<head>는 시멘틱(semantic) 표현
+시멘틱 의해 중심의 표현
+
+-메타 데이터
+다큐멘트 위치 , 문자 인코딩 , 최종 수정일 등의 속성을 총 칭
+즉 <head>의 차일드 위치에 작성한 엘리먼트 기능 모음
+
+
+[body]
+
+Categories / Sectioning root.
+
+Contexts / As the second element in an html element.
+
+Content model  / Flow content.
+
+- 다큐먼트의 콘텐츠를 표현하는것
+콘텐츠를 표현하는 모든 엘리먼트의 부모 위치의 엘리먼트
+matadata에 속하지 않으며 <head>와 같이 설명하기 위해 여기에 작성
+
+[title]
+
+Categories / None.
+Contexts / As the first element in an html element.
+Content model /
+If the document is an iframe srcdoc document or if title information is available from a higher-level protocol: Zero or more elements of metadata content, of which no more than one is a title element and no more than one is a base element.
+Otherwise: One or more elements of metadata content, of which exactly one is a title element and no more than one is a base element.
+
+Content attributes / Global attributes
+
+-다큐먼트 타이름, 이름
+필수 작성
+북마크  앞/뒤 이력 탭에 표시
+다큐먼트에 한 번만 작성
+Title 과 Heading은 차이가 있음
+
+[title 속성]
+text / 다큐먼트 제목
+
+-자바스크립트 속성 값 추출 및 변경
+
+[link]
+
+Categories / Metadata content.
+Contexts in which this element can be used:
+Where metadata content is expected.
+In a noscript element that is a child of a head element.
+
+Content model / Empty. (안에 들어간 내용이 없다.)
+
+Content attributes 
+Global attributes
+
+
+
+interface HTMLLinkElement : HTMLElement {
+           attribute boolean disabled;
+           attribute DOMString href;
+           attribute DOMString crossOrigin;
+           attribute DOMString rel;
+           attribute DOMString rev;
+  readonly attribute DOMTokenList relList;
+           attribute DOMString media;
+           attribute DOMString hreflang;
+           attribute DOMString type;
+  [PutForwards=value] readonly attribute DOMSettableTokenList sizes;
+};
+
+HTMLLinkElement implements LinkStyle;
+
+
+- 외부 파일링크
+외부파일을 연결하여 다큐먼트에서 사용
+
+-콘텐츠 모델 : Emtpy
+엘리먼트에 차일드를 작성할 수 없다.
+
+
+[link 속성]
+
+href  Address of the hyperlink (링크 주소)
+
+crossorigin  How the element handles crossorigin requests (크로스 도메인 주소)
+
+rel  Relationship between the document containing the hyperlink and the destination 
+
+media -  Applicable media
+
+hreflang   Language of the linked resource
+
+type -  Hint for the type of the referenced resource
+
+sizes  - Sizes of the icons (for rel="icon") // 아이콘일때 사이즈 지정
+
+style - sheet set name. 
+
+
+[meta]
+
+
+Categories / Metadata content.
+Contexts /
+If the charset attribute is present, or if the element's http-equiv attribute is in the encoding declaration state: in a head element.
+If the http-equiv attribute is present but not in the encoding declaration state: in a head element.
+If the http-equiv attribute is present but not in the encoding declaration state: in a noscript element that is a child of a head element.
+If the name attribute is present: where metadata content is expected.
+
+Content model /  Empty.
+
+Content attributes / Global attributes
+
+-meta의 메타테이터 작성 범위
+<base> , <link> , <style> ,<title>에 작성하는 메타 테이터 제외
+이외 메타데이터를 <meta>에 작성
+
+
+[meta 속성]
+
+name / Metadata name 
+
+http-equiv / Pragma directive
+
+content / Value of the element
+
+charset / Character encoding declaration
+
+-content
+메타 엘리먼트의 값 
+meta name="작성일" content = "2015-09-19"
+meta에 content가 없는 경우엔 디폴트로 text/html으로 들어간다
+
+
+[<meta> http-equiv 속성]
+
+4.2.5.3 Pragma directives
+
+상태	/  키워드
+Encoding declaration  / content-type	
+Default style  / default-style	
+Refresh / refresh	
+
+content-language
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="refresh" content="20;url=adb.html">
+<meta name="application-name" content="애플리케이션 이름">
+<meta name="description" content="페이지 개요/설명">
+
+
+[<style>]
+
+Categories / Metadata content.
+
+Contexts in which this element can be used  /
+Where metadata content is expected.
+In a noscript element that is a child of a head element.
+
+Content model /
+Depends on the value of the type attribute, but must match requirements described in prose below.
+
+Content attributes / 
+Global attributes
+
+
+[<style> 속성]
+
+media /  Applicable media (디폴트 all)
+type / Type of embedded resource (디폴트 text/css) MIME 타입
+
+-media 
+all,screen,print 등등
+
+-type
+MIME 
+
+
+-Grouping-
+
+[<p>]
+
+Categories / Flow content , Palpable content.
+
+Contexts in which this element can be used /
+Where flow content is expected.
+
+Content model /  Phrasing content.
+
+Content attributes / Global attributes
+
+Tag omission in text/html /
+A p element's end tag may be omitted if the p element is immediately followed by an address, article, aside, blockquote, div, dl, fieldset, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, section, table, or ul, element, or if there is no more content in the parent element and the parent element is not an a element.
+
+스펙에 3.2.4.3 Paragraaphs
+
+
+-문단(단락) 표현
+문단:하나 또는 다수의 문장
+text block으로 문단의 의미가 더 강함
+다른 블록과 구분
+<a><input><video><iframe> 포함 가능
+
+
+
+[<div>]
+
+The div element has no special meaning at all
+
+-특별한 의미를 갖지 않음
+의미없는 블록
+시맨틱 엘리먼트가 없을 때 마지막 수단으로 사용
+접근성과 유지 보수를 위해 시맨틱 엘리먼트 사용
+
+
+[<hr>]
+
+Categories / Flow content.
+
+Contexts in which this element can be used / 
+Where flow content is expected.
+
+Content model / Empty
+
+Content attributes /  Global attributes
+
+Tag omission in text/html /No end tag.
+
+Allowed ARIA role attribute values / 
+separator (default - do not set) or presentation.
+
+Allowed ARIA state and property attributes / 
+Global aria-* attributes
+Any aria-* attributes applicable to the allowed roles.
+
+
+-문단 레벨의 시맨틱 분리
+단축 레벨(level)의 시맨틱 구분 표현
+주제,장면을 전환할 때 사용
+다큐먼트의 outline에 영향을 미치지 않음
+
+
+
+-줄을 긋는 용도가 아님
+줄 표시는 css 스타일 시항
+
+
+[<pre>]
+
+Categories / Flow content , Palpable content
+
+Contexts in which this element can be used /
+Where flow content is expected.
+
+Content model / Phrasing content
+
+Content attributes / Global attributes
+
+Tag omission in text/html /  Neither tag is omissible
+
+Allowed ARIA role attribute values / Any role value.
+
+Allowed ARIA state and property attributes / 
+Global aria-* attributes
+Any aria-* attributes applicable to the allowed roles.
+
+
+[<blockquote>]
+
+
+-인용문 표현
+다른 소스(source)에서  인용한 컨텐츠를 나타낸다
+
+
+-텍스트 블록 표현
+작성한 그대로 표현 : 엘리먼트 구조가 아닌 인쇄 규칙
+<pre></pre> 안의 엘리먼트를 텍스트로 간주
+엘리먼트 앞의 공백을 띄우지 않지만 <pre>에서는 띄움
+
+-엘리먼트 구조화
+브라우저가 렌더링 할 때 엘리먼트를 상하좌우 구조로 만드는것
+구조화가 되지 않았을 때 접근성(스크린 리더 등) 영향 체크 필요
+
+-시작 태그에 이어진 Enter는 줄을 바꾸지 않음
+
+[<ol>]
+
+Categories /  Flow content. If the element's children include at least one li element: Palpable content.
+
+Contexts in which this element can be used / Where flow content is expected.
+
+Content model / Zero or more li and script-supporting elements.
+
+Content attributes /  Global attributes
+reversed - Number the list backwards. (오름차순 , 내림차순 / 디폴트 오름차순 boolean)
+start - Ordinal value of the first item (리스트 항목의 시작 값)
+type - Kind of list marker (리스트 마커 [1/a/A/i/I])
+compact - 리스트 항목간 공백의 최소화 (css로 이동)
+
+Tag omission in text/html / Neither tag is omissible
+
+Allowed ARIA role attribute values / 
+list role (default - do not set), directory, listbox, menu, menubar, presentation, tablist, toolbar or tree.
+
+
+
+-순서에 의미가 있는 항목 리스트
+
+-의미를 부여하여 트리 오더로 작성
+트리오더 (tree order) 다큐먼트에 작성된 순서
+순서를 바꾸면 의미가 달라짐
+디폴트 오름차순으로 번호 부여 
+
+
+[HTML5의 Style 제원]
+
+-Style은 css에서 지원하는 것이 기준
+
+-교재표기 기준
+상태에 css로 표기
+
+[<ul>]
+
+- 작성 순서가 의미없는 항목 리스트
+작성된 순서는 중요하지 않음
+
+[<ul> 속성]
+
+type / circle ,disk 등등
+
+
+[<li>]
+
+-항목리스트
+
+-페어런트 엘리먼트가 <ol>,<ul>일때
+리스트 관련성을 가진다
+
+-페어런트 엘리먼트가 <ol>,<ul>아닌때
+리스트는 관련성을 갖지 않는다
+
+
+
+[<li속성>]
+
+-value
+디폴트 1부터 작성한 순서대로 번호 부여
+
+-값을 지정하면
+지정한 값을 표시
+
+
+[<dl>]
+
+-연상/연관(accociation) 리스트 표현
+0개 이상의 name-value 그룹으로 구성
+name-value 그룹을 기술.설명 리스트라고함
+
+-name-value 그룹 형태
+0개 이상의 name(<dt>)에 이어서 0개 이상의 value(<dt>) 작성
+
+-HTML5 이전
+Defintion List(정의 리스트)로 사용
+
+		<dl> -- 그룹핑
+		<dt>용어</dt>
+		<dd>설명</dd>
+		</dl>
+
+
+
+[<figure>]
+
+-그룹 엘리먼트
+삽화, 다이어그램, 사진 , 코드 리스트 표현
+
+-메인 흐름에 독립적
+일반적으로 콘텐츠 흐름에 의존하지 않고 단독으로 콘텐츠를 표현할때 사용
+따라서 그룹 안에서 완전하게 표현을 마무리한다.
+문맥 흐름에 따라 연결될 수도 있으므로 반드시는 아님
+
+
+[<figcaption>]
+
+-<figure>에 속한 콘텐츠 표현
+제목?? 타이틀??
+
+
+[<main>]
+
+-메인 콘텐츠를 나태냄
+대상 : 다큐먼트의 <body> 또는 애플리케이션
+다큐먼트의 핵심 토픽,애플리케이션의 주요 기능
+
+-다큐먼트의 메인 콘텐츠 영역은
+다큐먼트에서 중심적인 콘텐츠
+
+-다큐먼트에서 <main>은 하나만 작성할 수 있음
+
+-User Agent 강추 사항
+키보드 네비게이션을 할때
+<main>에서 첫 번째로 포커스 가능한 엘리먼트로 이동
+
+-엘리먼트 스펙의 Allowed ARIA role attribute values
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

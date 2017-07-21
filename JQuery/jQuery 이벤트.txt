@@ -1,0 +1,122 @@
+[jQuery 이벤트]
+
+- 이벤트 객체속성
+
+event.pageX : 브라우저의 화면을 기준으로 한 마우스의 X좌표 위치 
+
+event.pageY : 브라우저의 화면을 기중으로 한 마우스의 Y좌표 위치
+
+event.preventDefault() : 기본 이벤트를 제거함 
+
+event.stopPropagation() : 이벤트 전달을 제거함 
+
+
+- 이벤트 메소드
+
+$(document).ready()  : html 문서가 다불러와지면 실행 
+
+bind() : 이벤트를 연결함  
+ => $(selector).bind(eventName, function(event){} );
+ => $(selector).bind(object);
+
+unbind() :  bind() 메서드를 사용한 이벤트 연결 제거 / $(selector).unbind(eventName, function);
+ => $(selector).unbind();
+ => $(selector).unbind(eventName);
+ => $(selector).unbind(eventName, function);
+
+delegate() :  현재 또는 미래에 존재하는 문서 객체에 이벤트를 연경함    (version:1.4.3*) 
+
+undelegate() : delegate() 메서드를 사용해 연결한 이벤트를 제거함   (version:1.4.3*)
+
+live() : 현재 또는 미래에 존재하는 문서 객체에 이벤트를 연결함
+
+die() : live() 메서드를 사용해 연결한 이벤트를 제거함 / $(selector).die(eventName , function)
+ => $(selector).die()
+ => $(selector).die(eventName)
+ => $(selector).die(eventName , function)
+one() :  이벤트를 한번만 연결함  
+
+on() : 이벤트를 연결함, 아래 이벤트열결을 대체함   ( delegate 대체함 version:1.7 )
+ => bind() :       $(selector).on(eventName , eventHandler)
+ => live() :        $(document).on(eventName , selector, eventHandler)
+ => delegate() : $(selector).on(eventName , selector , eventHandler)
+
+
+off() : 이벤트를 제거함
+ => unbind() :       $(selector).off(eventName[, eventHandler])
+ => die() :            $(document).off(eventName , selector[, eventHandler])
+ => undelegate() : $(selector).off(eventName , selector[, eventHandler])
+
+toggle(function(event){},... , function(event){} ) : click 이벤트를 여러 이벤트 핸들러를 번갈아가며 실행할 수있게 연결함
+
+hover(mouseenter , mouseleave) : mouseenter 이벤트와 mouseleave 이벤트를 동시에 연결함 
+
+trigger() : 이벤트를 강제 발생 
+ => $(selector).trigger(eventName)
+ => $(selector).trigger(eventName, data)
+
+
+- 마우스 이벤트
+
+click : 마우스를 클릭할 때 발생함.
+
+dblclick :  마우스를 더블클릭할 때 발생함.
+
+mousedown : 마우스 버튼을 누를 때 발생함.
+
+mouseup : 마우스 버튼을 뗄 때 발생함.
+
+mouseenter : 마우스 요소의 경계 외부에서 내부로 이동할 때 발생. (자기자신만 이벤트)
+
+mouseleave: 마우스 요소의 경계 내부에서 외부로 이동할 때 발생. (자기자신만 이벤트)
+
+mousemove :  마우스를 움직일 때 발생함.
+
+mouseout : 마우스가 요소를 벗어날 때 발생함.    (버블링)
+
+mouseover : 마우스를 요소 안에 들어올 때 발생함.(버블링)
+
+
+- 키보드 이벤트
+
+keydown :  키보드가 눌러질 때 발생함.
+
+keypress : 글자가 입력될 때 발생함.
+
+keyup :  키보드가 떼어질 때 발생함.
+
+
+- 윈도우 이벤트
+
+ready : 문서 객체가 준비를 완료함.
+
+load :   윈도우(문서 객체)를 불러들일 때 발생함.
+
+unload : 윈도우(문서 객체)를 닫을 때 발생함.
+
+resize : 윈도우의 크기를 변화시킬 때 발생함.
+
+scroll :  윈도우를 스크롤할 때 발생함.
+=> $(window).scroll(function(){ });
+
+error :  에러가 있을 때 발생함.
+
+
+
+- 입력 양식 이벤트
+
+change :  입력 양식의 내용을 변경할 때 발생함.
+
+focus :  입력 양식에 초점을 맞추면 발생함.
+
+focunsin :  입력 양식에 초점이 맞춰지기 바로 전에 발생함.
+
+focusout : 입력 양식에 초점이 사라지기 바로 전에 발생함.
+
+blur : 입력 양식에 초점이 사라지면 발생함.
+
+select :  입력 양식을 선택할 때 발생함(input[type=text] 태그와 textarea 태그 제외).
+
+submit : submit 버튼을 누르면 발생함. 
+
+reset : reset 버튼을 누르면 발생함.

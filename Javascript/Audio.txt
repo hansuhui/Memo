@@ -1,0 +1,27 @@
+
+
+var x = new Audio();
+
+속성들
+
+x.src = '음원 주소'  
+x.load() - 오디오 객체를 읽어옵니다
+x.play() - 오디로 객체 재생
+x.pause() - 일시정지
+x.currentTime - 시간 설정
+
+
+오디오 형식을 지원하는지 확인하는법
+
+!!document.createElement('audio').canPlayType('audio/형식')
+!!document.createElement('audio').canPlayType('audio/mp3')
+
+
+
+반환은 boolean
+function isSupport()
+{
+var tester = document.createElement('audio');
+
+return !!tester.canPlayType('audio/webm');
+}

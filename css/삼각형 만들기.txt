@@ -1,0 +1,13 @@
+선택자 :before  /* 가상요소 */ 
+{
+content: ' ';  /* 내용은 비운 채 생성합니다. */
+position: absolute; /* 절대 위치로 설정합니다. */
+bottom : -10px; /* 아래를 기준으로 하여 바깥 방향으로 10px 이동 */
+left: 120px; /* 왼쪽에서 120px 이동시킵니다 */ 
+border-top: 10px solid #111; 
+/* 테두리 두께10px 직선,색은 배경색 */
+
+border-left: 10px solid transparent; /* 테두리 두께10px 직선,색은 투명 */
+border-right: 10px solid transparent; /* 테두리 두께10px 직선,색은 투명 */
+
+}

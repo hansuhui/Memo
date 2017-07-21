@@ -1,0 +1,8 @@
+var num =document.getElementsByTagName("li").length;
+
+
+while(0<num--){ var text =document.getElementsByTagName("li")[num].firstChild.nodeValue ='전체 변경'
+
+console.log(text);
+}
+

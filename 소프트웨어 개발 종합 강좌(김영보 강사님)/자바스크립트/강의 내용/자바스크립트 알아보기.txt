@@ -1,0 +1,95 @@
+자바스크립트
+
+object 알아보기
+ object String 기능 알아보기
+
+
+[prototype chain]
+
+-개요
+prototype 오브젝트에 오브젝트를 연결하고
+연결된 오브젝트의 prototype에 다시 오브젝트를 연결
+따라서 세 개의 오브젝트가 연결된 형태가 되며
+이 형태를 prototype chain 이라고 합니다
+
+object Number 상속
+object Number 는 이미 object Object 상속
+이런 개념
+__protop__ 안에 __protop__ 이런 게념
+
+
+-연결
+아래는 함수를 prototype에 연결한 형태
+function Sports(){}
+Sports.prototype = {soccer :function(){}}
+
+
+-상속
+아래는 오브젝트를 인스턴스로 생성하여 상속받은 형태
+function soccer(){}
+Sports.prototype = new soccer();
+var obj = new Sports();
+
+
+글로벌 프로퍼티 리스트 알아보기
+
+Array join()테스트 하기
+
+배열을 만들어서 
+값들을 push()하고
+그걸 join으로 파라미터 만들어서 던지면 유용할듯
+function 만들기 파라미터는 (배열,붙이는거)
+배열을 조인으로 붙여서 !!
+
+
+
+[ES5 Object 오브젝트]
+
+-Object 오브젝트
+추가된 것은 모두 함수이며 메소드는 없음
+따라서 new 연산자로 생성한 인스턴스에 할당되지 않으므로
+함수에 값을 파라미터로 넘겨주어 처리
+
+-인스턴스 생성 목적
+프로퍼티 이름은 같지만 인스턴스마다 다른 값을 가지려는 것
+Object의 prototype에 연결된 메소드는 모든 빌트인 오브젝트에 상속
+그런데 상속할 필요가 없다면 함수가 효율적
+
+Object 오브젝트에 추가된 함수는 이런 목적을 가진 함수
+
+
+
+[프로퍼티 리스트]
+
+Object 함수
+defindProperty() / 프로퍼티 추가 , 프로퍼티 속성 변경
+getOwnPropertyDescriptor() / 디스크립터 속성 변경
+defineProperties() / 다수의 프로퍼티 추가 , 속성 변경
+getOwnPropertyNames() / 오브젝트 이름을 배열로 반환
+keys() / 열거 가능 프로퍼티 이름 반환
+create() / 새로운 오브젝트 생성 , 반환
+getPrototypeOf() / prototype에 연결된 프로퍼티 반환
+preventExtensions() / 프로퍼티 추가 금지 설정
+isExtensible() /프로퍼티 추가 금 여부 반환
+seal() /프로퍼티 추가 , 삭제 금지 설정
+isSealed() / 프로퍼티 추가 , 삭제 금지 여부 반환
+freeze() / 프로퍼티 추가 , 삭제.변경 금지 설정
+isFrozen() / 프로퍼티 추가 , 삭제.변경 금지 여부 반환
+
+프로퍼티 디스크립터
+value / [[Value]] , 설정할 값
+writable / [[Writable]], 값 변경 가능 여부
+get / [[Get]], 값 반환 프로퍼티 함수
+set /[[Set]], 값 설정 프로퍼티 함수
+
+
+구글 인턴 지원~!!
+http://windwaker.net/1331
+
+
+
+
+
+
+
+

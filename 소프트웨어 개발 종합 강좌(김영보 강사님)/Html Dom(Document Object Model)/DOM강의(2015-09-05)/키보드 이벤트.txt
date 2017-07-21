@@ -1,0 +1,19 @@
+[키보드 이벤트 타입]
+
+keydown /  자판의 키를 눌렀을때
+keyup / 자판의 키를 때었을때 
+keypress / 자판의 키가 눌러진 상때 일때 
+
+순서 keydown > keypress > keyup 
+
+
+
+[키보드 이벤트 프로퍼티(어트리뷰트)]
+
+
+altKey / Alt 키를 누른 상태에서 마우스 이벤트의 발생여부 
+ctrlKey / Ctrl 키를 누른 상태에서 마우스 이벤트의 발생 여부
+KeyIdentifier / 누른 키 값을 반환
+KeyLocation / shift 키와 같이 자판에 두개의 키가 있는 경우 어느쪽을 누른지 반환
+metaKey / Mac OS에서 사용 , meta키를 누른 상태
+shiftKey / Shift 키를 누른 상태에서 마우스 이벤트의 발생 여부

@@ -1,0 +1,50 @@
+[querySelectorAll]
+<div id="sports">
+		<p id="S1">좋아하는 스포츠</p>
+		<div id="div1" class="c1">
+			스포츠
+			<div id="div2" class="c2">축구
+				 <span id="span1" class="c2">11명</span> 
+				<span id="span2" class="c2">90분</span>
+			</div>
+			<div id="div3" class="c1">농구</div>
+		</div>
+	</div>
+
+
+
+	<script type="text/javascript">
+	
+//node 건수 와 node id 출력
+function isDisplay(nodes,desc){
+	var k,result = '', count = 0;
+	
+	if(nodes){
+		for(k=0;k<nodes.length;k++){
+			result += nodes[k].id + " , ";
+			++count;
+		}
+		log(desc, "-->",count,"  : ",result);
+		
+	}else{
+		log(desc,"추출한 것이 없습니다.");
+	}
+	
+	
+	
+}
+
+
+
+	//*모든 엘리먼트
+	
+	var nodes =document.getElementById("sports").querySelectorAll("*");
+	isDisplay(nodes,"*");
+	nodes =document.getElementById("sports").querySelectorAll("#div1");
+	isDisplay(nodes,"#div1");
+	nodes =document.getElementById("sports").querySelectorAll("span");
+	isDisplay(nodes,"span");
+	
+	
+	
+	</script>

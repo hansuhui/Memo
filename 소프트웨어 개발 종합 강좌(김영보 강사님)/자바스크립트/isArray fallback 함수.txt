@@ -1,0 +1,6 @@
+if(!Array.isArray){
+	   Array.isArray = function(args){
+		   alert();
+		   return Object.prototype.toString().call(args) ==="[object Array]";
+		   
+	   };

@@ -1,0 +1,60 @@
+https://wikidocs.net/25
+
+
+[사용자 입력과 출력]
+
+
+- input의 사용 -
+
+>>> a = input()
+Life is too short, you need python
+>>> a
+'Life is too short, you need python'
+
+input은 입력되는 모든 것을 문자열로 취급한다.
+(※ 파이썬 2.7 버전의 경우 위 예제의 input 대신 raw_input을 사용해야 한다.)
+
+------------------------------------------------------------------------------
+
+- 프롬프트를 띄워서 사용자 입력 받기 -
+
+
+input("질문 내용")
+
+>>> number = input("숫자를 입력하세요: ")
+숫자를 입력하세요:
+
+
+>>> number = input("숫자를 입력하세요: ")
+숫자를 입력하세요: 3
+>>> print(number)
+3
+
+
+=============================================================================
+
+[print 자세히 알기]
+
+>>> print("life" "is" "too short") # ①
+lifeistoo short
+>>> print("life"+"is"+"too short") # ②
+lifeistoo short
+
+
+
+- 문자열 띄어쓰기는 콤마로 한다 -
+
+>>> print("life", "is", "too short")
+life is too short
+
+
+- 한 줄에 결과값 출력하기 -
+
+03-3절에서 for문을 배울 때 만들었던 구구단 프로그램에서 보았듯이 한 줄에 결과값을 계속 이어서
+ 출력하려면 입력 인수 end를 이용해 끝 문자를 지정해야 한다.
+
+>>> for i in range(10):
+...     print(i, end=' ')
+...
+0 1 2 3 4 5 6 7 8 9
+(※ 파이썬 2.7 버전의 경우 이 예제의 print(i, end=' ') 대신 print i,를 사용해야 한다.)

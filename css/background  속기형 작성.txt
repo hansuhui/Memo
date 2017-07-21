@@ -1,0 +1,4 @@
+-background : background-color background-image background-repeat(반복)
+ 		background-attachment(고정) backgound-position(위치)
+
+예) background :url('경로') no-repeat 20px 140px

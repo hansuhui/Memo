@@ -1,0 +1,100 @@
+[2015년 JavaScript 동향]
+
+도약을 위한 기반 다지기!!
+
+
+[2015년 JavaScript 키워드]
+
+ES2015(ES6) 스펙 제정
+
+WebAssembly 개발 시작
+
+Node.js 진영 안정화
+
+
+[ES2015 스펙 제정]
+
+JavaScript 발전 방향 제시
+
+ES5 : 241 페이지
+Es6 : 545 페이지
+
+PDF 파일
+
+
+[WebAssembly 개발 시작]
+
+JavaScript 랜더링 시간 단축
+
+브라우저 개발사 참여
+
+W3C에서 진행 : 표준화
+
+
+[Node.js 진영 안정화]
+
+Node.js 재단 설립
+
+Linux 재단 참여
+
+IBM의 Node.js 기술 지원 회사 인수
+
+서버 사이드 확산 환경 구축
+
+
+[2016년 JavaScript]
+
+도약 !!!
+
+ES6:브라우저 탑재
+
+Node.js:IoT 디바이스 탑재 확산
+
+New 패러다임 프레임워크 발전
+
+HTML5 , CSS3 사용 확산
+
+
+[Java Script 프레임워크 공통점]
+
+React , Vue , Polymer , Augular
+
+공통점 : Component 지향
+
+
+[JavaScript와 Component]
+
+Component 구성 : Object(객체)
+
+JavaScript 역할 : HTML , CSS , DOM , 통신 , API 컨트롤
+
+JavaScript로 Object Control
+
+DOM , JavaScript가 객체? : 인정
+HTML , CSS가 객체 ??
+
+
+[Web 환경의 Component]
+
+Component 구성 환경 : 일반적인 Component 다름
+
+목적이 다른 언어를 Component로 구성 : 설계가 중요
+
+개발 환경의 변화 : 현재 방법에서 전환 필요
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

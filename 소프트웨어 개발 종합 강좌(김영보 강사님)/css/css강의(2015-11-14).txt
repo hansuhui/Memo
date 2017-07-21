@@ -1,0 +1,740 @@
+[text-align]
+
+값 : start / end / left / right 
+     center / justfy / match-parent / start end
+
+
+-text 의미
+문자,공백(space), 단어 , 단락의 시작적 효과
+
+-text-alian
+블록 콘테이너 안의 inline-level 콘턴츠 정렬
+
+-left, right , center , start , end
+단어 의미 그대로 정렬
+
+-justfy
+텍스트 양족 맞춤 균등 정렬
+
+-match-parent
+inherit와 정렬 기준이 같음
+
+[text-justify]
+
+-텍스트 균등 정렬
+지원 브라우저 없음(2015.10.03)
+
+-auto
+브라우저에 의존
+
+-none
+정렬하지 않음
+
+-inter-word
+단어 간격만 조정하여 균등 맞춤
+
+-distribute
+단어 간격 및 문자 간격을 조정하여 균등 맞춤
+
+[text-align-last]
+
+값 : start,end,left,right,center
+
+-마지막 라인 정렬 방법
+화이어폭스에서 지원함
+
+[word-spacing]
+
+-단어 사이 간격
+
+-<length>
+단어 간격을 px,em으로 지정
+음수 지정 가능
+
+-<percentage>
+단어 간격을 퍼센트로 지정
+
+
+[letter-spacing]
+
+-문자 사이 간격
+
+[white-space]
+
+-공백,줄바꿈 처리 기준
+
+-normal
+공백(화이트 스페이스:white space)이 연속될 때 하나로 줄여서 표시
+문자열 내에 줄바꿈(Enter)을 공백 문자로 취급, 줄을 바꾸지 않음
+폭을 맞추기 위해 필요한 곳에서 행을 분리
+
+-nowrap
+화이트 스페이스가 연속될 때 하나로 줄여서 표시
+문자열 내에 줄바꿈(Return)을 공백 문자로 취급, 줄을 바꾸지 않음
+폭을 맞추기 위해 줄바꿈을 하지 않고 폭을 넘어서 표시
+
+-pre
+화이트 스페이스를 그대로 표시
+문자열 내에 줄바꿈(Return)또는 <br>이 있으면 줄을 바꿈
+폭을 맞추기 위해 필요한 곳에서 행을 분리하지 않음
+
+-pre-wrap
+화이트 스페이스를 그대로 표시
+문자열 내에 줄바꿈(Return) 또는 <br>이 있으면 줄을 바꿈
+폭을 맞출기 위해 필요한 곳에서 행 분리
+
+-pre-line
+
+
+
+[text-indent]
+-첫번째 라인에 공백 삽입
+
+-<percentage>
+포함 블럭의 width에 %를 곱한값
+
+-each-line
+행을 분리하였을 때 , 다음 첫 번째 라인에도 공백 삽입
+
+-hanging
+첫 번째 행은 공백을 삽일하지 않고, 나머지 행의 첫 번째에 공백을 삽입
+
+
+[text-transform]
+
+-영문 대소문자 변환
+
+-none
+변환하지 않음
+
+-capitalize
+첫 문자를 대문자로 변환
+
+-uppercase
+모든 문자를 대문자로 변환
+
+-lowercase
+모든 문자를 소문자로 변환
+
+-full-wudth
+폭에 맞추어 변환
+
+
+[line-break]
+
+-라인 끝의 심볼 문자처리.css
+
+-normal
+".",",","!","?"가 라인을 분리했을 때 다음 라인의 첫 문자가 되지 않게 분리
+
+-strict
+normal에 ("~","-","_")를 
+
+
+[word-break]
+
+-문자 사이에서 줄 분리 기준.css
+CJK(China, Japan, Korea 문자를 나타내는 용어) 적용
+
+-normal
+디폴트 라인 분리 기준 적용
+
+-break-all
+문자 분리를 고려하지 않고 폭이 넘치는 부분에서 라인 분리
+
+-keep-all
+단어를 연결하고 단어가 구분되는 위치에서 라인 분리
+
+
+[word-wrap]
+
+-단어가 박스 폭을 넘칠 때 줄 바꿈 여부
+
+
+[overflow-wrap]
+word-wrap와 같은 기능
+
+[hyphens]
+-하이픈으로 단어 연결
+영어 단어 중간에서 줄을 분리하면 두개의 단어가 될 수 있으므로
+단어 하나라는 것을 나타내기 위해 하이픈(-) 작성 여부 지정
+언어에 의존적이며 한글은 해당되지 않음
+엘리먼트에 lang-en 효과
+
+-manual
+문자를 작성하여 라인 분리 지정
+U+2010(하이픈), U+00AD(shy)
+
+-하이픈: hard hyphen
+하이픈 위치에서 라인을 분리하고 하이픈도 같이 표시
+줄 바꿈을 하지 않더라도 하이픈이 표시됨
+
+-shy:soft hyphen
+텍스트에 &shy;를 작성하면 라인을 분리하고 하이픈을 표시
+
+-auto
+브라우저가 라인을 분리하면서 하이픈 자동삽입
+
+[text-decoration-line]
+파이어 폭스 지원
+-텍스트 라인 수식
+
+-none
+텍스트에 라인 수식을 하지 않음. 디폴트
+
+-underline
+밑줄
+
+-overline
+윗줄 
+
+-line-through
+중앙선
+
+
+[text-decoration-color]
+파이어 폭스 지원
+-선에 색상을 준다
+
+
+[text-decoration-style]
+
+-wavy 
+물결
+
+-dotted
+점 땡땡이
+
+-dashed
+약간다른 점
+
+-double
+두줄
+
+
+
+[text-decoration]
+
+-text-decoration short had
+위에 4가지를 한번에 주는것
+
+
+text-decoration : none;
+text-decoration : underline red;
+text-decoration : underline blue wavy;
+
+[text-underline-position]
+
+-언더라인 위치 : css3
+지원 브라우저없음
+IE에서 지원하지만 표준이 아닌 독자 프로퍼티 사용
+
+[text-emphasis-style]
+
+-강조 마크
+
+
+[text-emphasis-color]
+
+-강조 마크 색상
+
+
+[text-emphasis]
+
+한번에 쓰는것!!
+
+
+[text-emphasis-position]
+
+-강조 마크와 색의 표현 위치
+
+
+
+[tab-size]
+탭 누르는 사이즈
+
+
+[text-shadow]
+
+-텍스트 그림자
+text-shadow : 5px 5px 2px red;
+1번째 : offset-x, 수평방향
+2번쩨 : offset-y, 수직방향
+3번째 : 디폴트 0, 값이 크면 클수록 흐리게 표현, 그림자가 엷어짐
+4번째 : 색상
+콤마로 구분하여 4가지를 박복 지정 가능
+:first-line과 :first-letter에 지정가능
+
+
+[writing-mode]
+
+-텍스트 레이아웃 방향
+
+
+[text-orientation]
+
+-라인에서 텍스트 방향 지정
+
+
+[Selector]
+
+-셀렉터
+다큐먼트 구조에 패턴을 매치하여 엘리먼트 추출
+
+-패턴(pattern)
+엘리먼트를 매치하기 위한 기준
+영문 대소문자 구분
+예:E[foo]
+foo 속성을 가진 E 엘리먼트 추출을 위한 패턴
+
+-패턴 매치(pattern match)
+패턴 조건을 다큐먼트 구조의 엘리먼트에 매치하는것
+
+
+[셀렉터 리스트]
+http://techhtml.github.io/selectors/#selectors
+
+
+
+[Type Selector]
+
+-패턴에 엘리먼트 타입 지정
+
+
+[Universal Selector]
+
+-매치되는 모든 엘리먼트 반환
+document.querySelectorAll('*');
+
+
+[ID Selector]
+
+-해당 id값을 선택해서 가져오는것
+
+document.querySelectorAll('#id1,#id2');
+
+[Class Seletor]
+-해당 클래스 값을 선택하는것
+
+document.querySelectorAll('.ClassName');
+
+
+[Combinator]
+
+E F / E 엘리먼트의 차일드와 자손의 모든 F 엘리먼트               레벨1
+E > F / E 엘리먼트의 차일드인 F 엘리먼트, 자손제외               레벨2
+E + F / E의 형제 엘리먼트 중에서 바로 다움의 F 엘리먼트         레벨2
+E ~ F / E의 현제 엘리먼트 중에서 다음에 있는 모든 F 엘리먼트   레벨3
+
+-개요
+다큐먼트 트리에서 계충을 지정하여 엘리먼트 추출
+차일드 : 기준 엘리먼트의 1단계 아래 엘리먼트
+자손 : 차일드를 제외하지만, Selector에서는 차일드를 포함한 모든 엘리먼트
+형제 : 페어런트가 같은 모든 엘리먼트
+
+
+
+[Attribute Selector]
+
+E[attr] / attr 속성(값은 관계없음)을 가진 E 엘리먼트
+E[attr=value] / attr 속성 값이 value인 E 엘리먼트
+E[attr~=value] / attr 속성 값을 공백으로 분리하고 , 값 중에 하나가 value인 E 엘리먼트인것
+E[attr ^=value] / attr 속성 값이 value로 시작하는 E 엘리먼트
+E[attr $= value] / attr 속성 값이 value로 끝나는 E 엘리먼트
+
+
+[pseudo-classes]
+
+E:link / 하이퍼링크 중에서 링크하지 않는 엘리먼트
+E:visited / 하이퍼링크 중에서 링크한 엘리먼트
+E:active,E:hover , E: focus /
+
+
+[target pseudo-class]
+
+:target {background:yellow;}
+a태그에 href="#타켓"
+
+
+[state pseudo-class]
+
+input:enabled {background:yellow;}
+input:disabled {outline:inset 4px blue;}
+
+
+input:checked {outline:inset 4px yellow;}
+
+자바 스크립트로 작동 ㅎㅎ
+input:indeterminate {outline:inset 4px green;}
+
+function setIndeterminate(){
+	document.getElementById("indeterminate").indeterminate = true;
+}
+
+
+[structural pseudo-class]
+
+E:root / HTML 다큐먼트의 root 에릴먼트
+E:nth-child(n) / E의 패어런트에서 n번째 차일드
+E:nth-last-child(n) / E의 패어런트에서 뒤에서 부터 n번째 차일드
+
+
+홀수를 2n-1 이런식으로 쓰잖아요
+10n-1은 10의 배수에서 1을 뺸거니까
+9 19 29 39  이렇게 되는거죠
+넹 tr:nth-child(2n+1) /*  represents every odd row of an HTML table */
+tr:nth-child(odd) //홀수
+tr:nth-child(2n+0) /* represents every even row of an HTML table */
+tr:nth-child(2n) /* represents every even row of an HTML table */
+tr:nth-child(even) /* 짝수 e */
+
+http://techhtml.github.io/selectors/#structural-pseudos
+
+
+li:first-child / E 엘리먼트에 첫번째 차일드
+li:last-child /  E 엘리먼트에 마지막 차일드
+
+
+
+li:first-of-type / E 엘리먼트에 첫번째 차일드
+li:last-of-type /  E 엘리먼트에 마지막 차일드
+
+여기서 type 태그명?!
+
+li:only-child / 차일드가 하나인 li에 해당 자식놈이 하나인거
+li:only-of-type / 타입이 하나인거 
+li:empty / 텍스가 빈 li에 해당함
+
+
+[negation pseudo-classes]
+
+:not / 부정인것 해당하지 않는것
+
+a:not([class='네임']) 이러면 해당하는 네임이 아닌것 a태그에서
+
+
+
+[pseudo-elements]
+
+E::first-line / 엘리먼트의 첫 행에만 스타일 적용
+E::first-letter / 엘리먼트의 첫 행의 첫 문자에 스타일 적용
+E::before / 엘리먼트 처음에 content 프로퍼티에 작성한 콘텐츠 추가
+E::after / 엘리먼트 끝에 content 프로퍼티에 작성한 콘텐츠 추가
+
+
+
+[::first-line]
+
+-첫 행만 스타일 적용
+첫 행의 길이는 엘리먼트 폭, 폰트 사이즈 등을 반영하여 결정됨
+
+-적용 가능 엘리먼트
+block box, inline-block , table-caption , table-cell
+
+-줄바꿈 기준으로 첫 행이 결정된다.
+
+[::first-letter]
+-첫 행에 첫문자!!!
+
+
+[::before , ::after]
+
+처음과 마지막꺼에 콘텐츠를 추가!!! 선택?!
+
+
+[Media Query 개요]
+
+http://techhtml.github.io/css3-mediaqueries/
+
+-Media 타입이란
+스크린, 프린터와 같은 디바이스 타입
+
+-현재, HTML과 CSS가 미디어 대응하고 있음
+미디어 타입에 맞도록 스타일시트 지원
+예: 스크린 미디어에 스타일 시트 지정
+<link rel="stylesheet" media="screen" href="경로">
+@media screen{*{font-family:sans-serif}}
+
+
+-Media Query
+현재 지원하는 기능을 확장하여
+보다 정밀하게 스타일시트를 표현할 수 있도록 한것
+페이지의 콘텐츠를 변경하지 않고 특정 디바이스에 맞도록 조정가능
+
+
+[shorthand 문법]
+
+-all과 and 생략
+@media all and (min-width:600px){....}
+생락한 형태 : @media(min-width:600px){....}
+all과 이어지는 and 생략 가능
+
+-콤마로 구분하여 다수 작성
+
+[not,only 키워드]
+
+-not 키워드
+미디어 타입 앞에 not 작성
+조건을 반대로 해석
+
+-only 키워드
+미디어 쿼리 기능에 영향을 미치지 않음
+
+
+[width]
+
+-출력 디바이스의 표시 영역(viewport) 폭
+스크롤 바 width 포함
+<length>에 음수 지정 불가
+min-width , max-width : 최소, 최댓값
+
+-예제
+@media screen and (min-width:400px) and (max-width:700px){}
+
+
+[height]
+
+-출력 디바이스의 표시영역(viewport) 높이
+스크롤바 height 포함
+<length>에 음수 지정 불가
+min-height, max-height : 최소 , 최대값
+
+-예제
+@media screen and (max-height:400px) and {}
+
+
+[device-width, height]
+
+-device-width
+랜더링 기준 출략 디바이스 폭
+min-device-width, max-device-width : 최소 , 최대값
+
+[orientation]
+
+-viewport 기준 현재모드
+width 와 height 값을 비교하여 portrait/landscape를 나타냄
+
+-portrait
+height 값이 width 값보다 같거나 클때
+@media all and (orientation:portrait){}
+
+-landscape
+height 값이 width 값보다 작을때
+@media all and (orientation:landscape){}
+
+
+
+
+[aspect-ratio]
+
+-width/height 비율에 따라 스타일시트 적용
+
+-aspect-ratio:viewport 기준
+min-aspect-ratio , max-aspect-ratio : 최소 , 최댓값
+@media screen and (aspect-ratio:2/3){}
+320:480과 640:960 비율(2:3)이 같으므로 스타일 시트가 같게 적용
+
+-device-aspect-ratio:device 기준
+
+-작성 방법
+min-aspect-ratio : 2/3에서 /로 폭과 높이를 구분
+/앞에 폭을 픽셀로 작성하고 /뒤에 높이를 픽셀로 작성
+
+[color]
+
+-1픽셀 color를 표현하는 비트 수 지정
+지정하지 않거나 1을 지정함녀 color 지우너 모든 디바이스에 스타일시트 적용
+min-color , max-color : 최소 , 최대값
+@media all and (color){}
+@media all and (min-color){}
+
+[color-index]
+-인덱스 지정
+@media all and(min-color-index : 256){}
+color 테이블 인덱스가 256 이상인 디바이스에 스타일시트 적용
+디바이스가 color 테이블을 지원하지 않으면 0 지정
+
+
+[monochrome]
+
+-1픽셀 흑백을 표현하는 비트수 지정
+지정하지 않거나 1을 지정하면 흑백 지운 모든 디바이스에 스타일 시트 적용
+
+-비트 수 지정
+
+[resolution]
+-출력 디바이스 해상도
+
+-단위
+dp: dot per
+dpi : 1인치당 도트 수 , 1dpi는 약 2.54dpcm
+
+[scan]
+
+-TV 디바이스 주사 처리 방법
+
+[grid]
+
+-출력 디바이스의 grid 또는 bitmap 여부
+grid : tty 터미널, 하나의 폰트로 고정된 전화기 디스플레이
+grid이면 1, 아니면 0
+주요 스마트폰, 테블릿, pc는 gird 이외 디바이스
+
+[CSS table model]
+
+-HTML의 table 개념과 같음
+HTML table을 visual layout으로 접근
+아래 table-row와 같이 table에 대응하는 css table model이 있음
+
+-default style sheet
+HTML table과 css table model을 display 프로퍼티에 매핑
+table {display:table}
+tr{display : table-row}
+thead {display : table-header-group}
+tbody {display : table-row-group}
+tfoot {display : table-footer-group}
+col {display:table-column}
+colgroup {display:table-column-group}
+td, th {display : table-cell}
+caption {display : table-caption}
+
+
+[caption-side]
+
+-캡션 박스위치 지정
+
+-top
+캡션을 <table> 처음에 표시
+
+-bottom
+캡션을 <table> 마지막에 표시
+
+
+[table-layout]
+
+-table 레이아웃 방법
+
+-auto
+브라우저가 table 전체를 읽고 cell에 맞추어 column 폭을 결정
+column 폭에 맞추어 레이아웃 실행
+
+-fixed
+col 엘리먼트 또는 첫 번째 행을 기준으로 각 column 폭 결정
+table width, column width , border , cell 간격 반영
+처리 속도가 빠름
+column width를 지정하지 않으면 남은 width를 균등 분할
+행 높이는 두 형태 모두 자동 산출
+
+
+[border-collapse]
+
+
+-table의 border 표시 방법
+
+-collapse
+근접하는 cell의 border를 공유하여 표시
+따라서 선이 하나만 표시됨
+
+-separate
+각 cell이 border 선을 갖음
+따라서 border가 cell마다 표시됨
+
+[border-spacing]
+
+-근접한 border와 border 간격
+
+[empty-cells]
+
+-내용이 없는 셀을 보이거나 숨긴다
+
+empty-cells-cells:hide
+empty-cells-cells:show
+
+
+
+[cursor]
+http://www.w3schools.com/cssref/pr_class_cursor.asp
+-커서 포인터 지정
+
+-uri
+uri에 있는 커서 포인터 사용
+
+-x,y
+지정된 좌표 표시
+
+[resize]
+
+-엘리먼트 리사이징 허용여부
+overflow 값이 visible 이외의 엘리먼트에 적용
+overflow:auto와 같이 overflow 프로퍼티를 같이 작성
+
+-none
+사용자가 리사이징 불가
+
+-both
+폭과 너비의 
+
+
+
+[text-overflow]
+
+-텍스트가 행 방향 영역을 넘칠때 표시 방법
+overflow 값이 visible 이외의 엘리먼트에 적용
+overflow : hidden , white-space:nowrap을 같이 작성
+
+-clip
+넘치는 텍스트를 표시하지 않음
+
+-ellipsis
+행 끝에 생략부호(...)표시
+
+-<string>
+행 끝에 <string>에 지정한 문자열 표시
+
+-"clip ellipsis"형태
+첫 번째를 행 앞에
+두 번째를 행 끝에 표시
+5대 브라우저 미지원
+
+
+[caret-color]
+-삽입 포인터(caret)색상
+텍스트를 입력할때 현재 입력 중인 포인터를
+다른 텍스트와 구분하기 위해 시각적으로 다르게 표시
+
+[column-width]
+
+-column 폭 지정
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

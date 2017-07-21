@@ -1,0 +1,25 @@
+좋은 속성들
+
+
+
+document.getElementById("test").classList
+
+
+
+
+
+알아볼꺼
+
+offset
+Css BoxModel
+var el = getElementById("test");
+el.cloneNode(bool); 
+
+라이브러리, 프레임워크 차이
+
+unload 이벤트 (브라우저 닫을때 걸려있음)에 뭔가 걸리면?
+
+log() -arguments 알아보기
+서제스트 - 검색시 관련검색어 보여주는것
+DOM 빌트인 개념 알아보기
+프로그램 핸들러 알아보기

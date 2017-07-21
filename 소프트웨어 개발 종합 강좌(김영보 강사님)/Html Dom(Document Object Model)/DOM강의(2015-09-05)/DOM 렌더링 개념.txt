@@ -1,0 +1,8 @@
+처음 Document 문서를 파싱하고
+DOM이 트리구조로 object를 생성하고
+img 태그에 image를 가져온다
+
+
+
+(이벤트)DOMContentLoaded: image를 불러오기전 DOM object화가 끝났을때 발생
+(이벤트)onload 발생 

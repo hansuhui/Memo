@@ -1,0 +1,15 @@
+[Element-child]
+
+childElementCount / 자손 노드수 , ie 제외 4대 브라우저
+childNodes / 모든 자손 노드 DOM 레벨 1 기준
+children / 자손 노드 중에서 엘리먼트 노드만 포함 표준은 아지만 5대 브라우저 지원
+
+-NodeList
+node 엘리먼트의 배열 형태
+Collection: NodeList와 비슷한 , 믹스 형태
+
+-------------------------------------------
+appendChild() / 자식 노드 추가
+removeChild() / 자식 노드 제거
+replceChild() / 자식 노드 변경??
+clonceNode() / 노드 복사

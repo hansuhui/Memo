@@ -1,0 +1,19 @@
+consistency : 일치 , 통합성
+
+참조 사이트
+API : http://getbootstrap.com/
+
+
+[CSS]
+
+grid option !!!
+
+md : 미디움
+
+xm : 엑스트라 스몰
+
+class
+table 
+table-hover
+
+

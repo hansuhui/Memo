@@ -1,0 +1,85 @@
+참조 사이트
+http://www.w3schools.com/jsref/dom_obj_document.asp
+
+구조는 트리 구조이고 
+
+노드로 이루어져 있다 
+
+노드에 관계는 parents,children,Siblings(시브린스[형제])
+
+예)
+Html - 뿌리 노드
+head - Html의 firstChild 이자 body의 NextSibling
+body - Html의 lastChild 이자 head의 previousSibling
+
+노드는 Element, Attribute , Text 노드 3가지로 구성 되어있다.
+
+예) document.head.nextSibling [내 아래있는 형제 노드를 찾을때]
+
+head와 바디 사이에 공백이 있다면 EmptyTextNode가 나온다 
+document.head.nextSibling.nextSibling 을 하면 다음 요소인 body가 나온다
+
+
+노트 타입 
+1. Element
+2. 속성
+3. 텍스트
+8.command 
+9.document
+예제
+
+p태그를  예재로 보면
+
+<p 속성="속성값">텍스트</p>
+
+1은 p Element
+2는 속성 이고
+3은 텍스트 이다
+
+부모 노드 찾는법 
+
+Document.head.parentNode 해당 head에 부모노드인 html를 찾는다
+
+
+노드에 집합 찾기(자식들)
+document.documentElement.childNodes[문서.문서요소(Html).자식노드들
+1. Head 노드
+2.텍스트 노드(비어있는)
+3. body 노드
+
+요즘엔
+document.documentElement.children 하게 되면 요소들만 나온다
+1.Head 노드
+2.body 노드
+
+------------------------------------------------------
+
+HTML DOM Properties(속성) and Medthods (기능)
+
+1. HTML DOM Properties
+
+-x.innerHTML : 해당 Element 안쪽에 있는 HTML를 가져온다 (Html 요소 적용됨)
+-x.nodeName : 노트에 이름를 가져온다 (Element 네임)
+-x.nodeValue : 노트에 값를 가져온다 (Element 값) = 으로 변경 가능
+-x.parentNode : 부모 노드를 찾는다
+-x.childNodes : 자식 노드를 찾는다
+-x.attributes : 속성을 가져온다
+
+
+2. HTML DOM Methods
+
+-x.getElementByid(id) : 아이디를 넣어 해당 아이디에 Element를 가져온다
+-x.getElementsByTagName(Name) : 해당하는 태그네임 요소를 전부 가져온다
+				만약 document.getElementsByTagName('p')
+				하면 문서안에 p태를 전부 가져온다
+-x.appendChild(Node) : 부모에 안쪽 뒤에 붙인다
+-x.removeChild(Node) : 부모에서 해당 노트롤 제거할때 사용한다
+
+
+------------------------------------------------------
+
+Node Properties
+
+-nodeName : 해당 노트 이름 (대문자로 가져옴)
+-nodeValue : 해당 노드 값 (x.nodeValue=으로 설정도 가능)
+-nodeType : 해당 노트 타입(1.Element 2.attribute 3.Text 8.command 9.document)

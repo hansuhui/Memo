@@ -1,0 +1,15 @@
+background-image:linear-gradient(-90deg,#887963,#0b0a09); 
+
+/*css3 그레이디언트 효과를 적용합니다 */
+
+1. Css3 그레이디언트 스타일
+-linear (선형)
+-Radial (원형)
+
+2. 각도 Angle
+포토샵에 있는 Angle과 같음
+
+3. 색 조절
+
+앞에 시작색
+뒤는 끝나는 색

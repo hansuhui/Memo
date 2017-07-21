@@ -1,0 +1,4 @@
+<meta http-equiv="refresh" content="20;url=http://www.naver.com">
+
+refresh 새로고침 기능이다 content는 시간 지정 20초 url 지정
+meta에 content가 없는 경우엔 디폴트로 text/html으로 들어간다

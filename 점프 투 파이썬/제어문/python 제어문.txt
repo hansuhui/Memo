@@ -1,0 +1,170 @@
+[if-elif-else 문]
+
+
+
+pi =3.14
+x = 2.7 * 1.45
+if x == pi:
+    print 'The number is pi'
+elif x > pi:
+    print 'The number is greater than pi'
+else:
+    print 'The number is less than pi'
+
+============================================================================================================
+
+[while 되풀이]
+
+
+
+>>> x = 0
+>>> y = 10
+>>> while x <= y:
+...     print 'The current value of x is: %d' % (x)
+...     x += 1
+... else:
+...     print 'Processing Complete...'
+...
+The current value of x is: 0
+The current value of x is: 1
+The current value of x is: 2
+The current value of x is: 3
+The current value of x is: 4
+The current value of x is: 5
+The current value of x is: 6
+The current value of x is: 7
+The current value of x is: 8
+The current value of x is: 9
+The current value of x is: 10
+Processing Complete...
+
+
+
+>>> total = 0
+>>> x = 0
+>>> y = 20
+>>> while x <= y:
+...     total += x
+...     x += 1
+... else:
+...     print total
+...     total = 0
+...
+210
+
+
+============================================================================================================
+
+
+[continue 문]
+
+
+# 범위에 대하여 반복하되 짝수만 출력
+>>> x = 0
+>>> while x < 10:
+...     x += 1
+...     if x % 2 != 0:
+...         continue
+...     print x
+...
+2
+4
+6
+8
+10
+
+============================================================================================================
+
+[break 문]
+
+
+>>> x = 10
+>>> while True:
+...     if x == 0:
+...         print 'x is now equal to zero!'
+...         break
+...     if x % 2 == 0:
+...         print x
+...     x -= 1
+...
+10
+8
+6
+4
+2
+x is now equal to zero!
+
+============================================================================================================
+
+[for 되풀이]
+
+my_list = [1,2,3,4,5]
+
+for(x = 0; x <= myList.size(); x++){
+// processing statements iterating through myList
+System.out.println("The current index is: " + x);
+}
+
+
+
+>>> for a in [1, 2, 3]:
+...   print(a)
+...
+1 
+2 
+3
+
+============================================================================================================
+
+
+[Enumerate() 함수]
+
+
+>>> myList = ['jython','java','python','jruby','groovy']
+>>> for index, value in enumerate(myList):
+...     print index, value
+...
+0 jython
+1 java
+2 python
+3 jruby
+4 groovy
+
+
+
+>>> myList = ['jython', 'java', 'python', 'jruby', 'groovy']
+>>> for item in myList:
+...     print item
+...
+jython
+java
+python
+jruby
+groovy
+
+
+============================================================================================================
+
+
+[컨테이너에 대하여 반복]
+
+
+# Define a dictionary and then iterate over it to print each value
+>>> my_dict = {'Jython':'Java', 'CPython':'C', 'IronPython':'.NET','PyPy':'Python'}
+>>> for key in my_dict:
+...     print key
+...
+Jython
+IronPython
+CPython
+PyPy
+
+
+
+
+
+
+
+
+
+

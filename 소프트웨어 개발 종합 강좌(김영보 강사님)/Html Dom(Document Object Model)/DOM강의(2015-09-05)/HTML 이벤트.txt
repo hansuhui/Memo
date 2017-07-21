@@ -1,0 +1,19 @@
+
+[HTML 이벤트]
+
+abort / 이미지를 로딩하는 중에 로등이 중단시 발생 <object>
+blur / 포커스를 잃을 떄 발생
+chang / 값을 변경하고 포커스를 잃을때
+error / 실행중에 어러가 났을때 <object><body><frameset>에서 발생
+focus / 포커스를 받을때 발생
+load / 지정한 오브젝트가 로딩되었을때 발생
+	document , <body> , <frameset> , <object><link><meta>
+	<script><frame><iframe><img>에서 발생
+reset / <form>에서 발생하며 폼을 리셋할때 발생
+resize / 브라우저 크기를 변경했을 때 발생
+scroll / 브라우저의 스크롤 바를 좌우상하로 움직일때 발생
+select /<input><textarea>에서 문자를 선택했을때 발생
+submit / <form>에서 발생하며 폼을 전송할 때 발생
+unload / 브라우저를 닫거나 다른 페이로 이동할때 발생
+
+

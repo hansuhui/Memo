@@ -1,0 +1,25 @@
+참조 사이트 
+http://oscarotero.com/jquery/
+
+[Selectors(선택자)]
+
+$("*") - 전체 선택
+
+$(".class") - 클래스 
+
+$("#id") - 아이디
+
+
+-다중으로 선택가능
+$( "div, span, p.myClass" ).css( "border", "3px solid red" );
+
+[Hierarchy(계층)]
+
+parent > child / 아래 자식요소들 선택
+-ex $( "ul.topnav > li" )
+
+prev + next  / 선택 요소 옆의 요소을 선택
+$( "label + input" ).css( "color", "blue" ).val( "Labeled!" );
+
+prev ~ siblings  / 해당 아이디 다음의 요소들을 선택
+$( "#prev ~ div" ).css( "border", "3px groove blue" );

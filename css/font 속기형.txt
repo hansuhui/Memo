@@ -1,0 +1,25 @@
+참조 http://webdir.tistory.com/407
+
+font: font-style, font-variant, font-weight, 
+	font-size/line-height, font-family, 
+	caption, icon, menu, message-box,
+	 small-caption, status-bar, appearance 순서로 작성한다.
+
+
+책에서 발췌
+
+CSS에서 글자 스타일을 지정하는 속성에는
+글꼴(font-family) , 크기(font-size) , 행간(line-height),
+기울기(font-style), 두께(font-weight)  등이 있습니다.
+- 음절 앞 글자 대문자 (font-variant) 도 있지만 영문 글꼴에만 적용됨
+
+1. 글자 크기와 글꼴을 반드시 지정해야 합니다.(필수)
+-font : 12px "Times New Roman";
+
+2.행간을 추가할 때는 글자 뒤에 슬러시(/)를 붙입니다.
+-font : 12px/0.9 "Times New Roman";
+
+3.나머지 속성인 두께,기울기,음절 앞 대문대는 글자 크기 앞에 붙입니다.
+-font : bold italic small-caps 12px/0.9 "Times New Roman";
+
+

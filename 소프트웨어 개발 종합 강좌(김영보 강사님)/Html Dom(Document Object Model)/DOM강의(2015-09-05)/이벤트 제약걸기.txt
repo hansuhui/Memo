@@ -1,0 +1,13 @@
+
+[버블링 방지]
+
+DOM stopPropagation()
+IE cancleBubble = ture
+
+함수 안에 event.stopPropagation(); 걸어줌
+
+[디폴트 액션]
+
+DOM : preventDefault()
+IE : returnValue = true;
+함수 안에 event.preventDefault(); 걸어줌

@@ -1,0 +1,14 @@
+HTML 요소증 기본이 되는 박스 모델은
+
+
+가장 안쪽이 Content > padding > border > Margin 이다 
+
+
+
+
+
+
+
+
+
+ 

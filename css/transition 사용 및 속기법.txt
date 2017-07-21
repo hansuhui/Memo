@@ -1,0 +1,165 @@
+참조 홈페이지 
+http://ielselog.blogspot.kr/2013/09/understand-css-trasition.html
+
+transition 축약 속성
+
+- transition-property
+- transition-duration
+- transition-timing-function
+- transition-delay
+
+
+예를 들어
+
+transition-property:width;
+transition-duration:1s;
+transition-timing-function: ease;
+transition-delay: .5;
+
+축약하면
+
+transition : width 1s ease .5s;
+
+----------------------------------------------------------------------
+transition-property 속성
+
+transition 구문의 첫번째 자리에 오는 transition-property는
+어떤 속성에 transition 효과를 줄지를 설정한다.
+
+transition-property의 값
+
+-none : transition 효과를 지정하지 않는다.
+-all : 모든 속성이 transition 효과를 얻는다.
+- propery : transition 효과를 얻게될 속성을 지정한다.
+
+모든 속성을 지정하는 것과 일부 속성을 지정하는 것은 다음과 같은 차이가 있다.
+
+all로 지정했을시 전환효과가 wdth 및 height에 전부 들어가지만
+
+
+
+
+ .transitionpost1 {  
+ width: 100px;  
+ height: 50px;  
+ background-color:DarkSeaGreen;  
+ border:1px solid black;  
+ transition:all 1s ease .1s;   
+ }  
+   
+ .transitionpost1:hover {  
+ width: 300px;  
+ height:100px;  
+ }  
+
+
+transition:width 1s ease .1s;  이렇게 width로
+지정하면 높이는 전환효과가 일어나지 않는다
+
+.transitionpost2 {  
+ width: 100px;  
+ height: 50px;  
+ background-color:DarkSeaGreen;  
+ border:1px solid black;  
+ transition:width 1s ease .1s;   
+ }  
+  
+
+ .transitionpost2:hover {  
+ width: 300px;  
+ height:100px;  
+ }  
+
+
+너비 변화는 1초, 배경색상 은 13초에 걸쳐 일어난다
+transition 속성을 지정하지 않은 height은 변화하데 , transition 효과는 없음 
+
+.transitionpost3 {  
+ width: 100px;  
+ height: 50px;  
+ background-color:#8FBC8F;  
+ border:1px solid black;  
+ transition:width 1s ease, background-color 13s ease;  
+ }  
+   
+ .transitionpost3:hover {  
+ width: 300px;  
+ height: 100px;
+ background-color:#000000;  
+ }  
+
+
+
+
+----------------------------------------------------------------------
+
+transition-duration 속성
+
+transition 구문의 2번째 자리에 오는 transition-duration은
+변화가 몇초, 또는 몇 밀리세컨드(1/1000초)에 걸쳐 일어날지를 설정한다.
+6s, 0.5s,3s, 120ms 이라고 적혀 있다면
+이는 각각 6초 ,0.5초 ,0.3초 , 120밀리세컨드라는 뜻이다.
+
+
+----------------------------------------------------------------------
+
+transition-timing-funcion 속성
+
+transition 구문의 3번쨰 오는 속성인 transition-timing-functing은
+변화가 일어나는 속도를 설정한다.
+속더 커브의 함수를 설정한다는 것이 더 정환한 표현이다.
+
+transition-timing-function의 값으로는
+
+- lingar :변화가 시작부터 종료까지 동일한 속도로 일어난다
+
+- ease : 극초반은 느리게,초반은 빠르게,종료지점은 느리게 변화한다
+
+- ease-in : 시작지점의 변화가 천천히 진행된다
+
+- ease-out : 종료지점의 변화가 천천히 진행된다
+
+- ease-in-out : 시작과 종료가 천천히 진행된다.
+
+- cubic-bezier : 함수 값을 직접 지정하는 것 cubic-bezier(1,.02,1,.47) 
+                 cubic-bezier(x1, y1, x2, y2) 지정 값은 0~1 
+
+
+- step-start : 모든 변화가 시작지점에 이루어진다.
+		steps(단계, start), 또는 steps(단계, end)
+		 transition:width 2s steps(8, end);
+		8단계 나뉘어 이루어진다 
+
+- step-end : 모든 변화가 종료 지점에 이루어진다
+	     시간을 2초로 설정하면 2초되 전환
+
+----------------------------------------------------------------------
+
+
+transition-delay 속성
+
+
+transition-delay 속성은 transition 4번째 속성으로
+효과가 언제 시작할지를 설정한다.
+말 그대로 , 딜레이를 설정한다
+
+ transition:width 2s ease-in 1s
+마우스 커서를 올리면 1초가 지난후 2초에 걸져서 너비를 변경한다  
+
+
+----------------------------------------------------------------------
+
+
+transition의 default 값 : all 0 ease 0
+
+
+ transition:2s; 이라면 나머지는 기본 값으로  셋팅 되서
+   transition:all 2s ease 0;  이 된다  
+
+
+
+transition 효과가 가능한 속성(property)의 목록은
+
+http://www.w3.org/TR/css3-transitions/
+
+

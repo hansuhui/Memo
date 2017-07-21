@@ -1,0 +1,5 @@
+document.getElementById(elementId)
+document.getElementsByName(elementName)
+document.getElementsByClassName();
+document.getElementsByTagName(tagname)
+document.getElementsByTagNameNS(namespaceURI, localName) 

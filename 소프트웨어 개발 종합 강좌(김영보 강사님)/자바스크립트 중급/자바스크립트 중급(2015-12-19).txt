@@ -1,0 +1,661 @@
+Á¦ÀÌÄõ¸® °´Ã¼ »ý¼ºÀº Á¦ÀÌÄõ¸® ¿ÀºêÁ§Æ®¸¦ °°ÀÌ »ý¼ºÇØ¼­
+100°³ ¸é 100°³ÀÇ °´Ã¼¸¦ ´Ù »ý¼ºÇÑ´Ù.
+
+ÇÔ¼ö¿¡¼­ ¸®ÅÏ °ªÀÌ ¾øÀ¸¸é undefiend¸¦ ¸®ÅÏÇÑ´Ù
+
+[ÁøÇà ¹æÇâ]
+
+-ÀÚ¹Ù½ºÅ©¸³Æ® ¾ÆÅ°ÅØÃ³, ¸ÞÄ¿´ÏÁò
+ÀÚ¹Ù½ºÅ©¸³Æ® »ç»ó/Ã¶ÇÐ ÀÌÇà
+
+-°¡Àå Áß¿äÇÑ °ÍÀº ±âº»
+
+-ÁøÇà ¹æ¹ý
+°³³ä , ³í¸® , ±â´É ¼³¸í
+±×·ì ´ÜÀ§ ½Ç½À
+
+
+
+[Java Script ÇÙ½É]
+
+- ±â´É ÇÙ½É : Control
+
+- ±â¼ú ÇÙ½É : Object : (name : value)
+
+
+[Control]
+
+-Dom : HTML , CSS ÄÁÆ®·Ñ
+
+-HTML5 API : File , indexedDB
+
+-±×·¡ÇÈ : SVG , CAnvas , WebGL
+
+-Åë½Å : XMLHttpRequest , Socket
+
+
+[ÄÚµù È¯°æ ¼³Á¤]
+
+-HTML ÆÄÀÏ ÀÛ¼º
+ÇÐÀåÀÚ : html
+ÀÎÄÚµù : utf-8
+
+
+-Function ¿ÀºêÁ§Æ® ±¸Á¶, ±¸¼º-
+
+[Function ¿ÀºêÁ§Æ®]
+
+-ÇÔ¼ö È£Ãâ ÄÚµå ÇüÅÂ
+var sports = function(){}
+sports();
+±Û·Î¹ú ¿ÀÆ®Á§Æ®¿¡ ¼ÓÇØÀÖ´Â°ÍÀÌ´Ù.!!
+³»ºÎ¿¡ call()°Ô ÀÖÀ½
+
+
+-Function ¿ÀºêÁ§Æ® ÀÛ¼º
+ÇÔ¼ö°¡ ¿ÀºêÁ§Æ®ÀÌ¾î¾ß È£Ãâ °¡´É
+¿£ÁøÀÌ function Å°¿öµå¸¦ ¸¸³ª¸é
+ºôÆ®ÀÎ Function ¿ÀºêÁ§Æ®·Î Function ¿ÀºêÁ§Æ® »ý¼º
+ÀÎ½ºÅÏ½º °³³ä
+
+-»ý¼ºÇÑ ¿ÀºêÁ§Æ®¸¦ sports º¯¼ö¿¡ ÇÒ´ç
+
+-sports ÇÔ¼ö È£Ãâ
+
+
+[»ý°¢ÀÇ ÀüÈ¯]
+
+-ÀÚ¹Ù½ºÅ©¸³Æ® OOP
+Function ¿ÀºêÁ§Æ®¸¦ µ¶¸³µÈ °´Ã¼·Î ÀÎ½Ä, Á¢±Ù
+
+-¿ÀºêÁ§Æ® ÀúÀå ÇüÅÂ
+function : Å°¿öµå¸¦ ¸¸³ª »ý¼ºÇÑ Function ¿ÀºêÁ§Æ®¸¦
+{name : value} ÇüÅÂ·Î ÀúÀå
+Áï {sports : Function ¿ÀºêÁ§Æ®} !!! ÇüÅÂ
+
+-ÇÔ¼ö¸¦ È£ÃâÇÏ¸é
+ÇÔ¼ö ÀÌ¸§À¸·Î °Ë»öÇÏ¿© value °ªÀ» ±¸ÇÏ°í
+value°¡ Function ¿ÀºêÁ§Æ®ÀÌ¸é ½ÇÇàÇÏ°Ô µÊ
+
+
+[{key:value}]
+
+-ÇÔ¼ö°¡ È£ÃâµÇ¸é ¿£ÁøÀº
+{key :{(key:value),{}}} ÇüÅÂÀÇ ÇÁ·ÎÆÛÆ¼¸¦ Á¶ÇÕÇÏ¿©
+½ÇÇà È¯°æÀ» ÀÎ½ÄÇÏ°í
+ÇÔ¼ö ÄÚµå¸¦ ½ÌÇà
+
+{key:value} ÇüÅÂ¿¡ ¸ÂÃß¾î »ý°¢À» ÀüÈ¯ÇØ¾ß
+ÀÚ¹Ù½ºÅ©¸³Æ®ÀÇ ±Ùº»¿¡ ½±°Ô Á¢±ÙÇÒ ¼ö ÀÖÀ¸¸ç
+¾ÆÅ°ÅØÃ³¿Í ¸ÅÄ¿´ÏÁòÀ» ÀÌÇØÇÒ ¼ö ÀÖÀ½
+
+-function(){} ÄÚµå¸¦ º¸¸é
+{key:value} ÇüÅÂÀÇ
+Function ¿ÀºêÁ§Æ®°¡ ¿¬»óµÇ¾î¾ß ÇÏ¸ç
+Function ¿ÀºêÁ§Æ®ÀÇ ÇÁ·ÎÆÛÆ¼°¡ ¿¬»óµÇ¾î¾ß ÇÕ´Ï´Ù.
+
+
+[¾ÆÅ°ÅØÃ³, ¸ÞÄ¿´ÏÁò] 
+
+-¾ÆÅ°ÅØÃ³ : Architecture
+¸ñÀûÀ» °¡Áø ±¸Á¶
+ÀÚ¹Ù½ºÅ©¸³Æ® ¸ñÀûÀ» ´Þ¼ºÇÏ±â À§ÇÑ ±¸Á¶
+
+-¸ÞÄ¿´ÏÁò : Mechanism
+¸ñÀûÀ» ´Þ¼ºÇÏ±â À§ÇÑ ¹æ¹ý
+¸ñÀû¿¡ µû¶ó ¹æÇâ ¹æ¹ý, ±âÁØÀÌ ´Þ¶óÁú ¼ö ÀÖÀ½
+
+-¾ÆÅ°ÅØÃ³¿Í ¸ÞÄ¿´ÏÁò¿¡ ´ëÇÑ Á¤È®ÇÑ ÀÌÇØ
+
+
+[ÀÚ¹Ù½ºÅ©¸³Æ® ¸ñÀû]
+
+-¾ð¾îÀÇ ¸ñÀûÀº ¼ÒÅë
+
+-ÀÚ¹Ù½ºÅ©¸³Æ® ÇÁ·Î±×·¥ÀÇ ¸ñÀû
+ÇÁ·Î±×·¥À» ÅëÇØ ÀÚ¹Ù½ºÅ©¸³Æ®¿Í ¼ÒÅë
+¹®¹ý Áß½ÉÀ¸·Î Á¢±Ù ±ÝÁö
+¹®¹ýÀ» ÁöÅ°´Â °ÍÀº ±âº»
+
+-ÀÚ¹Ù½ºÅ©¸³Æ®¿Í ¼ÒÅë
+ÀÚ¹Ù½ºÅ©¸³Æ® »óÅÂ ÆÄ¾Ç
+¾ÆÅ°ÅØÃ³¿Í ¸ÞÄ¿´ÏÁò ÀÌÇØ
+
+
+[ES3 Å°¿öµå ¸®½ºÆ®]
+
+-ES3 ½ºÆå ¸ñÂ÷
+¾ÆÅ°ÅØÃ³ ,¸ÅÄ¿´ÏÁò °ü·Ã Å°¿öµå ¸®½ºÆ®
+
+
+[ES5 Å°¿öµå ¸®½ºÆ®]
+
+-ES5 ½ºÆå ¸ñÂ÷
+¾ÆÅ°ÅØÃ³ ,¸ÅÄ¿´ÏÁò °ü·Ã Å°¿öµå ¸®½ºÆ®
+
+
+[Function ¿ÀºêÁ§Æ® »ý¼º]
+
+-¿£ÁøÀÇ Function ¿ÀºêÁ§Æ® »ý¼º ¼ø¼­¿Í ¹æ¹ý
+function sports(){}
+
+1.Function ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÕ´Ï´Ù.
+{ÄÚµå} function sports(){}
+{¼³¸í} sports´Â »ý¼ºÇÑ Function ¿ÀºêÁ§Æ® ÀÌ¸§ÀÔ´Ï´Ù.
+{¼³¸í} ¿ÀºêÁ§Æ® Å¸ÀÔÀÌ "function"ÀÌ¸ç ºó ¿ÀºêÁ§Æ®ÀÔ´Ï´Ù.
+{¼³¸í} Áö±ÝºÎÅÍ ¾Æ·¡ Ã³¸®¸¦ ÅëÇØ ºó ¿ÀºêÁ§Æ®¸¦ Ã¤¿ó´Ï´Ù.
+
+2.sports ¿ÀºêÁ§Æ®¿¡ portotype ¿ÀºêÁ§Æ®¸¦ Ã·ºÎÇÕ´Ï´Ù.
+
+3.prototype¿¡ constructor ÇÁ·ÎÆÛÆ¼¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+
+4.prototype.constructor ¿¡¼­ sports ¿ÀºêÁ§Æ®¸¦ ÂüÁ¶ÇÒ ¼ö ÀÖµµ·Ï ¼³Á¤ÇÕ´Ï´Ù.
+{¼³¸í} µû¶ó¼­ constuctorÀÇ ÇÁ·ÎÆÛÆ¼ sports ¿ÀºêÁ§Æ®ÀÇ ÇÁ·ÎÆÛÆ¼°¡ °°°Ô µË´Ï´Ù.
+
+5.prototype¿¡ __proto__ ¿ÀºêÁ§Æ®¸¦ Ã·ºÎÇÕ´Ï´Ù.
+
+6.ºôÆ®ÀÎ Object ¿ÀºêÁ§Æ®ÀÇ prototype¿¡ ¿¬°áµÈ ÇÁ·ÎÆÛÆ¼·Î
+Object ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÏ¿© portotype.__proto__¿¡ Ã·ºÎÇÕ´Ï´Ù.
+
+7.sprots ¿ÀºêÁ§Æ®ÀÌ __proto__¿ÀºêÁ§Æ®¸¦ Ã·ºÎÇÕ´Ï´Ù.
+{¼³¸í} sports.__proto__ ±¸Á¶°¡ µË´Ï´Ù.
+
+8.ºôÆ®ÀÎ Function ¿ÀºêÁ§Æ®ÀÇ prototype¿¡ ¿¬°áµÈ ÇÁ·ÎÆÛÆ¼·Î 
+  Function ÀÎ½ºÅÏ½º¸¦ »ý¼ºÇÕ´Ï´Ù.
+
+9.»ý¼ºÇÒ Function ÀÎ½ºÅÏ½º¸¦ sports.__proto__¿¡ Ã·ºÎÇÕ´Ï´Ù.
+
+10. sports ¿ÀºêÁ§Æ® ÇÁ·ÎÆÛÆ¼¿¡ ÃÊ±ê°ªÀ» ¼³Á¤ÇÕ´Ï´Ù.
+{¼³¸í} arguments.caller , length , name ÇÁ·ÎÆÛÆ¼
+
+
+[½ÇÇà È¯°æ ÀÎ½Ä]
+
+-½ÇÇà È¯°æ ÀÎ½Ä ÇÊ¿ä¼º
+ÇÔ¼ö°¡ È£ÃâµÇ¾úÀ» ¶§ ½ÇÇàµÉ È¯°æÀ» ÀÎ½ÄÇÒ ¼ö ÀÖ¾î¾ß
+È¯°æ¿¡ ¸ÂÃß¾î ÇÔ¼ö¸¦ ½ÇÇàÇÒ ¼ö ÀÖÀ½
+
+-½ÇÇà È¯°æ ¼³Á¤ ½ÃÁ¡
+Function ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ´Â ½ÃÁ¡¿¡ È¯°æ ¼³Á¤
+¿¹: ÇÔ¼ö¿¡ ÀÛ¼ºÇÑ ÄÚµå , ½ÇÇà ¿µ¿ª , ÆÄ¶ó¹ÌÅÍ µî
+
+Function ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ°í ¹Ù·Î ½ÇÇàÇÏ´Â °ÍÀÌ ¾Æ´Ï¹Ç·Î
+ÇÔ¼ö°¡ È£ÃâµÇ¾úÀ» ¶§ »ç¿ëÇÒ ¼ö ÀÖµµ·Ï È¯°æ ÀúÀå ÇÊ¿ä
+
+-»ý¼ºÇÑ Function ¿ÀºêÁ§Æ® ÀúÀå
+{name : value} ÇüÅÂ
+ÀÎ½ÄÇÑ È¯°æÀ» Function ¿ÀºêÁ§¤¸Æ®ÀÇ ³»ºÎ ÇÁ·ÎÆÛÆ¼¿¡ ¼³Á¤
+
+
+[³»ºÎ ÇÁ·ÎÆÛÆ¼]
+
+-³»ºÎ ÇÁ·ÎÆÛÆ¼¶õ?
+¿£ÁøÀÌ ³»ºÎ Ã³¸®¿¡ »ç¿ëÇÏ´Â ÇÁ·ÎÆÛÆ¼
+½ºÆå»óÀÇ »ç¾çÀ¸·Î ¿ÜºÎ{ÇÁ·Î±×·¥}¿¡¼­ Á¢±Ù ºÒ°¡
+
+-Ç¥±â
+[{}] ÇüÅÂ : ¿¹ [{Scope}]
+
+-³»ºÎ ÇÁ·ÎÆÛÆ¼ ºÐ·ù
+°øÅë ÇÁ·ÎÆÛÆ¼ , ¼±ÅÃÀû ÇÁ·ÎÆÛÆ¼
+
+-°øÅë ÇÁ·ÎÆÛÆ¼
+¸ðµç ¿ÀºêÁ§Æ®¿¡ °øÅëÀ¸·Î ¼³Á¤µÇ´Â ÇÁ·ÎÆÛÆ¼
+¸ðµç ¿ÀºêÁ§À¸¿¡ ¼³Á¤
+
+-¼±ÅÃÀû ÇÁ·ÎÆÛÆ¼
+¿ÀºêÁ§Æ®¿¡ µû¶ó ¼±ÅÃÀûÀ¸·Î ¼³Á¤µÇ´Â ÇÁ·ÎÆÛÆ¼
+ÇØ´çµÇ´Â ¿ÀºêÁ§Æ®¿¡ ¼³Á¤
+
+
+[°øÅë ³»ºÎ ÇÁ·ÎÆÛÆ¼]
+
+-¸ðµç ¿ÀºêÁ§Æ®¿¡ ¼³Á¤
+
+ÇÁ·ÎÆÛÆ¼ ÀÌ¸§ / °ª ÇüÅÂ / °³¿ä
+
+[[Prototype]]  / Object ¶Ç´Â Null / ¿ÀºêÁ§Æ®ÀÇ prototype
+[[Class]]    / String 	/ ¿ÀºêÁ§Æ® À¯Çü ±¸ºÐ
+[[Extensible]] / Boolean / ¿ÀºêÁ§Æ® ÇÁ·ÎÆÛÆ¼ Ãß°¡ °¡´É ¿©ºÎ
+[[Get]]	 / any, ** ÂüÁ¶ 1 / ÀÌ¸§À» °¡Áø ÇÁ·ÎÆÛÆ¼ °ªÀ» ¹ÝÈ¯
+[[GetOwnProperty]] / ÇÁ·ÎÆÛÆ¼ µð½ºÅ©¸³ÅÍ¶Ç´ÂUndefined/¿ÀºêÁ§Æ®ÀÇ ÇÁ·ÎÆÛÆ¼ 
+							µð½ºÅ©¸³ÅÍÅÍ ¼Ó¼º ¹ÝÈ¯
+
+[[GetProgerty]] / ÇÁ·ÎÆÛÆ¼ µð½ºÅ©¸³ÅÍ ¶Ç´Â Undefined /¿ÀºêÁ§Æ®ÀÇ ÇÁ·ÎÆÛÆ¼ 
+						      µð½ºÅ©¸³ÅÍÅÍ ¼Ó¼º ¹ÝÈ¯
+
+[[Put]] /  /  ÇÁ·ÎÆÛÆ¼ ÀÌ¸§¿¡ °ª ¼³Á¤
+[[CanPut]] / Boolean / °ªÀÇ ¼³Á¤ °¡´É ¿©ºÎ ¹ÝÈ¯
+[[HasProPerty]] / Boolean / ÇÁ·ÎÆÛÆ¼ÀÇ Á¸Àç ¿©ºÎ ¹ÝÈ¯
+[[Delete]] / Boolean / ¿ÀºêÁ§Æ®¿¡¼­ ÇÁ·ÎÆÛÆ¼ ÀÌ¸§ »èÁ¦
+[[DefaultValue]] / ÇÁ¸®¹ÌÆ¼ºê °ª / ¿ÀºêÁ§Æ®ÀÇ ÇÁ¸®Æ¼ºê °ª ¹ÝÈ¯
+[[DefinedOwnProperty]] / Boolean / ¿ÀºêÁ§Æ®ÀÇ ÇÁ·ÎÆÛÆ¼ Ãß°¡ , ¼Ó¼º º¯°æ
+
+** ÂüÁ¶ 1 : any´Â ÀÚ¹Ù½ºÅ©¸³Æ® °ª(µ¥ÀÌÅÍ) Å¸ÀÔÀ» Æ÷°ýÀûÀ¸·Î ³ªÅ¸³¾¶§ »ç¿ëÇÕ´Ï´Ù.
+
+
+[¼±ÅÃÀû ³»ºÎ ÇÁ·ÎÆÛÆ¼]
+
+[[PrimitiveValue]]  / ÇÁ¸®¹ÌÆ¼ºê °ª / Boolean , Date , Number , String ¿ÀºêÁ§Æ®¿¡¼­ »ç¿ë
+[[Construct]] / Object / Function ¿ÀºêÁ§Æ®ÀÇ ¸Þ¸ð¸® ÁÖ¼Ò ÂüÁ¶
+[[Call]]  / any / ÇÔ¼ö È£Ãâ
+[[HasInstance]] / Boolean / ¿ÀºêÁ§Æ®¿¡ ÀÇÇØ »ý¼ºÇÑ ÀÎ½ºÅÏ½º ¿©ºÎ ¹ÝÈ¯
+[[Scope]] / ·º½ÃÄÃ È¯°æ / Function ¿ÀºêÁ§Æ®ÀÇ ·º½ÃÄÃ È¯°æ
+[[FormalParameters]] / ¹®ÀÚ¿­ ¸®½ºÆ® / È£ÃâµÈ ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ ÀÌ¸§ ¸®½ºÆ®
+[[Code]] / ÀÚ¹Ù½ºÅ©¸³Æ® ÄÚµå / ÇÔ¼ö¿¡ ÀÛ¼ºµÈ ÀÚ¹Ù½ºÅ©¸³Æ® ÄÚµå°¡ ¼³Á¤µÇ¸ç 
+				ÇÔ¼ö°¡ È£ÃâµÇ¾úÀ»‹š »ç¿ë
+
+[[TargetFunction]] / Object / bind ¸Þ¼Òµå·Î »ý¼ºµÈ Å¸±ê Function ¿ÀºêÁ§Æ®
+[[BoundThis]] / any / bind ¸Þ¼Òµå·Î »ý¼ºµÈ Function ¿ÀºêÁ§Æ®¿¡ ¹ÙÀÎµùµÈ this
+[[BoundArguments]] / ¸®½ºÆ® / ?bind ¸Þ¼Òµå·Î »ý¼ºµÈ Function ¿ÀºêÁ§Æ®¿¡ ¹ÙÀÎµùµÈ
+			      ÆÄ¶ó¹ÌÅÍ ¸®½ºÆ®
+
+[[Match]] / ¸ÅÄ¡ °á°ú / Á¤±Ô Ç¥Çö½Ä ¸ÅÄ¡ °á°ú
+[[ParameterMap]] . Object / ¾Æ±Ô¸ÓÆ® ¿ÀºêÁ§Æ®¿Í ÇÔ¼ö ÆÄ¶ó¹ÌÅÍÀÇ ÇÁ·ÎÆÛÆ¼ ¸ÅÇÎ
+
+
+[ÇÔ¼ö ¼±¾ð¹®]  == function ss (){}
+
+±¸ºÐ / Å¸ÀÔ / µ¥ÀÌÅÍ(°ª)
+function / Function / function Å°¿öµå
+½Äº°ÀÚ / String / ÇÔ¼ö ÀÌ¸§
+ÆÄ¶ó¹ÌÅÍ / Any / ÆÄ¶ó¹ÌÅÍ ¸®½ºÆ® opt
+ÇÔ¼ö ºí·Ï / Object / {½ÇÇà °¡´É ÄÚµå opt}
+¹ÝÈ¯ / Function / Function Object
+
+- ÇÔ¼ö Á¤ÀÇ(Function Definition)
+ÇÔ¼ö¸¦ È£ÃâÇÒ ¼ö ÀÖµµ·Ï ÀÚ¹Ù½ºÅ©¸³Æ® ¹®¹ý¿¡ ¸Â°Ô ÇÔ¼ö¸¦ ÀÛ¼ºÇÏ´Â°Í
+ÇÔ¼ö´Â µÎ°³ÀÇ ÇüÅÂ·Î Á¤ÀÇÇÒ ¼ö ÀÖÀ½
+== ÇÔ¼ö ¼±¾ð¹®(Function Declaration) function ss (){}
+== ÇÔ¼ö Ç¥Çö½Ä(Function Expresstion) var ss = function(){}
+
+-ÇÔ¼ö ¼±¾ð¹®
+function Å°¿öµå¿Í ÇÔ¼ö ÀÌ¸§Àº ÇÊ¼ö ÀÛ¼º
+ÆÄ¶ó¹ÌÅÍ , ºí·° ¾ÈÀÇ ÀÚ¹Ù½ºÅ©¸³Æ®´Â ¼±ÅÃ
+¿£ÁøÀÌ function Å°¿öµå¸¦ ¸¸³ª¸é Function ¿ÀºêÁ§Æ® »ý¼º
+-- ÀÌ¶§ ÇÔ¼ö ÀÌ¸§À» Function ÀÎ½ºÅÏ½º ÀÌ¸§À¸·Î »ç¿ë
+
+
+[ÇÔ¼ö Ç¥Çö½Ä]  var ss = function(){}
+
+±¸ºÐ / Å¸ÀÔ / µ¥ÀÌÅÍ(°ª)
+
+function / / Å°¿öµå
+½Äº°ÀÚ / String / ÇÔ¼ö ÀÌ¸§ opt
+ÆÄ¶ó¹ÌÅÍ / any . ÆÄ¶ó¹ÌÅÍ ¸®½ºÆ®opt
+ÇÔ¼ö ºí·Ï / Object / {½ÇÇà °¡´É ÄÚµåopt}
+¹ÝÈ¯ / Function / Function Object
+
+- °³¿ä
+var name = function(){}
+Ç¥Çö½Ä ÇüÅÂ·Î Function ¿ÀºêÁ§Æ®¸¦ º¯¼ö¿¡ ÇÒ´çÇÏ´Â ÇüÅÂ
+ÇÔ¼ö ÀÌ¸§ÀÌ È©¼ÇÀ¸·Î ÀÛ¼ºÇÏÁö ¾Ê¾Æµµ µÊ
+-- ÀÌ¶§ º¯¼ö ÀÌ¸§ÀÌ ÇÔ¼ö ÀÌ¸§ÀÌ µÊ
+
+[¿£Áø ÇØ¼®]
+
+-ÀÚ¹Ù½ºÅ©¸³Æ®´Â ½ºÅ©¸³ÆÃ ¾ð¾î
+ÀÛ¼ºµÈ ÄÚµå¸¦ À§¿¡¼­ ºÎÅÍ ÇÑ ÁÙ¾¿ ÇØ¼®ÇÏÁö¸¸
+ÀÚ¹Ù½ºÅ©¸³Æ®´Â ÀÏºÎ Â÷ÀÌ ÀÖÀ½
+
+-ÇÔ¼ö ÇüÅÂ¿¡ µû¶ó ÇØ¼® ¼ø¼­°¡ ´Ù¸§
+Áß°£¿¡ ÀÖ´Â ÄÚµå°¡ ¸ÕÀú ÇØ¼®µÉ ¼ö ÀÖÀ½
+
+-ÇÔ¼ö ¼±¾ð¹® ¸ÕÀú ÇØ¼® 
+function sprots(){};
+
+-ÇÔ¼ö Ç¥Çö½Ä ÇØ¼®
+var sports = function(){}
+
+-º¯¼ö ÃÊ±â°ª ¼±¾ðÀ» ¾ÈÇÏ¸é ¸ðµÎ undefined
+
+-debugger´Â ½ÇÇà´Ü°è¿¡¼­ ¸ØÃá´Ù
+
+1´Ü°è µ¹¸é¼­ ÇÔ¼ö ¼±¾ð¹®À» ¸Þ¸ð¸®¿¡ ¿Ã¸°´Ù
+2´Ü°è  º¯¼ö¸¦ ¿Ã¸®°í , º¯¼ö ÃÊ±âÈ­ º¯¼ö°ªÀº undefined·Î ¼³Á¤
+3´Ü°è ½ÇÇàÀ»ÇÏ¸é¼­ ÄÚµå¸¦ ½ÇÇàÇÑ´Ù. debuggerÀÌ¶§ ½ÇÇà
+      ÇÔ¼ö Ç¥Çö½ÄÀº ÀÌ¶§ ¼ø¼­´ë·Î Function ¿ÀºêÁ§Æ® »ý¼º
+
+
+
+[ÇÔ¼ö ¾Õ¿¡¼­ È£Ãâ]
+
+-ÇÔ¼ö ¼±¾ð¹®Àº ÃÊ±âÈ­ ´Ü°è¿¡¼­
+Function ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ¹Ç·Î
+ÇÔ¼ö¸¦ È£ÃâÇÏ´Â À§Ä¡¿¡ ¿µÇÒÀ» ¹ÞÁö ¾ÊÀ½
+ÇÔ¼ö ¾Õ¿¡¼­ È£ÃâÇØµµ È£ÃâµÊ
+
+-ÇüÅÂ
+function sports(){
+	baseball(); //3´Ü°è ½ÇÇà ÀÌ¹Ç·Î ½ÇÇàµÊ
+	function baseball(){console.log("¾ß±¸");} //1´Ü°è ¼±¾ð!!!
+}
+sports();
+
+-È£ÀÌ½ºÆÃ(Hoisting)
+¿ë¾îº¸´Ù °³³äÀ¸·Î Á¢±Ù
+
+
+[ÇÔ¼ö ¼±¾ð¹® ¿À¹ö¶óÀÌµù]
+
+-¿À¹ö¶óÀÌµù(Overriding)
+ÇÔ¼ö ÀÌ¸§ÀÌ °ªÀ» ¶§ ÇÔ¼ö ÄÚµå ´ëÃ¼(replace)
+ÆÄ¶ó¹ÌÅÍ ¼ö , µ¥ÀÌÅÍ Å¸ÀÔ Ã¼Å©ÇÏÁö ¾ÊÀ½
+{key : value}·Î ÀúÀåÇÏ±â ¶§¹®
+
+-ÇüÅÂ
+ÃÊ±âÈ­ ´Ü°è¿¡¼­ ÇÔ¼ö ¼±¾ð¹®À»
+--Function ¿ÀºêÁ§Æ®·Î »ý¼º
+¾Æ·¡¿¡ ÀÌ¸§ÀÌ °°Àº ÇÔ¼ö°¡ ÀÖÀ¸¸é
+--¾Æ·¡¿¡ ÀÛ¼ºÇÑ ÇÔ¼ö ¼±¾ð¹®ÀÌ È£Ãâ µÊ
+
+-°£´ÜÈ÷ ÀÌ¸§ÀÌ °°À¸¸é ÄÚµå¸¦ º¯È¯ÇÑ´Ù.
+ÀÌÀ¯´Â {key: value}·Î µÇ¾îÀÖ±â ¶§¹®ÀÌ´Ù!!
+
+-C#¿¡¼­ ¾²´Â ¿À¹ö¶óÀÌµù°ú ´Ù¸§
+
+[ÇÔ¼ö ÆÄ¶ó¹ÌÅÍ]
+
+-ÆÄ¶ó¹ÌÅÍ(Parameter) »óÈ£ °ü°è
+È£ÃâÇÏ´Â ÇÔ¼ö : °ª
+È£Ãâ¹Þ´Â ÇÔ¼ö : ÀÌ¸§
+
+-ÀÛ¼º, Ã³¸® ±âÁØ
+È£Ãâ¹Þ´Â ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ¿¡ ÀÌ¸§ ÀÛ¼º
+È£ÃâÇÏ´Â ÇÔ¼öÈñ ÆÄ¶ó¹ÌÅÍ¿¡ °ª ÁöÁ¤
+È£ÃâÇÑ ÇÔ¼ö¿¡¼­ º¸³½ °ªÀ»
+--È£Ãâ¹Þ´Â ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ¿¡ ÀÛ¼ºÇÑ ¼ø¼­¿¡ ¸ÂÃß¾î ¸ÅÇÎ
+-È£­ŒµÈ ÇÔ¼öÀÇ Ã¹ ¹øÂ° ÆÄ¶ó¹ÌÅÍ ÀÌ¸§¿¡
+--È£ÃâÇÑ ÇÔ¼öÀÇ Ã¹ ¹øÂ° °ª ¼³Á¤
+µÎ ¹øÂ° , ¼¼ ¹øÂ°µµ °°Àº ¼ø¼­¿Í ¹æ¹ýÀ¸·Î °ª ¼³Á¤
+
+-ÆÄ¶ó¹ÌÅÍ ÀÌ¸§ ÀÛ¼º ¸ñÀû
+È£Ãâ¹Þ´Â ÇÔ¼ö¿¡ ÆÄ¶ó¹ÌÅÍ ÀÌ¸§À» ÀÛ¼ºÇÏ´Â ¸ñÀûÀº
+ÇÔ¼ö ¾È¿¡¼­ ÆÄ¶ó¹ÌÅÍ ÀÌ¸§À¸·Î °ªÀ» »ç¿ëÇÏ±â À§ÇÑ °Í
+
+
+[ÆÄ¶ó¹ÌÅÍ °ª ¸ÅÇÎ]
+
+-¼ø¼­·Î °ª ¸ÅÇÎ
+
+fn(one , two){}
+fn(123,456);
+°ª Å¸ÀÔ°ú ÀÌ¸§À» Ã¼Å©ÇÏÁö ¾Ê°í ¼ø¼­·Î °ª ¸ÅÇÎ
+
+-ÆÄ¶ó¹ÌÅÍ ¼ö°¡ ´Ù¸¦ ¶§µµ È£Ãâ °¡´É
+fn(one){}
+fn(12,34,56);
+
+-È£Ãâ¹Þ´Â ÆÄ¶ó¹ÌÅÍ ±âÁØÀ¸·Î °ª ¸ÅÇÎ
+È£Ãâ¹Þ´Â ÆÄ¶ó¹ÌÅÍ ÀÌ¸§ ¼ö°¡ ÀÛÀ¸¸é
+--¿ÞÂÊ¿¡ ¿À´ÃÂÊÀ¸·Î °ª ¼³Á¤
+
+
+È£Ãâ¹Þ´Â ÆÄ¶ó¹ÌÅÍ ÀÌ¸§ ¼ö °¡ ¸¹À¸¸é
+--¸ÅÇÎÇÏÁö ¸øÇÑ °ªÀº uedefined
+
+[arguments]
+
+-¾Æ±Ô¸Õºz ¿ÀºêÁ§Æ®
+È£ÃâÇÑ ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ °ª ÀúÀå
+È£ÃâÇÑ ÇÔ¼öÀÇ ÀÛ¼ºÇÑ ¼ø¼­·Î ÀúÀå
+È£ÃâÇÑ ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ¸¦ ÀÛ¼ºÇÏÁö ¾Ê¾Æµµ »ý¼º
+
+-arguments·Î Á¢±Ù
+È£Ãâ¹ÞÀº ÇÔ¼ö ¾È¿¡¼­¸¸ »ç¿ë
+
+-ÇÔ¼ö È£Ãâ ½ÃÁ¡¿¡ »ý¼ºÇÏ°í
+ ³ª¿À´Â ¼ø°£ »ç¶óÁü
+
+[arguments Àå´ÜÁ¡]
+
+-ÆÄ¶ó¹ÌÅÍ¿¡ ÀÌ¸§ ÀÛ¼º
+get(qty,price){} ÇàÅÂ
+qty´Â ¼ö·®ÀÌ°í price´Â ´Ü°¡
+ÀÌ¸§À¸·Î ½±°Ô ÀÎ½ÄÇÒ ¼ö ÀÖÀ¸¸ç
+ÄÚµå ´Ùµ¶¼º ³ôÀ½
+
+-ÆÄ¶ó¹ÌÅÍ ¼ö°¡ °íÁ¤ÀÏ ¶§
+ÆÄ¶ó¹ÌÅÍ ÀÌ¸§ »ç¿ë
+
+-ÆÄ¶ó¹ÌÅÍ ¼ö°¡ À¯µ¿ÀûÀ» ¶§
+arguments »ç¿ë
+ÇÔ¼ö ÆÄ¶ó¹ÌÅÍ¿¡ ÀÌ¸§ÀÌ ÀÖÀ¸¸é °ª ¼³Á¤
+Áï , ÆÄ¶ó¹ÌÅÍ¿Í arguments¿¡ ¸ðµå ¼³Á¤
+
+
+[arguments °ª ¹ÝÈ¯]
+
+-È£ÃâÇÑ ÇÔ¼öÀÇ ÆÄ¶ó¹ÌÅÍ °ª ÇüÅÂ
+¹®ÀÚ¿­ , ¼ýÀÚ , ¹è¿­ , ¿ÀºêÁ§Æ® µî
+
+
+-arguments ¸ÅÄ¿´ÏÁò
+
+ÆÄ¶ó¹ÌÅÍ ¼ø¼­¸¦ 0ºÎÅÍ ÀÎµ¦½º ºÎ¿©ÇÏ¿© key·Î »ç¿ëÇÏ°í
+ÆÄ¶ó¹ÌÅÍ·Î ¹ÞÀº °ªÀ» value¿¡ ¼³Á¤
+{0:value,1:value}
+
+-°á·Ð for()¹® »ç¿ë
+ÆÄ¶ó¹ÌÅÍ°¡ ¹è¿­À» ¶§ for~in¹®À¸·Î ÀÐÀ¸¸é
+length ÇÁ·ÎÆÛÆ¼¸¦ Á¦À§½ÃÅ°´Â ÄÚµå°¡ ÇÊ¿äÇÏ¿©¼­
+
+[¿£Áø Ã³¸®]
+
+-¿£ÁøÀÇ ÆÄ¶ó¹ÌÅÍ Ã³¸® ´Ü°è
+ÇÔ¼ö È£Ãâ
+ÆÄ¶ó¹ÌÅÍ °ª ÇÒ´ç
+
+
+-scope-
+
+[½ºÄÚÇÁ]
+
+-½ºÄÚÇÁ(scope)
+ÇÔ¼ö/¸Þ¼Òµå°¡ ½ÇÇàÇÒ ¶§ ¿µÇ×À» ¹Þ´Â ¹üÀ§
+
+-split()ÀÇ ½ºÄÚÇÁ
+split()´Â String ¿ÀºêÁ§Æ®¿¡ Á¸ÀçÇÏ¹Ç·Î
+--String ¿ÀºêÁ§Æ®°¡ ½ºÄÚÇÁ
+Number ¿ÀºêÁ§Æ®¿¡¼­ split()¸¦ È£ÃâÇÏ¸é ¿¡·¯ ¹ß»ý
+--Number ¿ÀºêÁ§Æ®¿¡ split()°¡ ¾ø±â ‹š¹®ÀÌ¸ç
+--ÀÌ¶§ Number ¿ÀºêÁ§Æ®´Â split()ÀÇ ¼ÒÄÚÇÁ
+
+-"abc".split("")¿¡¼­ "abc"´Â String ¿ÀºêÁ§Æ® »ç¿ëÀ» ¾Ï½Ã
+
+-½ºÄÚÇÁ »ç¿ë ¸ñÀû
+¹üÀ§¸¦ Á¦ÇÑÇÏ¿© ½Å¼ÓÇÑ °Ë»ö , Á¢±Ù
+°°Àº ÇÁ·ÎÆÛÆ¼ ÀÌ¸§ »ç¿ë °¡´É
+StringÀÇ indexOf() , ArrayÀÇ indexOf();
+
+[½ºÄÚÇÁ ±¸Á¶]
+-½ºÄÚÇÁ ±¸Á¶
+°èÃþÀû ±¸Á¶
+½ºÄÚÇÁ ¾È¿¡ ½ºÄÚÇÁ°¡ ÀÖ´Â ÇüÅÂ
+
+-½ºÄÚÇÁ ¼³Á¤ ½ÃÁ¡
+Function ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÒ ¶§
+ÇÔ¼ö¸¦ È£ÃâÇÒ ¶§ ¼³Á¤ÇÏÁö ¾ÊÀ½
+µû¶ó¼­ function ¾ÈÀÇ ÄÚµå¿¡ ´ëÇØ¼­´Â ±¸Á¶¸¦ ¸¸µéÁö ¾ÊÀ½
+
+¹Û¿¡¼­ ¾ÈÀ¸·Î µé¾î°¡¸é¼­ ½ºÄÚÇÁ ±¸Á¶¸¦ Çü¼º
+¹Ý¸é, ¾È¿¡¼­ ¹ÛÀ¸·Î ³ª°¡¸é¼­ ½ºÄÚÇÁ ¹üÀ§¿¡¼­ °Ë»ö
+
+
+
+[±Û·Î¹ú ¿ÀºêÁ§Æ®]
+
+-ÇÁ·Î±×·¥ÀÇ ½ÃÀÛÁ¡
+ºôÆ®ÀÎ ¿ÀºêÁ§Æ® Áß¿¡ ÇÏ³ª
+
+-±Û·Î¹ú ¿ÀºêÁ§Æ® Æ¯¼º
+--ÀüÃ¼ ÇÁ·Î±×·¥ : ¸ðµç <script>¿¡ ÀÛ¼ºÇÑ ÄÚµå
+¿ÀºêÁ§Æ® ÀÌ¸§À» ÁöÁ¤ÇÏÁö ¾Ê°í
+--ÇÔ¼ö¸¦ È£ÃâÇÏ¸é ±Û·Î¹ú ¿ÀºêÁ§Æ®·Î °£ÁÖ
+
+-±Û·Î¹ú ¿ÀºêÁ§Æ® »ý¼º
+-Ã¹ ¹øÂ° <script>¿¡¼­ ÇÑ¹ø¸¸ »ý¼º
+--ÀÚ¹Ù½ºÅ©¸³Æ® ½ÇÇà È¯°æ ¼³Á¤
+<script>ÀÇ ÇÁ·Î±×·¥ ½ÇÇà Àü¿¡ »ý¼º
+
+-new ¿¬»êÀÚ »ç¿ë ºÒ°¡
+
+
+[±Û·Î¹ú ½ºÄÚÇÁ]
+
+ÀüÃ¼¸¦ ÅëÇØ ÇÏ³ª¸¸ Á¸ÀçÇÏ¹Ç·Î
+½ºÄÚÇÁµµ ÇÏ³ª
+±Û·Î¹ú ¿ÀºêÁ§Æ® == ±Û·Î¹ú ½ºÄÚÇÁ
+±Û·¯¹ú ½ºÄÚÇÁÀÌ¹Ç·Î ¸ðµç ÇÁ·Î±×·¥¿¡¼­ »ç¿ë °¡´É
+
+-ÃÖ»óÀ§ ½ºÄÚÇÁ
+ÃÖÁ¾ °Ë»ö ½ºÄÚÇÁ
+°Ë»öÇÑ ÇÁ·ÎÆÛÆ¼°¡ ¾øÀ¸¸é undefined ¹ÝÈ¯
+
+½ºÄÚÇÁ ¼³Á¤
+Function ¿ÀºêÁ§Æ® [[Scope]]¿¡ ¼³Á¤
+
+
+[±Û·Î¹ú ÇÔ¼ö]
+
+-ÇÔ¼ö ±¸ºÐ
+±Û·Î¹ú ÇÔ¼ö : Àü¿ª ÇÔ¼ö
+·ÎÄÃ(Local) ÇÔ¼ö : Áö¿ª ÇÔ¼ö
+°­»ç »ç¿ë : ±Û·Î¹ú ÇÔ¼ö , Áö¿ª ÇÔ¼ö
+
+-±Û·Î¹ú ÇÔ¼ö
+±Û·Î¹ú ¿ÀºêÁ§Æ®¿¡ ÀÛ¼ºÇÑ ÇÔ¼ö
+
+-Áö¿ª ÇÔ¼ö
+ÇÔ¼ö ¾È¿¡¼­ var Å°¿öµå¸¦ »ç¿ëÇÑ ÇÔ¼ö¿Í ÇÔ¼ö ¼±¾ð¹®
+ÇÔ¼ö ¾È¿¡¼­ var Å°¿öµå¸¦ »ç¿ëÇÏÁö ¾ÊÀ¸¸é ±Û·Î¹ú ÇÔ¼ö
+struct ¸ðµåÀÏ¶§ : var¸¦ »ç¿ëÇÏÁö ¾Ê°í ÇÔ¼ö¸¦ ¼±¾ðÇÏ¸é ¿¡·¯
+±Û·Î¹ú ¿ÀºêÁ§Æ®¿¡¼­ var Å°¿öµå¸¦ »ç¿ëÇÏ¿© ÇÔ¼ö ¼±¾ð °¡´É
+
+-±ÇÀå
+±Û·Î¹ú, Áö¿ª¿¡ °ü°è¾øÀÌ ÇÔ¼ö Ç¥Çö½Ä ÇÔ¼ö´Â var »ç¿ë
+
+
+[±Û·Î¹ú º¯¼ö]
+
+-º¯¼ö(variable) ±¸ºÐ
+±Û·Î¹ú º¯¼ö : Àü¿ª º¯¼ö
+·ÎÄÃ(Local) º¯¼ö : Áö¿ª º¯¼ö
+°­»ç »ç¿ë : ±Û·Î¹ú º¯¼ö , Áö¿ª º¯¼ö
+
+[Áö¿ª ÇÔ¼ö]
+
+-Áö¿ª ÇÔ¼ö ¸ñÀû
+ÇÔ¼ö ¾È¿¡¼­ °Ë»ö : °Ë»ö ¼Ò¿ä ÃÖ¼ÒÈ­
+
+-ÇÔ¼ö È£Ãâ
+±Û·Î¹ú ÇÔ¼ö : ¾î´À À§Ä¡¿¡¼­µµ ÇÔ¼ö È£Ãâ
+Áö¿ª ÇÔ¼ö : ÇÔ¼ö ¾ÈÀ¸·Î µé¾î°¡¾ß ÇÔ¼ö È£Ãâ °¡´É
+
+-protected , private °³³ä ¾øÀ½
+´Ù¸¥ ¿ÀºêÁ§Æ®¿¡¼­ Á¦¾à ¾øÀÌ ÇÔ¼ö È£Ãâ °¡´É
+ÇÔ¼ö È£ÃâÀ» º¸È£ÇÏ´Â ±â´É ¾øÀ½
+
+
+[Áö¿ª º¯¼ö]
+
+-Áö¿ª º¯¼ö ¸ñÀû
+ÇÔ¼ö ¾È¿¡¼­ °Ë»ö : °Ë»ö ¼Ò¿ä ÃÖ¼ÒÈ­
+
+-º¯¼ö »ç¿ë
+±Û·Î¹ú º¯¼ö : ¾î´À À§Ä¡¿¡¼­µµ º¯¼ö »ç¿ë °¡´É
+
+Áö¿ª º¯¼ö : ÇÔ¼ö ¾ÈÀ¸·Î µé¾î°¡¾ß º¯¼ö »ç¿ë °¡´É / ÇÔ¼ö ¿ÜºÎ¿¡¼­ »ç¿ë ºÒ°¡
+
+[¹ÙÀÎµù]
+-¹ÙÀÎµù(Binding)
+±¸Á¶ÀûÀ¸·Î °á¼ÓµÈ »óÅÂ·Î ¸¸µå´Â °Í
+´ë»ó : ¿ÀºêÁ§Æ®¿Í ÇÁ·ÎÆÛÆ¼ ÀÌ¸§
+get = {
+qty : value,
+price : value
+}
+
+Function ¿ÀºêÁ§Æ®ÀÇ [[Scope]]¿¡ ¼³Á¤
+
+-¹ÙÀÎµù ¸ñÀû
+½ºÄÚÇÁ °áÁ¤
+¿ÀºêÁ§Æ®¿¡¼­ ÀÌ¸§ ½Äº°
+
+-¹ÙÀÎµù ½ÃÁ¡ ºÐ·ù
+Á¤Àû ¹ÙÀÎµù(Lexical , static Binding) 
+µ¿Àû ¹ÙÀÎµù(Dynamic Binding)
+
+
+[½ºÄÚÇÁ Ã¼ÀÎ]
+
+-scope chain
+½ºÄÚÇÁ°¡ »óÇÏ ±¸Á¶·Î ¿¬°áµÈ °³³ä
+½ºÅ©Æ÷ Ã¼ÀÎÀ» »ç¿ëÇÏ¿©
+--±ÙÁ¢ÇÑ ½ºÄÚÇÁ¿¡¼­ ÇÁ·ÎÆÛÆ¼(ÇÔ¼ö,º¯¼ö)°Ë»ö
+ES3¿¡ Ã¤¿ë
+
+-ES5¿¡¼­ scope chain ¿ë¾î ÆäÁö
+·º½ÃÄÃ È¯°æ(Lexical Environment) »ç¿ë
+
+[¹ÙÀÎµù ½ÃÁ¡]
+
+-Á¤Àû ¹ÙÀÎµù
+ÃÊ±âÈ­ ´Ü°è¿¡¼­ ¹ÙÀÎµù
+º¯¼ö , ÇÔ¼ö Ç¥Çö½Ä¿¡ ÃÊ±ê°ª ¼³Á¤ : undefined
+ÇÔ¼ö ¼±¾ð¹® : Function ¿ÀºêÁ§Æ® »ý¼º
+´ëºÎºÐÀÇ ÇÔ¼ö°¡ Á¤Àû ¹ÙÀÎµù
+
+-µ¿Àû ¹ÙÀÎµù
+½ÇÇà ´Ü°è¿¡¼­ ¹ÙÀÎµù
+eval ÇÔ¼ö , with ¹®
+
+
+
+[¹ÙÀÎµù ½ÃÁ¡ÀÇ Áß¿ä¼º]
+
+-¹ÙÀÎµù ½ÃÁ¡ÀÌ Áß¿äÇÑ ÀÌÀ¯
+¹ÙÀÎµù ÇÒ ¶§ ½ºÄÚÇÁ°¡ °áÁ¤µÇ±â ¶§¹®
+Function ¿ÀºêÁ§Æ®¸¦ »ý¼ºÇÏ´Â ½ÃÁ¡¿¡ ½ºÄÚÇÁ °áÁ¤
+--ÀÎ½ÄÇÑ ½ºÄÚÇÁ¸¦ [[Scope]]¿¡ ¼³Á¤
+Á¤Àû ¹ÙÀÎµùÀº [[Scope]]¸¦ ½ºÄÚÇÁ·Î »ç¿ëÇÏ¹Ç·Î º¯°æµÇÁö ¾ÊÀ½
+°°Àº ´Ü°èÀÇ ¸ðµç ÇÔ¼öÀÇ ½ºÄÚÇÁ°¡ °°Àº
+
+-[[Scope]] ³»ºÎ ÇÁ·ÎÆÛÆ¼
+
+ÇÔ¼ö¸¦ ½ÇÇàÇÒ ¶§ [[Scope]]¿¡¼­ ÇÁ·ÎÆÛÆ¼ °Ë»ö
+ÇÁ·ÎÆÛÆ¼ °Ë»öÀ» À§ÇÑ Ãß°¡ Ã³¸®¿¡ ÇÊ¿äÇÏÁö ¾ÊÀ½
+Ã³¸® ¼Óµµ¿¡ ¿µÇâÀ» ¹ÌÄ§
+
+
+[µ¿Àû ¹ÙÀÎµù]
+-ÇÔ¼ö¸¦ ½ÇÇàÇÒ ¶§¸¶´Ù ¹ÙÀÎµù
+with ¹® , eval ÇÔ¼ö
+use strict ¸ðµå¿¡¼­ »ç¿ëÇÏ¸é ¿¡·¯ ¹ß»ý
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

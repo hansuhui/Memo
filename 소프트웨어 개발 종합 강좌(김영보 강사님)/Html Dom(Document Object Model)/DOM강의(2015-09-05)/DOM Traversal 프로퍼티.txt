@@ -1,0 +1,16 @@
+
+[DOM Traversal 프로퍼티]
+
+parentNode : 부모노드
+
+firstChildNode : 자식의 처음 노드
+lastChildNode: 자식의 마지막노드
+
+firstElementChild : 처음의 자식의 Elemnet를 가져온다
+lastElementChild : 마지막 자식의 Element를 가져온다 
+
+nextSibling : 다음 형제 노드를 찾는다
+nextElementSibling : 다음의 형제 Element를 가져온다
+
+previousSibling : 이전의 형제 노드를 찾는다
+previousElementSibling : 이전의 형제 Element를 가져온다

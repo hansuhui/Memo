@@ -1,0 +1,255 @@
+Component : (구성) 요소, 부품
+
+
+Web Components 
+-재사용 가능한 컴퓨넌트를 만들 수 있는 표준 기술들의 모음
+
+Polymer 설명
+
+
+Custom Elements - 커스텀 태그를 통한 요소 생성
+HTML Imports - HTML 페이지 로딩
+HTML Templates - 템플릿
+Shadow DOM - DOM과 스타일의 캡슐화
+
+[Custom Elements]
+-새로운 HTML 요소를 생성
+-다른 요소를 확장해 생성가능
+-단일 태그에 커스텀 기능의 묶음 가능
+-기존 DOM 요소의 API를 확장
+
+/예제/
+
+//1. HTML 객체 생성
+var XFooProto = Object.create(HTMLElement.prototype);
+
+//2. 'hi' 메소드 추가
+XFooProto.h1 = function() {alert('foo() called'); };
+
+//3. 읽기 전용 'bar' 속성 설정
+Object.defineProperty(XFooProto, "bar",{value:5};);
+
+//4. <x-foo> 태그 등록
+var XFoo = document.registerElement('x-foo',{prototype:XFooProto});
+
+
+
+[HTML Imports]
+
+-JS/HTML/CSS를 묶음 형태로 사용 > 단일 URL 호출
+-HTML import를 통한 추가되는 컴포넌트들은 중복되는 경우라도 호출,
+ 파싱 및 실행은 단 한 번만 수행
+-다른 도메인의 리소스를 로딩하기 위해성 CORS 활성화 필요
+-Import 내의 스크립트는 메인 문서의 파싱을 블럭하지 않음
+-스크립트는 import시 실행되나 , 다른 요소(마크업, CSS등 ) 들은
+ 메인 페이지에 추가되는 시점에 활성화
+
+/예제/
+
+1.main.html
+
+<head><link rel="import" href="some.html"></head>
+<body>
+<script>
+var link = document.querySelector("link[rel='import']");
+var content = link.import;
+var el = content.querySelector(".warning");
+document.body.appendchild(el.cloneNode(ture));
+
+</script>
+</body>
+
+
+2.some.html
+
+<script> console.log(123);</script>
+<div class="warning">
+<style> h3 {color : red;} </style>
+<h3>Waring</h3>
+<p>This page is under construction</p>
+</div>
+
+
+[HTML Templates]
+
+-비활성화 상태의 복제 가능한 DOM chunk(덩어리??)
+-새로운 태그 : <template> ... </template>
+-태그 내의 태그들은 사용되기 전까진 파싱은 되나 렌더링되지 않음
+-컨텐츠는 클론/사용 되기전까진 비활성
+-페이지의 일부분이 아님
+
+/예제/
+
+//1. 템플릿 컨텐츠를 얻어온다.
+var content = document.getElementById("count").content;
+
+//2. 템플릿내의 DOM에 대한 작업을 한다.
+var span = content.querySelect("span");
+span.textContent = parseInt(span.textContent)+1;
+
+//3. 메인 DOM에 추가한다.
+document.body.appendChild(document.importNode(content,true));
+
+
+<template id ="count">
+<div>Template usedL <span>0</span></div>
+<script>alert("클릭하셨네요!");</script>
+</template>
+
+
+[Shadow DOM]
+
+-별도의 스코프를 갖는 DOM
+-폴리머에서 생성하는 모든 요소들은 shadow DOM으로 처리
+
+/예제/
+
+<button id="btn" onclick="shadow()">Hello, wolrd!</button>
+<script>
+	function shadow(){
+		var host = document.getElementById("btn");
+
+		//1. shadow root 생성
+		var root = host.createShadowRoot();
+
+		//2. shadow DOM의 내용 변경
+		root.textContent = '안녕하세요!'ㅣ
+	
+}
+</script>
+
+<h3>제목</h3>
+<div id="scoped"><h3>Light DOM</h3></div>
+<script>
+	var el = document.getElementById("scoped");
+	var root = el.createShadowRoot();
+	root.innerHTML = "<style>h3{color:red;}<style><h3>Shadow DOM</h3>";
+
+</script>
+
+
+
+
+[Web Component를 사용하면?]
+
+태그 형태로 특정 기능을 갖는 UI 컴포넌트들을 손쉽게 삽입할 수 있으며,
+재사용이 가능해진다.
+
+/예제/
+
+<body>
+	<google-map
+	latitude="37.3596274"
+	longitude="127.105464"
+	zoom="17"
+	fiToMarkers="ture">
+
+	<google-map-marker
+	latitude="37.3596274"
+	longitude="127.105464"
+	title = "그린팩토리">
+	</google-map-marker>
+	
+	</google-map>
+</body>
+
+
+
+[Polyfill?]
+
+브라우저가 네이티브 하게 지원하지 않는 기능을 사용 가능하도록 만들어 주는 코드모음
+> http://remysharp.com/2010/10/08/what-is-a-polyfill/
+
+Web Components polyfill : 
+-Mozilla X-Tag : http://www.x-tags.org
+-Google polymer : http://www.polymer-project.org/
+
+
+[Polymer Elements]
+
+Core Elements 
+-유틸리티 요소와 공통적 UI 요소들의 모음
+-Ajax , 애니메이션 , 드래그&드롭, 아이콘 모음 , 툴팁 , etc
+
+http://www.polymer-project.org/docs/elements/core-elements.html
+
+
+Paper Elements
+- Materiad design *이 적용된 UI 요소들의 모음
+- 버튼 , 체크박스 , 다이얼로그, 입력요소 , 탭 , 토스트 , etc
+
+http://www.polymer-project.org/docs/elements/paper-elements.html
+
+
+[사용 방법 #1]
+-이미 만들어진 요소들을 사용하는 방법
+1. 사용할 요소를 페이지에 삽입
+<link rel="import" href="components/paper-checkbox/paper-checkbox.html">
+
+2.새로 추가된 요소를 태그로 선언
+<paper-checkbox></paper-checkbox>
+
+
+
+[사용 방법 #2]
+
+-직접 요소를 생성하는 방법
+
+1. 요소에 해당되는 페이지 작성
+a) Polymer core를 페이지에 삽입
+<link rel="import" href="../components/polymer/polmer.html">
+
+b) <polymer-element>를 사용해 새로운 태그 등록
+<polymer-element name="사용자정의-태그" noscript>
+<template>
+<span>내용</span>
+</template>
+</polymer-element>
+
+2.사용될 페이지에서 요소 페이지 삽입 후 , 태그로 선언
+
+<head>
+	<script src="../components/platform/platform.js"></script>
+	<link rel="import" href="./파일.html">
+</head>
+<body>
+<사용자정의-태그></사용자정의-태그>
+</body>
+
+
+
+[Vulcanize]
+
+-사용되는 웹 컴포넌트 파일들을 병합해 HTTP request를 줄일 수 있도록 해주는 도구
+
+$ vulcanize 대상파일.html --inline --strip -o 결과파일.html
+
+https://github.com/Polymer/vulcanize
+
+
+[Web Components Ecosystem]
+
+http://component.kitchen/
+
+http://customelements.io/
+
+http://googlewebcomponents.github.io/
+
+
+[Reference]
+
+http://webcomponents.org/
+
+https://www.youtube.com/watch?v=yRbOSdAe_JU
+
+https://www.youtube.com/watch?v=HKrYfrAzqFA
+
+http://www.html5rocks.com/en/tutorials/webcomponents/customelements/
+
+http://www.html5rocks.com/en/tutorials/webcomponents/imports/
+
+http://www.html5rocks.com/en/tutorials/webcomponents/template/
+
+http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/
+
+

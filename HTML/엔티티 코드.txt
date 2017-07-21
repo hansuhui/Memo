@@ -1,0 +1,39 @@
+HTML 예약 문자나 특수 문자를 쓸때 사용합니다.
+엔티티 코드를 사용하는 이유는 컴퓨터가 문서를 읽어들일 때 
+예약 문자와 문서 내용을 구분하지 못해생기는
+문제를 해결하기 위해서 입니다.
+예를 들어 문서 내용에 꺾쇠괄호(<) 가 붙어 있다면
+컴퓨터는 문서를 읽어들일 때 꺾쇠 괄호를 HTML 태그 시작 기호로 받아들입니다.
+이런 혼동을 막으려면  꺽쇠 괄호 대신 &it;를 써야 합니다.
+엔티티 코드를 이용하면 특수 문자를 손쉽게 쓸수 있습니다.
+
+문자/엔티티 문자 / 엔티티 숫자 / 설명
+
+공백 / &nbsp; / &#160; / 공백문자 (inserts a non-breaking blank space)
+
+& / &amp; / &#38; / 앤드 (Ampersand)
+
+" / &quot; / &#34; / 인용 마크 (Quotation mark)
+
+" / &ldquo; / &#147; / 겹따옴표 시작(Opening Double Quotes)
+
+" / &rdquo; / &#148; / 겹따옴표 끝(Closing Double Quotes)
+
+' / &lsquo; / &#145; / 홑따옴표 시작(Opening Single Quote Mark)
+
+' / &rsquo; / &#146; / 홑따옴표 끝(Closing Single Quote Mark)
+
+· / &middot; / &#183; / 중간 점 (Medium List Dot)
+
+°  / &deg; / &#176; / 각도(Degree symbol)
+
+< / &lt; / &#60; / ~보다 작은(Less than)
+
+> / &gt; / &#62; / ~보다 큰 (Greater than)
+
+ⓒ / &copy; / &#169; / 저작권 (Copyright symbol)
+
+® / &reg; / &#174; / 등록 (Registered symbol)
+
+
+

@@ -1,0 +1,652 @@
+[JavaScript 핵심]
+
+기능 핵심 : Control
+
+기술 핵심 : Object (name : value)
+
+[Control]
+
+-DOM : HTML, CSS 컨트롤
+-HTML5 API : File , IndexedDB
+-그래픽 : SVG , Canvas , WebGL
+-통신 : XMLHttpRequest, Socket
+
+자바스크립트는 위에 것들을 컨트롤 하는것!!
+
+
+[Object]
+
+-Object 형태 : (name : value)
+-자바스크립트 아키텍처 근간
+-생각의 전환 필요
+
+[지속성]
+
+-보유 콘텐츠 방대
+-국재 표준, W3C
+-서버 영역 확대
+ Node.js, IoT 디바이스탑재
+
+[언어 특징]
+
+-사전에 컴파일하지 않음
+실행 시점에 컴파일 : JIT컴파일
+스크립트 언어의 특징
+JavaScript , PHP , 파이썬 , 루비 등
+
+-JIT(Just-in-time)컴파일
+실행 시점에 컴파일
+실행 시점 기준이란?
+함수 선언을 인식 할때
+function today(){소스 코드}
+
+-함수 안에 소스 코드는 컴파일하지 않음
+function 오브젝트만 생성
+
+텍스트로 올라가 있다가 실행시점에 컴파일을 한다.!
+메소드만 올라가 있고 메소드안에 소스는 무시하다가 실행 시점에 컴파일!!
+
+실행 후 function안에 소스를 컴파일하고 위에부터 실행한다
+
+
+-인터프리터(interperter)
+문장 단위로 컴파일
+eval()함수
+
+한줄 컴파일 하고 실행 하고!! 
+
+
+[스펙]
+
+-JavaScript 정식 명식 : ECMAScript
+
+-Creator : Brendan Eich
+
+-스펙 명칭 : ECMA-262 스펙
+ES3 ,ES5 형태의 약칭 사용
+2015년 부터는 ES2015 형태 사용
+
+1996.11 ECMA에서 1차 스펙 개발 시작
+1997.06 1차 스펙 표준 제정
+1998.04 국제표준 ISO/IEC 16262로 승인
+1998.06 2차 표준 제정
+1999.12 3판 스펙 표준 제정 (IE6,7,8에서 사용중)
+	4판 스펙은 내부 문서로 남음.페지
+2011.06 5.1판 스펙 표준 제정
+2015.06 ES2015(ES6) 스펙 표준 제정
+현제 다음 에디션 스펙 진행중
+
+
+[HTML 파일 작성]
+
+-소스 작성 기준 파일
+빈 파일 오픈 아래의 HTML 작성
+파일저장
+확장자 .html
+인코딩 utf-8
+
+
+[소스 코드 작성] 
+-html 파일 안에 작성
+<script> function(){코드}</script>
+<head>또는<body>에 작성
+
+예제 소스
+for(var k=0;k<5;k++){
+  console.log(k);
+}
+
+
+
+-확장자 js파일에 작성
+이 형태 권장 : 구조(HTML)와 컨트롤(JavaScript) 분리
+<head>또는<body>에 작성
+
+-본 과장에서는 <head>에 작성
+window.onload = function(){} 사용
+
+<head>
+<script src="경로/파일.js"></script>
+</head>
+
+
+<body>
+<script src="경로/파일.js"></script>
+</body>
+
+onload 이벤트 핸들러 : body까지 렌더링이 끝난후 이벤트 발생
+
+
+[JavaScript 문법]
+
+[Console]
+
+-console.log(object[, object,...])
+파라미터 값을 브라우저 콘솔 창에 출력
+콤마로 구분하여 다수 작성 가능
+문자열 , 숫자 , 배열 출력 가능
+Google 관련 문서 : 구글 참조 console API
+
+
+
+[주석]하고 정리
+
+-한 줄 주석
+//
+
+-블럭 주석 
+/**/ , /** */
+
+-주석 먼저 작성
+함수의 기능 , 코드 실행 순서 등을 생각 
+이것이 주석을 작성하는 가장 큰 목적
+메모가 아닌 다른 사람이 보아도 알 수 있도록 작성
+
+-주석예제
+/**
+* @method calculateAmount
+* -파라미터로 받은 수량에 단가를 곱해 금액을 계산하고 결과 값을 반환한다.
+* -수량과 단가 값의 0체크는 함수를 호출하는 곳에서 하므로 여기서는 체크하지 않는다.
+* @param (Number) quantity , 수량
+* @param (Number) price , 단가
+* @return (Number) 계산 결과
+*/
+
+
+[문장 작성]
+
+-자바스크립트 코드 작성 위치
+위치 제약 없음
+들여 쓰기 : 일반적으로 2칸,4칸
+
+-대소문자를 구분 함
+var tyoeAAA = sports;
+var typeaaa = sports;
+
+-문장 끝에 세미콜론(;) 작성
+var type = sports;
+
+-공백 영향 없음
+var type = "swim";
+var type ="swim";
+
+
+[변수]
+
+-변수 
+값 할당 영역 값 변경 가능
+
+-변수 선언
+var(variable)로 선언
+var sports;
+-- var 다음에 변수 이름 작성
+var siccer , baseball;
+콤마로 변수를 분리하고 var은 작성하지 않음
+
+-줄 분리
+연속해서 작성한 것과 같음
+var sports
+    ,baseball;
+
+변수 이름 삭제 불가
+
+[변수 초깃값 할당]
+
+-값 할당
+var sports = "야구";
+var count = 123;
+
+-콤마 사용
+var sports = "수영",soccer = 11;
+
+-값 대체
+var sports = "수영",sports = "축구";
+
+-값은 값 할당
+var sports = swim = soccer = "스포츠";
+좋은 형태는 아님
+(동기화가 일어남 변수 값이 전부 빠뀌는 상황이 일어날수 있음)
+
+[정수,실수]
+-정수
+소수 값이 없는 숫자 값
+
+-실수
+소수 값이 있는 숫자 값
+
+-부동소수점(floating point)
+실수를 표현할 때 소수점 위치를 숫자로 표시
+1.1234 = 12345 * 10(-4승)
+
+-자바스크립트 숫자 값 처리
+정수와 실수를 구분하지 않음
+64비트 부동 소수점 처리(반이 정수 , 반이 소수로 관리)
+
+
+[상수]
+
+-상수
+var ONE = 1;
+값이 변하지 않음
+영문 대문자 사용 : 코딩 관례
+
+-상수 사용 목적
+의미를 부여한 시맨틱 선언 및 사용
+변수 이름으로 값 인식
+
+-상수 종류
+자바스크립트 제공 : MAX_VALUE , MIX_VALUE 등
+개발자 정의 : var ONE = 1;
+
+
+[진수]
+
+-10진수 : 123
+
+- 16진수 : 0xFD: 255
+첫 번째에 숫자 0을 작성
+두번째에 영문자 x를 작성
+세번째와 네번째 : 0부터 f까지 작성
+
+- 8진수 
+ES3부터 페지
+과거 버전 호환성을 위해 사용할수 있지만
+페지되었으므로 사용 금지
+
+
+[키워드]
+-자바스크립트 기능 수행
+식별자로 사용 불가
+debugger : ES5에서 추가
+
+[예약어]
+-자바스크립트에서 사용 예약 키워드
+개발자 사용 금지
+추가될 가능성이 있으므로
+OS,시스템 뉘앙스 단어 사용 금지
+
+
+[유니코드]
+
+-Unicode
+전 세계의 모든 문자(언어)를 통합한 코드
+유니코드 컨소시엄 : http://www.unicode.org/
+0000~FFFF,10000 ~1FFFF의 각 코드에 문자 매핑
+한글 , 한중일 통합 한자도 포함되어 있음
+
+-UTF
+Unicode Transformation Format
+모든 유니코드를 매핑하는 알고리즘
+UTF-8 , UTF-16 , UTF-32로 표기
+UTF-8은 8비트로 유니코드를 매핑
+이를 8비트 인코딩(encoding)이라고 함
+
+-표기 방법
+u+숫자 형태: u0031은 1이고 u0032는 2
+
+[화이트스페이스]
+
+\u0009 / 수평 탭(Horizontal Tab) / <TAB>
+\u000B / 수직 탭(Verical Tab) / <VT>
+\u000C / 폼 넘기기(Form Feed) / <FF>
+\u0020 / 공백(Space)         / <SP>
+
+
+[값 타입]
+
+-값(value)은  타입(type)을 가짐
+자바스크립트는 값을 기준으로 타입을 분류
+타입을 선언하고 타입에 맞는 값을 할당하지 않음
+var value = 123; 숫자 타입이 됨
+var value = "sports"; 문자 타입이 됨
+
+-값 타입 분류
+자바스크립트 언어 타입 , 스펙 타입
+
+-자바스크립트 언어 타입
+자바사크립트 코드로 처리하는 타입
+Undefined , Null , Boolean , String , Number , Object 타입
+
+-스펙 타입
+언어 알고리즘을 위한 타입으로 프로그램에서 사용 불가
+Reference , List , Completion , Property Descript
+Lexical Enviromment , Lexical Recode, Data Block
+
+
+[Undefined]
+
+-Undefined : 값 타입
+값 : undefined(소문자)
+
+-변수 초깃값
+var sports;
+변수를 선언만 하면 초깃값으로 undefined가 할당됨
+변수에 다른 값이 할당되지 않은것을 의미
+
+변수에 undefined 값을 할당할 수 있으므로 반드시는 아님
+
+
+[Null 타입]
+
+-Null : 값 타입
+값 : null(소문자)
+
+-변수에 null 할당
+var sports = null;
+
+-null과 undefined 차이
+null의 변수에 null 값을 할당해야 null이됨
+undefined는 단지 변수만 선언
+단,var sports = undefined;는 할당한 값이 undefuned
+
+[Boolean 타입]
+-Boolean : 값 타입
+값 : true , false
+var sports = true;
+
+-연산에서 숫자 값으로 사용
+
+-값의 Boolean 인식
+숫자 , 영문자 , 한글은 true로 인식
+단, 숫자 0은 false로 인식
+null,undefined는 false로 인식
+
+[String 타입]
+
+-String: 값 타입
+문자열 : UTF-16비트의 부호 없는 값
+작은 따옴표 또는 큰 따옴표 안에 작성
+var sports = baseball
+최대 문자수 : 2의53승 -1
+
+- +로 문자열 연결
+var sports = "base" + "ball";
+
+-숫자와 문자열 더하기
+숫자와 숫자 : 덧셈으로 값 계산
+숫자와 문자열 : 숫자와 문자열을 연결
+
+[Number 타입]
+Number : 값 타입
+값: 64비트 부호 있는 값
+18437736874454810627(2의64승 -2의 53승 +3)
+var value = 12345;
+
+-Number 타입에 속하는 3개 값
+NaN : Not-a-Number
+양수 무한대 : Infinity
+음수 무한대 : -Infinity
+
+
+[NaN]
+
+-Not-a-Number
+숫자가 아닌 것을 나타내는 값
+var value = "sports"에서 value 변수의 값은 NaN
+
+[Infinity]
+
+-무한대
+무한대 0/0
+양수 무한대 : Infinity
+음수 무한대 : -Infinity
+
+[Object 타입]
+-Object 형태
+{book:"Javascript",sports :"soccer"}
+
+-Object
+중괄호{}
+{key:value}형태
+콤마로 구분하여 다수 작성
+
+-프로퍼티(property)
+{key:value} 형태
+key로 프로퍼티에 접근하여 value 설정
+
+-Object는 프로퍼티 모음(Collection)
+속성과 프로퍼티는 차이가 있음
+
+
+[표현식]
+-표현식(Expression) 형태
+1+2
+var total = 1;
+var total = 1+2;
+var total = function(){...}
+if(Expreession){...}
+return Expression;
+값 계산 , 사칙연산 , 할당 , 함수등의 형태
+
+-표현식을 평가 한다고 칭함
+
+-return Expression;
+Expression 평가 결과를 반환한다.
+
+[연산자]
+
+-연산자(Operator) 형태
+연산/비교 기호 : +,-,/,*,<=
+typeof 연산자 : typeof value;
+delete 연산자 : delete 표현식
+new 연산자 : new Sports();
+
+[typeof 연산자]
+
+-값 타입 반환
+typeof value;
+value에 언어 타입이 아닌 값 지정
+
+-고려 사항
+Null과 Object의 반환 타입이 Object
+완전하게 인식 불가. 다른 방법으로 인식 : 뒤에서 다룸
+
+Undefined  / "undefined"
+Null / "Object"
+Boolean / "boolean"
+Number / "number"
+String / "string"
+Object / "object"
+Function / "function"
+
+
+
+[할당 연산자]
+
+-단일 할당 연산자
+"="하나만 사용
+var result = 1+2;
+
+-복합 할당 연산자
+단일 할당 연산자와 연산자 기호 같이 사용
+*=, /=, %= , += ,-= , <<= ,>>=
+>>>= , &= , ^= , |=
+plus += 3;
+
+-해석,할당 순서
+디폴트 :왼쪽에서 오른쪽으로 표현식 해석
+
+단일 할당 연사자 해석 순서
+var result = 1+2;
+1.오른쪽 표현식 값 구함
+2.왼쪽 표현식에 할당
+
+
+[+연산자]
+
+-기호 +
+-기능
+왼쪽 표현식에 오른쪽 표현식을 더함
+
+-표현식 평가 결과 연결
+양쪽 표현식 평가 결과가 숫자 값이 아니면 값을 연결(문자 개념)
+
+[숫자 값 변환]
+-사칙연산을 하기 저에 숫자 값을 변환
+변환 결과가 숫자이면 연산 처리
+"123"은 String 타입이지만 값이 숫자이므로 연산 처리
+단,+는 String 타입이면 값을 연결하므로 연산을하지 않음
+
+Undefined / NaN
+Null / +0
+Boolean / true : 1 , false : 0
+Number / 변환 전/후 값 같음
+String / 값이 숫자미연 숫자 값(+연산 제외)
+
+[-연산자]
+
+-기호 : -
+-기능 
+왼쪽 표현식 평가 결과에서 오른쪽 표현식 평가 결과를 마이너스
+
+-String 타입이지만 값이 숫자일 때
+String 타입을 숫자로 변환 하여 계산을 함
+
+[*연산자]
+
+기호 : *
+
+-기능
+왼쪽 표현식 평가 결과에 오른쪽 표현식 평가 결과를 곱한다
+
+-NaN 반환
+
+
+[*고려사항]
+
+//6.9가 출력되지 않음 : 정상처리
+js.log(2.3 * 3);
+
+//실수를 정수로 반환하여 연산하고
+//정수를 실수로 변환한다.
+js.log(2.3*10*3/10); 
+
+[/연산자]
+
+기호 : /
+
+-기능 
+왼쪽 표현식 평가 결과에 오른쪽 표현식 평가 결과를 나눈다
+
+
+[% 연산자]
+
+기호 : %
+
+-기능
+나머지를 구하여 계산 
+
+[단항 +연산자]
+
+형태 :+value
+
+- var one =2, onPlus = +one;
+
+-기능
+피연산자 값을 숫자 값으로 변환
+문자열의 숫자 값을 숫자로 변환할 때 사용
+
+
+[단항 -연산자]
+
+형태 : -value
+
+
+[단항 ++연산자]
+
+-기능
+자동으로 값을 1증가 시킴
+
+-후치 ++연산자
+value++ 형태
+문장을 수행한 후에 1증가 
+표현식이 아닌 문장. 세미콜론 끝에서 증가
+
+-전치++연산자
+++value 형태
+표현식을 평가하기 전에 1증가
+따라서 표현식에서 증가된 값을 사용가능
+
+
+[단항 --연산자]
+
+
+-기능
+자동으로 값을 1감소 시킴
+
+후치 , 전치는 ++와 같음
+
+
+
+[논리 !연산자]
+
+-논리(Logical) NOT 연산자
+형태 !value
+
+-기능
+표현식 평가 결과를 블린 값으로 변환한 후
+true이면 false를 , false이면 ture를 반환
+변수에 할당된 값은 바뀌지 않으며 사용할 때만 변환
+
+Undefined / false
+Null / false
+Number / 0또는 NaN이면 false , 아니면 true
+
+
+
+[비트 ~연산자]
+-비트(Bitwise) NOT 연산자
+형태 : ~value
+
+-기능
+2진수 비트 값을 반대로 반환
+양수/음수 사인 부호 바뀜
+양수:양수를 음수로 변환후 , -1을 더함
+음수:음숫를 양수로 변환후, 1을 마이너스
+
+-비트
+1비트는 0또는 1값을 가진다.
+16비트는 16개의 비트로 구성되며 16비트로 값을 표현
+32비트,64비트도 같은 개념
+많은 비트 수로 값을 표현하면 값의 범위가 큼
+반면 , 그만큼 메모리가 필요
+
+
+[관계,동등,일치,논리 연산자]
+
+-Relation Operators 범위
+<, > , <= , >= , instanceof , in
+
+-연산자 분리 이유
+관계 , 동등 , 일치 , 논리 연산자로 분리하는 이유는
+연산자별로 처리 알고리즘이 다르기 때문
+
+
+[> 연산자]
+
+기호 : >
+-Greater-then
+-if(1>2){...}
+
+-기능
+true: 왼쪽 표현식 평가 값이 오른쪽 값보다 크면
+false : true가 아니면 false
+한쪽이 number 타입이면 수학 값으로 비교
+모두 string 타입이면 유니코드 사전 순서로 비교
+
+- >= 연산자
+Greaterpthan-orequal
+true : 왼쪽 표현식 평가 값이 오른쪽 값보다 크거나 같으면
+false : true가 아니면 false
+
+
+
+
+
+
+
+
+
+
+
+

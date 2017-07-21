@@ -1,0 +1,62 @@
+[Samba]
+
+- 개요 
+ 라즈베리 파이의 파일을 windows 환경에서 공유 필요
+
+- Samba
+ Microsoft의 Windows 네트워크 지원 소프트웨어
+ Windows ,Liunx , Unix 환경에서 파일 공유 프로토콜 제공
+ Windows 탐색기에서 직접 악세스 가능
+
+- 주요기능
+ 파일 서버L NAS(Network Attached Storage)
+ 프린트 서버
+
+- 설치
+
+sudo apt-get install samba samba-common-bin
+
+- Samba conf 파일 오픈
+
+sudo nano /etc/samba/smd.conf
+드 추가
+
+
+- 설정
+ 에디터의 마지막으로 이동
+Samba conf 파일에 코드 추가
+
+[pi]
+comment = Pi Samba User
+path = /home/pi
+valid user = pi
+writable = yes
+browseable = yes
+create mask = 0644
+directory mask =  0755 
+
+컨트롤 + X 누르고 저장
+
+- 유저 등록
+
+- Samba 유저 등록
+ sudo smbpasswd -a pi 
+암호는 : 현재 pi 유저의 암호
+
+- Restart
+ sudo service smbd restart
+
+- 연결
+
+탐색기에 가서 네트워크 공유가 되어있음 
+해당 아이디 / 암호 입력하면 완료!!
+
+
+[FTP Tool]
+
+- Cyberduck
+ FTP,SFTP 프로그램
+ Windows , Mac 에서 사용 가능
+ 이를 하기위해서는 FTP 프로그램 필요
+
+

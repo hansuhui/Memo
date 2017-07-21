@@ -1,0 +1,24 @@
+[getComputedStyle]
+<p id="sports" style="font-size:20px">스포츠</p>
+
+
+	<script type="text/javascript">
+
+	
+	var View , el = document.getElementById("sports");
+	//ie 기준
+	if(el.currentStyle){
+		view = el.currentStyle;
+	}
+	//DOM 표준
+	else{
+		view = el.ownerDocument.defaluteView.getComputedStyle(el,"");
+	}
+	log("top:" + view.top);
+	log("font-size:" + view["font-size"]);
+	
+	
+	</script>
+
+
+[]

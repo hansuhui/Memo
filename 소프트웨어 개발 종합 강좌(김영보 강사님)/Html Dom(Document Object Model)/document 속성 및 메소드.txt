@@ -1,0 +1,100 @@
+document 속성 및 메소드
+
+속성 및 메소드    /  설명
+
+document.activeElement  /  문서의 현재 포커스의 요소를 돌려줌
+
+document.addEventListener() / 요소에 이벤트 핸들러를 추가한다
+-ex docuemnt.addEventListener("click",function(){})
+
+document.adoptNode() / 다른문서에서 요소를 채택한다
+-ex http://www.w3schools.com/jsref/met_document_adoptnode.asp
+
+document.anchors / a요소를 리턴한다
+
+document.body / body 요소를 리턴한다
+
+document.cookie / 문서에 쿠키의 모든 이름 / 값을 반환
+
+document.createAttribute() / 속성 노드를 생성한다.
+
+document.createComment() /  주석을 추가한다
+
+document.createDocumentFragment() / 노드를 누적으로 생성 가능하게 만듬
+http://www.w3schools.com/jsref/met_document_createdocumentfragment.asp
+
+document.createElement() / 엘리먼트를 생성한다
+
+document.createTextNode() / 텍스트 노드를 생성한다.
+
+document.doctype / 해당 doctype를 리턴한다
+
+document.documentElement / html요소를 리턴한다
+
+document.documentMode / ie일 경우 ie 버전을 리턴한다
+
+document.documentURI / URI를 반환 한다 (ie는 안됨)
+
+document.domain / 도메인을 반환한다
+
+document.embeds / embed 요소를 반환한다
+
+document.forms / form 요소를 반환한다
+
+document.getElementById() / 해당 id의 요소를 반환한다
+
+document.getElementsByClassName() / 해당 class 요소들을 반환한다
+
+document.getElementsByName() / 해당 name 요소들을 반환한다
+
+document.getElementsByTagName() / 해당 태그의 요소들을 반환한다
+
+document.hasFocus() / 문서에 포커스가 있는지 여부를 나타내는 메소드
+
+document.head / head 헤드 태그를 반환한다
+
+document.images / 해당 문서에 이미지들을 반환한다
+
+document.implementation /DOMImplementation 오브젝트를 돌려줍니다
+
+document.importNode() / 다른 노드에서 노드를 가져옵니다.
+-ex http://www.w3schools.com/jsref/met_document_importnode.asp
+
+document.inputEncoding / character set을 반환한다
+
+document.lastModified / 마지막 수정으로 문서가 수정된 날짜를 보여줌
+
+document.links / <a> 그리고 <area> 요소에서 href 속성이 있는걸 반환
+
+document.normalize() / 빈 텍스트 노드를 제거하고 , 인접하는 노드를 합류
+
+document.open() / document.write() 출력을 수집하여 html 출력 스트림을 반환
+
+document.querySelector() / 하나의 요소를 반환한다.(선택자)
+
+document.querySelectorAll() / 해당하는 요소를 전부 반환한다(선택자)
+
+document.readyState / 문서의 상태값?!
+
+uninitialized - Has not started loading yet
+loading - Is loading
+loaded - Has been loaded
+interactive - Has loaded enough and the user can interact with it
+complete - Fully loaded
+
+document.referrer / 현재 문서를 로드 된 문서의 URL를 돌려줍니다.
+
+document.removeEventListener() / 이벤트 리스너를 제거 합니다.
+
+document.renameNode() / 지정된 노드의 이름을 변경합니다.
+
+document.scripts / 문서의 script요소를 반환
+
+document.title / title를 반환한다
+
+document.URL / 현재 URL를 반환한다
+
+document.write() / 문서에 HTML 또는 자바스크립트 코드를 작성
+
+document.writeln() /  document.write()같고 다른게 있다면 라인이동
+

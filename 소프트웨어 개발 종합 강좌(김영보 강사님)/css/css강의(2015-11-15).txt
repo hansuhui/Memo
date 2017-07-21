@@ -1,0 +1,397 @@
+[column-count]
+
+-column수
+coulmn을 분리할 수를 지정
+
+
+[columns]
+-column shrothand
+column-width 와 column-count 같이 지정
+
+[column-gap]
+-칼럼사이의 거리
+
+column-gap : 10px
+
+[column-fill]
+column 높이의 균등 맞춤
+각 column의 높이를 고려하여 콘텐츠의 맞춤 여부
+Firefox 지원(2015.10.03)
+
+
+-balance
+높이와 너비를 균등하게 맞춘다
+
+-auto
+
+
+[column-rule-style]
+
+-열과 열 사이의 선 스타일
+
+
+[column-rule-width]
+
+-선의 두께
+
+
+[column-rule]
+-column-rule shorthand
+
+
+[image 타입 개요]
+
+-css 이미지 타입
+url로 참조하는 정적 이미지
+그라데이션
+트리 구조의 일부분을 동적으로 표현하는 이미지
+
+-gradation
+
+-CSS로 표현하는 이미지 형태
+사이즈가 고정된 이미지 , jpeg,png등
+사이즈가 복수인 이미지로 비율을 갖고 있음.ico
+사이즈를 갖고 있지 않지만 높이와 폭 비율이 있는 벡터 이미지.SVG
+사이즈도 없고 비율도 없는 이미지 . CSS그랃[이션
+
+-이미지 오브젝트 종류
+background-image , list-style-image , border-image , cursor
+[image 타입]
+-url
+background-image:url(",,/경로")
+
+
+[Gradient]
+
+-이미지 색변화
+하나의 색에서 다른 색으로 변화
+그라데이션으로 그려지는 영역을 gradient box라고 부름
+영역이라고 하여 그라데이션이 높이, 너비 , 비율을 갖는 것이 아니라
+색을 변화시키는 것
+
+-그라데이션 타입
+선형 그라데이션, 방사(원형) 그라데이션
+
+-선형 그라데이션
+background:linear-gradient(white,gray);
+
+-방사 그라데이션
+list-style-image : radial-gradient(circle,#006,#00a,90%)
+
+
+[linear-gradient()]
+
+-선형 그라데이션 함수
+첫 번째 파라미터 : 그라데이션 라인 방향, 위치. 생략가능
+두 번째 파라미터 : 그라이데션 라인색
+
+-angle
+선의 각도로 90deg는 시계 방향
+
+-to <side-or-corner>
+to top, to right , to bottom, to left 형태로 작성. 디폴트 : to bottom
+0deg, 90deg,180deg,380deg에 해당
+to top left 형태 : 위치를 통과하는 교착점에 선을 그음
+
+-color-stop-list
+콤마로 구분하여 색 지정
+
+-키워드(to bottom)로 방향 지정
+background:linear-gradient(to bottom,white,black)
+background:linear-gradient(to right,white,black)
+
+-<angle>로 방향 지정
+
+-color 다수 지정
+
+
+[repeating-linear-gradient()]
+
+-linear-gradient()의 반복
+그라데이션 표현은 linear-gradient()와 같음
+repeating-linear-gradient(white,black 30px)
+시작점에서 끝점까지 반복하여 그라데이션
+white가 0px이고 black이 30px이므로 30px 간격으로 반복하여 표현
+
+
+
+[radial-gradient()]
+
+-방사 그라데이션 함수
+중심에서 원,타원형으로퍼져나가면서 그라데이션 표현
+radial-gradient(circle at center , white ,black)
+center (중심에서)
+
+
+-size
+그라데이션의 최종 크기 지정
+shape가 circle이지만 생략한 경우 , 원의 반지름 지정
+shape가 ellipse이지만 생략한 경우 , 수평과 수직 반지름 지정
+
+
+[repeating-radial-gradient()]
+radial-gradient() 반복
+
+[ object-fit]
+-오브젝트를 박스에 맞추는 방법 지정
+오브젝트 : img,video,object, input type=image 등
+      
+-fill
+오브젝트가 박스 안에 꽉차도록 표현
+오브젝트의 width/height 비율로 축소/확대 조정
+
+-contain
+오브젝트를 박스에 맞추어 표현. 오브젝트가 축소됨
+오브젝트의 width/height 비율을 조정하지 않고 그대로 유지
+width/height 중에서 큰 값으로 박스에 맞추면서 비율로 같이 조정
+따라서 오브젝트와 박스 비율이 맞지 않을 때는 공간이 생길 수 있음
+
+
+[background-blend-mode]
+
+-배경 색과 혼합(blend)정의
+background-color 위에 이미지를 겹치게 하였을때
+background-blend-mode 프로퍼티 값을 혼합한다.
+
+
+
+[좌표]
+-x축 , y축, z축
+2차원 : x축(수평),y축(수직)
+3차원 : z축
+
+[transform]
+
+-시각적 모델의 좌표 공간 변경
+이동,회전, 확대/축소, 경사(기울기)
+transform : translate(100px) rotate(90deg)
+translate(), re
+
+
+[transform 2D 함수]
+
+translate() / 값을 현재 좌표에 더해 [tx,ty]로 이동
+translateX() / 지정한 값을 현재의 x좌표 값에 더해 x축으로 이동
+translateY() / 지정한 값을 현재의 x좌표 값에 더해 y축으로 이동
+
+
+[transform 3D함수]
+
+gransfomr-origin() / 2D.3D 기준점
+perspective / 투시,투영 매트릭스 지정
+perspective-origin / 원근법 적용 기준 위치
+transform-style
+
+
+
+[translate()]
+
+-이동
+현재의 [x,y]좌표 값에
+파라미터의 좌표 값을 더한 좌표로 엘리먼트 이동
+
+-개발 경험에서 본 top/left, translate() 차이
+모바일에서 스크롤을 하거나 마우스로 엘리먼트를 이동할 때
+top,left가 아닌 translate() 사용
+
+
+[rotate()]
+
+-회전
+양수값이면 시계 방향으로 회전
+음수값이면 시계 반대 방향으로 회전
+rotateX() , rotateY() 3차원
+
+
+[skew()]
+
+기울기~~
+
+
+[matrix()]
+
+-확대/축소, 이동 , 경사 행렬
+기준값: (1,0,0,1,0,0)
+
+-행렬 값
+값:(a,b,c,d,e,f)
+a: 수평확대/ 축소
+b. 수직경사
+c: 수평검사
+d: 수직확대/축소
+e: 수평이동
+f: 수직 이동
+
+
+[transform-origin]
+
+-2D ,3D 기준점 지정
+3개의 프로퍼티 값 작성 가능
+1번째 : 가로 방향(X축)
+2번째 : 가로 방향(Y축)
+
+
+[원근법]
+
+-perspective(원근법)
+z축을 사용하여 원근법 표현
+왼쪽 이미지 : 평면이므로 Y축을 기준으로 회전하면 이미지가 작아진다
+오른쪽이미지 : 회전할때 z축으로 이동시키면 3D 입체가 된다.
+
+
+-perspective 값으로 원근 표현
+perspective 값이 작으면(가까우면) 커 보이고 , 크면(멀면) 작아 보임
+확대/축소 비율 : d /(d-z)/ d가 perspective 값
+
+
+[perspective]
+
+-원근법(투시,투영)으로 입체 효과
+perspective를 패어런트에 작성하지만 차일드에 적용됨
+none 또는 0 이하 적용하지 않음
+
+[perspective-origin]
+
+-보는 위치 지정
+토큰으로 구분하여 X축과 Y축 위치 지정
+패어런트에 작성하지만 차일드에 적용
+perspective 프로퍼티와 같이 사용
+
+-lenght : 박스 좌상단 꼭지점에서 떨어진 값
+
+[transform-style]
+
+검색하기
+
+[backface-visibility]
+
+-엘리먼트의 뒷면 표시 여부
+3D로 엘리먼트를 회전할 때 뒷면이 앞에 왔을 때 뒷면이 보이게 하는 그런거?
+
+
+[translate3d()]
+
+밖에 엘리먼트에 투시도를 주고
+안쪽 엘리면트에 transform-stlye:perspective-3d
+를 주고돌리면서 z
+
+3D 방향으로 이동하는것
+
+[Transition 개요]
+
+-묵시적 변이
+변화시간, 속도, 값을 지정하여
+애니메이션  또는 트랜젝션 처리를 할 수 있음
+
+-이미지 설명
+왼쪽의 background-color를 1초간 왼쪽에서 오른쪽으로 이동
+
+
+[transition-property]
+
+-변화를 적용할 프로퍼티 이름 지정
+
+-none
+
+
+-all
+모든 프로퍼티
+
+[transition-duration]
+
+-적용하는 시간
+
+[transition-delay]
+
+-지정한 시간만큼 기다렸다가 실행
+transition-delay:
+
+[transition-timing-function]
+
+-<timing-function>
+애니메이션할 때 1차원 값의 변화를 나타내는 수학 함수
+값을 사용하여 애니메이션 속도를 조정할 수 있음
+이함수를 easing finction 이라고 부름
+
+-CSS의 지원 두가지 타이밍 함수
+계단 함수(stepping function)
+3차원 베지어 곡선 함수(cubic Bezier curve)
+
+
+[stepping function]
+
+계단함수 : steps()
+
+
+[3차 베지어 곡선]
+
+-4개의 제어점으로 정의
+이미지에서 P0,P1,P2,P3
+P0와 P3는 항상 (0,0),(1,1)
+transition-timing-function으로 p1과 p2지정
+
+
+[Animation]
+
+-애니메이션 요서
+애니메이션 시간,반복 횟수, 방향 , 시작 , 중지 , 대기시간
+요소 값과 keyfream 규칙을 연결하여 실행
+
+-keyframe 규칙
+애니메이션 1회 박본 처리를 @keyframes 키워드를 사용하여 지정
+HTML 작성 형태 참조
+
+.moving{
+animation-name : trans;
+animation-duration:2s;
+animation-iteration-count:10; // 반복횟수
+animation-direction:alternate; //왔다갔다 해라
+}
+
+@keyframes trans{
+0%{transform:translate(0);}
+100%{transform:translate(320px,70px);}
+}
+
+
+
+[anmation-direction]
+
+-애니매이션 실행 방향
+
+-normal : 정상실행
+
+-reverse : 거꾸로 실행
+
+-alternate : 정상실행후 반복
+
+-alternate-reverse : 거꾸로실행후 반복
+
+[anmation-play-state]
+
+애니메이션 실행/멈춤 지정
+
+//일시정지
+anmation-play-state:paused
+
+//재실행
+anmation-play-state:running
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

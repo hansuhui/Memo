@@ -1,0 +1,172 @@
+이벤트를 Elemen를 주는게 아니라 따로 잡아서 처리하는것
+
+마지막 파라미터는 버블효과를 뜻함
+
+addEventListener('click',handleClick,false)
+
+[Click Event]
+
+<div class="eventClass">
+<div id="clickID" class="clickClass">여기를 클릭하세요</div>
+<div id="handle" class="handleClass"></div>
+</div>
+
+	<script>
+	var clickNode = document.getElementById('clickID');
+	
+	//DOM이벤트 설정
+	if(clickNode.addEventListener){
+		clickNode.addEventListener('click',handleClick,false)
+	}
+	//ID 이벤트설정
+	else{
+		clickNode.attachEvent('onclick',handleClick);
+	}
+	
+	//이벤트 리스너
+	function handleClick(){
+	document.getElementById("handle").style.backgroundColor = "red";
+	}
+	
+	
+	</script>
+
+
+
+[Remove Event]
+
+	<div class="eventClass">
+		<div id="add" class="Class2">클릭 이벤트</div>
+		<div id="remove" class="Class2">이벤트 해제</div>
+		<div id="addWidth" class="Class2"></div>
+	</div>
+
+	<script type="text/javascript">
+		var addClick = document.getElementById("add");
+		var removeClick = document.getElementById("remove");
+
+		if (addClick.addEventListener) {
+	addClick.addEventListener('click', showChoice, false);
+	removeClick.addEventListener('click', setRemove);
+		} else {
+	addClick.attachEvent('onclick', showChoice);
+	removeClick.attachEvent('onclick', setRemove);
+		}
+
+		//이벤트 발생 핸들러
+
+	function showChoice() {
+	document.getElementById("addWidth").style.backgroundColor = "blue";
+		}
+
+		//이벤트 해제 핸들러
+
+		function setRemove() {
+	document.getElementById("addWidth").style.backgroundColor = "";
+
+			if (addClick.removeEventListener) {
+		addClick.removeEventListener('click', showChoice, false);
+		} else {
+		addClick.detachEvent("onclick", showChoice);
+		}
+
+		}
+	</script>
+
+
+[mouseOut, Over]
+
+
+<div id="group">
+		<a id="goto" href="#" target="_blank">입력하세요</a>
+	</div>
+
+
+	<div id="outBox">
+		<div id="mouseBox"></div>
+	</div>
+
+	<script type="text/javascript">
+	
+	
+	var mouse = document.getElementById("mouseBox");
+	
+	mouse.addEventListener("mouseover",mouseOver);
+	mouse.addEventListener("mouseout",mouseOut);
+	
+	function mouseOver(){
+		
+		log("event.relatedTaget - " + event.relatedTarget.id);
+		log("event.target - " + event.target.id);
+		
+	}
+	
+function mouseOut(){
+		
+		log("event.relatedTaget - " + event.relatedTarget.id);
+		log("event.target - " + event.target.id);
+		
+	}
+	
+	</script>
+
+[DOMContentLoaded 이벤트]
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded",function(event)
+	{
+		contentLoaded = true;
+		ss= 1;
+	});
+	
+	window.onload = function(event){
+		log("event.type - "+event.type);
+		log("DOMContentLoaded - "+contentLoaded);
+		log("ss - "+ss);
+		
+		
+	}
+	
+	</script>
+
+DOMContentLoaded 이벤트 : DOM이 로드되고 파싱되었을 때 발생
+-<img> 의 image를 가져온후
+-window.onload 이벤트 발생
+
+
+
+[DOMNodeInserted - 노드가 추가될때]
+
+	<div id="group">DOMNodeInsert</div>
+	<div id="insert"></div>
+
+
+
+
+	<script type="text/javascript">
+		var group = document.getElementById("group");
+		group.addEventListener("click", setEvent);
+
+		function setEvent(event) {
+
+			var insert = document.getElementById("insert");
+			insert.addEventListener("DOMNodeInserted", Result);
+
+			AddTest();
+
+		}
+
+		function AddTest() {
+			var node = document.createTextNode("텍스트 노트 추가");
+			var insert = document.getElementById("insert");
+			insert.appendChild(node);
+		}
+		
+		function Result(event){
+			log("event.target.nodeValue - "+event.target.nodeValue);
+			log("event.relatedNode.id - "+event.relatedNode.id);
+		}
+		
+	</script>
+
+
+[]

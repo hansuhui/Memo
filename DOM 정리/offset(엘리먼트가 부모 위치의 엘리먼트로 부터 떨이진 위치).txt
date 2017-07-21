@@ -1,0 +1,20 @@
+
+[offset]
+
+-엘리먼트가 부모 위치의 엘리먼트로 부터 떨어진 위치
+-position 속성 (absolute,relative,fixed,static)에 따라 달라질 수 있음
+-css offset 참조
+
+
+
+이름 / 개요
+
+offsetHeight /  엘리먼트 높이 , margin미포함
+offsetLeft / left border 픽셀 넓이 
+offsetTop / top border 픽셀 넓이
+offsetParent / DOM tree에서 가장 가까운 선조 엘리먼트
+		항상 offsetParent와 parentElement와 같지 않음
+
+
+예)document.querySelector("#id_ldic_nx_section_layer").offsetHeight
+

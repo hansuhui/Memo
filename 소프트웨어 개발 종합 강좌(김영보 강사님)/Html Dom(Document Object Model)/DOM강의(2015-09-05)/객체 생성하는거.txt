@@ -1,0 +1,23 @@
+var 변수 =  document.createElement('원하는 태그');
+
+변수.id = '원하는 아이디'
+속성 변경가능
+
+document.body.appendChild(node);
+
+원하는곳에 접근해서 노드 추가가능
+
+node = document.createElement('div');
+node.id = 'result';
+node.style.color = 'red';
+document.body.appendChild(node);
+
+
+
+//만약 해당 객체가 있는지 없는지 확인하고 싶을때 사용
+var node = document.getElementById("ss"); 
+
+if(!node)
+{
+
+}

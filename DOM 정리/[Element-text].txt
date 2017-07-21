@@ -1,0 +1,9 @@
+[Element-text]
+
+
+innerHTML / 텍스트 형태를 HTML 형태로 차일드로 첨부
+outerHTML / 텍스트 형태를 HTML 형태로 자신을 포함하여 대체
+
+-innerHTML
+HTML5에서 표준이 됨
+DOM3까지 처리 속도가 느렸으나 현재는 빠름

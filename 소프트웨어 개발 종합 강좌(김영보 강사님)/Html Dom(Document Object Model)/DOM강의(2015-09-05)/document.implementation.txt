@@ -1,0 +1,6 @@
+implementation메소드
+
+createDocument() -- 하나의 html문서를 생성 ?? 
+createDocumentType() --xml나온 사고 체계
+createHTMLDocument() --HTml생성<html>...사이값 </html>
+hasFeature();

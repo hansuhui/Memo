@@ -1,0 +1,8 @@
+ie 브라우저 버전이 낮을때 지원하는것
+
+<!--[if lte IE 9 ]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>
+window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"});});
+</script>
+<![endif]-->

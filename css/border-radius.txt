@@ -1,0 +1,39 @@
+참조
+http://blog.naver.com/535bo3ob/220308414258
+
+도형에 라운딩 처리를 할 수 있습니다.
+
+1.기본구조
+border-radius : 10px;(기타 1px부터 가능합니다.)
+
+2.각 모서리마다 굴림을 다르게 처리
+
+border-top-left-radius (왼쪽 상단)
+
+border-top-right-radius (오른쪽 상단)
+
+border-bottom-left-radius (왼쪽 하단)
+
+border-bottom-right-radius (오른쪽 하단)
+
+3. 좌상단 , 우하단 / 우상단 , 좌하단 
+
+border-radius : 15px(좌상단, 우하단) 0px (우상단 , 좌하단)
+
+ 페이스북 카카오톡처럼 사용자 사진을 원형으로 만들고 싶을때도 사용이 가능합니다.
+
+▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+
+div
+<div class="wen"><img src="이미지경로"></div>
+
+css
+.wen {width:200px; height:200px; border-radius:200px; margin:0 auto; overflow:hidden;}
+.wen img {height:auto; width:200px;}
+
+▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+이미지를 감싸는 div를 하나 만들고 크기를 지정한후 radius값을 높게주어 원을 만들고
+그 이상 넘어가는것을 숨겨라라고 소스를 지정하면 됩니다.
+
+

@@ -1,0 +1,14 @@
+
+[Element - Attribute]
+
+메소드
+
+getAttribute / 속성 이름이 같은 속성 값 반환 
+setAttribute / 속성에 값 설정 , 같은 속성이 있으면 값을 대체
+hasAttribute / 엘리먼트에 속성이 있는지 체크 bool값으로
+removeAttribute / 엘리먼트에서 속성 삭제 , 4대 부라우저 ㅣ 반환 없음
+
+el.getAttribute("st")
+el.setAttribute("st","st")
+el.hasAttribute("st")
+el.removeAttribute("st")

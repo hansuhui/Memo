@@ -1,0 +1,37 @@
+참조 http://cafe.naver.com/anigamehell/9029
+
+<embed> 태그는 mp3,asfwma,swf등의 확장자를 가진 파일을 인터넷에서
+재생시켜 주는 태그 입니다. 즉, 동영상이건 플래시건 음악이건 죄다 가능
+
+<embed>태는 우선 종료 태그가 없는 태그중에 하나입니다.
+종료 태그를 사용해도 상관은 없습니다. 안해도 되죠.
+
+비슷한 재생 태그인 <object>태그도 있습니다
+
+<embed>태그를 이용하여 BGM(Back Ground Music)을 깔아줄 수 있습니다.
+우선 인터넷에서 원하는 배경음악 URL주소를 가지고 있어야합니다.
+없을경우 이굴루스나 티스토리 같은 블로그에 업로드를 한뒤 URL주소를 찾으시면 됩니다.
+
+
+<embed src="주소값">
+
+음악 파일을 재생할 경우 보통 Windows Media Player로 재생됩니다.
+그 외에 기본 플레이어를 따로 깔았다면 다른걸로 재생됩니다.
+
+속성 
+showtracker - 트랙커 : ture/false or 0/1
+showaudiocontrols - 볼률 컨트롤
+shwpositioncontrols - 이전곡/다음곡 등으로 세부설정 가능
+showgotobar -  바로가기
+showdisplay - 파일정보
+showstatusbar - 상황선
+
+autostart - 자동시작 (디폴트는 true)
+loop - 재생횟수 (디폴트 1 / 무한반복은 true 또는 infintiy)
+volume - 재생볼륨 (디폴트는 -6000 /범위 -10000~0)
+balance - 좌우밸런스 (디폴트 0 / 범위 -10000~10000)
+hidden - 감추기 (디폴트 false)
+enablecontextmenu - 오름쪽 마우스 금지 (디폴트 fasle)
+
+
+ 

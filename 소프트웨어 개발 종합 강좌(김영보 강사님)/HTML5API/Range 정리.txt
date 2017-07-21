@@ -1,0 +1,38 @@
+[Range]
+
+-개요
+콘텍츠 범위를 편집하거나 복사
+
+-콘텐츠 범위
+DOM 트리의 각 노드(텍스트 노드)의 시작 위치와 끝 위치의 범위
+이를 영역 포인트라고 함
+즉, 영역 포인트(시작,끝) 사이의 콘텐츠(텍스트)를 편집 복사
+
+
+[오브젝트 생성]
+
+var RangeObj = new Range();
+var RangeObj = document.createRange();
+
+
+
+[Reage 메소드들]
+
+
+-setStart(텍스트노드,텍스트노드 인덱스)
+
+
+var rangeObj = new Range();
+
+--예제 노드 생성
+var Node = document.createElement("strong");
+Node.textContent = "예제 노드";
+var Node2 = document.createElement("strong");
+Node2.textContent = "예제 노드2";
+
+
+
+rangeObj.setStart(Node.firstChild,0);
+rangeObj.setEnd(Node2.firstChild,5);
+
+rangeObj.setStart(Node.firstChild,0);rangeObj.setEnd(Node2.firstChild,5);

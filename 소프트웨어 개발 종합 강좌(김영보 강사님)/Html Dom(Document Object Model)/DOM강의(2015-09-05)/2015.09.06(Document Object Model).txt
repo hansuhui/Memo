@@ -1,0 +1,496 @@
+참조 
+
+http://www.w3.org/TR/DOM-Level-3-LS/
+http://oscarotero.com/jquery/
+
+[Event]
+-이벤트 처리
+이벤트 설정 , 발생 해제
+
+-이벤트 설정,해제 형태
+이벤트 타입
+이벤트 리스너(핸들러)
+캡처/버블
+
+-이벤트 전파
+이벤트 버블링 방지
+디폴트 엑션
+
+
+[이벤트 캡처,버블링]
+
+-이벤트 순서??
+window > Document > html > body >
+table>  tr > td 
+
+이벤트가 발생하면  발생지점에서 역순으로 따라서 올라감 (버블링)
+
+-버블링이 필요한 이유??
+공통된 이벤트가 있을때 부모위치 노드에 이벤트를 하나로 걸어서 처리함
+
+
+[이벤트 설정]
+
+-DOM형태
+add EventLisnter
+이벤트 type , click,mousedown
+이벤트 리스너(핸들러)
+버블/캡쳐 , 디폴트(capture false)
+HTML5 - "on" + 이벤트 type 가능
+
+-IE형태
+이벤트 type onclick, onmousedown
+이벤트 리스너(핸들러)
+버블/캡처 저장하지 않음
+
+
+[이벤트 해제]
+
+-이벤트를 설정했던 이벤트 타입과 핸들러 해제
+
+-이벤트 해제 함수 작성 기준
+이벤트 설정과 파라미터를 같게 작성
+이벤트 type , 이벤트 리스너 , buble/capture
+
+
+-DOM 형태
+element.removeEventListner(타입,???)
+
+-IE행태
+element.detachEvent(타입)
+
+
+[메모리 누수]
+
+-Memory Leek
+설정한 이벤트를 해제하지 않았을때
+메모리가 완전히 지워지지 않고 남는 현상
+
+-대책
+unload 이벤트가 (브라우저 닫을때 걸려있음) 발생핼을 때 일관 해제
+설정한 이벤트 인식 필요
+이벤트 설정 내역을 별도 저장
+IE < 9
+
+[리스너 작성 형태]
+
+-엘리먼트에 작성
+<input onclick="함수">
+HTML5에서 표준으로 채택
+장점 : 별로도 이벤트를 설정하지 않음
+단점 : 구조와 제어 혼합
+
+
+-js파일에 별도 작성
+마크업과 코딩 분리
+구조와 제어 분리
+
+
+[버블링 방지]
+
+-버블링 형태
+이벤트가 Document 방향으로 전파되는 것
+필요할 때도 있음
+자손 위치의 발생을 인식할 때
+
+-버블링 방지
+DOM stopPropagation()
+IE cancleBubble = ture
+
+
+[디폴트 액션]
+
+-default action
+엘리먼트의 기본 기능
+<a>를 클릭하면 href 속성의 URL로 이동
+<a href="a"></a>
+마우스로 클릭하면 a로 이동
+
+-디폴트 액션 방지
+event로 설정
+DOM : preventDefault()
+IE : returnValue = true;
+
+[Event 속성]
+알아보기
+
+
+[마우스 이벤트 타입]
+
+click / 클릭
+onclick / 더블 클릭 했을때
+mousedown / 마우스로 엘리먼트를 눌렀을때
+mousemove / 엘리먼트 안에서 마우스를 이동했을 때 발생
+mouseout / 마우스가 엘리먼트를 벗어났을 때 발생
+mouseover / 마우스를 엘리먼트에 올렸을때  
+mouseup / 마우스를 엘리먼트에서 떼었을때
+
+마우스 타입 순서
+
+mousedown > mouseup > click
+
+//모바일은 터치무브를 이어가지마라(배터리 상당 소모)
+
+
+[마우스 이벤트 프로퍼티(어트리뷰트)]
+
+altKey / Alt 키를 누른 상태에서 마우스 이벤트의 발생여부
+button / 클릭한 무우스의 버튼 값을 반환
+clientX / 브라우저의 상단에서 마우스 이벤트가 발생한 가로위치
+clientY / 브라우저의 상단에서 마우스 이벤트가 발생한 세로위치
+ctrlKey / Ctrl 키를 누른 상태에서 마우스 이벤트의 발생 여부
+metaKey / Mac OS에서 사용 , meta키를 누른 상태
+relatedTarget / 마우스 이벤트가 발생한 엘리먼트와 관계된 엘리먼트
+screenX / 스크린의 꼭지점을 기준으로 마우스 이벤트가 발생한 가로위치
+screenY / 스크린의 꼭지점을 기준으로 마우스 이벤트가 발생한 세로위치
+shiftKey / Shift 키를 누른 상태에서 마우스 이벤트의 발생 여부
+  
+
+[키보드 이벤트 타입]
+
+keydown /  자판의 키를 눌렀을때
+keyup / 자판의 키를 때었을때 
+keypress / 자판의 키가 눌러진 상때 일때 
+
+순서 keydown > keypress > keyup 
+
+파이어폭스일때는 한글을 인식을 못한다
+
+[키보드 이벤트 프로퍼티(어트리뷰트)]
+
+
+altKey / Alt 키를 누른 상태에서 마우스 이벤트의 발생여부 
+ctrlKey / Ctrl 키를 누른 상태에서 마우스 이벤트의 발생 여부
+KeyIdentifier / 누른 키 값을 반환
+KeyLocation / shift 키와 같이 자판에 두개의 키가 있는 경우 어느쪽을 누른지 반환
+metaKey / Mac OS에서 사용 , meta키를 누른 상태
+shiftKey / Shift 키를 누른 상태에서 마우스 이벤트의 발생 여부
+
+
+[HTML 이벤트]
+
+abort / 이미지를 로딩하는 중에 로등이 중단시 발생 <object>
+blur / 포커스를 잃을 떄 발생
+chang / 값을 변경하고 포커스를 잃을때
+error / 실행중에 어러가 났을때 <object><body><frameset>에서 발생
+focus / 포커스를 받을때 발생
+load / 지정한 오브젝트가 로딩되었을때 발생
+	document , <body> , <frameset> , <object><link><meta>
+	<script><frame><iframe><img>에서 발생
+reset / <form>에서 발생하며 폼을 리셋할때 발생
+resize / 브라우저 크기를 변경했을 때 발생
+scroll / 브라우저의 스크롤 바를 좌우상하로 움직일때 발생
+select /<input><textarea>에서 문자를 선택했을때 발생
+submit / <form>에서 발생하며 폼을 전송할 때 발생
+unload / 브라우저를 닫거나 다른 페이로 이동할때 발생
+
+
+DOMContentLoaded 이벤트타입 : DOM이 로드되고 파싱되었을 때 발생
+-<img> 의 image를 가져온후
+-window.onload 이벤트 발생
+
+
+
+[Mutation 이벤트]
+사진보고 정리
+
+
+[Seletor]
+
+-매치되는 노드(엘리먼트) 추출
+
+-Selector
+Type div
+attribute div(class=spotClass)
+
+
+[Selecttor-패턴(정규표현식)]
+알아보기
+
+
+[querySelector]
+
+-querySelector
+Select 패턴 적용 , 멜리먼트 추출
+자손중에서 매치하는 것 , 전체 엘리먼트 변환
+하나가 매치되면 더이상 매치하지 않음
+
+-QuerySelectorAll
+Select 패턴 적용 ,매치되는 모든 엘리먼트 변환
+
+
+[Selector-Element]
+알아보기
+
+
+[Selector-Attribute]
+element[class] / 클래스 선택
+element[class=이름] / 해당 클래스 선택
+여러가지는 알아보기
+
+
+[Selector-Pseudo: of-type]
+알아보기
+
+
+[CSS]
+
+-목적
+콘텐츠 표현
+HTML 엘리먼트에 css 적용
+
+-방향성
+표현에 관련된 것은 css가 담당
+DOM의 css 인터페이스를 CSSOM으로 이관
+SVG표현 속성을 CSS로 변환
+
+canvas는 하나의 통 이미지개념
+SVG는 엘리먼트 개념 
+SVG : Scalable Vector Graphics
+첫 글자로 크기 변경이 가능한 벡터 이미지를 의미합니다
+
+[Rule Set]
+
+선택자 {
+속성 : 값
+}
+이런 형식을 룰셋이라고 합니다.
+
+[Style 적용 순서]
+
+-적용 우선 순위
+HTML 엘리먼트에 스타일 적용 순서
+디폴트 스타일 < 사용자 스타일 < 개발자 스타일
+
+-우선 순위 값으로 대체
+우선 순위가 높은 속성 값 적용
+우선 순위가 낮은 속성 값이 지워지지 않고 존재
+속성 값을 지우면 우선 순위가 낮은 값이 작용됨
+
+
+[Default Style]
+
+-속성 기본 값 적용
+엘리먼트와 selector 연동
+연동시키지 않으면 Defult Stlye 값 적용
+
+-<h1>문자가 <h2> 보다 큰 이유
+Default Style 값이 크기 떄문에
+HTML구조 관점에서 보면 차이 없음
+DOM 속성 관점에서 보면 속성 값일 뿐
+
+[사용자 Style]
+
+-사용자 Style 형태
+브라우저에 스타일 지정
+URl이 바뀌어도 계속 적용됨
+디폴트 스타일보다 우선순위
+
+-지정방법
+IE - 인터넷 옵션 > 일반탭에 접근성 클릭 
+> 사용자 스타일시트를 사용하여 문서에 서식을 적용 후 스타일시트를 올리면 변경
+
+
+[개발자 Style]
+
+-개발자 Style형태
+엘리먼트에 Style 작성
+사용자 스타일보다 우선 적용
+
+-개발자 Style !important
+개발자 스타일보다 우선 적용
+
+-사용자 Style !important
+개발자 !important보다 우선 적용
+
+
+[Style 적용 우선 순위]
+1.사용자 !important
+2.개발자 !important
+3.개발자 스타일
+4.사용자 스타일
+5.디폴트 스타일
+
+[엘리먼트 적용]
+-엘리먼트 적용 순서
+@import 작성
+<link>의 href 속성에 작성
+<style> 에 작성
+엘리먼의 style 속성에 작성
+DOM 트리에서 아래에 작성한것
+
+랜더링 순서대로 가장 나중에 오는게 우선순위
+
+-엘리먼트의 style 속성에 작성하지 말고
+javaScript + DOM 처리를 위해 남겨둔다.
+
+
+[Css Selector - 적용]
+
+-Selector 적용 우선순위
+스타일 적용 점수 계산
+구체적으로 작성한 것을 우선 적용
+
+표 찾아보기
+
+
+
+[DOM View]
+
+-최종으로 적용된 스타일 추출
+
+-인터페이스
+DocumentView document
+
+
+[defaultView]
+
+-랜더링된 값 추출
+document 포함된 window 전환
+
+[getComputedStyle()]
+
+-엘리먼트에 적용된 스타일 값 추출
+
+el.ownerDocument.defaluteView.getComputedStyle(el,"");
+
+-ie : currentStyle
+el.currentStyle;
+
+[Ajax]
+
+-Ajax
+약어 알아보기
+
+-누가 : 제시 제임스 가렌
+
+-언제 : 2005년 02월 18일
+
+-어디에 : 블로그
+
+-제목 : A New Approach to Web Applications
+
+
+[Ajax 요소기술]
+
+XHTML+Css
+XmlHttpRequest [XHR]
+JavaScript
+XML+XLST(Xml에 Css같은것)
+DOM
+
+-브라우저에 존재-
+
+
+[요소 기술 역할]
+
+-XHTML과 CSS 사용하여 표준을 준수한 프레젠테이션
+
+- DOM를 사용하여 동적 표시 및 상호작용
+
+-XML<httpRequest>를 사용하여 비동기로 데이터 송수신
+
+-XML과 XLTS로 데이터 변환 및 제어
+
+-javaScript로 상기 기술의 결합
+
+
+[데이터 형태]
+
+-text
+
+-CSV
+뜻알아보기
+Comma마 구분해서 값을 넘김
+
+-JSON
+뜻알아보기
+
+-XML
+뜻알아보기
+
+-Delimiter
+
+##
+
+[XMLHttpRquest]
+
+-HTTP 통신 오브젝트
+
+-비통기 통신
+XMLHttpRequest로 데이터 송수신
+
+원래 있던 기술이지만 창시자가 
+처음 다른 각도로 해석에서 나온 것
+
+[ajax 그럼 무엇?]
+
+Ajax: A New Approach to Web Applications!!
+다른 각도로 생각을 해보자는 그런거?
+
+
+[Ajax Appcation Model]
+
+사진보고 참조하기
+
+[MVC패턴]
+
+-MVC
+Model , View ,Cotrol
+
+-Model
+비지니스 로직 , 서버에 위치
+
+-View 
+유저 인테페이스
+클라이언트 위치
+
+-Control
+Model과 view 제어
+서버와 클라이언트에 위치
+
+[Ajax MVC 아키텍처]
+
+클라이언트(HTML,Ajax엔진) > 서버(서버용 어플리이션)로 보냄 > 서버 
+다시 클라이언드로 데이터 를 보내줌
+
+classic web application Model
+웹페이지 전체를 보내는 형식
+
+Ajax Web application Model(asynchronus) 
+데이터만 주고 클라이언트에서 처리하는 형식
+
+[XMLHttpRequest 흐름]
+
+XMLHttpRequest 객체 생성
+통신 방법 및 URL , 테이터 등등 조건 설정후 요청 
+>기능 요구사항 처리 , 테이터 처리
+>처리 상태 연걸 후 결과 및 에러처리
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

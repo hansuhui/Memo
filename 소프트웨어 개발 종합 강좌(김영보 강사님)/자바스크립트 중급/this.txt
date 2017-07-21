@@ -1,0 +1,240 @@
+[개요]
+
+-this
+키워드
+실행 콘텍스트의 this 바인딩 컴포넌트 참조
+
+[실행 콘텐스트 형태]
+
+1.함수를 호출하면 
+-실행 콘텍스트를 생성하고
+-함수의 코드 실행 환경을 설정합니다.
+
+2.호출한 함수 앞에 작성한 오브젝트를
+-this 바인딩 컴포넌트에 설정합니다.
+
+[this와 글러벌 오브젝트]
+
+-this 참조
+글로벌 오브젝트에서 this는 글로벌 오브젝트를 참조
+this 바인딩 컴포넌트에 글로벌 오브젝트가 설정되기 떄문
+
+-this와 windown
+windown는 자바스크립트가 제어할 수 있는 영역이 아니며
+글로벌 오브젝트의 스코프도 아님
+하지만 windown와 글러벌 오브젝트와 같은 선상에서 참조 가능
+
+-strict 모드
+함수 앞에 오브젝트를 작성해야 함
+그런데 글로벌 오브젝트는 이름이 없으므로
+window.get()과 같이 window를 글로벌 오브젝트로 사용
+
+이때 this 바인딩 컴포넌트에 undefined가 설정되므로
+this로 window를 참조할 수 없음
+
+
+
+[this 참조 범위]
+
+
+[1번 예제]
+
+
+var sports = {
+		value : 123,
+		get :function (){
+			js.log(this === window); //true
+			js.log(this.value); // undefined;
+		}
+};
+
+var Comp = sports.get();
+Comp(); //호출시 앞에 참조하는 오브젝트가 없으니 global 오브젝트를 this 바인딩에 됨
+
+[2번 예제]
+
+function get(){
+	js.log("사과");	
+}
+
+var sports =function () {
+		function get(){
+			js.log("애플");	
+		};
+		this.get(); //사과
+		get(); // 애플
+};
+sports();
+
+
+
+[call()과 this]
+
+-개요
+getTotal.call(this,10,20)
+getTotal() 함수를 호출하면서 10과 20을 파라미터로 넘겨줌
+첫 번째 파라미터에 호출된 함수에서 this로 참조할 오브젝트 지정
+--일반적으로 this를 사용하지만 다른 오브젝트를 지정할 수 있음
+--호출된 함수의 파라미터로 넘어가지 않고 두 번째로  넘어 감
+
+
+[this 지정]
+
+var value = 100;
+var get = function(one){
+	var value = 456;
+	return one+ this.value
+}
+js.log(get.call(this,50)); //150;
+
+
+
+[오브젝트 지정]
+
+var get = function(value){
+	return this.base * this.rate + value;
+}
+var result = get.call({base:20,rate :30},50);
+js.log(result);
+
+설명
+var result = get.call({base:20,rate :30},50);
+1.call() 함수의 첫 번째 파라미터를 this가 참조하므로
+- {base:20,rate :30}를 this로 참조할 수 있습니다.
+
+
+[숫자 값 지정]
+
+var get = function(){
+	debugger;
+	return this.valueOf();
+}
+
+var result = get.call(123);
+js.log(result);
+
+
+[this 참조 변경]
+
+var sports = {
+	value : 123,
+	soccr : {
+	value : 456,
+	get : function(){
+		return this.value;
+	}
+    }
+};
+js.log(sports.soccer.get.call(sports));
+js.log(sports.soccer.get.call(sports.soccer));
+
+
+[apply()와 this]
+
+-개요
+getTotal.apply(this,[10,20])
+getTotal() 함수를 호출하면서 10과 20을 배열로 파라미터로 넘겨줌
+call()과 함수를 호출하는 방법은 같지만
+파라미터를 배열로 넘겨주어야 하는 것과
+arguments를 넘겨줄 수 있는 점이 다름
+
+
+[bind()와 this]
+
+-개요
+bind 메소드는 한 번에 처리하지 않고 나누어 처리
+1)Function 오브젝트를 생성하여 반환
+2)생성한 Function 오브젝트를 함수로 호출
+
+-작성 방법
+첫 번째 파라미터에 생성한 Function 오브젝트를 호출할 때
+--this로 참조할 오브젝트 지정
+두 번째에 bind 메소드에 넘겨 줄 파라미터 지정
+
+생성한 Function 오브젝트를 호출할 때에도 파라미터 지정 가능
+두 개의 파라미터를 병합하여 사용
+
+
+[Function 오브젝트 생성 , 호출]
+
+var bonus = {
+		value : 123,
+		get : function(){
+			return this.value;
+		}
+};
+js.log(bonus.get()); //123
+
+var fnObj = bonus.get.bind();
+js.log(typeof fnObj); // function
+js.log(fnObj());  //undefuned
+
+fnObj = bonus.get.bind(bonus); 
+js.log(fnObj); //123
+
+
+[파라미터 병합]
+
+
+var bonus = {
+		get : function(){
+			return Array.prototype.slice.call(arguments);
+		}
+};
+
+var fnObj = bonus.get.bind(this,20,30);
+js.log(fnObj(40,50));  //[20,30,40,50]
+
+
+
+
+[bind() 활용]
+
+
+window.onload = function(){
+	var el = document.getElementById('clickID');
+	el.onclick = show.bind(sports,el);
+};
+
+var sports = {
+		value : 123
+};
+function show(element , event){
+	js.log(element.textContent);
+	js.log(event.target.id);
+	js.log(this.value);
+}
+
+/*
+	var el = document.getElementById('clickID');
+	el.onclick = show.bind(sports,el);
+	1.buttib#clickID로 엘리먼트 오브젝트를 생성합니다.
+	2.버튼을 클릭하면 onclick 이벤트가 발생하며
+	-show.bind()가 실행되면 Function 오브젝트를 생성하여
+	-onclick에 핸들러 함수로 설정합니다.
+	4.sports는 show 함수에서 this로 참조하게 되며
+	5. el은 파라미터 값으로 넘겨줍니다.
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

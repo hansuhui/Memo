@@ -1,0 +1,246 @@
+https://wikidocs.net/42
+
+[파이썬으로 XML 처리하기]
+
+
+이 절에서는 파이썬으로 XML 문서를 다루는 방법에 대해서 살펴본다. 
+XML 처리를 위한 파이썬 라이브러리는 아주 많으며 아래 사이트에서 확인할 수 있다.
+
+http://wiki.python.org/moin/PythonXml
+
+※ 이 절은 XML에 대한 기초적인 지식이 있는 사람을 대상으로 한다. 
+XML 처리에 대해 굳이 알아야 할 필요가 없다면 건너뛰어도 좋다.
+
+이 책에서는 가장 많은 이들의 사랑을 받고 있는 라이브러리인 ElementTree를 
+사용하는 방법에 대해서 다룬다. ElementTree는 Tkinter로 유명한 
+프레드릭 런드(Fredrik Lundh)가 만든 XML 제너레이터 & 파서이다.
+
+※ ElementTree는 외부 라이브러리로 존재하다가 파이썬 2.5부터 통합되었다.
+
+
+====================================================================================
+
+[XML 문서 생성하기]
+
+ElementTree를 이용하여 다음과 같은 구조의 XML문서를 생성해 보자.
+
+<note date="20120104">
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading>Reminder</heading>
+    <body>Don't forget me this weekend!</body>
+</note>
+먼저 다음과 같은 소스를 작성해 보자:
+
+from xml.etree.ElementTree import Element, dump
+
+note = Element("note")
+to = Element("to")
+to.text = "Tove"
+
+note.append(to)
+dump(note)
+위 소스의 실행 결과는 다음과 같다:
+
+<note><to>Tove</to></note>
+엘리먼트(Element)를 이용하면 태그를 만들 수 있고, 만들어진 
+태그에 텍스트 값을 추가할 수 있음을 알 수 있다.
+
+
+====================================================================================
+
+- SubElement -
+
+서브엘리먼트(SubElement)를 이용하면 조금 더 편리하게 태그를 추가할 수 있다.
+
+from xml.etree.ElementTree import Element, SubElement, dump
+
+note = Element("note")
+to = Element("to")
+to.text = "Tove"
+
+note.append(to)
+SubElement(note, "from").text = "Jani"
+
+dump(note)
+실행 결과는 다음과 같다.
+
+<note><to>Tove</to><from>Jani</from></note>
+서브엘리먼트는 태그명과 태그의 텍스트 값을 한 번에 설정할 수 있다.
+
+또는 다음과 같이 태그 사이에 태그를 추가하거나 특정 태그를 삭제할 수도 있다.
+
+dummy = Element("dummy")
+note.insert(1, dummy)
+note.remove(dummy)
+위의 예는 dummy라는 태그를 삽입하고 삭제하는 경우이다.
+
+
+====================================================================================
+
+- 애트리뷰트 추가하기 -
+
+이번에는 note 태그에 애트리뷰트(attribute)를 추가해 보자.
+
+from xml.etree.ElementTree import Element, SubElement, dump
+
+note = Element("note")
+to = Element("to")
+to.text = "Tove"
+
+note.append(to)
+SubElement(note, "from").text = "Jani"
+note.attrib["date"] = "20120104"
+
+dump(note)
+note.attrib["date"]와 같은 방법으로 애트리뷰트 값(attribute value)을 추가할 수 있다.
+
+다음과 같이 엘리먼트 생성 시 직접 애트리뷰트 값을 추가하는 방법을 사용해도 된다.
+
+note = Element("note", date="20120104")
+실행 결과는 다음과 같다.
+
+<note date="20120104"><to>Tove</to><from>Jani</from></note>
+이상으로 XML 태그와 애트리뷰트를 추가하는 방법에 대해서 알아보았다. 완성된 소스는 다음과 같다.
+
+from xml.etree.ElementTree import Element, SubElement, dump
+
+note = Element("note")
+note.attrib["date"] = "20120104"
+
+to = Element("to")
+to.text = "Tove"
+note.append(to)
+
+SubElement(note, "from").text = "Jani"
+SubElement(note, "heading").text = "Reminder"
+SubElement(note, "body").text = "Don't forget me this weekend!"
+dump(note)
+실행 결과는 다음과 같다.
+
+<note date="20120104"><to>Tove</to><from>Jani</from>...생략...</note>
+
+
+====================================================================================
+
+- indent 함수 - 
+
+위 결과값은 한 줄로 이어져 있어 보기가 쉽지 않다. 
+정렬된 형태의 xml 값을 보려면 다음과 같이 indent 함수를 이용해 보자.
+
+from xml.etree.ElementTree import Element, SubElement, dump
+
+note = Element("note")
+note.attrib["date"] = "20120104"
+
+to = Element("to")
+to.text = "Tove"
+note.append(to)
+
+SubElement(note, "from").text = "Jani"
+SubElement(note, "heading").text = "Reminder"
+SubElement(note, "body").text = "Don't forget me this weekend!"
+
+def indent(elem, level=0):
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
+
+indent(note)
+dump(note)
+indent 함수를 이용하면 다음과 같이 정렬된 형태의 xml 값을 확인할 수 있다.
+
+<note date="20120104">
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+
+
+====================================================================================
+
+- 파일에 쓰기(write) 수행하기 -
+
+이제 생성한 xml 문서를 가지고 다음과 같이 엘리먼트의 write 메서드를 이용하여 파일에 쓰기를 해보자.
+
+from xml.etree.ElementTree import ElementTree
+ElementTree(note).write("note.xml")
+note.xml이 생성되는 것을 확인할 수 있다.
+
+
+====================================================================================
+
+[XML문서 파싱하기]
+
+
+이번에는 생성된 XML 문서를 파싱(parsing)하고 검색하는 방법에 대해서 알아보자.
+
+from xml.etree.ElementTree import parse
+tree = parse("note.xml")
+note = tree.getroot()
+ElementTree의 parse라는 함수를 이용하여 xml을 파싱할 수 있다.
+
+애트리뷰트 값 읽기
+
+어트리뷰트 값은 다음과 같이 읽을 수 있다:
+
+print(note.get("date"))
+print(note.get("foo", "default"))
+print(note.keys())
+print(note.items())
+get 메서드는 애트리뷰트의 값을 읽는다. 만약 두 번째 입력 인수로 디폴트 값을 주었다면 첫 번째 인자에 해당되는 애트리뷰트 값이 없을 경우 두 번째 값을 리턴한다.
+
+keys는 모든 애트리뷰트의 키 값을 리스트로 리턴하고, items는 key, value 쌍을 리턴한다. 애트리뷰트 값을 가져오는 방법은 앞에서 배운 딕셔너리와 동일함을 알 수 있다.
+
+결과는 다음과 같다.
+
+20120104
+default
+['date']
+[('date', '20120104')]
+
+
+====================================================================================
+
+[XML 태그 접근하기]
+
+XML 태그에 접근하는 방법은 다음과 같다
+
+from_tag = note.find("from")
+from_tags = note.findall("from")
+from_text = note.findtext("from")
+note.find("from")은 note 태그 하위에 from과 일치하는 첫 번째 태그를 찾아서 리턴하고, 
+없으면 None을 리턴한다. note.findall("from")은 note 태그 하위에 from과 일치하는 
+모든 태그를 리스트로 리턴한다. note.findtext("from")은 note 태그 하위에 from과 
+일치하는 첫번째 태그의 텍스트 값을 리턴한다.
+
+특정 태그의 모든 하위 엘리먼트를 순차적으로 처리할 때는 아래의 메서드를 사용한다.
+
+childs = note.getiterator()
+childs = note.getchildren()
+getiterator() 함수는 첫 번째 인수로 다음과 같이 태그명을 받을 수도 있다.
+
+note.getiterator("from")
+위와 같은 경우 from 태그의 하위 엘리먼트들이 순차적으로 리턴되며, 보통 다음과 같이 많이 사용된다.
+
+for parent in tree.getiterator():
+    for child in parent:
+        ... work on parent/child tuple
+이상으로 파이썬에서 XML을 처리하기 위한 ElementTree의 사용 방법에 대해서 간략히 알아보았다. 
+더 자세한 내용은 프레드릭 런드가 직접 작성한 튜토리얼에서 확인하기 바란다.
+
+
+
+
+

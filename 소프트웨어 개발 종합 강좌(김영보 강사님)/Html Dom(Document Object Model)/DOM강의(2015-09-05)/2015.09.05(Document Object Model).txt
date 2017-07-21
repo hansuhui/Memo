@@ -1,0 +1,425 @@
+참조 
+
+http://www.w3.org/TR/DOM-Level-3-LS/
+http://oscarotero.com/jquery/
+
+-목적 
+Dom:UI/UX 제공 , 사용자와 접점
+
+
+-HTML 구조
+엘리멘트를 좌우상하로 연결하여 구조형성
+
+-CSS 표현
+색,위치,폰트등 시작 효과
+
+-DOM 구조 표현 CRUD
+HTML과 CSS의 생성 , 접근 , 변경 삭제
+
+-통신 HTTP,SCOKET , Ajax 
+서버와 데이터 송수신
+
+-Javascript 컨드롤
+구성 기술의 통합 컨트롤
+
+
+
+-UX(User eXperinence)?? 사용자 경험?
+사용자 경험,습관 , 관습 중심의 인터페이스???
+
+
+-이벤트
+사용자 행동 인식(마우스나 키보드등.... 행동?)
+요구/요청에 응답
+
+-Document 범위
+<!DOCTYPE html></html> 
+html파일 전체
+
+
+
+-Object
+객체 개념으로 접금
+객체 요소 : 행동,속성
+[key:value] 형태
+
+
+
+-Model
+인터페이스 형태로 DOM 제공
+다수의 언어에서 사용
+DOMString(데이터 타입) 형태로 표기
+/ 다수언어에서 사용이 가능하게 중립적인 언어?!
+
+
+
+Document문서 말고 Document 모델
+
+
+
+[DOM 스크립팅 개요]
+
+
+-DOM 5W1H
+
+사용자와 시스템이
+DOM 엘리멘트,속성 , 이벤트를
+CREATE , READ , UPDATE , DELETE
+필요할때마다 HTML문에서 
+역동적으로 컨텐츠를 제공하기 위해서 
+
+
+
+[DOM API] 
+
+-API 구현
+오브젝트 , 인스턴스
+Javascript 브라우저가 , bulit-in Object로 제공
+java import 문을 소스 코드에 작성
+
+DOM의 기술적 의미는 API를 다루는 것
+
+
+[DOM 출현 배경]
+
+-W3C
+웹 기술 표준 제정
+표준이 아닌 권고 사용
+
+개발사 마다 다르니까 
+W3C가 권고안을 정해준거다
+
+
+
+
+[DOM 레벨]
+
+DOM 버전 개념
+
+-DOM 레벨
+레벨1
+레벨2
+레벨3
+HTML에 통합
+레벨4
+
+-DOM 레벨 0 
+부러유조 전쟁 시기의 DOM레벨
+정식 레벨이 아닌 구분을 위한 레벨
+
+
+
+[DOM 레벨1]
+
+-W3C에서 재정
+IE ,넷스케이프 참여
+1998 01 처음 발표 2000 09 최종 발표
+DOM Core DOM HTML
+
+-DOM Core
+DOM 핵심 인터페이스
+HTML/XML Document 제어
+
+
+-DOM HTML
+HTML 엘리멘트 제어
+HTML 4.0 기준
+
+레벨 1에선 기본 객체만 제공 이벤트 및 나머지 속성값 변경 불가했음
+
+
+[DOM 레벨2]
+
+-DOM Core , HTML
+기능 향상 , XHTML 1.0기준
+
+-DOM Views Style
+css 속성 제어
+
+-DOM Events
+마우스 이벤트 중심
+
+DOM 트리의 노드 제어
+
+-IE 참여하지 않음 
+크로스 부라우징 문제 발생
+
+레벨 2에선 마우스 이벤트 기능이 생기고 css 속성을 제어 할 수 있는 기능이 추가
+ie는 참여하지 않아서 많은 문제가 생김
+
+
+[DOM 레벨3]
+
+-DOM Core , HTML
+기능 향상 , XHTML 1.1 기준
+
+
+-DOM XPath
+XML 사용 효율성 향상
+Xpath : Xml문서를 빠르게 읽기 위해서 사용
+
+
+-DOM Events
+키보드 이벤트
+keyDown Keyup 등등
+
+[HTML5에 포함]
+
+-DOM 워킹 그룹 분리
+HTML, 애플릿 , CSSOM (css object Model)
+
+-많은 이벤트 타입 추가
+비디오 , 오디오 제어 이벤트 타입
+click , onclick 형태로 사용
+엘리멘트에 이벤트 작성(비표준 이었음)
+
+-CSSOM 분리
+Css object Model
+CSS/Style
+Media Query
+seletor(선택자)
+
+
+
+[HTML5 핵심]
+
+-오픈 플랫폼
+
+-표준 바탕
+
+-최종 목적은 콘텐츠 제공
+
+
+[HTML5 분류]
+
+
+마크업 > 추가 > 콘텐츠 모델(구성) /<video> <section> 등
+	재정의 <menu> <i> 등 / Css 대체 / alt 속성등
+
+
+API > 직접 표현 <canvas> <svg> 등
+      간접 표현 Web Sockets 등 , JS로 제어
+
+
+[DOM 레벨4]
+
+-현제 스펙 진행중
+주요 브라우저 업체
+
+-주요 모듈
+Document Element
+
+[Document]
+
+-Document
+취상위 요소 : doctype
+
+-엘리멘트
+<div> 등등
+요소가 아님 Element Object의 약칭
+Element Element Interface를 Object로 생성한것
+
+-노드
+12개의 노드 타입
+엘리멘트 노드 : 태그 등등
+속성 노드  : id 등등 속성
+텍스트 노드 : 텍스트
+
+[객체구성]
+
+-엘리먼트
+Element Object
+
+-메소드
+함수도 같은 의미로 사용
+
+-속성
+name : value
+DOM , HTML에서 사용
+
+-프로퍼티(접근자?)
+속성과 같음
+
+
+[document]
+
+-HTML, XML Document 제어
+HTML 자체의 각 엘리먼트 제어
+메소드 속성, 이벤트 제
+대문자 D가 아닌 소문자 d
+
+
+-Node 인터페이스를 상속 받음
+
+
+[document 구성]
+
+-오브젝트
+-메소드
+-속성(프로퍼티)
+
+
+[document 속성]
+
+http://www.w3schools.com/jsref/dom_obj_document.asp
+
+
+
+
+
+[doctype] - 문서 타입 
+
+-Document Type Definition(DTD)
+
+-HTML5
+<!DOCTYPE html>
+
+
+
+[Element]
+
+-엘리먼트 범위
+<div></div>
+<div id="id">DOM</div>
+
+-엘리먼트 접근 사상
+오브젝트 관점
+Data 관점
+
+
+
+[Element 속성] - 객체 속성 
+
+http://www.w3schools.com/jsref/dom_obj_all.asp
+
+
+[Element-client]
+
+clientHeight : 엘리먼트 높이 , padding 포함 , scrollBar , border , margin미포함
+clientLeft : left border 픽셀 넓이 , css의 borderLeftWidth와 같음
+clientTop : top border 픽셀 넓이 , css borderTopWidth와 같음
+clientWidth : 엘리먼트 넓이, padding 포함 , scrollBar,border , margin 미포함
+
+
+[offset]
+
+-엘리먼트가 부모 위치의 엘리먼트로 부터 떨어진 위치
+-position 속성 (absolute,relative,fixed,static)에 따라 달라질 수 있음
+-css offset 참조
+
+
+
+이름 / 개요
+
+offsetHeight /  엘리먼트 높이 , margin미포함
+offsetLeft / left border 픽셀 넓이 
+offsetTop / top border 픽셀 넓이
+offsetParent / DOM tree에서 가장 가까운 선조 엘리먼트
+		항상 offsetParent와 parentElement와 같지 않음
+
+
+[Element-scroll]
+
+scrollHeight / 엘리먼트 높이 padding 포함
+scrollLeft / 좌우 스크롤한 값
+scrollWidth / 엘리먼트 넓이 , paading 포함
+
+scrollHegiht , scrollWidth를 구하려면 overflow, auto , scroll를 지정
+
+
+
+[Element-child]
+
+childElementCount / 자손 노드수 , ie 제외 4대 브라우저
+childNodes / 모든 자손 노드 DOM 레벨 1 기준
+children / 자손 노드 중에서 엘리먼트 노드만 포함 표준은 아지만 5대 브라우저 지원
+
+
+-NodeList
+node 엘리먼트의 배열 형태
+Collection: NodeList와 비슷한 , 믹스 형태
+
+
+[Element-text]
+
+innerHTML / 텍스트 형태를 HTML 형태로 차일드로 첨부
+outerHTML / 텍스트 형태를 HTML 형태로 자신을 포함하여 대체
+
+-innerHTML
+HTML5에서 표준이 됨
+DOM3까지 처리 속도가 느렸으나 현재는 빠름
+
+
+[Element - Attribute]
+
+메소드
+
+getAttribute / 속성 이름이 같은 속성 값 반환
+setAttribute / 속성에 값 설정 , 같은 속성이 있으면 값을 대체
+hasAttribute / 엘리먼트에 속성이 있는지 체크 bool값으로
+removeAttribute / 엘리먼트에서 속성 삭제 , 4대 부라우저 ㅣ 반환 없음
+
+
+
+[Element - child]
+
+appendChild() / 자식 노드 추가
+removeChild() / 자식 노드 제거
+replceChild() / 자식 노드 변경??
+clonceNode() / 노드 복사
+
+
+
+[DOM Traversal]
+
+-DOM 트리
+DOM노드가 구조적으로 연결한 형태
+Document 형태가 DOM트리 구조
+
+-노드
+DOM 트리 구성요소
+12개 노드 타입
+참조
+http://blog.naver.com/angeldia/90044226182
+
+-DOM Traversal
+DOM 트리를 따라 상하좌우로 이동하는것
+(부모위치 , 자식위치 , 형제위치등등)
+
+[DOM Traversal 프로퍼티]
+
+parentNode : 부모노드
+
+firstChildNode : 자식의 처음 노드
+lastChildNode: 자식의 마지막노드
+
+firstElementChild : 처음의 자식의 Elemnet를 가져온다
+lastElementChild : 마지막 자식의 Element를 가져온다 
+
+nextSibling : 다음 형제 노드를 찾는다
+nextElementSibling : 다음의 형제 Element를 가져온다
+
+previousSibling : 이전의 형제 노드를 찾는다
+previousElementSibling : 이전의 형제 Element를 가져온다
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

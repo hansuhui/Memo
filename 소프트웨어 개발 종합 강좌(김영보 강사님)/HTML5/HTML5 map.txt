@@ -1,0 +1,9 @@
+<h3 class="Title">map</h3>
+<img src="../img/shapes.jpg" usemap="#shapes">
+<map name="shapes" id="shapes">
+<area shape="rect" coords="50,50,100,100" >
+<area shape="rect" coords="25,25,125,125" href="http://www.naver.com" alt="적색 사각형" >
+<area shape="circle" coords="200,75,50" href="http://www.naver.com" alt="녹색 원" >
+<area shape="poly" coords="325,25,262,125,388,125" href="http://www.naver.com" alt="청색 삼각형" >
+<area shape="poly" coords="450,25,435,60,400,75,435,90,450,125,465,90,500,75,465,60" href="http://www.naver.com" alt="노랑색 별" >
+</map>

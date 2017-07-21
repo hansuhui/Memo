@@ -1,0 +1,23 @@
+
+[재귀 함수]
+
+-Recursive Function
+함수 안에서 자신 함수를 호출하는 형태
+{key:{key:{key:value}}} 형태에 사용
+[[1,2],[3,4,[5,6]]] 형태에 사용
+
+
+var sports = {
+		soccer : {member : 11, time : 90}
+		,basketball : {member : 5,time :48}
+};
+
+function showValuse(sports){
+	var type , obj;
+	for(type in sports){
+		obj = sports[type];
+		typeof obj === 'object' ? 
+				showValuse(obj) : js.log(type,":",obj);
+	}
+}
+showValuse(sports);

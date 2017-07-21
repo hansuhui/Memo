@@ -1,0 +1,503 @@
+[HTML5 스크립팅]
+
+[진행방향]
+
+-사전지식
+HTML5 마크업, CSS, DOM , JavaScript
+
+-목표
+기능 습득을 통해 활용성 증대
+
+-기본 중심
+외우지 마세요
+전체적인 개념 이해가 중요, 숲과나무
+
+-진행 방법
+개념,논리,기능 설명
+예제 코드 코딩
+그룹 단위 코딩 실습
+
+
+[타임 테이블]
+
+HTML5 스크립팅 / 개요 , 코딩 환경 설정
+
+Document / Collections, metadata 속성 , DOM 트리 프로퍼티, markup 생성
+
+HTMLElement / <img> 생성 , <img> 전송 , <select/option> , <textarea>
+
+Input / <input> 속상과 메소드
+
+확장 API / Text Field Selection , Constraint Validation , Session history , Location
+
+BOM / BOM 개요 , 브라우징 콘텍스트 , prompt , Timers , Base64 , Navigator
+
+CSSOM / MediaList , CSSOM 인터페이스 , Document 확장 , Window 확장
+
+CSSOMView / MediaQuery:ist , window , Document ,Element
+
+Range / 시작/끝 노드 지정 , 위치 비교 , 복제 , 노드 삽입
+
+
+[DOM]
+
+-Document Object Model 
+Java도 쓰고, JS도 쓰고
+
+-Document
+<!DOCTYPE htmo></html>
+html 파일 전체
+
+-Object
+객체 개념으로 접근
+객체 구성 : method , property
+
+-Model
+객체를 Interface 형태로 제공
+다수의 언어에서 사용
+DOMString 으로 제공
+
+
+
+[다음 과정]
+-Node.js
+Node.js , HTTP(S) , Ajax(비동기 통신) , Socket , WebSocket
+관련 프레임워크(예: express.js, socket.io 등)
+
+-노트북에 Node,js를 설치해 오세요
+
+-과목 변경 사유
+HTML5 API-1: 클라이언트 환경 중심
+HTML5 API-2: 서버 연동 중심
+HTML5 API-2에 참여하시려면 통신/Node.js 과정은 필수
+
+
+
+
+[Browser BOM]
+
+
+-Browswer Object Model
+Window와 Document를 제어하기 위한 프로퍼티 제공
+자바스크립트로 제어
+
+window.setTimeout() 형태
+window를 작성하지 않고 setTimeout()만 작성 가능
+하지만 !! FM을 위하여 window 를 작성 권고
+
+W3C 표준은 아니지만 웹 초창기부터 사용
+현재는 HTML5와 DOM4 스펙에 기술
+
+-browsing context
+브라우저를 통해 보여지는 Document 환경
+Tab , Window , iframe
+
+
+[현재의 브라우징 콘텍스트 속성]
+
+
+이름 / 형태 / 개요
+window / WindowProxy / Window 오브젝트 반환
+self / WindowProxy / Window 오브젝트 반환
+document / Document / Document 오브젝트
+name / DOMString / browsing context name
+locaion / Location / Document의 Location. *다른 장에서 다룸
+history / History / Session History. *다른 장에서 다룸
+locationbar / BarProp / locaion bar(주소창) 표시 상태
+menubar / BarProp / menu bar 표시 상태
+personalbar / BarProp / personal bar 표시 상태
+scrollbars / BarProp / scroll bar 표시 상태
+statusbar / BarProp / status bar 표시 상태
+toolbar / BarProp / tool bar 표시 상태
+status / DOMString / 과거 버전 호환을 위해 존재
+
+-현재 open된 브라우저 속성
+
+[브라우징 콘텍스트 생성]
+
+이름 / 구분 / 형태 / 개요
+
+closed / 속성 / Boolean / window가 close 상태이면 true를 , 아니면 false 반환
+close() / 파라미터 / 없음 / 현재 window을 닫음
+stop() / 파라미터 / 없음 / 다큐먼트 load를 취소
+focus() / 파라미터 / 없음 / window에서 foucs를 맞춤
+blur / 파라미터 / 없음 / window에서 foucs를 떠나게 함
+
+
+[window.open()]
+window.open("","","width=300,height=300");
+
+[다른 브라우징 콘텍스트 속성]
+
+freames / WindowProxy / window 오브젝트 반환 . iframe 리스트가 아님
+lenght / Number / 차일드 브라우징 콘텍스트 수
+window[index] / WindowProxy / index 번째의 차일드 브라이징 콘텍스트 반환
+top / WindowProxy / winddow의 최상위 레벨(top-level)브라우징 콘텍스트 반환
+opener / WindowProxy / 현제 window를 opne한 window 반환
+parent /  WindowProxy / 패어런트 window 반환 , parent가 없음 자신 window 반환
+frameElement / Element / <iframe> , <object>와 같이 window에 포함된 엘리먼트
+
+-다른 브라우징 콘텍스트 속성
+다른 브라우징 콘텍스트 : <iframe> , <object>를 포함한 브라우징 콘텍스트
+이런 브라우징 콘텍스를 위한 속성
+
+[User prompt]
+
+이름 / 구분 / 형태 / 개요
+
+alert() / 파리미터 / DOMString / message , 디폴트 : ""
+	/ 반환 	    /		/ 반환 없음
+
+window.alert("메세지");
+
+confirm() / 파라미터 / DOMString / message, 디폴트 : ""
+	/ 반환 	    /	Boolean	/  선택값 반환
+var val = window.confirm("선택하세요");
+
+
+prompt() / 파라미터 / DOMString / message, 디폴트 : "" 
+	/ 반환 	    /	DOMString/  사용자 입력값 , 취소시 널
+
+var val = window.prompt("선택하세요");
+
+window.print()
+
+
+[Timers]
+
+[setTimeout()]
+
+이름 / 구분 / 형태 / 개요
+
+setTimeout() / 파라미터 / Function / handler , timeout 시간 후에 실행할 함수
+	     / 파라미터 / Number / 타임 아웃 1/1000초
+	     / 파라미터 / any / auguments. 핸들러에 넘겨줄 파라미터. 다수 작성 가능	     / 	             / 반환 / Number / timeout ID. clearTimeout()에서 사용
+
+setTimeout()  /  파라미터 / DOMString / 핸들러 함수를 문자열로 작성 . 비추천
+	     / 파라미터 / Number / 타임 아웃 1/1000초
+             / 반환 / Number / timeout ID. clearTimeout()에서 사용
+
+clearTimeout() / 파라미터 / Number /  setTimeout()에서 반환한 ID
+
+-개요
+지정한 시간후에 함수를 실행하는거
+지연 실행 하는것!!
+
+
+[setInterval()]
+
+이름 / 구분 / 형태 / 개요
+
+setInterval() / 파라미터 / Function /  handler , timeout 시간 후에 실행할 함수
+	     / 파라미터 / Number / 타임 아웃 1/1000초
+	     / 파라미터 / any / auguments. 핸들러에 넘겨줄 파라미터. 다수 작성 가능	     / 	             / 반환 / Number / timeout ID. clearInterval()에서 사용
+
+setInterval()  /  파라미터 / DOMString / 핸들러 함수를 문자열로 작성 . 비추천
+	     / 파라미터 / Number / 타임 아웃 1/1000초
+             / 반환 / Number / timeout ID. clearInterval()에서 사용
+
+clearInterval() / 파라미터 / Number /  setInterval()에서 반환한 ID
+
+-개요
+지정한 간격으로 반복하여 핸들러 함수 호출
+반복을 해제하면 핸들러 함수를 호출하지 않음
+this가 글러벌 오브젝트를 참조
+10/1000과 같이 작은 간격은 정확하게 맞지 않을 수 있음
+
+
+
+[Base64]
+
+
+-개요
+atop() 형태에서 , 전통적인 이유로 인해
+a가 ASCII를 의미하고 b가 binary를 나타내지만
+ASCII 문자열을 Base64로 인코딩 및 디코딩
+
+[Navigator]
+
+-개요
+사용자의 브라우저 버전, 브라우저 헤더 정보 등을 제공
+
+
+[Navigator.plugins]
+
+-개요
+설치된 플러그인 반환, Navigator.plugins 에서 제공
+
+
+[Collections]
+
+-개요
+HTML5에서 Collection 이런 엘리먼트를 모아 놓은 형태를 나타냄
+<ul><li><li><li></ul>에서 li는 컬렉션 형태
+
+-컬렉션 인터페이스 종류
+HTMLALLCollection , HTMLFormControlsCollection , HTMLOptionsCollection
+각 인터페이스는 HTMLCollection 인터페이스를 상속 받음
+
+
+[HTMLCollection]
+
+
+-HTMLCollection인터페이스
+엘리먼트 컬렉션 관련 인터페이스
+스펙에 Elements가 더 정환한 표현이나
+오래 전부터 관례로 사용했기 때문에 그대로 사용한다고 기술
+
+
+[HTMLAllCollection]
+
+-개요
+document.all에서 반환하는 인터페이스로
+document.all은 표준이 아닌 Legacy
+
+-id 또는 name 사용
+다수가 매치되면  HTMLCollection 오브젝트를 반환하고
+하나가 매치되면 Element 반환
+
+
+
+[HTMLFormControlsCollection]
+
+-개요
+<form> 과 <fieldset>의 listed elements 컬렉션에 사용
+
+
+
+
+
+[HTMLOptionsCollection]
+
+-개요
+<option>을 반환
+
+-add()
+두 번째 파라미터 앞에 첫 번째 파라미터의 엘리먼트를 삽입
+두 번째가 인덱스이면 인덱스를 , 엘리먼트 이면 엘리먼트가 기준이 됨
+두 번째 파라미터를 지정하지 않거나 , null , 인덱스 범위가 아니면 마지막에 첨부
+
+-remove()
+파라미터에 지정한 인덱스 번째의 엘리먼트 삭제
+
+
+
+
+
+----------Document ----------
+
+[matadata 속성]
+
+-개요
+DOM Document의 확장으로 HTML의 확장으로 HTML과 관련된 프로퍼티와 메소드로 구성
+
+-readyState
+loading : 다큐먼트 파일을 가져 오는중
+interactive : 다큐먼트 파싱중
+complete : 다큐먼트 파싱 완료
+
+
+
+
+[DOM Tree 프로퍼티]
+
+
+이름 / 구분 / 형태 / 개요
+
+dir / 속성 / DOMString / 다큐먼트의 텍스트 방향(ltr,rtl)l
+hard / 속성 / Element / <head>
+title / 속성 / DOMString / <title>의 텍스트. 다큐먼트 타이블
+body / 속성 / Element / <body>
+images / 속성 / HTMLCollection / 다큐먼트의 <image> 컬렉션
+
+
+[user interaction]
+
+-activeElement
+다큐먼트에 focus된 엘리먼트가 없으면 <body> 반환
+
+-hasFocus()
+다큐먼트에 focus 되어있으면 true를 아니면 false;
+
+
+
+-----------------------Element-----------------------
+
+
+[title]
+-document.title  텍스트로 반환
+
+
+[user interaction]
+
+click() / 엘리먼트를 click()한 것으로 처리
+focus() / 엘리먼트에 focus 됨
+blur() / 엘리먼트가 focus가 넘어갈때
+
+-window.focus() , window.blur() 비추천
+-Element의 focus() , blur() 사용
+
+
+[img]
+
+-new Image()
+document.createElement("img")와 같으며
+HTMLImageElementfmf 생성하여 반환
+
+
+
+[form]
+
+이름 / 구분 / 형태 / 개요
+
+elements  / 속성 / / form 안의 Form Control 모두 반환
+length /  속성 / Number /  form 안의 Form Control 스
+submit() / 파라미터 / 파라이터 없음 / form 전송
+reset() / / 초기값으로 변경
+
+
+
+[label]
+
+예제만 있습니다 ㅎ
+
+[select]
+
+이름 / 구분 / 형태 / 개요
+
+length / 속성 / Number / option 수 , 변경가능
+options / 속성 / HTMLOPtionsCollection / option 컬렉션
+selectedOptions / 속성 / HTMLCollection / 선택된 option 컬랙션
+type / 속성 / DOMString / 설명 참조
+
+-length
+값을 변경할 수 있으며
+값이 현재의 <option> 수 보다 크면 빈 <option>이 추가되고
+값이 작으면 <option> 이 삭제됨
+
+-type
+multiple 이면 select-multiple을 반환 , 아니면 select-one 반한
+
+
+
+[option]
+
+이름 / 구분 / 형태 / 개요
+
+index / 속성 / Number / option 위치 인덱스
+text /  속성 / DOMString / textNode의 텍스트
+defaultSelected / 속성 / Boolean / 처음 랜더링할 때 selected 작성 여부 wkrtjd
+
+
+- new Option()
+세 번째 파라미터인 defaultSelected에 true를 지정하더라도
+네 번째 파라미터인를 지정하지 않으면 selected 값이 true가 되지 않음
+
+
+[textarea]
+
+이름 / 구분 / 형태 / 개요
+
+readOnly / 속성  / Boolean / 속성엔 O가 소문자로  값을 구할땐 O가 대문자
+type / 속성 / DOMString /  textarea 반환
+defaultValue / 속성 / DOMString / 처음 랜더링할때의 textContext 값
+value / 속성 / DOMString / 현재의 value 속성 값 , 변경 가능
+textLength / 속성 / DOMString /  문자 길이 반환
+
+
+[progress]
+
+예제 참고
+
+value가 없으면 와리가리 !!
+
+
+
+
+
+------------------------Range--------------------------
+
+[Range]
+
+-개요
+콘텍츠 범위를 편집하거나 복사
+
+-콘텐츠 범위
+DOM 트리의 각 노드(텍스트 노드)의 시작 위치와 끝 위치의 범위
+이를 영역 포인트라고 함
+즉, 영역 포인트(시작,끝) 사이의 콘텐츠(텍스트)를 편집 복사
+
+
+
+[Range 메소드]
+
+
+- Range 오브젝트 생성
+메소드를 실행하기 앞서 Range 오브젝트 생성
+
+var obj = document.createRange();
+var obj = new Range();
+
+
+-selectNode(node)
+setStartBefor(node)에서 setEndAfter(node)가 범의
+9999즉 node의 직전부터 node의 직후까지이도 node도 포함
+
+
+-selectNodeContents(node)
+노드를 포함하지 않고 텍스트만 !!
+
+-insertNode(node)
+시작 위치에 노드 삽입
+
+-intersectsNode(node)
+Node가 있는지 확인
+
+
+
+-compareBoundaryPoints()
+비교하는 메소드
+예제확인
+-comparePoint()
+비교하는 메소드
+예제확인
+
+비교 방법
+START_TO_START : 0, 시작 점끼리 비교
+START_TO_END : 1,sourceRange의 개시점과 range의 종료점을 비교
+END_TO_END : 2, sourceRange 의 종료정과 reng의 개시점을 비교
+
+
+-surroundContents()
+
+-extractContents()
+
+
+
+
+[Range 속성]
+
+예제 참고
+
+-Range 속성
+시작과 끝의 노드 및 offset 값 제공
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

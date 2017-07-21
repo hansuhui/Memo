@@ -1,0 +1,29 @@
+$.fn.메소드명 = function(변수)
+	{
+		return 변수;
+		
+	};
+
+
+
+
+===================================================================
+
+예제
+
+$.fn.playsound = function(audio_src)
+	{
+		var audio = new Audio();
+		
+		audio.src =audio_src;
+		
+		return this.each(function(){
+			$(this).hover(function(){
+				audio.load();
+				audio.play();
+			}, function (){ alert("빠져나감"); } );
+		}) ;
+		
+	};
+	
+	$("#play").playsound('../Midia/Iu.mp3');

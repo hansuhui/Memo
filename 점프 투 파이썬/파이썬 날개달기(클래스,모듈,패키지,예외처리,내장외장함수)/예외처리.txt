@@ -1,0 +1,326 @@
+https://wikidocs.net/30
+
+[예외 처리]
+
+
+프로그램을 만들다 보면 수없이 많은 오류를 만나게 된다. 물론 오류가 발생하는 
+이유는 프로그램이 잘못 동작되는 것을 막기 위한 파이썬의 배려이다. 하지만 때때로 
+이러한 오류를 무시하고 싶을 때도 있고 별도로 처리하고 싶을 때도 있다. 
+이에 파이썬은 try, except를 이용해서 오류를 처리할 수 있게 해준다.
+
+
+========================================================================================================================
+
+[오류 예외 처리 기법]
+
+
+자, 이제 유연한 프로그래밍을 위한 오류 처리 기법에 대해서 살펴보자.
+
+- try, except문 - 
+
+다음은 오류 처리를 위한 try, except문의 기본 구조이다.
+
+try:
+    ...
+except [발생 오류[as 오류 메시지 변수]]:
+    ...
+try 블록 수행 중 오류가 발생하면 except 블록이 수행된다. 하지만 try블록에서 
+오류가 발생하지 않는다면 except 블록은 수행되지 않는다.
+
+except 구문을 자세히 살펴보자.
+
+except [발생 오류 [as 오류 메시지 변수]]:
+위 구문을 보면 [ ] 기호를 사용하는데, 이 기호는 괄호 안의 내용을 생략할 수 있다는 관례적인 표기법이다. 
+즉, except 구문은 다음처럼 3가지 방법으로 사용할 수 있다.
+
+1. try, except만 쓰는 방법
+
+try:
+    ...
+except:
+    ...
+이 경우는 오류 종류에 상관없이 오류가 발생하기만 하면 except 블록을 수행한다.
+
+2. 발생 오류만 포함한 except문
+
+try:
+    ...
+except 발생 오류:
+    ...
+이 경우는 오류가 발생했을 때 except문에 미리 정해 놓은 오류 이름과 일치할 때만 except 블록을 수행한다는 뜻이다.
+
+3. 발생 오류와 오류 메시지 변수까지 포함한 except문
+
+try:
+    ...
+except 발생 오류 as 오류 메시지 변수:
+    ...
+이 경우는 두 번째 경우에서 오류 메시지의 내용까지 알고 싶을 때 사용하는 방법이다.
+
+이 방법의 예를 들어 보면 다음과 같다.
+
+try:
+    4 / 0
+except ZeroDivisionError as e:
+    print(e)
+
+(※ 파이썬 2.7 버전의 경우에는 위 예제의 except ZeroDivisionError as e: 대신 
+except ZeroDivisionError, e:와 같이 사용해야 한다.)
+
+위처럼 4를 0으로 나누려고 하면 ZeroDivisionError가 발생하여 except 블록이 실행되고 e라는 오류 메시지를 다음과 같이 출력한다.
+결과값: division by zero
+
+--------------------------------------------------------------------------------
+
+- try .. else -
+
+
+try문은 else절을 지원한다. else절은 예외가 발생하지 않은 경우에 
+실행되며 반드시 except절 바로 다음에 위치해야 한다.
+
+(※ else절은 else 블록과 같은 뜻이다.)
+
+다음 예를 보자.
+
+try:
+    f = open('foo.txt', 'r')
+except FileNotFoundError as e:
+    print(str(e))
+else:
+    data = f.read()
+    f.close()
+
+
+만약 foo.txt라는 파일이 없다면 except절이 수행되고 foo.txt 파일이 있다면 else절이 수행될 것이다.
+
+
+--------------------------------------------------------------------------------
+
+- try .. finally  -
+
+
+try문에는 finally절을 사용할 수 있다. finally절은 try문 수행 도중 예외 발생 여부에 
+상관없이 항상 수행된다. 보통 finally절은 사용한 리소스를 close해야 할 경우에 많이 사용된다.
+
+다음의 예를 보자.
+
+f = open('foo.txt', 'w')
+try:
+    # 무언가를 수행한다.
+finally:
+    f.close()
+
+foo.txt라는 파일을 쓰기 모드로 연 후에 try문이 수행된 후 예외 발생 여부에 
+상관없이 finally절에서 f.close()로 열린 파일을 닫을 수 있다.
+
+--------------------------------------------------------------------------------
+
+- 여러개의 오류처리하기 -
+
+
+try문 내에서 여러개의 오류를 처리하기 위해서는 다음과 같은 구문을 이용한다.
+
+try:
+    ...
+except 발생 오류1:
+   ... 
+except 발생 오류2:
+   ...
+즉, 다음과 같이 0으로 나누는 오류와 인덱싱 오류를 다음과 같이 처리할 수 있다.
+
+try:
+    a = [1,2]
+    print(a[3])
+    4/0
+except ZeroDivisionError:
+    print("0으로 나눌 수 없습니다.")
+except IndexError:
+    print("인덱싱 할 수 없습니다.")
+
+a는 2개의 요소값을 가지고 있기 때문에 a[3]는 
+IndexError를 발생시키므로 "인덱싱 할 수 없습니다."라는 문자열이 출력될 것이다. 
+인덱싱 오류가 먼저 발생했으므로 4/0으로 발생되는 ZeroDivisionError는 발생하지 않았다.
+
+이전에 알아보았던 것과 마찬가지로 오류메시지도 다음과 같이 가져올 수 있다.
+
+try:
+    a = [1,2]
+    print(a[3])
+    4/0
+except ZeroDivisionError as e:
+    print(e)
+except IndexError as e:
+    print(e)
+
+실행하면 "list index out of range"라는 오류 메시지가 출력될 것이다.
+
+다음과 같이 ZerroDivisionError와 IndexError를 함께 처리할 수도 있다.
+
+try:
+    a = [1,2]
+    print(a[3])
+    4/0
+except (ZeroDivisionError, IndexError) as e:
+    print(e)
+2개 이상의 오류를 동시에 처리하기 위해서는 위와같이 괄호를 이용하여 함께 묶어주어 처리하면 된다.
+
+--------------------------------------------------------------------------------
+
+[오류 회피하기]
+
+프로그래밍을 하다 보면 특정 오류가 발생할 경우 그냥 통과시켜야 할 때가 있을 수 있다. 
+다음의 예를 보자.
+
+try:
+    f = open("나없는파일", 'r')
+except FileNotFoundError:
+    pass
+
+
+try문 내에서 FileNotFoundError가 발생할 경우 pass를 사용하여 
+오류를 그냥 회피하도록 한 예제이다.
+
+
+--------------------------------------------------------------------------------
+
+[오류 일부러 발생시키기]
+
+이상하게 들리겠지만 프로그래밍을 하다 보면 종종 오류를 일부러 발생시켜야 할 경우도 생긴다. 
+파이썬은 raise라는 명령어를 이용해 오류를 강제로 발생시킬 수 있다.
+
+예를 들어 Bird라는 클래스를 상속받는 자식 클래스는 반드시 fly라는 함수를 구현하도록 
+만들고 싶은 경우(강제로 그렇게 하고 싶은 경우)가 있을 수 있다. 다음 예를 보자.
+
+class Bird:
+    def fly(self):
+        raise NotImplementedError
+위 예제는 Bird 클래스를 상속받는 자식 클래스는 반드시 fly라는 함수를 구현해야 한다는 의지를 보여준다. 
+만약 자식 클래스가 fly 함수를 구현하지 않은 상태로 fly 함수를 호출한다면 어떻게 될까?
+
+(※ NotImplementedError는 파이썬 내장 오류로, 꼭 작성해야 하는 부분이 구현되지 
+않았을 경우 일부러 오류를 발생시키고자 사용한다.)
+
+class Eagle(Bird):
+    pass
+
+eagle = Eagle()
+eagle.fly()
+
+Eagle 클래스는 Bird 클래스를 상속받는다. 
+그런데 Eagle 클래스에서 fly 함수를 구현하지 않았기 때문에 Bird 클래스의 fly 함수가 호출된다. 
+그리고 raise문에 의해 다음과 같은 NotImplementedError가 발생할 것이다.
+
+(※ 상속받는 클래스에서 함수를 재구현하는 것을 메서드 오버라이딩이라고 부른다.)
+
+Traceback (most recent call last):
+  File "...", line 33, in <module>
+    eagle.fly()
+  File "...", line 26, in fly
+    raise NotImplementedError
+NotImplementedError
+
+NotImplementedError가 발생되지 않게 하려면 다음과 같이 Eagle 
+클래스에 fly 함수를 반드시 구현해야 한다.
+
+class Eagle(Bird):
+    def fly(self):
+        print("very fast")
+
+eagle = Eagle()
+eagle.fly()
+위 예처럼 fly 함수를 구현한 후 프로그램을 실행하면 
+오류 없이 다음과 같은 문장이 출력된다.
+
+very fast
+
+========================================================================================================================
+
+[오류 만들기]
+
+프로그램 수행 도중 특수한 경우에만 예외처리를 하기 위해서 종종 오류를 만들어서 사용하게 된다.
+
+직접 오류를 만들어 보자. 오류는 다음과 같이 파이썬 내장 클래스인 
+Exception클래스를 상속하여 만들 수 있다.
+
+class MyError(Exception):
+    pass
+그리고 별명을 출력해 주는 함수를 다음과 같이 작성해 보자.
+
+def say_nick(nick):
+    if nick == '바보':
+        raise MyError()
+    print(nick)
+
+그리고 다음과 같이 say_nick 함수를 호출 해 보자.
+
+say_nick("천사")
+say_nick("바보")
+실행 해 보면 다음과 같이 "천사"가 한번 출력된 후 MyError가 발생하는 것을 알 수 있다.
+
+천사
+Traceback (most recent call last):
+  File "...", line 11, in <module>
+    say_nick("바보")
+  File "...", line 7, in say_nick
+    raise MyError()
+__main__.MyError
+
+이번에는 MyError가 발생할 경우 예외처리기법을 이용하여 예외처리를 해 보도록 하자.
+
+try:
+    say_nick("천사")
+    say_nick("바보")
+except MyError:
+    print("허용되지 않는 별명입니다.")
+
+실행 하면 다음과 같이 출력된다.
+
+천사
+허용되지 않는 별명입니다.
+
+만약 오류메시지를 이용하고 싶다면 다음처럼 예외처리를 해야 할 것이다.
+
+try:
+    say_nick("천사")
+    say_nick("바보")
+except MyError as e:
+    print(e)
+
+하지만 실행 해 보면 print(e)로 출력한 오류메시지가 아무것도 출력되지 않는것을 확인 할 수 있다. 
+오류 메시지를 출력했을 때 오류 메시지가 보이게 하기 위해서는 오류 클래스에 
+다음과 같은 __str__ 메써드를 구현해야 한다. __str__ 메써드는 print(e) 처럼 오류메시지를 
+print문으로 출력할 경우에 호출되는 메써드이다.
+
+class MyError(Exception):
+    def __str__(self):
+        return "허용되지 않는 별명입니다."
+
+다시 실행해 보면 "허용되지 않는 별명입니다."라는 오류메시지가 출력되는 것을 확인할 수 있다. 
+만약 에러 발생시점에 오류메시지를 전달하고 싶다면 다음과 같이 수정해야 한다.
+
+class MyError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg
+
+
+def say_nick(nick):
+    if nick == '바보':
+        raise MyError("허용되지 않는 별명입니다.")
+    print(nick)
+
+try:
+    say_nick("천사")
+    say_nick("바보")
+except MyError as e:
+    print(e)
+
+raise MyError("허용되지 않는 별명입니다.")처럼 오류 발생시점에 메시지를 전달할 수 있다.
+
+
+
+
+
+

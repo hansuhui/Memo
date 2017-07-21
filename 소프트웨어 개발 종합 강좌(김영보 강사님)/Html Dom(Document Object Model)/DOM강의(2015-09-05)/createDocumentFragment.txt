@@ -1,0 +1,8 @@
+노드생성을 누적했다가 한번에 하는것
+
+document.createDocumentFragment()
+
+var d = document.createDocumentFragment();
+d.appendChild(document.getElementsByTagName("LI")[0]);
+d.childNodes[0].childNodes[0].nodeValue = "Milk";
+document.getElementsByTagName("UL")[0].appendChild(d);

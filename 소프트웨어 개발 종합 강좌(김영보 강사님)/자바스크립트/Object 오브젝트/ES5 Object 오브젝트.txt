@@ -1,0 +1,168 @@
+
+[ES5 Object 오브젝트]
+
+-Object 오브젝트
+추가된 것은 모두 함수이며 메소드는 없음
+따라서 new 연산자로 생성한 인스턴스에 할당되지 않으므로
+함수에 값을 파라미터로 넘겨주어 처리
+
+-인스턴스 생성 목적
+프로퍼티 이름은 같지만 인스턴스마다 다른 값을 가지려는 것
+Object의 prototype에 연결된 메소드는 모든 빌트인 오브젝트에 상속
+그런데 상속할 필요가 없다면 함수가 효율적
+
+Object 오브젝트에 추가된 함수는 이런 목적을 가진 함수
+
+
+
+[프로퍼티 리스트]
+
+Object 함수
+defindProperty() / 프로퍼티 추가 , 프로퍼티 속성 변경
+getOwnPropertyDescriptor() / 디스크립터 속성 변경
+defineProperties() / 다수의 프로퍼티 추가 , 속성 변경
+getOwnPropertyNames() / 오브젝트 이름을 배열로 반환
+keys() / 열거 가능 프로퍼티 이름 반환
+create() / 새로운 오브젝트 생성 , 반환
+getPrototypeOf() / prototype에 연결된 프로퍼티 반환
+preventExtensions() / 프로퍼티 추가 금지 설정
+isExtensible() /프로퍼티 추가 금 여부 반환
+seal() /프로퍼티 추가 , 삭제 금지 설정
+isSealed() / 프로퍼티 추가 , 삭제 금지 여부 반환
+freeze() / 프로퍼티 추가 , 삭제.변경 금지 설정
+isFrozen() / 프로퍼티 추가 , 삭제.변경 금지 여부 반환
+
+프로퍼티 디스크립터
+value / [[Value]] , 설정할 값
+writable / [[Writable]], 값 변경 가능 여부
+get / [[Get]], 값 반환 프로퍼티 함수
+set /[[Set]], 값 설정 프로퍼티 함수
+
+[defineProperty()]
+
+-개요
+Object에 프로퍼티를 추가하거나 프로퍼티 속성 변경
+
+-ES3의 프리퍼티 처리 방법
+var obj = {};
+obj.add = "더하기";
+제약없이 Object에 프로퍼티를 추가하거나 프로퍼티 값 변경 가능
+
+-ES5 방법
+프로퍼티 마다 상태를 가지고 있으므로
+
+
+[디스크립터]
+
+-프러퍼티 디스크립터(Descriptor) 타입
+필드 이름(enumerable)과 필드 값(true/false)으로 구성
+프로퍼티의 속성을 구체적으로 정의하거나 처리 기준 정의
+
+-타입 분류
+데이터 프로퍼티 디스크립터, 악세스(Access) 프로퍼티 디스크립터
+각 프로퍼티 디스크립터에 속한 필드만 같이 사용 , value와 get을 같이 사용할 수 없음
+
+-value
+오브젝트의 프로퍼티 값으로 사용될 값을 {value:123} 형태로 작성
+
+Object.defineProperty(obj,"book",{value : 123});
+
+-writable
+writable:true 이면 필드 값을 변경할 수 있지만
+writable:false 이면 필드 값을 변경할 수 없음
+
+-enumerable
+enumerable:true이면 for~in 문으로 열거할 수 있지만
+enumerable:false이면 열거 할 수 없음
+
+-configurable
+configurable:ture이면 프로퍼티를 삭제할 수 있으며
+value 이외의 속성을 변경할 수 있음
+
+
+[get 속성]
+-getter
+defineProperty() 함수를 실행하면
+book 프로퍼티에 get이 연결되고 형태는 함수
+book = {get:function(){...}}형태가 됨
+
+2.result = obj.book; 코드를 만나면
+obj.book에 연결된 get 함수가 호출되고
+함수에서 반환한 책을 result 변수에 할당
+
+obj.book.get() 형태로 후촐하면 에러 발생
+obj.book에서 책을 반환하므려  "책".get()형태로 호출하기 때문
+
+var obj = {}
+Object.defineProperty(obj,'book',{
+get:function(){
+return "책";
+}
+});
+result = obj.book;
+js.log(result);
+
+
+[set 속성]
+
+-setter
+1.obj.book - 123; 코드를 만나면
+obj.book에 연결된 set 함수가 호출되고
+123을 set 함수의 파라미터 값으로 넘겨 줌
+set 함수에서 bookValue에 123을 설정
+
+2.result = obj.book; 코드를 만나면
+obj.book에 연결된 get 함수가 호출되고
+함수에서 반환한 "123"을 result 변수에 할당
+
+[defineProperties()]
+
+-개요
+다수의 프로퍼티를 추가하거나 프로퍼티 속성 변경
+
+
+[getOwnPropertyNames()]
+
+-개요
+오브젝트의 프로퍼티 이름을 배열로 반환
+자신이 만들 프로퍼티가 대상
+
+[getPrototypeOf()]
+
+-개요
+prototype 오브젝트에 연결된 프로퍼티를 반환
+
+
+[preventExtensions()]
+
+-개요
+오브젝트에 프로퍼티 추가 금지 설정
+삭제 및 변경은 가능
+
+
+[isExtensible()]
+
+-개요
+오브젝트에 프로퍼티 추가 금지 여부
+
+
+[seal()]
+
+-개요
+오브젝트에 프로퍼티 추가,삭제 금지 설정
+삭제 금지는 프로퍼티 단위로
+
+[isSealed()]
+-개요
+오브젝트에 프로퍼티 추가,삭제 금지 여부
+
+[freeze()]
+
+-개요
+오브젝트에 프로퍼티 추가,삭제,변경 금지 설정
+
+
+[isFreezen()]
+
+-개요
+오브젝트에 프로퍼티 추가,삭제,변경 금지 여부

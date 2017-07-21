@@ -1,0 +1,55 @@
+참조 사이트
+http://blog.naver.com/diceworld/220192501207 
+
+
+setTimeout 은 일정시간이 지난 후에 함수가 실행되도록 처리하는 역활
+clearTimeout은 setTimeout를 취소하는 역활
+
+[setTimeout 사용법]
+
+[변수] = setTimeout([함수명],[함수가 실행될 시간-밀리세컨드(1000=1초)]);
+clearTimeout([변수]);
+
+
+setTimeout의 함수가 실행될 시간
+
+setTimeout의 두번째 인수인 함수가 실행될 시간은 밀리세컨드 단위
+1000 밀리세컨드가 1초이다 
+
+--------------------------------------------------------------------------
+
+예제
+
+function alertStr(){
+
+      alert("setTimeout");
+
+   }
+
+   var timer = setTimeout(alertStr, 3000);
+
+기능 실행 3초후 알침창이 실행
+
+
+
+취소 예제
+
+
+   function alertStr(){
+
+      alert("setTimeout");
+
+   }
+
+
+
+ 
+
+   var timer = setTimeout(alertStr, 3000);
+
+   clearTimeout(timer);
+
+
+
+
+

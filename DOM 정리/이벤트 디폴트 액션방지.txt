@@ -1,0 +1,13 @@
+
+[디폴트 액션]
+
+-default action
+엘리먼트의 기본 기능
+<a>를 클릭하면 href 속성의 URL로 이동
+<a href="a"></a>
+마우스로 클릭하면 a로 이동
+
+-디폴트 액션 방지
+event로 설정
+DOM : preventDefault()
+IE : returnValue = true;

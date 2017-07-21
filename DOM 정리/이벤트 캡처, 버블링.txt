@@ -1,0 +1,41 @@
+
+
+[이벤트 캡처,버블링]
+
+-이벤트 순서??
+window > Document > html > body >
+table>  tr > td 
+
+이벤트가 발생하면  발생지점에서 역순으로 따라서 올라감 (버블링)
+
+-버블링이 필요한 이유??
+공통된 이벤트가 있을때 부모위치 노드에 이벤트를 하나로 걸어서 처리함
+
+
+[이벤트 설정]
+
+-DOM형태
+add EventLisnter
+이벤트 type , click,mousedown
+이벤트 리스너(핸들러)
+버블/캡쳐 , 디폴트(capture false)
+HTML5 - "on" + 이벤트 type 가능
+
+-IE형태
+이벤트 type onclick, onmousedown
+이벤트 리스너(핸들러)
+버블/캡처 저장하지 않음
+
+
+
+
+[버블링 방지]
+
+-버블링 형태
+이벤트가 Document 방향으로 전파되는 것
+필요할 때도 있음
+자손 위치의 발생을 인식할 때
+
+-버블링 방지
+DOM stopPropagation()
+IE cancleBubble = ture

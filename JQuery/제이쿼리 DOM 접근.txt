@@ -1,0 +1,1 @@
+$("#hiddenSound")[0].innerHTML

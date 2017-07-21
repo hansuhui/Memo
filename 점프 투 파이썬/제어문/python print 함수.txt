@@ -1,0 +1,47 @@
+http://ehclub.co.kr/2423
+
+
+print("asdasd")
+
+
+d:십진수
+f:실수
+s:문자열
+
+
+print("나이:",format(23,'d'))
+
+print("이름:",format("한수희",'s'))
+
+print("몸무게:",format(70.3,'f'))
+
+
+
+
+print("이름:{0} 나이:{1} 몸무게:{2}".format("한수희",29,73))
+
+
+print('{0:6s}hello'.format('cat'))
+
+
+
+
+
+
+
+print('{0:6s}hello'.format('cat')) 
+표현은 인덱스 0의 값을 폭 6만큼 사용하여 출력하라는 것으로 'cat   hello'처럼 cat과 hello 사이에 공백이 세 개 들어갑니다.
+
+
+
+print('{0:>6s}hello'.format('cat')) 처럼 >기호를 폭 앞에 표현하면 
+오른쪽 정렬을 의미하여 '   cathello'처럼 앞에 공백이 세 개 들어갑니다.
+
+
+print('{0:<6s}hello'.format('cat')) 처럼 <기호를 폭 앞에 표현하면 왼쪽 정렬을 
+의미하는데 디폴트 정렬이 왼쪽 정렬이므로 'cat   hello'처럼 cat과 hello 사이에 공백이 세 개 들어갑니다.
+
+print('{0:06d}hello'.format(123)) 처럼 정수를 출력할 때 폭 앞에 0을 표현하면 
+폭보다 작은 자리를 차지하는 정수일 때 빈 자리를 0으로 채워서 표현합니다. 즉, '000123hello'를 출력하는 것이죠.
+
+

@@ -1,0 +1,22 @@
+
+[자동 실행 메커니즘]
+-표현식 평가
+
+var total = (1+2);
+var value  = function(){
+	return 123;
+};
+js.log("함수 호출 : ", value());
+var value  = function(){
+	return 465;
+}();
+
+js.log("자동실행 : ", value);
+value = (function(){
+	return 798;
+})();
+
+js.log(value);
+(function(){
+	js.log("ABC");
+})();

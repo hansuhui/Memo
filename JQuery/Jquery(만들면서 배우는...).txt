@@ -1,0 +1,11 @@
+제이쿼리 기초 동영상 https://vimeo.com/37719584
+
+$("선택자").text('')  : 값을 넣으면 변경 그렇지 않으면 값을 출력
+
+
+
+
+$("선택자").each(function(){$(this)}) 
+포함된 각 객체에 반복문을 작성 
+
+$("h2").each(function(){console.log($(this).text())})
