@@ -24,3 +24,16 @@ session_unregister(변수) //변수지만 $ 붙지 않음
 //세션 확인
 $세션명 = $HTTP_SESSION_VARS[세션명]
 session_is_registered(세션명)
+
+
+
+로그인 예제
+
+session_start();
+$_SESSION['user_id'] = $user_id;
+$_SESSION['user_name'] = $members[$user_id]['name'];
+
+로그아웃 예제
+
+session_start();
+session_destroy();
