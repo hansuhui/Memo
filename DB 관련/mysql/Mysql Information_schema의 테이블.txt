@@ -1,0 +1,108 @@
+- Information_schema의 테이블
+
+- Information_schema는 데이터에 의한 데이터로써 즉 메타 데이터(Meta Data)로써 데이터 사전이다. 
+   데이터 사전(Data Dictionary)이란 데이터베이스에 속한 데이터들의 정보를 저장한 것으로써, 시스템 카탈로그(System Catalog)라고도 한다. 
+
+- Information_schema의 특징 중 하나는 읽기전용(Read-only)인데, 데이터베이스의 테이블과 
+  같은 데이터로 동적으로 생성됨으로써 사용자가 직접 수정하거나 관여할 수는 없다. 
+
+
+
+| CHARACTER_SETS : 사용가능한 모든 문자 셋에 대한 정보를 가지고 있다.
+
+| COLLATIONS : 사용 가능한 모든 콜레션에 대한 정보를 가지고 있다. 콜레션은 데이터베이스에 저장된 값들을 비교, 
+ 검색하거나 정렬 등의 작업을 위해 문자들을 서로 비교할 때 사용하는 규칙들의 집합이다.
+
+| COLLATION_CHARACTER_SET_APPLICABILITY : 어떤 콜레션에 어떤 문자열 세트가 적용되는지를 표시한다.
+
+
+| COLUMNS : 테이블 칼럼의 콜레션 정보를 가지고 있다. 칼럼이라도 char, varchar, text 형태의 컬럼은 콜레션을 가진다. 비문자 타입은 콜레션을 가지지 않는다.
+
+| COLUMN_PRIVILEGES : 테이블 칼럼 권한에 대한 정보를 제공한다.
+
+| KEY_COLUMN_USAGE : 제약사항을 가지고 있는 키 컬럼에 대한 정보를 제공한다.
+
+| REFERENTIAL_CONSTRAINTS : 
+
+| ROUTINES : 스토어드 루틴에 대한 정보를 제공한다. 스토어드 루틴이란 DB상에 저장이 가능한 SQL 구문이다.(프로시저, 함수 포함)
+
+| SCHEMATA : 하나의 스키마는 하나의 데이터베이스다. SCHMATA는 데이터베이스의 정보를 제공한다.
+
+| STATISTICS : 테이블 인덱스에 대한 정보를 제공한다.
+
+| TABLES : 데이터베이스에 존재하는 테이블에 대한 정보를 제공한다.
+
+| TABLE_CONSTRAINTS : 테이블에 대한 제약사항에 대한 정보를 제공한다.
+
+| TRIGGERS : 트리거에 대한 정보를 제공한다. 트리거란 테이블에 대한 이벤트에 반응하여 자동으로 실행되는 작업을 의미한다.
+
+| USER_PRIVILEGES : 글로벌 권한에 대한 정보를 제공한다. 글로벌 권한은 모든 데이터베이스에 대한 권한이 주어지는 권한이다.
+
+| VIEWS : DB에 있는 뷰에 대한 정보를 제공한다.
+
+
+
+============================================================================================================================
+
+use INFORMATION_SCHEMA;
+
+SHOW TABLES;
+SELECT * FROM  CHARACTER_SETS;
+SELECT * FROM  COLLATION_CHARACTER_SET_APPLICABILITY;
+SELECT * FROM  COLLATIONS;
+SELECT * FROM  COLUMN_PRIVILEGES;
+SELECT * FROM  COLUMNS;
+SELECT * FROM  ENGINES;
+SELECT * FROM  EVENTS;
+SELECT * FROM  FILES;
+SELECT * FROM  GLOBAL_STATUS;
+SELECT * FROM  GLOBAL_VARIABLES;
+SELECT * FROM  INNODB_BUFFER_PAGE;
+SELECT * FROM  INNODB_BUFFER_PAGE_LRU;
+SELECT * FROM  INNODB_BUFFER_POOL_STATS;
+SELECT * FROM  INNODB_CMP;
+SELECT * FROM  INNODB_CMP_PER_INDEX;
+SELECT * FROM  INNODB_CMP_PER_INDEX_RESET;
+SELECT * FROM  INNODB_CMP_RESET;
+SELECT * FROM  INNODB_CMPMEM;
+SELECT * FROM  INNODB_CMPMEM_RESET;
+SELECT * FROM  INNODB_FT_BEING_DELETED;
+SELECT * FROM  INNODB_FT_CONFIG;
+SELECT * FROM  INNODB_FT_DEFAULT_STOPWORD;
+SELECT * FROM  INNODB_FT_DELETED;
+SELECT * FROM  INNODB_FT_INDEX_CACHE;
+SELECT * FROM  INNODB_FT_INDEX_TABLE;
+SELECT * FROM  INNODB_LOCK_WAITS;
+SELECT * FROM  INNODB_LOCKS;
+SELECT * FROM  INNODB_METRICS;
+SELECT * FROM  INNODB_SYS_COLUMNS;
+SELECT * FROM  INNODB_SYS_DATAFILES;
+SELECT * FROM  INNODB_SYS_FIELDS;
+SELECT * FROM  INNODB_SYS_FOREIGN;
+SELECT * FROM  INNODB_SYS_FOREIGN_COLS;
+SELECT * FROM  INNODB_SYS_INDEXES;
+SELECT * FROM  INNODB_SYS_TABLES;
+SELECT * FROM  INNODB_SYS_TABLESPACES;
+SELECT * FROM  INNODB_SYS_TABLESTATS;
+SELECT * FROM  INNODB_TRX;
+SELECT * FROM  KEY_COLUMN_USAGE;
+SELECT * FROM  OPTIMIZER_TRACE;
+SELECT * FROM  PARAMETERS;
+SELECT * FROM  PARTITIONS;
+SELECT * FROM  PLUGINS;
+SELECT * FROM  PROCESSLIST;
+SELECT * FROM  PROFILING;
+SELECT * FROM  REFERENTIAL_CONSTRAINTS;
+SELECT * FROM  ROUTINES;
+SELECT * FROM  SCHEMA_PRIVILEGES;
+SELECT * FROM  SCHEMATA;
+SELECT * FROM  SESSION_STATUS;
+SELECT * FROM  SESSION_VARIABLES;
+SELECT * FROM  STATISTICS;
+SELECT * FROM  TABLE_CONSTRAINTS;
+SELECT * FROM  TABLE_PRIVILEGES;;
+SELECT * FROM  TABLES;
+SELECT * FROM  TABLESPACES;
+SELECT * FROM  TRIGGERS;
+SELECT * FROM  USER_PRIVILEGES;
+SELECT * FROM  VIEWS;
