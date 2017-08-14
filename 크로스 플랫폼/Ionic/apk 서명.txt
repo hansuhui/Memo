@@ -1,0 +1,4 @@
+명령 프롬프트 관리자 모드로 해야함
+
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore [키스토어경로] [서명할apk경로] [키스토어별명]

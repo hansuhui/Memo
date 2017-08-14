@@ -1,0 +1,8 @@
+
+C:\Users\Han\AppData\Local\Android\sdk\build-tools\25.0.2 폴더안에
+
+zipalign파일을 이용
+
+zipalign -f -v 4 올린.apk 나올.apk
+
+
