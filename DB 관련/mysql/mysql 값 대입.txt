@@ -1,0 +1,5 @@
+declare v_flag       VARCHAR(2);
+declare v_search      VARCHAR(50);
+declare v_currentNo  VARCHAR(50);
+
+SELECT  flag,search,currentNo into v_flag,v_search,v_currentNo  FROM c_setcode WHERE idx = v_idx;

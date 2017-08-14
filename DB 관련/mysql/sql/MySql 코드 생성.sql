@@ -1,0 +1,46 @@
+CREATE DEFINER=`cuubdbman`@`%` FUNCTION `FN_GET_CODE`(v_idx int) RETURNS varchar(50) CHARSET utf8
+BEGIN
+
+	 # 코드 조회 관련 변수
+	  
+	   declare v_flag       VARCHAR(2);
+	   declare v_search		VARCHAR(50);
+	   declare v_currentNo  VARCHAR(50);
+
+	   # 임시 변수
+	   declare v_currentDate   VARCHAR(50);
+
+	   declare v_returnValue varchar(50);
+
+	   #초기화
+	   set v_returnValue := '';
+   
+	   #코드 관리 테이블
+	   #select * from c_setcode 
+
+
+	  # 코드 조회
+      SELECT  flag,search,currentNo into v_flag,v_search,v_currentNo  FROM c_setcode WHERE idx = v_idx;
+	   
+	   
+	   
+	  if(v_idx =1) then 
+		  set v_currentDate =  DATE_FORMAT(NOW(), "%Y%m%d");
+		  if(v_search = v_currentDate) then 
+			 set v_currentNo :=  cast(cast(v_currentNo as SIGNED)+1 as BINARY);
+			 set v_currentNo :=  cast(replicate('0', 4 -len(v_currentNo))+ cast(v_currentNo as BINARY) as BINARY);
+			 set v_returnValue := cast(v_search+ v_currentNo as BINARY);
+			 update  c_setcode set currentNo = v_currentNo where idx = v_idx;
+		  else
+			set v_currentNo :=  '000000';
+			set v_currentNo :=  cast(cast(v_currentNo as SIGNED)+1 as BINARY);
+			 set v_currentNo :=  cast(replicate('0', 4 -len(v_currentNo))+ cast(v_currentNo as BINARY) as BINARY);
+			 set v_returnValue := cast(v_currentDate+ v_currentNo as BINARY);
+			 update  c_setcode set currentNo = v_currentNo , search = v_currentDate where idx = v_idx;
+			 end if;
+	  end if;
+
+  
+
+	RETURN v_returnValue;
+END
