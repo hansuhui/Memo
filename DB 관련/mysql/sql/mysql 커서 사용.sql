@@ -1,0 +1,30 @@
+CREATE DEFINER=`cuubdbman`@`%` FUNCTION `FN_GET_COLUMNS`(v_table VARCHAR(50)) RETURNS varchar(5000) CHARSET utf8
+BEGIN
+	DECLARE v_return  VARCHAR(5000);
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE v_Column varchar(500);
+    
+    
+    DECLARE ORDER_OPTION_CURSOR CURSOR FOR SELECT lower(COLUMN_NAME) as COLUMN_NAME  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = v_table;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN ORDER_OPTION_CURSOR;
+	  LOOP_ :LOOP
+		FETCH ORDER_OPTION_CURSOR INTO v_Column;
+        IF done THEN
+			LEAVE LOOP_;
+		END IF;
+        BEGIN
+		 IF v_return = '' THEN 
+		   SET v_return := v_Column;
+		ELSE   
+		  SET v_return := CONCAT(v_return,',',v_Column) ;
+		END IF;     
+		END;
+	  END LOOP LOOP_;
+		
+	  CLOSE ORDER_OPTION_CURSOR;
+   
+	RETURN v_return;
+END
