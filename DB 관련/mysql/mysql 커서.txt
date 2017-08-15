@@ -1,0 +1,73 @@
+CREATE PROCEDURE curdemo()
+
+BEGIN
+
+  DECLARE done INT DEFAULT FALSE;
+
+  DECLARE vRowCount INT DEFAULT 0 ;
+
+  DECLARE vUserID varchar(20);
+
+  
+
+  -- 커서로 만들 데이타 값들
+
+  DECLARE cur1 CURSOR FOR SELECT Userid FROM Member;
+
+ 
+
+  -- 커서가 마지막에 도착할 때의 상태값
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+
+
+  -- 커서를 연다. 
+
+  OPEN cur1;
+
+ 
+
+  -- Loop 가 돌아간다. 
+
+  read_loop: LOOP
+
+ 
+
+  -- 커서로 만드어진 데이타를 돌린다. 
+
+  FETCH cur1 INTO vUserID ;
+
+ 
+
+    SET vRowCount = vRowCount +1 ; 
+
+    
+
+    -- 커서가 마지막 로우면 Loop를 빠져나간다. 
+
+    IF done THEN
+
+      LEAVE read_loop;
+
+    END IF;
+
+ 
+
+  END LOOP;
+
+
+
+  SELECT vRowCount ; 
+
+  -- 커서를 닫는다. 
+
+  CLOSE cur1;
+
+ 
+
+END;
+
+
+
+출처: http://bizadmin.tistory.com/entry/MySQL-Fetch-Cursor-문-사용방법 [Happy Resource]
