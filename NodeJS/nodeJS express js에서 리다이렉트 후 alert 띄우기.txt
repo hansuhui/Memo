@@ -1,0 +1,5 @@
+router.post('/test', function(req, res, next) {
+	if(condition){
+		res.send('<script type="text/javascript">alert("오류발생");location.href="/";</script>');
+	}
+});
