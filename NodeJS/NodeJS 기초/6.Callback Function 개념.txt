@@ -1,0 +1,108 @@
+https://velopert.com/255
+
+
+[Callback function 이 뭘까?]
+
+자바스크립트에서는 , 함수(function)는 일급 객체입니다. 즉,함수는 Object 타입이며 다른
+일급 객체와 똑같이 사용 될 수 있습니다.(String , Array , Number 등등) function 자체가 객체이므로
+변수안에 담을 수 도 있고 인수로서 다른 함수에 전달해 줄소도 있고, 함수에서 만들어 질 수도 있고 
+반환 될 수도 있습니다.
+
+Callback function은 , 특정 함수에 매개변수로서 전달된 함수를 지칭합니다.
+그리고 그 Callback function은 그 함수를 전달받은 함수 안에서 호출되게 됩니다.
+이해를 돕기 위하여 jQuery에서 사용된 callback function 예제를 살펴봅시다.
+
+
+// 보시면, click 메소드의 인수가 변수가 아니라 함수이죠?
+// click 메소드의 인수가 바로 Callback 함수입니다.
+$("#btn_1").click(function() {
+  alert("Btn 1 Clicked");
+});
+
+
+설명: click 메소드에 이름이 없는 callback function을 인수로 전달해줍니다.
+그리고 jQuery 안의 click 메소드에서는,  마우스 클릭이 있으면 
+callback function을 호출하게 설정을 하지요.
+
+
+Node.js 에선 Callback 함수가 매우 많이 사용된됩니다.
+콜백의 개념이 어느정도 이해가 됐다면 Node.js에서의 예제를한번 살펴보겠습니다.
+
+
+[Blocking Code]
+
+첫번째 예제는 Callback 함수가 사용되지 않는 , Blocking Code 예제입니다.
+말그대로 어떤 작업을 실행하고 기다리면서도 코드가 막히게됩니다.
+우선, input.txt 라는 텍스트파일을 생성해줍니다.
+
+그 다음, main.js를 작성하세요.
+
+
+================================================
+
+var fs = require("fs");
+
+var data = fs.readFileSync('input.txt');
+
+console.log(data.toString());
+console.log("Program has ended");
+
+================================================
+
+이제 결과값을 확인해 볼까요?
+
+$ node main.js
+
+
+보다시피, 텍스트를 출력하고 나서 프로그램이 종료되었다는 문구를 출력합니다.
+
+
+[Non-Blocking Code]
+
+두번째 예제는 Callback 함수가 사용된 Non-Blocking Code 예제입니다.
+위 예제와는 반대로 함수가 실행될 때, 프로그램이 함수가 끝날때까지 기다리지 않고
+바로 그 아래에 있는 코드들을 실행하게 되지요. 그 다음에 함수에 있던 작업이 다 끝나면
+콜백함수를 호출합니다.
+
+input.txt는 위 예제에서 사용한 똑같은 파일을 사용합니다.
+
+main.js 를 이렇게 수정해보세요.
+
+
+================================================
+
+var fs = require("fs");
+
+fs.readFile('input.txt', function (err, data) {
+    if (err) return console.error(err);
+    console.log(data.toString());
+});
+
+console.log("Program has ended");
+
+================================================
+
+모든 Node 어플리케이션의 비동기식 함수에서는 첫번째 매개변수로는 error를 
+, 마지막 매개변수로는 callback 함수를 받습니다.
+
+fs.readFile() 함수는 비동기식으로 파일을 읽는 함수이고, 도중에 에러가 발생하면 err 객체에 
+에러 내용을 담고 그렇지 않을시에는 파일 내용을 다 읽고 출력합니다.
+
+readFile() 메소드가 실행 된 후, 프로그램이 메소드가 끝날때까지 대기하지 않고 곧바로
+다음 명령어로 진행하였기 때문에, 프로그램이 끝났다는 메시지를 출력 한 후에, 
+텍스트 내용을 출력했습니다.
+
+그렇다고 해서 프로그램이 끝나고 나서 텍스트를 출력한 것은 아닙니다.
+프로그램이 실질적으로 끝난건 텍스트가 출력된 후 입니다.
+
+만약에 readFile() 다음에 실행되는 코드가 그냥 console.log() 이 아니라
+readFile() 보다 작업시간이 오래걸리는 코드였다면 텍스트 출력을 먼저 하게 되겠죠?
+
+
+
+
+
+
+
+
+

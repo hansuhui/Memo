@@ -1,0 +1,101 @@
+https://velopert.com/210
+
+[Node.js Application 만들기]
+
+- 1단계 : 필요한 모듈 import 하기
+
+어플리케이션에 필요한 모듈을 불러올땐 require 명령을 사용합니다.
+다음 코드는 HTTP 모둘을 불러오고 반환되는 HTTP 인스턴스를 http 변수에 저장합니다.
+
+======================================================================
+
+var http = require("http");
+
+
+======================================================================
+
+- 2단계 : 서버 생성하기
+
+이번 단계에선 , 1단계에서 만들은 http 인스턴스를 사용하여 http.createServer() 메소드를 실행합니다.
+그리고 listen 메소드를 사용하여 포트 8081과 bind 해줍니다.
+http.createServere()의 매개변소로는 request와 response를 매개변소로 가지고 있는 함수를 넣어줍니다.
+다음 코드는 언제나 "HelloWorld"를 리턴하는 포트 8081의 웹서버를 생성해줍니다.
+
+======================================================================
+
+http.createServer(function(request,response){
+
+   /*
+     HTTP 헤더 전송
+     HTTP Status : 200(OK)
+     Content Type : text/plain
+   */
+   response.writeHead(200,{'Content-Type': 'text/plain'});
+
+   /*
+     Response Body 를 "Hello Wolrd"로 설정
+   */
+   response.end("Hello Wolrd\n");
+
+}).listen(8081);
+
+======================================================================
+
+
+- 3단계 : 서버 테스트 해보기
+
+1단계와 2단계를 파일 main.js에 합쳐서 작성해보세요
+
+======================================================================
+
+http.createServer(function(request,response){
+
+   /*
+     HTTP 헤더 전송
+     HTTP Status : 200(OK)
+     Content Type : text/plain
+   */
+   response.writeHead(200,{'Content-Type': 'text/plain'});
+
+   /*
+     Response Body 를 "Hello Wolrd"로 설정
+   */
+   response.end("Hello Wolrd\n");
+
+}).listen(8081);
+
+console.log("Server running at http://127.0.0.1:8081");
+
+======================================================================
+
+서버를 실행해 봅니다.
+
+node main.js
+
+서버가 성공적으로 실행됐다면 다음 텍스트가 출력됩니다.
+
+Server running at http://127.0.0.1:8081
+
+브라우저에서 http://127.0.0.1:8081/ 을 열으면 결과를 확일 할 수 있습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
