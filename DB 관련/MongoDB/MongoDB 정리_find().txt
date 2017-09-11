@@ -1,0 +1,315 @@
+[DB 실행]
+
+CMD 창을 열고
+C:\Program Files\MongoDB\Server\3.4\bin 
+폴더 안에 mongod 실행 
+
+[DB 명령창]
+
+CMD 창을 열고
+C:\Program Files\MongoDB\Server\3.4\bin 
+폴더 안에 mongo 실행 
+
+
+====================================================================================
+
+[구조]
+
+- SERVER
+ -- DATABAST
+  --- COLECTION
+   ---- DOCUMENT  
+     ---- {Key:value}
+
+
+
+[DataBase 생성: use]
+
+> use 디비명
+
+디비명이 있다면 사용 없다면 생성 후 사용
+
+
+
+[데이터베이스 리스트 보기]
+
+> show dbs
+
+최소 한개의 Document를 추가해야 리스트에 추가됨.
+
+[Database 제거]  
+
+> db.dropDatabase()
+
+
+[Collection 생성]
+
+db.createCollection()
+
+
+Collection을 생성할때는 db.createColliection(name,[options]) 명령어를 사용합니다.
+
+name은 생성하려는 컬렉션의 이름이며 option은 document 타입으로 구성된 해당 컬렉션의 설정값입니다.
+options 매개변수는 선택적인(Optional) 매개변수로서 생략하셔도 되고, 필요에 따라 사용하면 됩니다.
+
+
+- Option -  
+
+Filed  / Type / 설명
+
+capped / Boolean / 이 값을 true로 설정하면 capped collection을 활성화 시킵니다. 
+		   Cappend collection이란 , 고정된 크기(fiexed size)를 가진 컬렉션으로서 ,
+		   siez를 초과되면 가장 오래된 데이터를 덮어씁니다. 
+		   이것을 ture로 설정하면 size를 꼭 설정해야합니다.
+
+siez / number / Capped collection을 위해 해당 컬렉션의 최대 사이즈(maximun size)를 ~ bytes로 지정합니다.
+
+max / number / 해당 컬렉션에 추가할 수 있는 최대 갯수를 설정합니다.
+
+
+[예제1: test 데이터베이스에 books 컬렉션을 옵션없이 생성합니다.]
+
+> use test
+
+> db.createCollection("books")
+{ "ok" : 1 }
+
+> db.createCollection("articles", {
+    capped: true,
+    size: 6142800,
+    max: 10000
+    })
+{ "ok" : 1 }
+
+> db.people.insert({"name": "velopert"})
+
+따로 생성하지 않아도 입력하면 생성됨
+
+[collection 리스트]
+
+> show collections
+
+
+[Collection 제거]
+
+db.COLLECTION_NAME.drop()
+db.컬렉션명.drop()
+
+
+[Document 추가]
+
+db.COLLECTION_NAME.insert(document)
+db.컬렉션명.insert(document)
+
+
+> db.bookes.insert({"name":"NodeJS Guide", "author": "Velopert"})
+
+> db.books.insert([
+    {"name": "Book1", "author": "Velopert"},
+    {"name": "Book2", "author": "Velopert"}
+    ]);
+
+
+
+[컬렉션의 다큐먼트 리스트 확인]
+
+> db.COLLECTION_NAME.find() 
+
+> db.books.find()
+
+> db.books.find({"name":"Book1"})
+
+[Document 제거]
+
+> db.COLLECTION_NAME.remove(criteria,juseONE)
+
+parameter / type / 설명
+
+criteria / document / 삭제할 데이터의 기준 값(criteria) 입니다. 
+		      이 값이 {} 이면 컬렉션의 모든 데이터를 제거합니다.
+
+juseOne / boolean / 선택적(Optional) 매개변수이며 이 값이 true면 1개의 다큐먼트만 제거합니다.
+		    이 매개변수가 생략되면 기본값은 false로서, criteria에 해당되면 
+         	    모든 다큐번트 를 제거합니다.
+
+
+-- 삭제전 확인 하기 !!
+> db.books.find({"name":"Book1"})
+
+> db.books.remove({"name":"Book1"})
+
+
+[Document 조회]
+
+> db.COLLECTION_NAME.find(query,projection)
+
+parameter / Type / 설명
+
+query / document / Optional(선택적). 다큐먼트를 조회할때 기준을 정합니다. 
+		   기준이 없이 컬렉션에 있는 모든 다큐먼트를 조회할 때는 이
+		   매개변수를 비우거나 비어있는 다큐먼트{}를 전달하세요.
+ㅇ
+projection / document / Optional. 다큐먼트를 조회할 때 보여질 field를 정합니다.
+
+
+- 전체 조회
+> db.COLLECTION_NAME.find()
+
+- 들여쓰기 적용
+> db.COLLECTION_NAME.find().pretty()
+
+
+- 값으로 조회 (writer 이 Velopert 인것만 조회)
+> db.COLLECTION_NAME.find({ "writer": "Velopert"}).pretty()
+
+
+- likes 값이 30 이하인 Document 조회
+> db.COLLECTION_NAME.find( { "likes": { $lte: 30 } } ).pretty()
+
+
+- likes 값이 10보다 크고  30 이하인 Document 조회
+> db.COLLECTION_NAME.find( {"likes”: { $gt: 10, $lt: 30 } } ).pretty()
+
+
+- writer 값이 배열 ["Alpha","Bravo"] 안에 속하는 값인 Document 조회 -
+> db.COLLECTION_NAME.find( {"writer": { $in: ["Alpha","Bravo" ] } } ).pretty()
+
+- title 값이 "article01" 이거나, writer 값이 "Alpha" 인 Document 조회 -
+> db.COLLECTION_NAME.find({ $or: [ { "title": "article01" }, { "writer": "Alpha" } ] })
+
+- writer 값이 "Velopert" 이고 likes 값이 10 미만인 Document 조회 -
+
+> db.COLLECTION_NAME.find( { $and: [ { "writer": "Velopert" }, { "likes": { $lt: 10 } } ] } )
+이렇게도 가능합니다: > db.COLLECTION_NAME.find( { "writer": "Velopert", "likes": { $lt: 10 } } )
+
+================================================================================================
+
+[비교(Comparoson) 연산자]
+
+operator / 설명
+
+$eq / (equals) 주어진 값과 일치하는 값
+
+$gt / (greater than)  주어진 값보다 큰 값
+
+$gte / (greather than or equals) 주어진 값보다 크거나 같은 값
+
+$It / (less than ) 주어진 값보다 작은 값 
+
+$lte / (less than or equals) 주어진 값보다 작거나 같은 값
+
+$ne / (not equal) 주어진 값과 일치하지 않는 값
+
+$in / 주어진 배열 안에 속하는 값
+
+$nin / 주어진 배열 안에 속하지 않는 값
+
+
+
+[논리 연산자]
+
+operator / 설명
+
+$or / 주어진 조건중 하나라도 true 일 때 true
+
+$and / 주어진 모든 조건이 true 일 때 true
+
+$not / 주어진 조건이 false 일 때 true
+
+$ nor / 주어진 모든 조건이 false 일때 true
+
+
+
+
+[$regex 연산자]
+
+$regex 연산자를 통하여 Document를 정규식을 통해 찾을 수 있습니다.
+이 연산자는 다음과 같이 사용합니다.
+
+{<field>: {$regex : /pattern/ , $options:'<options>'}}
+{<field>: {$regex : 'pattern' , $options:'<options>'}}
+{<field>: {$regex : /pattern/<options>}}
+{<field>: /pattern/<options>}
+
+
+- options  -
+option /설명
+
+i / 대소문자 무시
+
+m / 정규식에서 anchor(^)를 사용 할 때 값에 \n이 있다면 무력화
+
+x / 정규식 안에 있는 whitespace를 모두 무시
+
+s / dot(.)사용 할 때 \n을 포함해서 매치
+
+
+
+- 정규식 article0[1-2] 에 일치하는 값이 title 에 있는 Document 조회 -
+> db.COLLECTION_NAME.find({"title": /article0[1-2]/})
+
+
+[$where 연산자]
+
+$where 연산자를 통하여 javascript expression 을 사용 할 수 있습ㄴ디ㅏ.
+
+- 예제 : comments filed 가 비어 있는 Document 조회 -
+> db.COLLECTION_NAME.find({ $where : 'this.comments.length == 0'})
+
+
+[$elemMatch 연산자]
+
+$elemMatch 연산자는 Embedded Documents 배열을 쿼리할때 사용됩니다. 
+
+{
+  title : "title"
+, comments [{ name : "이름"} , { name : "이름2"}]
+}
+
+
+- comments 중 “Charlie” 가 작성한 덧글이 있는 Document 조회 -
+> db.articles.find({"comments":{$elemMatch:{"name": "Charlie"}}})
+
+
+Embedded Document 배열이 아니라 아래 Document의 name 처럼 한개의 
+Embedded Document 일 시에는,
+  {
+    "username": "velopert",
+    "name": { "first": "M.J.", "last": "K."},
+    "language": ["korean", "english", "chinese"]
+  }
+
+다음과 같이 쿼리합니다.
+db.user.find({"name.first":"M.J."})
+
+그리고 Document의 배열이아니라 그냥 배열일 시에는 다음과 같이 Query 합니다.
+
+> db.users.find({ "language": "korean"})
+
+
+================================================================================================
+
+[projection]
+
+find() 메소드의 두번째 parameter 인 projection에 대하여 알아보도록 하겠습니다.
+쿼리의 결과값에서 보여질 field를 정하는 건데요, 꽤나 간단합니다. 예제를 통해 배워볼까요?
+
+- 예제12 : article의 title과 content 만 조회 -
+> db.articles.find({},{"_id":false,"title": true,"content":true})
+
+
+[$slice 연산자]
+
+projector 연산자 중 $slice 연산자는 Embeded Document 배열을 읽을 때 limit 설정을 합니다.
+
+- 예제 : title 값이 article03인 Document에서 덧글은 하나만 보이게 출력 -
+> db.articles.find({"title" : "article03"},{comments:{$slice:1}})
+
+
+
+
+
+
+
+
+
