@@ -1,0 +1,207 @@
+https://velopert.com/294
+
+
+[Express 프레임워크 사용해보기]
+
+Node.js로 웹서버에 필요한 기능을 하나하나 다 짜면, 사실상 조금 귀찮은 것을이 많습니다.
+라우팅에, 세션관리에 이것저것 골치 아프겠죠?
+
+NodeJS의 웹프레임워크를사용하면 간편하게 웹서버를 구축할 수 있습니다.
+웹프레임워크 종류는 대표적으로 Express, Koa , Hapi 등이 있는데요
+이 포스트에선 Express를 사용해보도록 하겠습니다.
+
+
+
+[디렉토리 구조 이해하기]
+
+express_tutorial/
+├── package.json
+├── public
+│   └── css
+│   └── style.css
+├── router
+│   └── main.js
+├── server.js
+└── views
+ ├── about.html
+ └── index.html
+
+
+[package.json 파일 생성]
+
+프로젝트의 이름,버전 , 의존패키지 리스트 등 정보들에 대한 정보를 담고있는 파일입니다.
+
+
+{
+  "name": "express-tutorial",
+  "version": "1.0.0",
+  "dependencies": 
+  {
+    "express": "~4.13.1",
+    "ejs": "~2.4.1"    
+  }
+}
+
+
+[NPM 으로 Dependency(의존 패키지)설치]
+
+package.json 을 생성 하셨으면 다음 명령어로 의존패키지들을 설치하세요.
+
+$ num install
+
+
+[Express 서버 생성]
+
+저희는 package.json 파일을 생성했고 의존 패키지들도 모두 설치하였습니다. 
+이제 서버를 만들어볼 차례입니다.
+
+server.js 파일을 생성하고 다음 코드를 입력하세요.
+
+=====================================================================
+
+var express = require('express');
+var app = express();
+var server = app.listen(3000,function(){
+   console.log("Express Server has started on port 3000");
+});
+
+
+=====================================================================
+
+아무것도 하지 않은 웹서버입니다.
+
+$ node server.js
+
+를 입력하면 포트 3000으로 웹서버를 열고, 페이지에 들어가면 Cannot GET/
+이라는 텍스트가 나타납니다.
+왜냐구요? Router를 아직 정의하지 않았으니까요
+
+
+[Router로 Request 처리하기]
+
+현재 우리는 서버를 돌리기 위해 필요한 것을 모두 갖추었습니다.
+이제 브라우저에서 Request가 왔을때 서버에서 어떤 작업을 할 지 Router를 통하여 
+설정해주어야합니다.
+
+자 간단한 router를 작성해 봅시다.
+
+=====================================================================
+
+app.get('/', function(req , res){
+   res.send('Hello World');
+});
+
+=====================================================================
+
+이 코드를 추가해주고 server.js를 재실행하면, 
+http://localhost:3000/ 으로 접속하였을 때, Hello World 를 반환합니다.
+
+진짜 라우터를 작성해볼 차례입니다.
+
+라우터 코드와 서버 코드는 다른 파일에 작성하는 것이 좋은 코딩 습관입니다.
+
+router 라는 폴더를 만들고 그 안에 main.js를 생성해주세요.
+
+=====================================================================
+
+module.exports = function(app){
+  app.get('/',function(req , res){
+     res.render('index.html');
+  });
+  app.get('/about',function(req , res){
+     res.render('about.html');
+  });
+}
+
+=====================================================================
+
+파일을 저장하고 아직 코드를 실행하진 마세요.
+
+module.exports 는 우리가 router 코드를 따로 작성했기에, server.js에서
+모듈로서 불러올 수 있도록 사용된답니다.
+
+
+
+[HTML 페이지를 띄우기]
+
+HTML 페이지를 띄우기 위해선 우선 html 파일이 있어야겠지요?
+
+views/ 디렉토리를 만들고 , 그 안에 index.html 과 about.html 을 생성해주세요.
+
+<html>
+  <head>
+    <title>Main</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    Hey, this is index page
+  </body>
+</html>
+<html>
+  <head>
+    <title>About</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    About... what?
+  </body>
+</html>
+
+그 후 , 다시 server.js를 업데이트 해봅시다.
+
+
+=====================================================================
+
+var express = require('express');
+var app = express();
+var router = require('./router/main')(app);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+var server = app.listen(3000,function(){
+   console.log("Express Server has started on port 3000");
+});
+
+
+=====================================================================
+
+3번째즐 : 라우터 모듈인 main.js 를 불러와서 app에 전달해줍니다.
+5번째줄 : 서버가 읽을 수 있도록 HTML의 위치를 정의해 줍니다.
+6번째,7번째 줄 : 서버가 HTML 렌더링 할 때 , EJS 엔진을 사용하도록 설정합니다.
+
+[정적파일(Static files) 다루기]
+
+정적파일이란? HTML에서 사용되는 .js 파일, .css 파일 ,image 파일 등을 가르킵니다.
+서버에서 정적파일을 다루기 위해선 , express.static() 메소드를 사용하면 됩니다.
+
+public/css 디렉토리를 만드시고 그 안에 style.css 파일을 생성해주세요.
+
+
+body{
+    background-color: black;
+    color: white;
+}
+
+그 후 , server의 11번줄 아래에 해당 코드를 추가해주세요.
+
+
+app.use(express.static('public'));
+
+이제 서버를 실행하고 
+
+$ node server.js
+
+http://localhost:3000/ 에 접속했을 때 css 가 적용된 페이지가 나타나면 성공입니다.
+
+다음 강좌에선 Express.js 를 추가적으로 활용하는 방법에 대해서 포스트 하도록하겠습니다.
+
+
+
+
+
+
+
+
+

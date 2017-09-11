@@ -1,0 +1,14 @@
+﻿<h1>Loop it!</h1>
+ <ul>
+      <% for(var i=0; i<length; i++){ %>
+          <li>
+              <%= "LOOP" + i %>
+          </li>
+      <% } %>
+</ul>
+
+<% if(username){ %>
+    <h2>환영합니다. <%= username %> (이름 : <%= name %>)</h2>
+<% }else{ %>
+    <h2> 로그인을 해주세요. </h2>
+<% } %>
