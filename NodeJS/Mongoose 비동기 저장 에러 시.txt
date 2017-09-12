@@ -1,0 +1,7 @@
+mongoose v4 이상의 버전부터 mongoose의 save()와 쿼리같은 비동기 동작에서는 Promises/A+ conformant pomises를 반환하게 되어있다.
+만약에 “Mongoose: mpromise (mongoose’s default promise library) is deprecated
+, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html” 와 같은 메세지가 보인다면,
+
+mongoose.Promise = global.Promise;
+
+위의 코드를 require(‘mongoose’) 아래에 넣어주자.

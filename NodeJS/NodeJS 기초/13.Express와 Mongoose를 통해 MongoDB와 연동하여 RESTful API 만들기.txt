@@ -1,0 +1,507 @@
+https://velopert.com/594
+
+
+[소개]
+
+Mongoose는 MongoDB 기반 ODM (Object Data Mappng) Node.JS 전용 라이브러리입니다.
+ODM은 데이터베이스와 객체지향 프로그래밍 언어 사이 호환되지 않는 데이터를 변환 하는
+프로그래밍 기법입니다. 즉 MongoDB에 있는 데이터를 여러분의 
+Application에서 JavaScript 객체로 사용 할 수 있도록 해줍니다.
+
+
+[프로젝트 생성 및 패키지 설치]
+
+Mongoose를 배워가면서, 간단한 Express 기반의 RESTful 프로젝트를 만들어보도록 하겠습니다.
+
+
+[프로젝트 생성]
+
+우선 npm init을 통하여 package.json을 생성하세요. 엔터를 계속 눌러 
+설정값은 기본 값으로 하시면 됩니다.
+
+npm init
+
+
+[패키지 설치]
+
+프로젝트에서 사용 할 패키지를 설치하겠습니다.
+
+1.express : 웹 프레임워크
+
+2. bodyparser : 데이터 처리 미들웨어
+
+3. monsoose : MongoDB 연동 라이브러리
+
+npm install -- save express mongoose body-parser
+
+
+명령어를 입력하시면 자동으로 패키지를 설치하고 , 
+package.json 파일에 패키지 리스틀 추가합니다.
+
+
+[서버 설정하기]
+
+- 구조 -
+
+먼저 저희가 만들 프로젝트의 디렉토리 구조를 살펴봅시다.
+
+- models / 
+-- book.js
+
+- node_modules/
+
+- routes
+-- index.js
+
+- app.js
+- package.josn
+
+이 파일들은 강좌를 진행하면서 만들도록 하겠습니다.
+
+
+[Express 로 이용한 웹서버 생성]
+
+mongoose를 사용하기 위해서 우선 book 데이터를 조회,수정,삭제 하는 
+간단한 RESTful 웹서버를 작성해보겠습니다.
+
+
+이 서버에 만들 API 목록은 다음과 같습니다.
+
+ROUTE   / MOTHOD / DESCRIPTION
+
+/api/books	/ GET   / 모든 book 데이터 조회
+
+/api/books/:book_id  / GET  / _id 값으로 데이터 조회
+
+/api/books/author/:author  / GET / author 값으로 데이터 조회
+
+/api/books  / POST / book 데이터 생성
+
+/api/books/:book_id / PUT / book 데이터 수정
+
+/api/books/:book_id / DELETE  / book 데이터 제거
+ 
+
+우선 서버의 메인 파일인 app.js를 작성하세요.
+
+================================================================================================
+
+// [LOAD PACKAGES]
+
+var express 	=  require("express");
+var app 	=  express();
+var bodyParser 	=  require("body-parser");
+var mongoose	=  require("mongoose");
+
+
+// [CONFIGURE APP TO USE bodyParser]
+
+app.use(bodyParser.urlencoded({ extended : true }));
+app.use(bodyParser.json());
+
+// [CONFIGURE SERVER PORT]
+var port = precess.env.PORT || 8080;
+
+// [CONFIGURE ROUTER]
+var router = require("./routes")(app);
+
+// [RUN SERVER]
+var server = app.listen(port,function(){
+   console.log("Express server has started on port "+ port);
+});
+
+
+================================================================================================
+
+line 17 에서 router 모듈을 불러오게 했죠? 이제 router를 작성해 봅시다.
+
+routers/index.js 에 다음 코드를 입력하세요.
+
+================================================================================================
+
+module.exports = function(app)
+{
+   // GET ALL BOOKS
+   app.get("/api/books",function(req,res){
+     res.end();
+   });
+
+
+   // GET SINGLE BOOK
+   app.get("/api/books/:book_id",function(req,res){
+     res.end();
+   });
+
+
+   // GET BOOK BY AUTHOR
+   app.get("/api/books/author/:author".function(req,res){
+     res.end();
+   })
+
+
+   // CREATE BOOK
+   app.post("/api/books",function(req,res){
+     res.end();
+   });
+
+
+   // UPDATE THE BOOK
+   app.put("/api/books/:book_id".function(req,res){
+      res.end();
+   });
+
+
+   // DELETE BOOK
+   app.delete("/api/books/:book_id",function(req,res){
+     res.end();
+   });
+}
+
+================================================================================================
+
+
+[MongoDB 서버 연결]
+
+MongoDB 서버에 연결하는 방법은 다음과 같습니다.
+
+================================================================================================
+
+var mongoose	=  require("mongoose");
+
+// [CONFIGURE mongoose]
+
+// CONNECT TO MONGODB SERVER
+var db = mongoose. connection;
+db.on("error", console.error)l
+db.once("open",function(){
+  // CONNECTED TO MONGODB SERVER
+  console.log("Connected to mongod server");
+});
+
+mongoose.connect("mongodb://localhos/poixgks");
+
+
+================================================================================================
+
+mongoose.connect() 메소드로 서버에 접속을 할 수 있으며, 따로 설정 할 파라미터가 있다면
+다음과 같이 uri를 설정하면 됩니다.
+
+mongoose.connect("mongodb://username:password@host:port/database?options...");
+
+이 강좌에서는 poixgks를 사용하도록 하겠습니다.
+
+
+[Schema & Model]
+
+schema는 document의 구조가 어떻게 생겼는지 알려주는 역할을 합니다.
+
+schema를 만드는 방법은 다음과 같습니다. 이 코드를 models/book.js 에 입력하세요
+
+================================================================================================
+
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+
+var bookSchema = new Schema({
+    title : String,
+    author : String,
+    published_date : {type:Date , default : Date.now
+});
+
+module.exports  = mongoose.model("book", bookSchema);
+
+================================================================================================
+
+schema 에서 사용되는 SchemaType은 총 8종류가 있습니다.
+
+1. String
+
+2. Number
+
+3. Date
+
+4. Buffer
+
+5. Boolean
+
+6. Mixed
+
+7. Objectid
+
+8 . Array
+
+이를 사용하는 예제는 매뉴얼을 참고하세요.
+
+http://mongoosejs.com/docs/schematypes.html
+
+
+[model]
+
+model은 데이터베이스에서 데이터를 읽고, 생성하고 수정하는 프로그래밍 인터페이스를 정의합니다.
+
+// DEFINE MODEL
+
+var Book = mongoose.model("book",bookSchema);
+
+첫번째 인자 book은 해당 document가 사용 할 collection의 단수적 표현입니다. 
+즉, 이 모델에서는 books cooolection을 사용하게 되겠죠. 이렇게 자동으로 단수적 표현을
+복수적 (plural) 형태로 변환하여 그걸 collection 이름으로 사용합니다. 
+collection 이름을 plural 형태로 사용하는건 mongodb의 네이밍컨벤션 중 하나입니다.
+
+만약에 , collection 이름을 임의로 정하고 싶다면 , schema를 만들 때 따로 설정해야 합니다.
+
+var dataSchema = new Schema({...},{collection : "컬렉션명"});
+
+model을 만들고 나면, model을 사용하여 같이 데이터를 데이터베이스에 저장하거나 조회 할 수 있습니다.
+
+var book = new Book({
+    name : "NOdeJS Tutorial",
+    author : "velopert"
+});
+
+
+book.save(function(err , book){
+   if(err) return colose.error(err);
+   console.dir(book)l
+});
+
+
+저희는 model을 models/book.js 를  모듈화해서 만들게 할 것이므로, 다음과 같이 해당파일의
+마지막줄에서 model을 모듈화하세요.
+
+module.exports = mongoose.model('book', bookSchema);
+
+
+app.js에서 이 모듈을 불러와보겠습니다.
+
+
+// DEFINE MODEL
+var Book = require('./models/book');
+
+
+
+[CRUD(Create , Retrieve , Update , Delete)]
+
+3번 섹션에서 만들었던 API를 직접 구현해가면서 데이터를 생성/조회/수정/제거 
+하는 방법을 알아보겠습니다.
+
+라우터에서 Book 모델을 사용해야 하므로 , 라우터에 Book을 전달해줘야겠죠?
+따라서 /routes/index.js 와 app.js를 우선 수정해야 합니다.
+
+[routes/index.js]
+modules.exports = function(app, Book)
+{
+    // ....
+}
+
+
+[app.js]
+
+// ...
+
+var router = require('./routes')(app, Book);
+
+// ...
+
+
+
+
+[Create(POST /api/books)]
+
+book 데이터를 데이터베이스에 저장하는 API 압니다.
+
+
+================================================================================================
+
+   app.post("/api/books",function(req,res){
+     var book = new Book();
+     book.title = req.body.name;
+     book.author = req.body.author;
+     book.published_date = new Date(req.body.published_date);
+
+     book.save(function(err){
+        if(err){
+           console.error(err);
+           res.json({result:0});
+           return;
+        }
+
+        res.json({result:1});
+
+     });
+   });
+
+
+================================================================================================
+
+.save 메소드는 데이터를 저장횝니다. err을 통하여 오류처리가 가능합니다.
+
+이 API 에서는 데이터 저장에 성공하면 result: 1을 , 실패하면 result:0을 반환합니다.
+
+
+[RETRIEVE (GET /api/books)]
+
+
+모든 book 데이터를 조회하는 API 입니다.
+
+
+================================================================================================
+
+
+   app.get("/api/books",function(req,res){
+     Book.find(function(err, books){
+        if(err) return res.status(500).send({error:"database failure"});
+        res.json(books);
+     });
+   });
+
+================================================================================================
+
+데이터를 조회 할 때는 find() 메소드가 사용됩니다.
+query를 파라미터 값으로 전달할 수 있으며, 파라미터가 없을 시, 모든 데이터를 조회합니다.
+
+데이터베이스에 오류가 발생하면 HTTP Status 500 과 함께 에러를 출력합니다.
+
+
+[RETRIEVE (GET /api/books/:book_id)]
+
+데이터베이스에서 Id 값을 찾아서 book documnet를 출력합니다.
+
+================================================================================================
+
+   app.get("/api/books/:book_id",function(req,res){
+     Book.findOne({_id : req.params.book_id},function(err,book){
+       if(err) return res.status(500).json({error : err});
+       if(!book) return res.status(404).json({error:"book not found"});
+       res.json(book);
+     })
+   });
+
+================================================================================================
+
+
+하나의 데이터만 찾을 것이기 떄문에 , findOen 매소드가 사용되었습니다.
+오류가 발생하면 500 , 데이터가 없으면 404 HTTP Status와 함께 오류를 출력합니다.
+
+
+[RETRIEVE (GET /api/author/:author)]
+
+author 값이 매칭되는 데이터를 찾아 출력합니다.
+
+================================================================================================
+
+   app.get("/api/books/author/:author",function(req,res){
+     Book.find({author : req.params.author},{_id:0,title:1,published_date:1},function(err,books){
+        if(err) return res.status(500).json({error:err});
+        if(books.length ==0) return res.status(404).json({error:"book not found"});
+        res.json(books);
+     });
+   })
+
+================================================================================================
+
+find() 메소드에서 첫번째 인자는 query를 , 두번째는 projection 을 전달해주었습니다.
+이를 통하여 author 값으로 찾아서 title 과 published_date 만 출력합니다.
+(만약에 projection이 생략되었다면 모든 field를 출력합니다.)
+
+[UPDATE (PUT /api/books/:book_id)]
+
+book_id를 찾아서 document를 수정합니다.
+
+
+================================================================================================
+
+   app.put("/api/books/:book_id",function(req,res){
+      Book.findById(req.params.book_id,function(err,book){
+          if(err) return res.status(500).json({error : "database failure"});
+          if(!book) return res.status(404).json({error : "book not found"});
+
+          if(req.body.title) book.title = req.body.title;
+          if(req.body.author) book.author = req.body.author;
+          if(req.body.published_date) book.published_date = req.body.published_date;
+
+          book.save(function(err){
+              if(err) res.status(500).json({error : "failed to update"});
+              res.json({"message" : "book updated"});
+          });
+      })
+   });
+
+================================================================================================
+
+데이터를 수정 할 떈, 데이터를 먼저 찾은 후 , save() 메소드를 통하여 수정하면 됩니다.
+update 하는 방법은 이외에도 다른 방법이 있는데요, 만약 어플리케이션에서 기존
+document를 굳이 조회 할 필요가 없다면 update() 메소드를 통하여 바로 document를 
+업데이트 할 수 있습니다. 아래는 코드는 같은 동작을하지만 업데이트하는 과정에서 document를
+조회하지 않습니다.
+
+================================================================================================
+
+app.put('/api/books/:book_id', function(req, res){
+    Book.update({_id:req.params.book_id},{$set : req.body},function(err,output){
+      if(err) res.status(500).json({ error: 'database failure' });
+      console.log(output);
+      if(!output.n) return res.status(404).json({error:"book not found"});
+      res.json({message : "book updated"});
+   })
+});
+
+
+
+================================================================================================
+
+
+여기서 output 은 mongod 에서 출력하는 결과물입니다.
+
+{ 
+    ok: 1, 
+    nModified: 0,
+    n: 1
+}
+
+여기서 nModified는 변경한 document 갯수 , n은 select된 document 갯수입니다.
+update()를 실행하였을 때 , 기존 내용이 업데이트 할 내용과 같으면 
+nModified 는 0으로 되기 때문에 , n 값을 비교하여 성공여부를 판단합니다.
+
+
+[DELETE (/api/books/:book_id)]
+
+book_id를 찾아서 document를 제거합니다.
+
+
+================================================================================================
+
+   app.delete("/api/books/:book_id",function(req,res){
+      Book.remove({_id : req.params.book_id},function(err,output){
+         if(err) return res.status(500).json({error : "database failuer"});
+
+        /* ( SINCE DELETE OPERATION IS IDEMPOTENT, NO NEED TO SPECIFY )
+        if(!output.result.n) return res.status(404).json({ error: "book not found" });
+        res.json({ message: "book deleted" });
+        */
+
+        res.status(204).end();
+     });
+   });
+
+================================================================================================
+
+document를 제거 할 땐 remove() 메소드가 사용됩니다.
+
+DELETE는 idempotent (어떤 과정을 몇번이고 반복 수행 하여도 결과가 동일함; 즉 삭제한 데이터를 
+삭제하더라도, 존재하지 않는 다큐먼트를 제거 시도를 하더라도 달라질게 없음)
+하므로 , 성공하였을때나 실패하였을 때나 결과값이 같습니다. 여기서 204 HTTP status는 No Content로서,
+요청한 작업을 수행하였고 데이터를 반환 할 필요가없다는 것을 의미합니다. 
+6~9번줄은 실제로 존재하는 데이터를 삭제하였는지 확인해주는 코드이나, 
+그럴 필요가 없으므로 주석처리되었습니다.
+
+
+
+
+
+
+
+
+
+
+

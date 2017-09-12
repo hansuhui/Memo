@@ -1,0 +1,114 @@
+[패키지 설치]
+
+npm install -- save mongoose 
+
+
+[설정]
+
+var mongoose	=  require("mongoose");
+
+// [CONFIGURE mongoose]
+
+// CONNECT TO MONGODB SERVER
+var db = mongoose. connection;
+db.on("error", console.error);
+mongoose.connect("mongodb://localhost/poixgks",{useMongoClient: true});
+
+//mongoose.connect("mongodb://username:password@host:port/database?options...");
+
+
+[Schema & Model]
+
+
+================================================================================================
+
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+
+var bookSchema = new Schema({
+    title : String,
+    author : String,
+    published_date : {type:Date , default : Date.now
+});
+
+module.exports  = mongoose.model("book", bookSchema);
+
+================================================================================================
+
+schema 에서 사용되는 SchemaType은 총 8종류가 있습니다.
+
+1. String
+
+2. Number
+
+3. Date
+
+4. Buffer
+
+5. Boolean
+
+6. Mixed
+
+7. Objectid
+
+8 . Array
+
+이를 사용하는 예제는 매뉴얼을 참고하세요.
+
+http://mongoosejs.com/docs/schematypes.html
+
+
+
+[SAVE]
+
+//스키마!!
+var Book = require('./models/book');
+
+var book = new Book({
+	title : req.body.name ,
+	author : req.body.author , 
+	published_date : new Date(req.body.published_date)
+ });
+
+book.save(function(err){
+if(err){} //에러시
+//성공시
+});
+
+
+[FIND]
+
+Book.find(<Query>,<projection>,function(err,books){});    
+Book.findOne(<Query>,<projection>,function(err,books){});    
+Book.findById(id값,<projection>,function(err,books){});    
+
+
+Book.find({author : req.params.author},{_id:0,title:1,published_date:1},function(err,books){});    
+Book.findOne({_id : req.params.book_id},function(err,book){})
+Book.findById(req.params.book_id,function(err,book){})
+
+
+
+[UPDATE]
+
+
+ Book.findById(req.params.book_id,function(err,book){
+    book.title = "변경값";
+    book.save(function(err){});          
+});
+
+
+
+Book.update({ _id: req.params.book_id }, { $set: req.body }, function(err, output){ })
+        
+
+[REMOVE]
+
+
+
+Book.remove({_id : req.params.book_id},function(err,output){
+     if(err) return res.status(500).json({error : "database failuer"});
+
+});
+
+
