@@ -1,0 +1,198 @@
+https://velopert.com/457
+
+[Database/Collection/Document 생성·제거]
+
+이번 강좌에서는 Batabase , Collection , Document 를 생성하는 명령어와 제거하는 명령어를
+배워보도록 하겠습니다. 이 세가지 키워드의 관계는 아래와 같습니다. 
+이 단어들이 생소하신 분들은 전 강좌를 읽어주세요
+
+
+- SERVER
+ -- DATABAST
+  --- COLECTION
+   ---- DOCUMENT  
+     ---- {Key:value}
+
+
+
+[DataBase 생성: use]
+
+use DATABASE_NAME 명령어를 통하여 Database를 생성할 수 있습니다.
+생성 후  , 생성된 데이터베이스를 사용하게 되구요. 데이터베이스가 이미 존재하는 경우엔
+현존하는 데이터베이스를 사용합니다.
+
+예제 :mongodb_tutorial 이라는 데이터베이스를 생성합니다.
+
+use mongodb_tutorial
+switched to db mongodb_tutorial
+
+현재 사용중인 데이터베이스를 확인하려면 db 명령어를 입력하세요
+
+> db
+mongodb_tutorial
+
+내가 만든 데이터베이스 리스트들을 확인하려면 show dbs 명령어를 입력하세요.
+> show dbs
+
+엥 ?! 방금 만든 mongodb_tutorial이 없죠?
+리스트에서 방금 만든 데이터베이스를 보려면 최소 한개의 Document를 추가해야합니다.
+
+> db.book.insert({"name": "MongoDB Tutorial", "author": "velopert"});
+
+
+* 여기서 book은 Collection 입니다. 따로 Colliection을 미리 생성하지 않아도
+  위처럼 명령어를 작성하는데 차질이 없습니다.
+
+
+[Database 제거 : db.dropDatabase()]  
+
+Database를 제거할 땐 db.dropDatabase() 명령어를 사용합니다.
+
+이 명령어를 사용하기전, use DATABASE_NAME 으로 삭제하고자 하는 데이터베이스를 
+선택해줘야합니다.
+
+예제 : mongodb_tutorial 데이터베이스를 제거합니다.
+
+> use mongodb_tutorial
+> db.dropDatabase();
+
+[Collection 생성 : db.createCollection()]
+
+Collection을 생성할때는 db.createColliection(name,[options]) 명령어를 사용합니다.
+
+name은 생성하려는 컬렉션의 이름이며 option은 document 타입으로 구성된 해당 컬렉션의 설정값입니다.
+options 매개변수는 선택적인(Optional) 매개변수로서 생략하셔도 되고, 필요에 따라 사용하면 됩니다.
+
+
+- Option -  
+
+Filed  / Type / 설명
+
+capped / Boolean / 이 값을 true로 설정하면 capped collection을 활성화 시킵니다. 
+		   Cappend collection이란 , 고정된 크기(fiexed size)를 가진 컬렉션으로서 ,
+		   siez를 초과되면 가장 오래된 데이터를 덮어씁니다. 
+		   이것을 ture로 설정하면 size를 꼭 설정해야합니다.
+
+autoIndex / Boolean / 이 값을 true로 설정하면 _id 필드에 index를 자동으로 생성합니다. 
+		      기본값은 false 입니다.
+
+siez / number / Capped collection을 위해 해당 컬렉션의 최대 사이즈(maximun size)를 ~ bytes로 지정합니다.
+
+max / number / 해당 컬렉션에 추가할 수 있는 최대 갯수를 설정합니다.
+
+
+[예제1: test 데이터베이스에 books 컬렉션을 옵션없이 생성합니다.]
+
+> use test
+
+> db.createCollection("books")
+
+
+[예제2: test데이터베이스에 articles 컬렉션을 옵션과 함께 생성합니다.]
+
+> db.createCollection("articles", {
+... capped: true,
+... autoIndex: true,
+... size: 6142800,
+... max: 10000
+... })
+{ "ok" : 1 }
+
+
+[예제3: 따로 createCollection() 메소드를 사용하지 않아도 document를 추가하면 자동으로 컬렉션이 생성됩니다.]
+
+> db.people.insert({"name": "velopert"})
+
+내가 만든 collection 리스트를 확인하려면 show collections 명령어를 입력하세요
+
+> show collections
+
+
+[Collection 제거 : db.COLLECTION_NAME.drop()]
+
+Collection을 제거할 땐 drop() 메소드를 사용합ㄴ디ㅏ.
+당연히 , 이 명령어를 제거하기 전, 사용 할 데이터베이스를 우선 설정해야겠죠?
+
+[예제: test 데이터베이스의 people 컬렉션을 제거합니다.]
+
+> use test
+switched to db test
+
+> show collections
+articles
+books
+people
+
+> db.people.drop()
+true
+
+> show collections
+articles
+books
+
+[Document 추가: db.COLLECTION_NAME.insert(document)]
+
+insert() 메소드를 사용하여 Document를 추가 할 수 있습니다.
+
+이 명령어를 사용하기 전 데이터를 추가 할 데이터베이스를 선택해주어야 합니다.
+배열 형식의 인자를 전달해주면 여러 다큐먼트를 동시에 추가 할 수 있습니다.
+
+- 예제1: 한개의 다큐먼트를 books 컬렉션에 추가합니다. -
+
+> db.bookes.insert({"name":"NodeJS Guide", "author": "Velopert"})
+WriteResult({ "nInserted" : 1 })
+
+- 예제2: 두개의 다큐먼트를 books 컬렉션에 추가합니다.(가독성을 위해 여러줄로 작성되었습니다.) -
+
+
+> db.books.insert([
+... {"name": "Book1", "author": "Velopert"},
+... {"name": "Book2", "author": "Velopert"}
+... ]);
+
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 2,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})	
+
+컬렉션의 다큐먼트 리스트를 확인할때는 db.COLLECTION_NAME.find() 명령어를 사용하세요.
+
+> db.books.find()
+
+
+[Document 제거 : db.COLLECTION_NAME.remove(criteria,juseONE)]
+
+remove(cruterua, juseOne) 메소드를 사용하여 Document를 제거 할 수 있습니다.
+이 메소드에는 두가지의 매개변수가 있는데요
+
+parameter / type / 설명
+
+criteria / document / 삭제할 데이터의 기준 값(criteria) 입니다. 
+		      이 값이 {} 이면 컬렉션의 모든 데이터를 제거합니다.
+
+juseOne / boolean / 선택적(Optional) 매개변수이며 이 값이 true면 1개의 다큐먼트만 제거합니다.
+		    이 매개변수가 생략되면 기본값은 false로서, criteria에 해당되면 
+         	    모든 다큐번트 를 제거합니다.
+
+
+이 강좌에선 criteria에 부분에선 특정 field 값이 매칭하는 경우만 배워보도록 하겠습니다.
+criteria에 대한 자세한 내용은 다음 강좌에서 다뤄보겠습니다.
+
+다쿠먼트 추가 부분에서 find() 메소드를 잠깐 사용했었는데, 이 메소드 역시 criteria를 인수로
+전달 할 수 있습니다. 다큐먼트를 제거하다가 실수를 하지 않도록 초보일땐, 제거전에는 find()를
+먼저 해서 확인하는걸 습관화하세요.
+
+- 예제:books 컬렉션에서 "name"이 "Book1"인 다큐먼트를 제거 -
+
+> db.books.find({"name":"Book1"})
+
+> db.books.remove({"name":"Book1"})
+
+> db.books.find()
+

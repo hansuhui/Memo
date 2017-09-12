@@ -1,0 +1,260 @@
+https://velopert.com/436
+
+
+[소개]
+
+MongoDB는 C++로 작성된 오픈소스문서지향(Document-Oriented) 적 Cross-platform 데이터베이스이며,
+뛰어난 확장성과 성능을 자랑합니다. 현존하는 NoSQL 데이터베이스 중 인지도 1위를 유지하고 있습니다.
+
+
+[NoSQL?]
+
+흔히 NoSQL 이라고 해서 아, SQL이 없는 데이터베이스구나! 라고 생각 할 수도 있겠지만,
+진짜 의미는 Not Only SQL 입니다. 기존의 RDNMS의 한계를 극복하기 위해 만들어진 새로운 
+형태의 데이터 저장소입니다. 관계형 DB가 아니므로 , RDMS처럼 고정된 스키마 및 
+JOIN이 존재하지 않습니다.
+
+
+[Document?]
+
+Document Oriented 데이터베이스라는데... 여기서 말하는 Document가 뭘까요? 문서? 이게 그냥
+문서로 번역해보리면 조금은 애매합니다. 문서라고 하면 보통 워드/엑셀에 사용되는 그런 
+문서가 떠오르는데요. 그것과는 다릅니다. Document는 RDMS의 record와 비슷한 개념인데요. 
+이의 데이터 구조는 한개 이상의 key-value pair 으로 이뤄어져있습니다.
+MongoDB 샘플 Document를 확인해 볼까요?
+
+{
+    "_id": ObjectId("5099803df3f4948bd2f98391"),
+    "username": "velopert",
+    "name": { first: "M.J.", last: "Kim" }
+}
+
+
+여기서 _id,username,name은 keyt 이고 그 오른쪽에 있는 값을은 value 입니다.
+
+_id는 12bytes의 hexadecimal 값으로서 , 각 document의 유일함(uniqueness)을 제공합니다.
+이 값의 첫 4bytes는 현재 timestamp , 다음 3bytes는 machine id, 
+다음 2bytes 는 MongoDB 서버의 프로세스 id, 마지막 3btyes는 순차번호입니다.
+추가될때마다 높아진다는 거지요.
+
+Document는 동적(dynamic)의 schema를 갖고 있습니다. 같은 Collection 안에 있는
+Document 끼리 다른 schema를 갖고 있을 수 있는데요. 쉽게 말하면 
+서로 다른 데이터(즉 다른 key)들을 가지고 있습니다.
+
+[Collection?]
+
+Colletcion은 MogoDB Document의 그룹입니다. Document들이 Collection 내부에 위치하고 있습니다.
+RDMS의 table과 비슷한 개념입니다만 RDMS와 달리 schema를 따로 가지고 있지 않습니다. 
+Document 부분설명에 나와있드시 Document들이 동적인 schema를 가지고 있으니까요
+
+
+[Database]
+
+Database는 Collection 들의 물리적인 컨테이너입니다. 각 Database는 파일시스템에 여러
+파일들로 저장됩니다.
+
+
+[RDMS와의 비교]
+
+RDMS라는 키워드가 생소하신분들을 위하여 먼저 이에 대한 간단한 설명을 드리겠습니다. 
+Relataional Database Management System( 관계형 데이터베이스 관리 시스템)은 행과 열로 된
+2차원의 table로 데이터를 관리하는 데이터베이스 시스템입니다. 
+Mysql, Oracle Batabase , DB2 등 시스템들이 RDMS에 속하죠.
+
+
+RDBMS  /   MongoDB
+
+DataBase / DataBase
+
+Table / Collection
+
+Tuple , ROW / Document
+
+Column / Key : Filed
+
+Table Join / Embedded Documents
+
+Primary Key / Primary Key (_id)
+
+ - / Database Server & Clinet
+
+mysqlId / mongod
+
+mysql / mongo
+
+
+[장점]
+
+- Schema-less (Schema 가 없다. 같은 Collection 안에 있을지라도 다른 Schema를 가지고 있을 수 있다)
+
+- 각 객체의 구조가 뚜렸하다
+
+- 복잡한 JOIN 이 없다.
+
+- Deep Query ability (문서 지향적 Query Language 를 사용하여 SQL 만큼 강력한 Query 성능을 제공한다)
+
+- 어플리케이션에서 사용되는 객체를 데이터베이스에 추가 할 떄 Conversion / Mapping이 불필요하다.
+
+
+
+[MongoDB 설치]
+
+- 원도우 -
+
+MongoDB 공식 홈페이지의 다운로드 페이지에서 MSI 파일로 설치하면
+C:\Program Files\MongoDB\Server\3.2\bin\ 에 설치됩니다.
+
+CMD 창을 열어서 디렉토리로 들어가 mongod를 실행하면 서버가 실행됩니다.
+기본 데이터베이스 디렉토리가  C:\data\db 이므로 실행 전에 폴더를 수동으로 만들어주셔야합니다.
+
+cd C:\Program Files\MongoDB\Server\3.2\bin
+
+C:\Program Files\MongoDB\Server\3.2\bin>mkdir C:\data\db
+
+C:\Program Files\MongoDB\Server\3.2\bin>mongod
+
+
+데이터베이스 디렉토리를 변경하고 싶다면 다음과 같이 실행하면 됩니다.
+
+
+C:\Program Files\MongoDB\Server\3.2\bin> mongod --dbpath "c:\custom_folder"
+
+매번 MongoDB 설치 경로로 이동하는게 귀찮다면 , 해당 디렉토리를 환경변수의 PATH에 추가하세요.
+(윈도우 10 이하 버전에서는
+기존 값 ; C:\Program Files\MongoDB\Server\3.2\bin 이런식으로 수정해야합니다.)
+
+
+- 리눅스 -
+
+이 포스트에서는 Ubuntu 에서 MongoDB 설치하는 과정을 살펴보도록하겠습니다.
+다른 리눅스 디스트로를 사용하시는분들은 
+https://docs.mongodb.org/manual/installation/ 을 참조해주세요.
+
+주의: Cloud9 를 사용하신다면 1번과 2번은 생략하셔도 됩니다.
+
+1. MongoDB Pulbic GPG Key 등록 
+
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+
+2. MongoDB 를 위한 list file 생성 (자신의 Ubuntu 버전에 맞게 입력하세요)
+
+
+# Ubuntu 12.04
+$ echo "deb http://repo.mongodb.org/apt/ubuntu precise/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+
+# Ubuntu 14.04
+$ echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+
+
+3. apt-get 을 이용하여 설치
+
+$ sudo apt-get update
+
+# latest stable version 설치
+$ sudo apt-get install -y mongodb-org
+
+
+4. 서버 실행
+
+$ sudo service mongod start
+
+# 서버가 제대로 실행됐는지 확인
+
+$ cat /var/log/mongodb/mongod.log
+
+# [initandlisten] waiting for connections on port <port>
+
+기본 포트는 27017 이며, 방화벽을 사용하시는분들은 해당 포트를 Open 해주세요.
+
+포트는 /etc/mongod.conf 에서 변경 가능합니다.
+
+
+- OS X -
+
+brew update
+
+brew install mongodb
+
+
+mkdir -p /data/db
+
+mongod
+
+# dbpath 지정
+
+mongod --path <path>
+
+자세한 내용: https://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/
+
+
+[MongDB 서버 접속]
+
+터미널에서 mongo를 입력하세요.
+(원도우에서는 환경변수를 설정하지 않았다면 설치 경로에 이동 후 입력하세요)
+
+$ mongo 
+
+
+[Data Modelling]
+
+MongoDB에서의 명령어들을 배우기전에, MongoDB에서 데이터를 모델링의 기본을 배워보겠습니다.
+
+- schema 디자인 할 때 고려사항 -
+
+- 사용자의 요구 (User Requirement)에 따라 schema를 디자인한다.
+
+- 객체들을 함께 사용하게 된다면 한 Document에 합쳐서 사용한다.(게시물-덧글 과의 관계)
+
+- 읽을때 join 하는게 아니라 데이터를 작성 할 때 join 한다.
+
+
+[예제]
+
+간단한 블로그를 위한 데이터베이스를 디자인한다고 가정해봅시다. 요구사항을 나열해 볼까요?
+
+- 게시글에는 작성자 이름 , 제목 , 내용이 담겨져 있다.
+
+- 각 게시글은 0개 이상의 태그를 가지고 있을 수 있다.
+
+- 게시글엔 덧글을 달 수 있다. 덧글은 작성자 이름 , 내용 , 작성시간을 담고 있다.
+
+만약 RDMS에서 데이터베이스 schema를 디자인한다면 이것과 비슷하겠죠?
+
+
+-commont-     - post -    - tag -
+
+*id  -------   *id  ------- id
+post_id	 	title	   post_id
+username        content    tag
+text		username
+time		time
+
+RDMS라면, 이런식으로 테이블 3개를 만들어야 효율적이라고 부르지만,
+NoSQL에선 모들걸 하나의 Document에 넣습니다. 한번 살펴볼까요?
+
+{
+_id : POST_ID.
+title : POST_TITLE,
+conent : POST_CONENT
+username : POST_WRITER,
+tags : [TAG1,TAG2,TAG3] ,
+comments : [
+  {
+    username : COMMENT_WRITER,
+    mesage : COMMENT_MESSAGE,
+    titme : COMMENT_TIME
+ },
+ {
+    username : COMMENT_WRITER,
+    mesage : COMMENT_MESSAGE,
+    titme : COMMENT_TIME
+ }
+ ]
+}
+
+
+어때요 , 어느정도 이해가 갔나요?
+다음 강좌에선 데이터베이스를 서버에서 직접 다뤄보도록 하겠습니다.
+
+
+

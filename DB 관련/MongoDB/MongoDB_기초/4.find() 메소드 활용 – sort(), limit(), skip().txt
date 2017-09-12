@@ -1,0 +1,100 @@
+https://velopert.com/516
+
+[find() 메소드 활용 - sort(), limit(), skip()]
+
+이번 강좌에선 find() 메소드를 더욱 더 활용하기 위해 필요한 sort() , limit(), skip() 메소드에
+대해 배워보겠겠습니다. 그냥 find() 메소드를 사용하면 criteria에 일치하는 모든 document 들을 
+출력해주기 때문에 , 예를 들어 페이지 같은 기능을 사용한다면 불적합하겠죠. 
+그렇다고 find() 메소드 자체에 어디부터 어디까지 불러오겠다 라고 설정하는 매개 변수는 따로 없습니다.
+
+find() 메소드를 사용핬을 시 cursor 형태의 결과값을 반환하는데요, 이 객체가 가지고 있는
+limit() 메소드와 skip() 메소드를 통하여 보이는 출력물의 객수를 제한 할 수 있고, sort() 메소드를
+사용하여 데이터를 순서대로 나열 할 수 있습니다.
+
+
+[샘플 데이터]
+
+쿼리 연습을 해보기 위해 샘플데이터를 추가하세요.
+
+[
+    { "_id": 1, "item": { "category": "cake", "type": "chiffon" }, "amount": 10 },
+    { "_id": 2, "item": { "category": "cookies", "type": "chocolate chip" }, "amount": 50 },
+    { "_id": 3, "item": { "category": "cookies", "type": "chocolate chip" }, "amount": 15 },
+    { "_id": 4, "item": { "category": "cake", "type": "lemon" }, "amount": 30 },
+    { "_id": 5, "item": { "category": "cake", "type": "carrot" }, "amount": 20 },
+    { "_id": 6, "item": { "category": "brownies", "type": "blondie" }, "amount": 10 }
+]
+
+
+> use test
+
+> db.orders.insert(
+ [
+    { "_id": 1, "item": { "category": "cake", "type": "chiffon" }, "amount": 10 },
+    { "_id": 2, "item": { "category": "cookies", "type": "chocolate chip" }, "amount": 50 },
+    { "_id": 3, "item": { "category": "cookies", "type": "chocolate chip" }, "amount": 15 },
+    { "_id": 4, "item": { "category": "cake", "type": "lemon" }, "amount": 30 },
+    { "_id": 5, "item": { "category": "cake", "type": "carrot" }, "amount": 20 },
+    { "_id": 6, "item": { "category": "brownies", "type": "blondie" }, "amount": 10 }
+ ]
+)
+
+
+[cursor.sort(DOCUMENT)]
+
+이 메소드는 데이터를 정렬할 때 사용됩니다. 매개변수로는 어떤 KEY를 사용하여 정렬 할지 
+알려주는 document를 전달합니다.
+
+이 document의 구조는 다음과 같습니다.
+
+{KEY : value}
+
+KEY는 데이터의 find 이름이고 , value 의 값은 1 혹은 -1 입니다. 이 값을 1로 설정하면 
+오름차순으로 , -1로 하면 내림차순으로 정렬합니다.
+
+또한 여러 KEY를 입력할 수 있고 먼저 입력한 KEY가 우선권을 갖습니다.
+
+- 예제1:_id의 값을 사용하여 오름차순으로 정렬하기 -
+> db.orders.find().sort({"_id": 1})
+
+
+- 예제2 : amount 값을 사용하여 오름차순으로 정렬하고, 정렬한 값에서 id 값은 내림차순으로 정렬하기 -
+> db.orders.find().sort({"amount":1, "_id":-1})
+
+[cursor.limit(value)]
+
+이 메소드는 출력할 데이터 갯수를 제한할 때 사용됩니다. value 파라미터는 출력 할 갯수  값입니다.
+
+- 예제3: 출력할 갯수를 3개로 제한하기 -
+> db.orders.find().limit(3)
+
+
+
+[cursor.skip(value)]
+
+이 메소드는 출력 할 데이터의 시작부분을 설정할 때 사용됩니다. value 값 갯수의 데이터를
+생략하고 그 다음부터 출력합니다.
+
+- 예제4: 2개의데이터를 생략하고 그 다음부터 출력 -
+> db.orders.find().skip(2)
+
+[응용]
+
+이 강좌에서 배운 메소드들의 반환값 역시 cursor 객체이기 때문에 위 메소드들을 중첩해서
+사용할 수 있습니다.
+
+예제를 통하여 한번 응용 방법을 배워보겠습니다.
+
+- 예제5 : order를 최신순으로 한 페이지당 2개씩 나타냅니다. -
+
+> var showPage = function(page){
+   return db.orders.find().sort({"id": -1}).skip((page-1)*2).limit(2);
+}
+
+> showPage(1)
+
+> showPage(2)
+
+> showPage(3)
+
+

@@ -1,0 +1,334 @@
+https://velopert.com/479
+
+[Document Query(조회) - find() 메소드]
+
+이번 강좌에선 Document 조회하는 메소드인 find() 메소드를 자세히 알아보도록 하겠습니다.
+
+
+[Document 조회]
+
+> db.COLLECTION_NAME.find(query,projection)
+
+이 메소드에서 사용되는 매개변수에 대하여 알아봅시다.
+
+parameter / Type / 설명
+
+query / document / Optional(선택적). 다큐먼트를 조회할때 기준을 정합니다. 
+		   기준이 없이 컬렉션에 있는 모든 다큐먼트를 조회할 때는 이
+		   매개변수를 비우거나 비어있는 다큐먼트{}를 전달하세요.
+
+projection / document / Optional. 다큐먼트를 조회할 때 보여질 field를 정합니다.
+
+
+반환(return) 값 : cursor
+
+criteria에 해당하는 Document들을 선택하여 cursor를 반환합니다. 
+cursor은 query 요청의 결과값을 가르키는 pointer 입니다. cursor 객체를 통하여
+보이는 데이터의 수를 제한 할 수 있고 , 데이터를 sort 할 수도 있습니다.
+이는 10분동안 사용되지 않으면 만료됩니다.
+
+먼저 find() 메소드를 테스트해보기 위해 mock-up date 를 만들어 보겠습니다.
+
+[
+  {
+    "title": "article01",
+    "content": "content01",
+    "writer": "Velopert",
+    "likes": 0,
+    "comments": []
+  },
+  {
+    "title": "article02",
+    "content": "content02",
+    "writer": "Alpha",
+    "likes": 23,
+    "comments": [
+      {
+        "name": "Bravo",
+        "message": "Hey Man!"
+      }
+    ]
+  },
+  {
+    "title": "article03",
+    "content": "content03",
+    "writer": "Bravo",
+    "likes": 40,
+    "comments": [
+      {
+        "name": "Charlie",
+        "message": "Hey Man!"
+      },
+      {
+        "name": "Delta",
+        "message": "Hey Man!"
+      }
+    ]
+  }
+]
+
+
+db.articles.insert([
+    {
+        "title" : "article01",
+        "content" : "content01",
+        "writer" : "Velopert",
+        "likes" : 0,
+        "comments" : [ ]
+    },
+    {
+        "title" : "article02",
+        "content" : "content02",
+        "writer" : "Alpha",
+        "likes" : 23,
+        "comments" : [
+                {
+                        "name" : "Bravo",
+                        "message" : "Hey Man!"
+                }
+        ]
+    },
+    {
+        "title" : "article03",
+        "content" : "content03",
+        "writer" : "Bravo",
+        "likes" : 40,
+        "comments" : [
+                {
+                        "name" : "Charlie",
+                        "message" : "Hey Man!"
+                },
+                {
+                        "name" : "Delta",
+                        "message" : "Hey Man!"
+                }
+        ]
+    }
+])
+
+
+- 예제1: 모든 다큐먼트 조회 -
+
+> db.articles.find()
+
+다큐먼트들이 한줄로 나와서 보기 힘들죠..
+다큐먼트들을 깔끔하게 보고싶다면? find()메소드 뒤에 .pretty()를 붙여주면 됩니다.
+
+- 예제2: 다큐먼트를 예쁘게 깔끔하게 조회 -
+
+> db.articles.find().pretty()
+
+
+- 예제3: writer 값이  "Velopert" 인 Document 조회 -
+
+> db.articles.find( { "writer": "Velopert" } ).pretty()
+
+
+- 예제4: likes 값이 30 이하인 Document 조회 -
+
+> db.articles.find( { "likes": { $lte: 30 } } ).pretty()
+
+
+여기서 $lte가 사용됐죠 ? 이건 less than 을 의미하고 , mongodb의 query 비교 연상자 중 하나랍니다.
+
+- 예제5: likes 값이 10보다 크고 30보다 작은 Document 조회 -
+> db.articles.find( { "likes": { $gt: 10, $lt: 30 } } ).pretty()
+
+
+- 예제6: writer 값이 배열 ["Alpha", "Bravo"] 안에 속하는 값인 Document 조회 -
+> db.articles.find( { "writer": { $in: [ "Alpha", "Bravo" ] } } ).pretty()
+
+
+- 예제7: title 값이 "article01" 이거나, writer 값이 "Alpha" 인 Document 조회 -
+> db.articles.find({ $or: [ { "title": "article01" }, { "writer": "Alpha" } ] })
+
+- 예제8: writer 값이 "Velopert" 이고 likes 값이 10 미만인 Document 조회 -
+
+> db.articles.find( { $and: [ { "writer": "Velopert" }, { "likes": { $lt: 10 } } ] } )
+이렇게도 가능합니다: > db.articles.find( { "writer": "Velopert", "likes": { $lt: 10 } } )
+
+[Query 연산자]
+
+프로그래밍 언어에서 >,<,<= , >= , == , != 등 연산자가 있는것처럼, mongoDB에서도 원하는 데이터를 
+찾기 위해 연산자를 사용합니다. 연산자의 종류는 비교(Comparison) , 논리(Logical), 
+요소(Element) , 배열(Array) 등 여러종류가 있는데요, 이는 mongDB 메뉴얼에서 확인 가능합니다.
+(https://docs.mongodb.org/v3.2/reference/operator/query/)
+
+[비교(Comparoson) 연산자]
+
+operator / 설명
+
+$eq / (equals) 주어진 값과 일치하는 값
+
+$gt / (greater than)  주어진 값보다 큰 값
+
+$gte / (greather than or equals) 주어진 값보다 크거나 같은 값
+
+$It / (less than ) 주어진 값보다 작은 값 
+
+$lte / (less than or equals) 주어진 값보다 작거나 같은 값
+
+$ne / (not equal) 주어진 값과 일치하지 않는 값
+
+$in / 주어진 배열 안에 속하는 값
+
+$nin / 주어진 배열 안에 속하지 않는 값
+
+
+[논리 연산자]
+
+operator / 설명
+
+$or / 주어진 조건중 하나라도 true 일 때 true
+
+$and / 주어진 모든 조건이 true 일 때 true
+
+$not / 주어진 조건이 false 일 때 true
+
+$ nor / 주어진 모든 조건이 false 일때 true
+
+
+
+
+[$regex 연산자]
+
+$regex 연산자를 통하여 Document를 정규식을 통해 찾을 수 있습니다.
+이 연산자는 다음과 같이 사용합니다.
+
+{<field>: {$regex : /pattern/ , $options:'<options>'}}
+{<field>: {$regex : 'pattern' , $options:'<options>'}}
+{<field>: {$regex : /pattern/<options>}}
+{<field>: /pattern/<options>}
+
+4번째 라인처럼 $regex를 작성하지 않고 바로 정규식을 쓸 수도 있습니다.
+여기서 $options는 다음과 같습니다.
+
+
+option /설명
+
+i / 대소문자 무시
+
+m / 정규식에서 anchor(^)를 사용 할 때 값에 \n이 있다면 무력화
+
+x / 정규식 안에 있는 whitespace를 모두 무시
+
+s / dot(.)사용 할 때 \n을 포함해서 매치
+
+
+- 예제: 정규식 article0[1-2] 에 일치하는 값이 title 에 있는 Document 조회 -
+
+> db.aricles.find({"title": /article0[1-2]/})
+
+
+[$where 연산자]
+
+$where 연산자를 통하여 javascript expression 을 사용 할 수 있습ㄴ디ㅏ.
+
+- 예제 : comments filed 가 비어 있는 Document 조회 -
+> db.articles.find({ $where : 'this.comments.length == 0'})
+
+
+[$elemMatch 연산자]
+
+$elemMatch 연산자는 Embedded Documents 배열을 쿼리할때 사용됩니다. 
+저희 mock-up date 에서는 comments 가 Embedded Document에 속합니다.
+
+- 예제11: comments 중 “Charlie” 가 작성한 덧글이 있는 Document 조회 -
+> db.articles.find({"comments":{$elemMatch:{"name": "Charlie"}}})
+
+Embedded Document 배열이 아니라 아래 Document의 name 처럼 한개의 
+Embedded Document 일 시에는,
+  {
+    "username": "velopert",
+    "name": { "first": "M.J.", "last": "K."},
+    "language": ["korean", "english", "chinese"]
+  }
+
+다음과 같이 쿼리합니다.
+db.user.find({"name.first":"M.J."})
+
+그리고 Document의 배열이아니라 그냥 배열일 시에는 다음과 같이 Query 합니다.
+
+> db.users.find({ "language": "korean"})
+
+
+[projection]
+
+find() 메소드의 두번째 parameter 인 projection에 대하여 알아보도록 하겠습니다.
+쿼리의 결과값에서 보여질 field를 정하는 건데요, 꽤나 간단합니다. 예제를 통해 배워볼까요?
+
+- 예제12 : article의 title과 content 만 조회 -
+> db.articles.find({},{"_id":false,"title": true,"content":true})
+
+
+[$slice 연산자]
+
+projector 연산자 중 $slice 연산자는 Embeded Document 배열을 읽을 때 limit 설정을 합니다.
+
+- 예제13 : title 값이 article03인 Document에서 덧글은 하나만 보이게 출력 -
+> db.articles.find({"title" : "article03"},{comments:{$slice:1}})
+
+$slice가 없었더라면 , 2개를 읽어와야하지만 1개로 제한을 두었기에 한개만 출력하게 됩니다.
+
+[$elemMatch 연산자]
+
+query 연산자 중 $elemMatch와 사용법은 같습니다. 단 역할이 다르지요.
+다음과 같은 상황에서 사용합니다.
+
+예제11번에서 “ comments 중 “Charlie” 가 작성한 덧글이 있는 Document 조회 ” 를 했을때, 
+게시물 제목과 Charlie의 덧글부분만 읽고싶을땐 어떻게할까요?
+
+db.articles.find(
+    {
+        "comments": {
+            $elemMatch: { "name": "Charlie" }
+        }
+    },
+    {
+        "title": true,
+        "comments.name": true,
+        "comments.message": true
+    }
+)
+이렇게 해보면 의도와는 다르게  Delta 의 덧글도 출력합니다.
+
+{
+        "_id" : ObjectId("56c0ab6c639be5292edab0c6"),
+        "title" : "article03",
+        "comments" : [
+                {
+                        "name" : "Charlie",
+                        "message" : "Hey Man!"
+                },
+                {
+                        "name" : "Delta",
+                        "message" : "Hey Man!"
+                }
+        ]
+}
+
+$elemMatch 연산자를 proection 연산자로 사용하면 이를 구현 할 수 있습니다.
+
+- 예제14:  comments 중 “Charlie” 가 작성한 덧글이 있는 Document 중 제목, 그리고 Charlie의 덧글만 조회 -
+
+
+db.articles.find(
+...     {
+...         "comments": {
+...             $elemMatch: { "name": "Charlie" }
+...         }
+...     },
+...     {
+...         "title": true,
+...         "comments": {
+...             $elemMatch: { "name": "Charlie" }
+...         },
+...         "comments.name": true,
+...         "comments.message": true
+...     }
+... )
+
+
+
+
+

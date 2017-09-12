@@ -1,0 +1,124 @@
+https://velopert.com/545
+
+[Document 수정 - update() 메소드]
+
+이번 강좌에서는 document를 수정하는 update() 메소드에 대하여 알아보도록 하겠습니다.
+
+
+[정의]
+
+MongoDB에서는 update() 메소드를 통하여 데이터를 수정 할 수 있습니다. 이 메소드의 구조는 
+다음과 같습니다.
+
+db.collection.update(
+	<query>,
+	<update>,
+	{
+	    upsert : <boolean>,
+	    multi : <boolean>,
+	    writeConcern : <document>
+	}
+)
+
+
+
+Collection 안의 document(들)을 수정합니다. 이 메소드를 통하여 특정 field를 수정 할 수도 있고
+이미 존재하는 document를 대체(replace) 할 수도 있습니다.
+
+update() 메소드의 기본 옵션으로는 단 하나의 document를 수정합니다.
+
+
+Parameter  / Type / 설명
+
+query / document / 업데이트 할 document의 criteria를 정합니다. find() 메소드에서 
+		   사용하는 query와 같습니다.
+
+update / document / document에 적용할 변동사항힙니다.
+
+upsert / boolean / Optional(기본값:false) 이 값이 true로 설정되면 query한 document가 
+		   없을 경우, 새로운 document를 추가 합니다.
+
+multi / boolean / Optional(기본값:false) 이 값이 true로 설졍되면, 여러개의 document를
+ 		  수정합니다.
+
+writeConcern / document / Optional , wtimeout 등 document 업데이트 할 떄 필요한 설정 값입니다.
+			  기본 writeConcern을 사용하려면 이 파라미터를 생략하세요.
+
+
+[샘플 데이터 추가]
+
+update 메소드를 연습해보기 위해 샘플 데이터를 추가하세요.
+
+db.people.insert(
+ [
+    { name: "Abet", age: 19 },
+    { name: "Betty", age: 20 },
+    { name: "Charlie", age: 23, skills: [ "mongodb", "nodejs"] },
+    { name: "David", age: 23, score: 20 }
+ ]
+)
+
+이제 예제를 통하여 update() 메소드를 사용법을 배워보도록 하겠습니다.
+
+
+- 예제1 : 특정 filed 업데이트 하 -
+> db.people.update({name:"Abet"},{$set : {age : 20}})
+
+
+특정 field의 값을 수정할 떄 $set 연산자를 사용합니다. 이 연산자를 사용해서 똑같은
+방법으로 새로운 field를 추가 할 수도 있습니다.
+
+- 예제2 : document를 replace 하기 -
+> db.people.update({name : "Betty"},{"name": "Betty 2nd",age:1})
+
+
+- 예제3 : 특정 field를 제거하기 -
+> db.people.update({name : "David"},{ $unset : {score:1}})
+
+여기서 score : 1의 1은 true의 의미입니다.
+
+- 예제4 : criteria에 해당되는 document가 존재하지 않는다면 새로 추가하기 -
+> db.people.update({name:"Elly"},{name:"Elly",age:17},{upsert : true})
+
+
+
+-  예제5: 여러 document의 특정 field를 수정하기 -
+> db.people.update({age : {$lte : 20}},{$set : {score : 10}},{multi : true})
+
+
+- 예제6-1: 배열에 값 추가하기 - 
+> db.people.update({name:"Charlie"},{$push : {skills : "angularjs"}})
+
+
+- 예제 6-2 : 배열에 값 여러게 추가 + 오름차순으로 정렬 - 
+> db.people.update({name:"Charlie"},{$push : { skills : {
+  $each : ["c++","java"],
+  $sort : 1
+  }
+ }
+})
+
+$sort 값을 내림차순ㅇ으로 정렬하려면 -1로 하면 됩니다.
+
+배열이 document의 배열이고 그 embedded document의 특성 field에 따라서 정렬을 할때는
+다음과 같이 설졍하면 됩니다.
+
+$sort : {KEY:1}
+
+- 예제7-1: 배열의 값 제거하기 -
+> db.people.update({name:"Charlie"},{$pull : {skills:"mongodb"}})
+
+
+- 예제7-1: 배열의 값 여러개 제거하기 -
+> db.people.update({name:"Charlie"},{$pull : {skills :{ $in : ["angularjs","java"]}}})
+
+
+
+
+
+
+
+
+
+
+
