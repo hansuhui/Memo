@@ -1,0 +1,179 @@
+https://velopert.com/900
+
+[Component 생성 및 모듈화]
+
+- src/index.js -
+
+=================================================================
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+
+const rootElement = document.getElementById('root');    
+ReactDOM.render(<App />, rootElement);
+
+
+=================================================================
+
+먼저 , React 어플리케이션의 기반이 될 App.js 파일을 수정하세요.
+
+- src/components/App.js -
+
+=================================================================
+
+import React from 'react';
+
+class App extends React.Component {
+    render(){
+        return  (
+            <div>
+                <Header/>
+                <Content/>
+            </div>
+        );
+    }
+}
+
+export default App;
+
+=================================================================
+
+컴포넌트를 만들때는 React.Component 클래스를 상속하여 만듭니다.
+7-8에 있는 <Header/> 와 <Content/>는 앞으로 우리가 만들 컴포넌트입니다.
+
+한 파일엔 여러개의 컴포넌트가 존재할 수 있습니다.
+자, App.js 파일을 업데이트하겠습니다.
+
+
+- src/components/App.js -
+
+=================================================================
+
+?import React from 'react';
+
+class App extends React.Component {
+    render(){
+
+        return (
+                <div>
+                   <Header/>
+                   <Content/>
+                </div>
+        );
+    }
+}
+
+class Herder extends React.Component {
+  render(){
+    return (
+      <h1>Header</h1>
+    );
+  }
+}
+
+class Content extends React.Component{
+  render(){
+    return(
+      <div>
+        <h2>Content</h2>
+        <p>하이!</p>
+      </div>
+    );
+  }
+}
+
+export default App;
+
+
+=================================================================
+
+이렇게 여러 class를 포함시켜 작성 할 수 있지만, 어플리케이션의 규모가 커지면 
+유지/보수가 불편해지겠죠?
+
+Component 들을 모듈화 하여 여러 파일로 분리해서 사용하면 유지 보수가 휠씬 쉬워집니다.
+이 개념은 Node.js 모듈화와 동일합니다.
+
+
+Header.js 파일을 생성하고, App.js의 15~21 줄을 잘라내서 삽입하세요.
+
+
+- src/components/Header.js -
+
+=================================================================
+
+
+import React from 'react';
+ 
+
+class Header extends React.Component {
+    render(){
+        return (
+            <h1>Header</h1>
+        );
+    }
+}
+
+export default Header;
+
+=================================================================
+
+모듈에서도 react를 import 해주어야 합니다.
+
+
+이제 Content 컴포넌트를 모듏화하겠습니다. 과정은 위와 같으니 설명은 생략하겠습니다.
+
+
+- src/components/Content.js -
+
+
+
+=================================================================
+
+import React from 'react';
+ 
+
+class Content extends React.Component {
+    render(){
+        return (
+            <div>
+                <h2>Content</h2>
+                <p> Hey! </p>
+            </div>
+        );
+    }
+}
+
+export default Content;
+
+=================================================================
+
+모듈들을 export 했으니 App.js 에서 import도 해야겠죠? App.js를 다음과 같이 업데이트 하세요
+
+
+- src/components/App.js -
+
+
+=================================================================
+
+import React from 'react';
+import Header from './Header';
+import Content from './Content';
+
+class App extends React.Component {
+    render(){
+        return  (
+            <div>
+                <Header/>
+                <Content/>
+            </div>
+        );
+    }
+}
+
+export default App;
+
+=================================================================
+
+3~4번에 있는 import 를 통하여 해당 모듈들을 App.js에서 사용합니다.
+

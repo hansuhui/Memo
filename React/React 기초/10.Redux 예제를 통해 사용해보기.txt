@@ -1,0 +1,618 @@
+https://velopert.com/1266
+
+[프로젝트 시작하기]
+
+이 프로젝트에선 webpack.config.js 에서 entry 를 index.js 로 설정하겠습니다.
+
+
+---------------------------------------------------------------------------
+
+
+module.exports = {
+    entry: './src/index.js',
+
+    output: {
+        path: __dirname,
+        filename: 'app.js'
+    },
+....
+
+
+---------------------------------------------------------------------------
+
+[복습하기]
+
+- store : React.js 프로젝트에서 사용하는 모든 동적 데이터들 담아두는 곳입니다.
+
+- action : 어떤 변화가 일어나야 할 지 나타내는 객체입니다.
+
+- reducer : action 객체를 받았을 때 , 데이터를 어떻게 바꿀지 처리하지할 지 정의하는 객체입니다.
+
+
+
+[의존 모듈 설치]
+
+React.js 에서 Redix를 사용 할 때 , 두가지의 의존 모듈이 사용됩니다.
+
+1.redux
+2. react-redux : React.js 프로젝트에서 Redux를 더 편하게 사용 할 수 있게 해줍니다.
+
+설치해봅시다 : 
+
+npm install -- save redux react-redux
+
+
+[react-redux 를 사용하지 않고 만들어보기]
+
+예제를 통하여 react-redux 를 사용하지 않고 redux를 사용하는 방법을 알아봅시다.
+(이 과정은 배우지 않아도 무방하나, redux에 대한 이해를 돋기기 위해서 공부해봅시다)
+
+
+- index.js : 의존 모듈 불러오기 -
+
+---------------------------------------------------------------------------
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+
+---------------------------------------------------------------------------
+
+redux를 사용하기 위해선 createStore 객체를 불러와야합니다.
+
+
+- index.js : action 작성하기 -
+
+
+
+---------------------------------------------------------------------------
+
+/*
+ * Action
+ */
+const INCREMENT = "INCREMENT";
+
+function increase(diff) {
+    return {
+        type: INCREMENT,
+        addBy: diff
+    };
+}
+
+---------------------------------------------------------------------------
+
+어떤 변화가 일어나야 할 지 알려주는 객체인 action 을 작성하였습니다.
+action 을 작성 할 떈, 첫번째 필드는 type 으로서 필수적인 필드이며, action 의 형태를 정의해줍니다.
+
+그 다음으로는 개발자가 마음대로 추가 할 수 있습니다. 필요없으면 생략해도 되는 부분입니다.
+저희는 한 번 클릭 될 떄, 값이 얼마나 더해질 지 정할 수 있도록 addBy를 추가하였습니다.
+
+
+
+- index.js : reducer 작성하기 -
+
+---------------------------------------------------------------------------
+
+/*
+ * Reducer
+ */
+const initialState = {
+    value: 0
+};
+
+const counterReducer = (state = initialState, action) => {
+    switch(action.type) {
+        case INCREMENT:
+            return Object.assign({}, state, {
+                value: state.value + action.addBy
+            });
+        default:
+            return state;
+    }
+}
+
+---------------------------------------------------------------------------
+
+reducer를 만들때는, 우선 데이터의 초기 상태를 정의하고 arrow function을 통하여
+reducer를 만듭니다.
+
+8번줄에서는 ES6의 default parameter 를 사용하였습니다. 해당 parameter 가 undefined 일 때는
+값을 initialState로 설정하는 것입니다.
+
+
+= 주의 할 점 =
+우리는 state를 변경시키지 않았습니다. 단, Object.assign() 메소드를 통하여 state를 복사 한후,
+복사된 객체를 수정하여 반환합니다. 첫번째 argument는 꼭 비어있는 객체이어야 합니다.
+
+
+
+- index.js : stroe 생성하기 -
+
+---------------------------------------------------------------------------
+
+/*
+ * Store
+ */
+const store = createStore(counterReducer);
+
+---------------------------------------------------------------------------
+
+store를 만들때는 createStore() 메소드를 사용하며 reducer가 인수로 사용됩니다.
+
+
+- index.js : App 컴포넌트 작성하기 -
+
+
+
+---------------------------------------------------------------------------
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    render() {
+
+        let centerStyle = {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            WebkitUserSelect: 'none',
+            MozUserSelect: 'none',
+            MsUserSelect:'none',
+            userSelect: 'none',
+            cursor: 'pointer'
+        };
+
+        return (
+            <div
+                onClick={ this.onClick }
+                style={ centerStyle }
+            >
+
+                <h1> {this.props.store.getState().value} </h1>
+            </div>
+        )
+    }
+
+    onClick() {
+        this.props.store.dispatch(increase(1));
+    }
+}
+
+---------------------------------------------------------------------------
+
+이 컴포넌트는 렌더링 될 때 , store 를 props로 전달받습니다.
+
+27번줄과 33번줄에 주의하세요.
+
+- store.getState() : 현재 스토어이있는 데이터를 반환합니다.
+
+- store.dispatch(ACTION) : 상태값을 수정 할 때 사용되는 메소드입니다. 인수로는 action이
+			   전달됩니다. 위 컴포넌트에서는 사전에 만들어둔 increse 함수가 
+			   action 객체를 반환합니다.
+
+
+
+
+- index.js 렌더링하기 -
+
+---------------------------------------------------------------------------
+
+const render = () => {
+
+    const appElement = document.getElementById('app');
+    ReactDOM.render(
+        <App store={store}/>,
+        appElement
+    );
+};
+
+store.subscribe(render);
+render();
+
+---------------------------------------------------------------------------
+
+LINE 5 : store 를 App 컴포넌트의 props 로 전달해 주었습니다.
+
+LINE 10 : store.subscribe(LISTENER) : dispatch 메소드가 실행되면 리스너 함수가 실행됩니다.
+	  즉, 데이터에 변동이 있을 떄마다 리렌더링 하도록 설정합니다.
+
+첫번째 예제를 완성하였습니다. 전체코드는 
+GitHub(https://github.com/velopert/react-tutorials/blob/master/10-redux/src/index_without_reactredux.js)
+에서 확인 하실 수 있습니다.
+Redux가 사용되는 과정을 얼추 이해하셨나요? 근데 이런 방식으로 코딩을 하면 컴포넌트 갯수가
+여러개가 되었을때, child에게 store를 계속해서 전달해주어야 하니 좀 번거로워접니다.
+더 편한 유지보수를 위하여, react-redux 모듈을 사용하면 한결 편해집니다. 
+
+
+[react-redux 사용하기]
+
+이제 새로운 프로젝트를 작성할 것입니다.
+
+
+[디렉터리 구조]
+
+src
+├── actions
+│        └── index.js
+├── components
+│        ├── App.js
+│        ├── Buttons.js
+│        ├── Counter.js
+│        └── Option.js
+├── index.js
+└── reducers
+    └── index.js
+
+
+이번 프로젝트를 작성하는 순서는 첫번째 예제 프로젝트와 비슷합니다.
+action -> reducer -> store -> components 순으로 프로젝트를 작성하겠습니다.
+단 차이점이 있다면 각각 다른 파일에 분리하여 작성하는 것입니다.
+
+
+- actions/index.js : action 작성하기 -
+
+---------------------------------------------------------------------------
+
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
+export const SET_DIFF = 'SET_DIFF';
+
+export function increment() {
+    return {
+        type: INCREMENT
+    };
+}
+
+export function decrement() {
+    return {
+        type: DECREMENT
+    };
+}
+
+export function setDiff(value) {
+    return {
+        type: SET_DIFF,
+        diff: value
+    };
+}
+
+
+---------------------------------------------------------------------------
+
+INCREMENT : 카운터의 값을 올린다.
+DECRENENT : 카운터의 값을 낮춘다.
+SET_DIFF : 버튼이 눌릴 떄 더하거나 뺄 값을 설정한다.
+
+혹시 export가 익술하지 않으신가요 ? MOzilla ES6 참고 자료를 참조하세요.
+
+(https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/export)
+
+
+- reducres/index.js : reducer 작성하기 -
+
+
+---------------------------------------------------------------------------
+
+import { INCREMENT, DECREMENT, SET_DIFF } from '../actions';
+import { combineReducers } from 'redux';
+
+const counterInitialState = {
+    value: 0,
+    diff: 1
+};
+
+const counter = (state = counterInitialState, action) => {
+    switch(action.type) {
+        case INCREMENT:
+            return Object.assign({}, state, {
+                value: state.value + state.diff
+            });
+        case DECREMENT:
+            return Object.assign({}, state, {
+                value: state.value - state.diff
+            });
+        case SET_DIFF:
+            return Object.assign({}, state, {
+                diff: action.diff
+            });
+        default:
+            return state;
+    }
+};
+
+
+const extra = (state = { value: 'this_is_extra_reducer' }, action) => {
+    switch(action.type) {
+        default:
+            return state;
+    }
+}
+
+const counterApp = combineReducers({
+    counter,
+    extra
+});
+
+export default counterApp;
+
+---------------------------------------------------------------------------
+
+- LINE 2  : combineReducres  는 여러개의 reducer를 한개로 합칠 때 사용되는 redux 내장 메소드입니다.
+
+- LINE 36-39 : combineReducres 를 사용 할 떈 이렇게 사용합니다.
+
+
+이 예제에서는 딱히 여러개의 reducer를 사용할 필요가 없었으므로, 예제만 작성해 보았습니다.
+우의 reducer를 사용하여 store 를 만들게 되면 , store의 state 구조는 다음과 같이 생성됩니다.
+
+{
+    counter: { value: 0, diff: 1 }
+    extra: { value: 'this_is_extra_reducer' }
+}
+
+
+reducer를 여러개로 분리하여 작성 할 땐, 서로 직접적인 관계가 없어야 합니다.
+예를 들어, INCREMENT 와 DECREMENT 부분에서 ,diff 값을 사용해야 하므로,
+SET_DIFF를 다른 reducer 에작성하지 않았죠.
+
+LINE 36 - 39 코드는 다음 코드와 동일합니다 : 
+
+const counterApp = (state = {} , action) => {
+   return {
+     counter : counter(state.counter , action),
+     extra : extra(state.extra, action)
+   }
+}
+
+
+combineReducres 를 사용 할 때 , 각 reducer에 다른 key를 주고싶다면 
+다음과 같이 작성하면 됩니다.
+
+const counterApp = combineReducrers({
+    a : counter,
+    b : extra
+});
+
+
+
+- compoments/Counter.js : Counter 컴포넌트 작성하기 -
+
+---------------------------------------------------------------------------
+
+import React from 'react';
+import { connect } from 'react-redux';
+
+class Counter extends React.Component {
+    render() {
+        return (
+            <h1>VALUE: { this.props.value }</h1>
+        );
+    }
+}
+
+let mapStateToProps = (state) => {
+    return {
+        value: state.counter.value
+    };
+}
+
+Counter = connect(mapStateToProps)(Counter);
+
+export default Counter;
+
+---------------------------------------------------------------------------
+
+- LINE 2 : connect 를 react-redux 에서 불러옵니다.
+
+- LINE 12 - 16 : mapStateToProps 는 이런식으로 arrow functions를 사용해서 작성합니다.
+
+- LINE 18 : 위에서 만든 mapStateToPros를 사용하여 컴포넌트를 store에 연결시킵니다.
+
+- commnet API (자세히..) -
+
+connect([mapStateToProps], [mapDispatchToProps], [mergeProps],[options])
+
+connect는 react-redux 의 내장 API 입니다. 
+이 함수는 React Compoment를 Redux Store에 연결 해줍니디.
+
+이 함수의 리턴값은 특정 컴포넌트 클래스의 props를 store의 데이터에 
+연결시켜주는 또 다른 함수를 리턴합니다.
+
+리턴된 함수에 컴포넌트를 인수로 넣어 실행하면, 기존 컴포넌트를 
+수정하는게 아니라 새로운 컴포넌트를 return 합니다.
+
+인수 : 
+  mapStateToProps(state,[ownProps]) : (Function)store의 state를 컴포넌트의
+   props에 매핑시켜줍니다. ownProps 인수가 명시될 경우, 이를 통해 함수 내부에서
+   컴포넌트의 props 값에 잡근 할 수 있습니다.
+
+  mapDispatchToProps(dispatch,[ownProps]): (Function or Object)  컴포넌트의 특정 함수형
+   props를 실행 했을 때, 개발자가 지정한 action을 dispatch 하도록 설정합니다. ownProps의 용도는
+   위 인수와 동일합니다.
+
+   mapDispatchToProps를 객체형으로 전달하는 방법 및 기타 인수들은 매뉴얼을 참조해주세요.
+   (http://redux.js.org/docs/api/bindActionCreators.html)
+
+
+- compoments/Buttons.js : Buttons 컴포넌트 작성하기 -
+
+
+---------------------------------------------------------------------------
+
+import React from 'react';
+import { connect } from 'react-redux';
+import { increment, decrement } from '../actions';
+
+class Buttons extends React.Component {
+    render() {
+        return (
+            <div>
+                <button type="button"
+                        onClick={ this.props.onIncrement }>
+                        +
+                </button>
+                <button type="button"
+                        onClick={ this.props.onDecrement }>
+                        -
+                </button>
+            </div>
+        )
+    }
+}
+
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        onIncrement: () => dispatch(increment()),
+        onDecrement: () => dispatch(decrement())
+    }
+}
+
+Buttons = connect(undefined, mapDispatchToProps)(Buttons);
+
+export default Buttons;
+
+
+---------------------------------------------------------------------------
+
+- LINE 3 : increment , decrement action 을 불러옵니다.
+
+- LINE 30 : 여기선 mapStateToProps가 필요없으므로 undefined를 전달하여 생략해줍니다.
+
+
+- components/Option.js : Option 컴포넌트 작성하기 -
+
+
+---------------------------------------------------------------------------
+
+import React from 'react';
+import { connect } from 'react-redux';
+import { setDiff } from '../actions';
+
+class Option extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            diff: '1'
+        }
+
+
+        this.onChangeDiff = this.onChangeDiff.bind(this);
+    }
+
+    render() {
+        return (
+            <div>
+                <input type="text" value={ this.state.diff } onChange={this.onChangeDiff}></input>
+            </div>
+        );
+    }
+
+    onChangeDiff(e) {
+
+        if(isNaN(e.target.value))
+            return;
+
+        this.setState({ diff: e.target.value });
+
+        if(e.target.value=='') {
+            this.setState({ diff: '0' });
+        }
+
+        this.props.onUpdateDiff(parseInt(e.target.value));
+
+    }
+}
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        onUpdateDiff: (value) => dispatch(setDiff(value))
+    };
+}
+
+Option = connect(undefined, mapDispatchToProps)(Option);
+
+export default Option;
+
+---------------------------------------------------------------------------
+
+- LINE3: setDiff action을 불러옵니다.
+
+- LINE 20 : 컴포넌트 내부의 input 값의 경우 자체 state 를 사용하도록합니다.
+
+- LINE 25: input 값을 수정 할 떄 실행됩니다. 숫자만 적을 수 있도록 코드를 작성하였습니다.
+	    값이 수정될 때 마다 mapDispatchToProps 에서 매핑된 onUpdateDiff를 통하여
+  	    dispatch 합니다.
+
+
+- components/App.js : App 컴포넌트 작성하기 -
+
+import React from 'react';
+import Counter from './Counter';
+import Buttons from './Buttons';
+import Option from './Option';
+
+---------------------------------------------------------------------------
+
+class App extends React.Component {
+    render(){
+        return (
+            <div style={ {textAlign: 'center'} }>
+                <Counter/>
+                <Option/>
+                <Buttons/>
+            </div>
+        );
+    }
+
+}
+
+export default App;
+
+---------------------------------------------------------------------------
+
+- index.js : index 작성하기 -
+
+
+---------------------------------------------------------------------------
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import { Provider  } from 'react-redux';
+import App from './components/App';
+import counterApp from './reducers';
+
+const store = createStore(counterApp);
+const appElement = document.getElementById('app');
+
+
+
+ReactDOM.render(
+    <Provider store = {store}>
+        <App />
+    </Provider>,
+    appElement
+);
+
+---------------------------------------------------------------------------
+
+렌더링 될 때 Redux 컴포넌트인 <Provuder>에 store를 설정해주면 그 하위 컴포넌트들에
+따로 parent-child 구조로 전달해주지 않아도 connect 될 때 store에 접근 할 수 있게 해줍니다.
+
+
+
+
+
+
+
+
+
+
+
+

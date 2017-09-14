@@ -1,0 +1,10 @@
+https://velopert.com/1174
+
+1. Git 클론하기 (webpack-based)
+
+일반적인 React.js 프로젝트를 생성합니다. 패키지를 하나하나 
+직접 설치하고 싶다면 전 강좌를 참조하세요.
+
+git clone https://github.com/velopert/react-skeleton.git - 프로젝트 클론하기
+npm install - Dependency 설치하기
+npm start - 개발 서버 실행하기 (포트: 7777)

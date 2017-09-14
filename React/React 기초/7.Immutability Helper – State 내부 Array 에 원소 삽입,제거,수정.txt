@@ -1,0 +1,818 @@
+https://velopert.com/1015
+
+[state 안의 array 에 원소 삽입/제거/수정]
+
+this.state에 포함된 배열에 원소를 삽입/제거/수정 을 할 때 그 배열에 직접 접근하면 안됩니다.
+예를들어, 원소를 추가할 때 배열 객체의 push() 메소드를 사용하면 원하는 대로 되지 않습니다.
+
+this.state가 변경된다고 해서 컴포넌트가 업데이트되지 않기 때문입니다.
+물론 변경 후 React 컴포넌트 API 인 forceUpdate()를 통해 컴포넌트가 render()를 다시
+실행 하게 끔 하는 방법이 있긴 하지만 이건 절대 권장되지 않는 방법입니다.
+
+Reace 메뉴얼 에서도 this.state를 직접 수정하지 말고 this.setState()를 사용하여
+수정할 것을 강조합니다.
+
+[원소 삽입하기]
+
+state 내부의 배열에 원소를 추가하는 방법은 다음과 같습니다.
+
+-----------------------------------------------------------------------------
+
+this.setState({
+   list : this.state.listconcat(newObj)
+})
+
+-----------------------------------------------------------------------------
+
+concat을 사용함으로서 현재의 list 배열에 newObj 원소를 추가한 새로운 배열을 생성 한 후,
+그 값을 현재의 list로 설정합니다.
+
+
+배열을 수정 할 땐 원시적인 방법으론 위와 같이 배열 전체를 복사하고 처리 한 기존 값에
+덮어씌우는 과정을 거쳐야 합니다.
+허나, 만약 배열의 크기가 클 떈 성능이 좀 저하되겠죠?
+
+다른 방법으로는 Immutabllity Helpers를 사용하는 방법이 있습니다.
+이는 배영을 더 효율적으로 수정 할 수 있게 해주는 페이스북의 Immutable-js 를 사용합니다.
+
+이를 사용하려면 라이브러리를 사전 설치해주어야 합니다.
+
+React 구버전에서는 해당 라이브러리가 내장되어 import React from 'react/addons'; 으로
+React를 import 하여 React.addons.update() 를 사용 할 수 있었으나, 이제 이 방법은 deprecated 되었습니다.
+아직도 이렇게 사용은 가능 하나, 브라우저 상에서 ‘react-addon-update’ 를 
+import 하라고 권장하는 오류 메시지가 발생합니다.
+
+- 라이브러리 설치 방법 -
+
+$ npm install --save react-addons-update 를 통하여 라이브러리를 저장 후,
+
+js 파일 상단에 import update from 'react-addons-update' 를 삽입해줍니다.
+
+-----------------------------------------------------------------------------
+
+this.setState({
+    list: update(
+              this.state.list, 
+              {
+                  $push: [newObj, newObj2]
+              }
+});
+
+-----------------------------------------------------------------------------
+
+update() : 메소드의 첫 파라미터는 처리 할 배열이며 두번째는 처리할 명령들을 
+	   지니고 있는 객체 타입입니다.
+
+$push : [newObj , newObj2]는 list 배열에 newObj 와 newObj2를 추가해줍니다.
+	한 객체를 추가 할 때도 [ ] 안에 배열 형태로 감싸줘야합니다.
+	Immutable-js 의 syntax 는 MongoDB 쿼리 언어에서 영감을 받았다고 합니다.
+	브라우저상에서 react-with-addons를 불러와서 사용하는 경우에는 update가 
+	아닌 React.addons.update 를 사용해야합니다.
+
+
+[원소 제거하기]
+
+원소를 제거 할 때 역시, state의 배열에 직접 접근하면 안되고, 배열을 복사한 후 원소 제거 후
+기존 값에 값에 덮어씌워져야 합니다.
+
+JavaScript Array의 내장 함수인 splice()를 사용하면 되지만,
+이는 생략하고 더 효율적인 Immutability Helper 를 사용하는 예제를 알아보겠습니다.
+
+-----------------------------------------------------------------------------
+
+this.setState({
+    list: update(
+              this.state.list, 
+              {
+                  $splice: [[index, 1]]
+              }
+});
+
+-----------------------------------------------------------------------------
+
+위 코드는 list 배열의 index번째 아이템부터 시작해서 1개 만큼의 데이터를 제거합니다.
+$splice에 전달되는 데이터는 배열로 이루어진 배열입니다.
+
+
+
+[원소 수정하기]
+
+Immutability Helper를 사용하여 특정 원소를 수정하는 예제를 알아보겠습니
+
+
+-----------------------------------------------------------------------------
+
+this.setState({
+    list: update(
+              this.state.list, 
+              {
+                  [index]: {
+                      field: { $set: "value" },
+                      field2: { $set: "value2" }
+                  }
+              }
+});
+
+
+-----------------------------------------------------------------------------
+
+위 코드는 list 배열의 index 번재 아이템의 field 와 fiel2의 값을 변경합니다.
+
+
+[적용하기]
+
+자, 위에서 배운것들을 적용해보겠습니다.
+앞으로 저희가 만들 클래스는 다음과 같습니다.
+
+1. ContactCreator : Contact 를 생성하는 컴포넌트
+
+2. ContactRemover : Contact를 제거하는 컴포넌트
+
+3. ContactEditor : Contact를 수정하는 컴포넌트
+
+
+저희가 앞으로 구현하고자 하는 기능은, 인풋박스에 입력하여 원하는 
+Contact를 추가하고 , 리스트에 있는 Contact를 선택하여 수정 및 제거를 하는 것입니다.
+
+
+[ContactCreator 컴포넌트 만들기]
+
+ContactInfo 를 생성하기 위해 필요한 텍스박스 두개와 버튼 하나를 지니고 있는 컴포넌트를 만들어 봅시다.
+
+-----------------------------------------------------------------------------
+
+class ContactCreator extends React.Component {
+    render() {
+        return (
+            <div>
+                <p>
+                    <input type="text" name="name" placeholder="name"/>
+                    <input type="text" name="phone" placeholder="phone"/>
+                    <button>
+                    Insert
+                    </button>
+                </p>
+            </div>
+        );
+    }
+}
+
+
+-----------------------------------------------------------------------------
+
+- Contact:렌더링 할 컴포넌트에 추가 -
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+
+/* ... */
+
+    render(){
+        return(
+            <div>
+                <h1>Contacts</h1>
+                <ul>
+                    {this.state.contactData.map((contact, i) => {
+                        return (<ContactInfo name={contact.name}
+                                            phone={contact.phone}
+                                              key={i}/>);
+                    })}
+                </ul>
+                <ContactCreator/>
+            </div>
+        );
+    }
+
+/* ... */
+
+-----------------------------------------------------------------------------
+
+
+- ContactCreator:input의 값을 컴포넌트의 state로 사용하기 -
+
+-----------------------------------------------------------------------------
+
+class ContactCreator extends React.Component {
+    constructor(props) {
+        super(props);
+        // Configure default state
+        this.state = {
+            name: "",
+            phone: ""
+        };
+    }
+
+/* ... */
+
+
+<input type="text" name="name" placeholder="name" value={this.state.name}/>
+<input type="text" phone="phone" placeholder="phone" value={this.state.phone}/>
+
+
+
+-----------------------------------------------------------------------------
+
+초기 state 값을 지정하고 , 렌더링 부분 코드에서 input 의 value를 state를 사용하도록
+수정한 후 , 인풋박스에 텍스트를 적으려고 시도해보면 값이 고정되서 변경되지 않습니다.
+이 부분을 해결하기 위하여, onchange 이벤트를 통하여 인풋박스에 텍스트를 
+입력시 status를 업데이트 하도록 설정해야합니다.
+
+- ContactCreator : onChange 이벤트 사용하기 -
+
+-----------------------------------------------------------------------------
+
+class ContactCreator extends React.Component {
+
+/* ... */
+
+    handleChange(e){
+        var nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+    }
+
+/* ... */
+
+
+<input type="text"
+    name="name"
+    placeholder="name"
+    value={this.state.name}
+    onChange={this.handleChange.bind(this)}/>
+
+<input type="text"
+    name="phone"
+    placeholder="phone"
+    value={this.state.phone}
+    onChange={this.handleChange.bind(this)}/>
+
+-----------------------------------------------------------------------------
+
+인풋박스의 값을 변경 할 때 실행 될 handleChange(e) 메소드를 만들었습니다.
+여기서 파리미터 e 는 JavaScript의 Event 인터페이스입니다.
+e를 사용함으로서 한 메소드로 여러 인풋박스를 인풋박스의 name에 따라
+처리할 수 있게 됩니다.
+렌더링 부분의 코드를 보기 좋게 하기 위해 줄바꿈을 하였으며
+onChange = {this.handleChange.bind(this)}를 넣어 주었습니다.
+인풋박스가 변경 될 때 해당 메소드를 실행한다는 의미입니다.
+bind를 통하여 컴포넌트의 this에 접근 할 수 있게 됩니다.
+
+
+- ContactCreator:Insert 버튼 기능 구현하기 -
+
+-----------------------------------------------------------------------------
+
+ handleClick(){
+        this.props.onInsert(this.state.name, this.state.phone);
+        this.setState({
+            name: "",
+            phone: ""
+        });
+
+<button onClick={this.handleClick.bind(this)}>Insert</button>
+
+
+-----------------------------------------------------------------------------
+
+버튼을 클랙했을 떄 실행 될 메소드를 만들었습니다.
+handleClick() 에서는 parent 컴포넌트인 Contacts 에서 props로 받아온 메소드를 실행합니다.
+그 후 , 인풋 박스 값을 비웁니다.
+
+
+- Contacts : _InsertContact 메소드 만들기 -
+
+class Contacts extends React.Component {
+
+-----------------------------------------------------------------------------
+
+/* ... */
+
+    _insertContact(name, phone){
+        let newState = update(this.state, {
+            contactData: {
+                $push: [{"name": name, "phone": phone}]
+            }
+        });
+        this.setState(newState);
+    }
+
+/* ... */
+
+<ContactCreator onInsert={this._insertContact.bind(this)}/>
+
+-----------------------------------------------------------------------------
+
+Immutability Helpers 를 사용하여 배열에 원소를 추가하였으며,
+_insertContact(name.phone) 메소드를 ContactCreator 의 prop 으로 전달해 주었습니다.
+
+
+
+[선택 기능 구현하기]
+
+배열에서 데이터를 수정하거나 제거 할 때 필요 할 때
+마우스로 선택하는 기능을 구현해보겠습니다.
+
+- ContactInfo: handleClick() 메소드 및 onClick prop 추가 -
+
+-----------------------------------------------------------------------------
+
+
+class ContactInfo extends React.Component {
+
+    handleClick(){
+        this.props.onSelect(this.props.contactKey);
+    }
+
+    render() {
+        return(
+            <li
+                onClick={this.handleClick.bind(this)}>
+                {this.props.name} {this.props.phone}
+            </li>
+        );
+    }
+
+
+-----------------------------------------------------------------------------
+
+해당 컴포넌트가 클릭되면 handleClick() 메소드가 실행되며,
+이 메소드 내부에선 parent 컴포넌트에서 prop 으로 전달 받은 onSelect() 메소드를 실행합니다.
+
+여기서 인수 contactKey는 해당 컴포넌트의 고유 번호입니다.
+컴포넌트를 매핑할 때 key를 사용하긴 하였으나,
+이는 prop으로 간주되지 않으며 React 내부에서 사용하는 용도이기에 직접 접근이 불가능합니다.
+
+- Contacts : _onSelect() , isSelected() 메소드 추가 -
+
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            contactData: [
+                /* ... */
+            ],
+            selectedKey: -1
+        };
+    }
+
+    /* ... */
+
+    _onSelect(key){
+        if(key==this.state.selectedKey){
+            console.log("key select cancelled");
+            this.setState({
+                selectedKey: -1
+            });
+            return;
+        }
+
+        this.setState({
+            selectedKey: key
+        });
+        console.log(key + " is selected");
+    }
+
+    _isSelected(key){
+        if(this.state.selectedKey == key){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    render() {
+        /* ... */
+                    {this.state.contactData.map((contact, i) => {
+                        return (<ContactInfo name={contact.name}
+                                            phone={contact.phone}
+                                              key={i}
+                                       contactKey={i}
+                                       isSelected={this._isSelected.bind(this)(i)}
+                                         onSelect={this._onSelect.bind(this)}/>);
+                    })}
+/* ... */
+
+
+-----------------------------------------------------------------------------
+ 
+state.selectedKey 는 현재 선택된 컴포넌트의 고유번호 입니다.
+만약에 선택된 Contact가 없을 시에는 -1로 설정됩니다.
+
+_onSelect() 메소드는 컴포넌트가 클릭 될 때 실행 할 메소드입니다.
+선택할 컴포넌트가 이미 선택되어 있다면 선택을 해제합니다.
+
+이 메소드는 child 컴포넌트의 onSelect prop으로 전달됩니다.
+
+_isSelect(key) 메소드는 child 컴포넌트에게 해당 컴포넌트가 선택된 상태인지 아닌지 알려줍니다.
+이 메소드를 시행 한 결과 값이 child 컴포넌트의 isSelected prop으로 전달 됩니다.
+
+- ContactInfo: 렌더링 시 선택된 상태라면 특정 스타일 적용 -
+
+-----------------------------------------------------------------------------
+
+class ContactInfo extends React.Component {
+/* ... */
+    render() {
+
+        let getStyle = isSelect => {
+            if(!isSelect) return;
+
+            let style = {
+                fontWeight: 'bold',
+                backgroundColor: '#4efcd8'
+            };
+
+            return style;
+        };
+
+        return(
+            <li style={getStyle(this.props.isSelected)}
+                onClick={this.handleClick.bind(this)}>
+                {this.props.name} {this.props.phone}
+            </li>
+            );
+    }
+}
+
+-----------------------------------------------------------------------------
+
+5번 줄에서는 getStyle  이라는 함수를 선언했습니다. arrow function 이 사용되었습니다. 
+매개변수가 오직 하나라면 괄호가 생략될 수 있습니다.
+
+이 함수는 매개변수가 참이면 배경색이 아쿠아색인 
+스타일을 반환하며 거짓이면 비어있는 스타일을 반환합니다.
+
+
+- ContactRemover 컴포넌트 만들기 -
+
+-----------------------------------------------------------------------------
+
+class ContactRemover extends React.Component {
+    handleClick() {
+        this.props.onRemove();
+    }
+
+    render() {
+        return (
+            <button onClick={this.handleClick.bind(this)}>
+                Remove selected contact
+            </button>
+        );
+    }
+}
+
+-----------------------------------------------------------------------------
+
+버튼이 클릭되면 handleClick() 메소드가 실행되며, 해당 메소드에선 
+parent 컴포넌트에서 전달 받은 onRemove() 메소드가 실행됩니다.
+
+
+- Contact : 렌더링 할 컴포넌트에 추가 -
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+/* ... */
+                <ContactCreator onInsert={this._insertContact.bind(this)}/>
+                <ContactRemover/>
+/* .. */
+}
+
+-----------------------------------------------------------------------------
+
+렌더링 부분에 ContactCreator 하단에 <ContactRemover/> 를 추가하세요.
+
+
+- Contact: _removeContact() 메소드 작성 -
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+/* ... */
+    _removeContact(){
+        if(this.state.selectedKey==-1){
+            console.log("contact not selected");
+            return;
+        }
+
+        this.setState({
+            contactData: update(
+                this.state.contactData,
+                {
+                    $splice: [[this.state.selectedKey, 1]]
+                }
+            ),
+            selectedKey: -1
+        });
+    }
+/* ... */
+
+-----------------------------------------------------------------------------
+
+선택한 Contact를 제거하는 메소드 입니다. 선택된 Contact가 없다면 작업을 취소합니다.
+this.setState(...) 가 실행되면 state.contactData에서 selectedKey 번째 데이터를 
+제거하고 아무것도 선택하지 않은 상태로 설정합니다.
+
+
+- Contact: ContactRemover 컴포넌트에 삭제 메소드 prop onRemove 으로 전달 - 
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+/* ... */
+<ContactRemover onRemove={this._removeContact.bind(this)}/>
+/* ... */
+
+-----------------------------------------------------------------------------
+
+
+[ContactEditor 만들기]
+
+ContactEditor에서 구현하고자 하는 기능은 다음과 같습니다 : 
+
+- Contact를 선택하면 Contact의 name 과 phone 데이터가 인풋박스로 복사됨
+
+- Edit 버튼을 누르면 Contacts의 데이터를 수정함
+
+이 컴포넌트에서 사용 할 prop 들은 다음과 같습니다 : 
+
+- isSelected : parent 컴포넌트에서 Contact가 선택 되어 있는지 안되어 있는지 알려줍니다.
+
+- onEdit() : parent 컴포넌트에서 전달 받을 메소드로서 , 데이터 수정 작업을 처리합니다.
+
+- contact : parent 컴포넌트에서 선택된 Contact의 name 과 phone 정보를 갖고 있는 객체입니다.
+
+
+
+- ContactEditor 컴포넌트 초기 작성 -
+
+이 컴포넌트의 코드 형태는 위에서 만든 ContactCretor 와 매우 비슷합니다.
+ContactCretor을 복붙 하고 우선 필요한 부분만 수정하세요.
+
+
+-----------------------------------------------------------------------------
+
+class ContactEditor extends React.Component {
+    constructor(props) {
+        super(props);
+        // Configure default state
+        this.state = {
+            name: "",
+            phone: ""
+        };
+    }
+
+    handleClick(){
+
+    }
+
+    handleChange(e){
+        var nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+    }
+
+    render() {
+        return (
+            <div>
+                <p>
+                    <input type="text"
+                        name="name"
+                        placeholder="name"
+                        value={this.state.name}
+                        onChange={this.handleChange.bind(this)}/>
+
+                    <input type="text"
+                        name="phone"
+                        placeholder="phone"
+                        value={this.state.phone}
+                        onChange={this.handleChange.bind(this)}/>
+                    <button onClick={this.handleClick.bind(this)}>
+                    Edit
+                    </button>
+                </p>
+            </div>
+        );
+    }
+}
+
+-----------------------------------------------------------------------------
+
+코드를 붙여 넣은 후 , 클래스 이름을 변경하고 handleClick() 에서 처리할 내용이 다르니
+코드를 비워주세요.
+이 컴포넌트는 수정하는 컴포넌트니까 버튼 캡션을 Edit으로 변경합니다.
+
+
+- contactEditor : handleClick() 메소드 작성 - 
+
+-----------------------------------------------------------------------------
+
+class ContactEditor extends React.Component {
+/* ... */
+    handleClick(){
+        if(!this.props.isSelected){
+            console.log("contact not selected");
+
+            return;
+        }
+
+        this.props.onEdit(this.state.name, this.state.phone);
+    }
+/* ... */
+
+-----------------------------------------------------------------------------
+
+
+선택 된 Contact가 없다면 작업을 취소합니다.
+onEdit() 은 parent 컴포넌트에서 전달 받을 메소드 입니다.
+
+
+- Contacts : _editContact 메소드 초기작성 렌더링 할 컴포넌트 추가 -
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+/* .. */
+    _editContact(name, phone){
+
+    }
+/* ... */
+                <ContactRemover onRemove={this._removeContact.bind(this)}/>
+                <ContactEditor onEdit={this._editContact.bind(this)}
+                           isSelected={(this.state.selectedKey !=-1)}/>
+/* ... */
+
+
+-----------------------------------------------------------------------------
+
+
+_editContact() 메소드는 오류가 나지 않도록 초기 작성만 하고 구현은 나주엥 하도록 하겠습니다.
+ContactsRemover 컴포넌트 하단에 <ContactEditor... />를 작성하세요.
+prop isSelected 은 JavaScript 표현식을 사용하여 
+selectedKey가 -1이 아니라면 true를, 맞다면 false를 반환합니다.
+
+
+- 선택된 내용을 인풋박스로 복사하는 기능 구현하기 -
+
+Contact를 선택하였때 내용을 COntactEditor의 input 으로 복사되는 기능을 구현해보겠습니다.
+우선 선택된 Contact의 정보를 Contacts 의 state selected 에 저장하도록 합시다.
+
+- Contacts -
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            /* ... */
+            selectedKey: -1,
+            selected: {
+                name: "",
+                phone: ""
+            }
+        };
+    }
+
+    _onSelect(key){
+        if(key==this.state.selectedKey){
+            console.log("key select cancelled");
+            this.setState({
+                selectedKey: -1,
+                selected: {
+                    name: "",
+                    phone: ""
+                }
+            });
+            return;
+        }
+
+        this.setState({
+            selectedKey: key,
+            selected: this.state.contactData[key]
+        });
+        console.log(key + " is selected");
+    }
+/* ... */
+                <ContactEditor onEdit={this._editContact.bind(this)}
+                           isSelected={(this.state.selectedKey !=-1)}
+                              contact={this.state.selected}/>
+/* ... */
+
+-----------------------------------------------------------------------------
+
+새로운 state를 사용할 땐, 언제나 초기 값을 설정해줘야합니다. 
+(그렇지 않으면 오류가 발생하기 쉽상입니다.)
+
+Contact를 선택하였을 때 , prop.selected 에 값을 저장 하게 하고,
+선택을 취소 하였을 때 , 값을 공백으로 설정하도록 하였습니다.
+그리고 이 prop.selected 값을 ContactEditor에 prop.contact로 전달해줍니다.
+
+이제 ContactEditor에서 선택된 Contact의 값을 받아와서 렌더링해줘야겠죠?
+
+하지만 , 인풋박스의 value 부분은 유동적이기에 그 부분에
+{ this.props.contact.name } 을 할 수는 없습니다.
+
+prop 값이 바뀔때마다 state를 업데이트 해줄 필요가 있는데요, 
+이는 Component Lifecycle API 중 하나인
+
+componentWillreceiveProps() 를 사용하면됩니다. 이 컴포넌트 내장메소드는, 
+prop 값을 받게 될 때 실행되는 메소드 입니다.
+
+- ContactEditor -
+
+-----------------------------------------------------------------------------
+
+class ContactEditor extends React.Component {
+/* ... */
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            name: nextProps.contact.name,
+            phone: nextProps.contact.phone
+        });
+    }
+/* ... */
+
+-----------------------------------------------------------------------------
+
+- Contacts : _editContact 메소드 구현하기 -
+
+
+-----------------------------------------------------------------------------
+
+class Contacts extends React.Component {
+/* ... */
+    _editContact(name, phone){
+        this.setState({
+            contactData: update(
+                this.state.contactData,
+                {
+                    [this.state.selectedKey]: {
+                        name: { $set: name },
+                        phone: { $set: phone }
+                    }
+                }
+            ),
+            selected: {
+                name: name,
+                phone: phone
+            }
+        });
+    }
+/* ... */
+
+
+
+-----------------------------------------------------------------------------
+
+
+[CPU 자원낭비 줄이기]
+
+저희가 원하고자 하는 기능은 모두 구현하였지만, 사실 저희가 
+작성한 코드는 CPU 자원을 낭비하고 있답니다.
+
+비록 큰데이터를 다루는게 아니기 떄문에 성능에 큰 영향을 끼치지는 않고 있지만,
+코드의 완성도를 위하여 컴포넌트를 최적화해보겠습니다.
+
+
+[무엇이 문제인가]
+
+데이터가 수정 될 때마다, 상태에 변동이 없는 ,즉 리렌더링 할 필요가 없는 컴포넌트들도
+리렌더링이 되고 있습니다.
+
+한번 ContacInfo 컴포넌트의 render() 메소드에 콛 
+console.log("rendered: " + this.props.name); 를 추가해보세요.
+
+보시다시피, 쓸데없는 렌더링을 하고 있습니다..
+
+
+[해결하기]
+
+자, 이제 해결해봅시다. 해결법은 매우 간단합니다.
+Component Lifecycle API 중 하나인 shouldComponentUpdate() 
+메소드를 컴포넌트 클래스 안에 작성해주면 됩니다.
+
+이 메소드는 컴포넌트를 다시 렌더링 해야 할지 말지를 정의해준답니다.
+
+
+
+-----------------------------------------------------------------------------
+
+class ContactInfo extends React.Component {
+/* ... */
+    shouldComponentUpdate(nextProps, nextState){
+    	return (JSON.stringify(nextProps) != JSON.stringify(this.props));	
+    } 
+/* ... */
+
+-----------------------------------------------------------------------------
+
+자, 이제 필요한 컴폰전트만 렌더링합니다.
+
+이와 같이, 컴포넌트를 Mapping 하고 데이터를 수정 할때 코드를 
+최적화 하는것을 잊지 않도록 합시다.
+
