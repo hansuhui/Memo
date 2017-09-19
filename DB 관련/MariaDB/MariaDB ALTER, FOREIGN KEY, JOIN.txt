@@ -1,0 +1,137 @@
+http://sqlmvp.kr/220340062504
+
+[ALTER, FOREIGN KEY, JOIN]
+
+- 테이블 생성 -
+
+--------------------------------------------
+
+use sw_test;
+
+create table user (
+ uid char(8),
+ name varchar(32),
+ money dec (10,2),
+ score int
+);
+
+--------------------------------------------
+
+제일 앞에 uid2 컬럼 추가
+
+alter table user
+	add column uid2 char(8) first;
+
+
+select * from user;
+
+
+
+--------------------------------------------
+
+name 칼럼 뒤에 brith 컬럼 추가
+
+alter table user 
+        add column birth data after name;
+
+--------------------------------------------
+
+
+Uid에 PRIMARY KEY 속성 추가
+
+alter table user
+	add primary key (uid);
+
+
+
+--------------------------------------------
+
+Score 컬럼 삭제
+
+alter table user 
+	drop column score;
+
+--------------------------------------------
+
+Money 컬럼을 money2 컬럼으로 변경
+
+alter table user 
+	change column mony money2 decimal (10,2);
+
+--------------------------------------------
+
+FOREIGN KEY 추가
+
+alter table trade
+	add foreign key (seller_id) REFERENCES user (uid);
+
+
+--------------------------------------------
+
+테이블 생성시 FROGIGN KEY 추가
+
+create table trade (
+  tid int,
+  item varchar(32),
+  price dec(10,2),
+  seller_id char(8),
+  PRIMARY KEY (tid),
+  FOREIGN KEY (seller_id) REFERENCES user (uid)
+);
+
+
+
+
+--------------------------------------------
+
+FOREIGN KEY 삭제
+
+show create table trade;
+ 
+--아래 테이블 정보 나타나면 포린키 이름 확인
+CREATE TABLE `trade` (
+`tid` int(11) NOT NULL DEFAULT '0',
+`item` varchar(32) DEFAULT NULL,
+`price` decimal(10,2) DEFAULT NULL,
+`seller_id` char(8) DEFAULT NULL,
+PRIMARY KEY (`tid`),
+KEY `seller_id` (`seller_id`),
+CONSTRAINT `trade_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+--FOREIGN KEY 삭제
+alert table trade 
+	drop foreign key 'trade_ibfk_1'
+
+--------------------------------------------
+
+내부조인 
+
+JOIN (EQI-JOIN, 동등 조인) : Inner join 중에서 가장 많이 사용하는 "="을 조인 조건으로 사용.
+
+select 
+a.col1, bcol1
+from tbl_a as a
+	inner join tbl_b as b on a.col1 = b.col1
+
+
+--------------------------------------------
+
+세타조인 : 내부 조인 중 동등 조인을 제외한 나머지 정보
+
+select
+a.col1, b.col1
+from tbl_a as a 
+	inner join tbl_b as b on a.col1 <> b.col1
+
+--------------------------------------------
+
+외부 조인 
+
+MySQL은 LEET OUTER JOIN  , RIGHT OUTER JOIN 지원 (FULL OUTER JOIN 미지원)
+
+
+
+
+

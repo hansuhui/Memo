@@ -1,0 +1,32 @@
+http://sqlmvp.kr/220340062504
+
+[MySQL/MariaDB 아키텍처 - Overview]
+
+MariaDB 아키텍처는 MySQL는 아키텍처와 동일하다.
+MySQL 아키텍처는 아래 그림과 같다.
+
+기본적으로 커넥션 API를 이루고 있는 응용 프로그램 부분과 커넥션풀 , SQL Interface ,
+Parser , Optimize , Caches&Buffers 로 이루어진 MySQL 엔진 , 그리고 스토리지 엔진 및 실제 데이터를 
+저장하는 파일 시스템인 하드웨어 영역으로 구분할 수 있다.
+
+MySQL은 일반 상용 RDBMS에서 제공하는 대부분의 접근법을 지원한다. C API 부터 JDBC , ODBC , Perl,
+.NET 표준 드라이버까지 다양하게 제공한다.
+
+
+[MySQL 엔진]
+
+커넥션 핸들러와 SQL 파서 , 옵티마이저 , 그리고 MyISAM , InnoDB의 버퍼풀 기능이 포함되어 있다.
+MySQL은 표준 SQL(ANSI SQL-92) 문법을 지원하기 때문에 표준 문법에 따라 작성된 쿼리는 타
+DBMS와 호환되어 실행할 수 있다.
+
+
+[스토리지 엔진]
+
+MySQL에서 처리한 데이터를 실제 스토리지에 저장하거나 스토리지로부터 데이터를 읽어오는 부분을
+전담한다. 스토리지 엔진은 종류가 다양하여 여러 개의 스토리지 엔진을 사용할 수 있다.
+
+create table tbl_a (a1 int) ENGINE=INNODB
+create table tbl_a (a1 int) ENGINE=MyISAM
+
+
+

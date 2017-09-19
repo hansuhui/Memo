@@ -1,0 +1,81 @@
+http://sqlmvp.kr/220340062504
+
+[MariaDB 아키텍처 - 스레딩 구조]
+
+MySQL/MariaDB 서버는 프로세스 기반이 아닌 스레드 기반으로 작동하며 크게 
+포그라운드(Foreground) 스레드와 백그라운드(Background) 스레드로 구분할 수 있다.
+
+
+[포그라운드 스레드 (클라이언트 스레드)]
+
+포그라운드 스레드는 최소한 MySQL/MariaDB 서버에 접속된 클라이언트의 수만큼 존재한다.
+클라이언트 사용자가 작업을 마치고 커넥션을 종료하면 해당 커넥션을 담당하던 스레드는 
+다시 스레드풀(Thread pool)로 반환된다. 이때 스레드풀에 일정 개수 이상 대기 스레드가
+있다면 스레드 풀로 반환하지 않고 스레드를 종료한다.
+
+
+스레드풀의 크기는 다음 명령으로 확인할 수 있다.
+
+show variables like 'thread_cache_size';
+
+[System Variable] 
+
+Name / thread_cache_size
+Dynamic Variable / Yes
+
+[Permitted Values]
+
+Type / integer
+Default / 0
+Min Value / 0
+Max Value / 16384
+
+포그라운드 스레드는 데이터를 MySQL의 데이터 버퍼나 캐시로부터 가져오며, 버퍼나 캐시에 없는 경우
+직접 디스크에 데이터나 인덱스 파일로부터 데이터를 읽어온다. MyISAM 테이블은 디스크 쓰기 작업까지
+포그라운드 스레드가 처리하지만 InnoDB 테이블은 데이터 버퍼나 캐시까지만 포그라운드 스레드가 
+처리하고 나머지 버퍼로부터 디스크까지는 백그라운드 스레드가 처리한다.
+
+
+[백그라운드 스레드]
+
+InnoDB는 여러가지 작업을 백그라운드에서 처리한다. 대표적인 작업으로 
+인서트 버퍼(Insert Buffer)를 병합하는 스레드, 로그를 디스크에 기록하는 스레드, InnoDB 버퍼풀의 데이터를
+디스크에 기록하는 스레드, 데이터를 버퍼로 읽어들이는 스레드 , 기타 여러가지 잠금이나 모니터링 스레드가
+있다. 이러한 모든 스레드를 총괄하는 메인 스레드도 있다.
+
+쓰기 스레드(Write thread)는 원도우용 MySQL 5.0에서부터 1개이상, 리눅스나 유닉스 계열 MySQL은
+5.1 버전부터 쓰기 스레드의 개수를 1개 이상으로 설정할 수 있다. 현재 설정되어 있는 쓰기 및 읽기 
+스레드는 아래 명령으로 확인할 수 있다.
+
+show variables like 'innodb_read_iothreads';
+show variables like 'innodb_write_iothreads';
+
+
+[System Variable]
+
+Name / innodb_read_io_threads
+Variable Scope /  Global
+Dynamic Variable / No
+
+[Permitted Values]
+
+Type / integer
+Default / 4
+Min Value / 1
+Max Value / 64
+
+[System Variable]
+
+Name / innodb_write_io_threads
+Variable Scope /  Global
+Dynamic Variable / No
+
+[Permitted Values]
+
+Type / integer
+Default / 4
+Min Value / 1
+Max Value / 64
+
+
+

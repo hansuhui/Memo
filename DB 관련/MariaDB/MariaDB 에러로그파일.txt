@@ -1,0 +1,28 @@
+http://sqlmvp.kr/220340062504
+
+[MySQL/MariaDB 에러로그파일]
+
+에러로그파일은 MySQL/MaraiDB 가 실행되는 도주에 발생한 에러나 경고를 출력하여 기록하는
+파일이다. 에러로그파일의 위치는 별도로 지정하지 않았다면 설정파일의 datadir 파라미터에 설정된
+경로에 .err 확장자로 생성된다.
+
+편집기에서 에러로그파일을 열어보면 다양한 에러가 기록된 것을 확인할 수 있다.
+
+에러로그 경로 및 파일명을 변경하는 방법은 설정파일(my.ini 또는 my.cnf)에서 
+[mysqld] 항목을 수정한다. 아래 예제는 C:/Program Files/MariaDB 5.5/aaa 
+폴더에 log_error.log 이름으로 로그파일을 기록한다.
+
+log-error=C:/Program Files/MariaDB 5.5/aaa/log_error.log
+
+운영중에 발생하는 에러를 주기적으로 확인하여 데이터베이스의 숨겨진 문제를 
+해결할 수 있도록 해야 한다.
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+http://sqlmvp.kr/220340062504
+
+[MySQL/MariaDB 프로시저 생성, 수정, 삭제]
+
+스토어드 프로시저와 함수는 MySQL 5.0부터 추가된 기능이다. 프로시저를 포함한 스토어드
+프로그램을 사용할 때에는 프로시저의 끝을 정확히 알 수 있도록 SQL의 구분자를 변경해 주어야 한다.
+
+일반적으로 MySQL의 구분자는 ";" 문자가 프로그램의 끝을 의미한다. 하지만 스토어드 프로시저 내에서는
+수 많은 ";" 포함하므로 프로시저의 끝을 정확히 알 수가 없다. CREATE 명령의 끝을 정확히 판별
+할 수 있도록 별도의 구분자를 문자열로 지정하여 사용한다.
+
+명령의 끝을 알려주는 종료문자 변경은 DELIMITER 명령어를 사용한다. 
+아래 예제는 종료문자롤  ";;" 변경한다.
+
+DELMITER ;;
+
+스토어드 프로시저 생성은 종료 문자를 변경해서 사용해야 하며 프로시저 생성 완료 후
+종료문자를 기존의 값으로 변경한다.
+
+DELIMITER ;;
+create procedure usp_2 (a int , b int)
+begin
+select a+b;
+end;;
+DELIMITER ;
+
+
+프로시저 호출은 call 명령을 사용한다. (SQL Server에서는 exec를 사용한다.)
+
+call usp_2 (1,3);
+
+
+프로시저 수정은 ALTER 구문을 사용한다. ALTER 명령은 스토어드 프로시저에서 제공하는 보안 및
+작동 방식과 관련된 특성을 수정할 때만 사용가능하다.
+
+ALTER PROCEDURE usp_2 SQL SECURITY DEFINER;
+
+파라미터나 프로시저의 로직 처리 내용을 변경할 때에는 프로시저를 삭제하고 새로 생성해야 한다.
+프로시저 삭제는 DROP 명령을 사용한다.
+
+drop procedure user_2;
+
+생성된 프로시저 목록은 SHOW PROCEDURE STATUS 명령어를 사용한다.
+
+SHOW PROCEDURE STATUS;
+
+
+
+
+

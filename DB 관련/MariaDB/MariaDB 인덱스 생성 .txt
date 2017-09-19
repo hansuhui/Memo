@@ -1,0 +1,31 @@
+[인덱스 생성]
+
+테이블에 생성된 인덱스 확인 (SQL Server 에서는 sp_helpindex object_table)
+
+show index from user ;
+
+
+Uid2 칼럼에 인덱스 생성 (SQL Server 동일)
+
+create index IX_user_uid2 on user (uid2);
+
+
+Uid2 컬럼에 인덱스 삭제 (SQL Server 동일)
+
+drop index IX_user_uid2 on user;
+
+
+복합 인덱스 만들기 (여러 컬럼을 묶어 인덱스를 만든다.) 
+SQL Server와는 다르게 복합 인덱스 경우 복합키에 사용된 컬럼의 수만큼의 인덱스가 생성되어 나타난다.
+
+create index IX_user_uid_uid2 on user (uid,uid2);
+
+인덱스 중지 및 실행은 스토리지 엔진이 ISAM 엔진에 테이블을 생성하고 인덱스를 생성한다.
+
+CREATE TABLE t (i INT) ENGINE = MYISAM;
+
+create index IX_t_i on t (i);
+
+show index from t;
+
+

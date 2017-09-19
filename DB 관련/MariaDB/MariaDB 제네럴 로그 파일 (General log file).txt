@@ -1,0 +1,40 @@
+http://sqlmvp.kr/220340062504
+
+[MariaDB 제네럴 로그 파일 (General log file)]
+
+제너럴 로그 파일은 MySQL/Maria DB에서 실행되는 모든 쿼리의 내용이 기록된다.
+제너럴 쿼리 로그는 실행되기 전에 요청을 받는 즉시 기록되기 때문에 쿼리 실행 중 오류가 발생해도
+일단 로그 파일에 기록된다.
+
+제너럴 로그 파일은 설정 파일(my.ini 또는 my.cnf_에서 [mysqld] 항목에 다음 명령을 추가한다.
+아래 예제는 C:/Program Files/MariaDB 5.5/data/ 폴더에 log_query.dat 이름으로 제네럴 로그를 기록한다.
+
+log=C:/Program Files/MariaDB 5.5/data/log_query.dat
+
+쿼리를 실행하고 제너럴 로그 파일을 확인해 보면 실행했던 쿼리가 기록된 확인 할 수 있다.
+
+제네럴 로그를 남기는 옵션이 활성화 되어있는지에 대한 정보는 다음 명령을 사용하여 확인 할 수 있다.
+
+show variables where Variable_name in ('version','log','general_log');
+
+제네럴 로그 활성화 온/오프는 다음 명령을 실행한다.
+
+set global general_log = 1; #활성
+set global general_log = 0; #비활성
+
+제네럴 로그가 파일 또는 테이블로 기록할지에 대한 속성 및 현재 속성값 확인은 다음 명령을 사용한다.
+
+set global log_output="TABLE"; #테이블 기록
+set global log_output="FILE"; #파일기록
+
+show variables like 'log_output';
+
+테이블에 제네럴 로그를 지정한 경우 SQL 쿼리를 이용하여 조회 할 수 있다.
+
+select * from mysql.generallog limit 1;
+
+
+
+
+
+

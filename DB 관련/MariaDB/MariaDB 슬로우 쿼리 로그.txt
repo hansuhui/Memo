@@ -1,0 +1,56 @@
+http://sqlmvp.kr/220340062504
+
+[MySQL/MariaDB 슬로우 쿼리 로그]
+
+슬로우 쿼리 로그는 설정에서 정의된 시간보다 (second) 오랫동안 실행 된 쿼리에 대해서 기록을 한다. 
+슬로우 쿼리 로그는 MySQL/MariaDB에 쿼리를 실행 한 후 실제 소요된 시간을 기준으로 슬로우 쿼리 로그에
+기록 여부를 판단하기 댸문에 정상적으로 실행이 완료되고 실행 시간이 정의된 시간보다 큰 경우 기록된다.
+
+슬로우 쿼리 로그 파일은 설정파일(my.ini 또느 my.cnf)에서 [mysqld] 항목에 다음 명령에 추가한다.
+아래 예제는  C:/Program Files/MariaDB 5.5/data/ 폴더에 Slow_Query.log 이름으로 슬로우 쿼리를 기록한다. 
+그리고 슬로우의 기준을 1초로 설정하였다.
+
+
+log-slow-queries=C:/Program Files/MariaDB 5.5/data/log_query.dat\Slow_Query.log
+long_query_time=1
+
+슬로우 쿼리 로그를 남기는 옵션이 활성화 되어있는지에 대한 정보는 다음 명령을 사용하여 확인 할 수 있다.
+
+show variables where Variable_name like ('%slow%');
+
+슬로우 쿼리 로그 활성화 온/오프는 다음 명령을 실행한다.
+
+set global slow_query_log = 1; #할성
+set global slow_query_log = 0; #비할성
+
+슬로우 쿼리 로그는 테이블에 기록할 수도 있다. 테이블에 기록한 경우 "mysql" 데이터베이스에서
+slow_log 테이블에 저장된다. 슬로우 쿼리로그가 파일 또는 테이블로 기록할지에 대한 속성 및 현재
+속성값 확인은 다음 명령을 사용한다.
+
+set global log_output="TABLE"; #테이블 기록
+set global log_output="FILE"; 파일 기록
+
+show variables like 'log_output';
+
+테이블에 슬로우 쿼리 로그를 지정한 경우 SQL 쿼리를 이용하여 조회 할 수 있다.
+
+select * from mysql.slow_log limit 1;
+
+
+- user_host : 쿼리를 실행한 사용자의 계정
+
+- Query_time : 쿼리가 실행된 전체 시간
+
+- Lock_time : 잠금 대기 시간
+
+- Row_sent : 몇 건의 처리 결과를 클라이언트로 보냈는지에 대한 수
+
+- Row_examined : 쿼리가 처리되기 위해 접근한 레코드 수
+
+- Db : 쿼리가 실행된 데이터베이스
+
+- Sql_text : 실행된 쿼리
+
+
+
+

@@ -1,0 +1,51 @@
+http://sqlmvp.kr/220340062504
+
+[MariaDB MyISAM 스토리지 엔진 특성]
+
+MyISAM은 ISAM(indexed Sequential Access Method)의 단점을 보완하기 위해 나온 업그레이드 버전으로
+비-트랜잭션-세이프(Non-transanctional-safe) 테이블을 관리 한다.
+
+[기본적인 특징]
+
+- 데이터 저장에 제한이 없고 효율적이다. (속도가 빠른편이다.)
+
+- B-Tree , R-Tree , Full-Text 인덱스를 지원
+
+- 테이블 락 사용으로 읽기 성능은 좋으나 쓰기가 빈번한 경우 부적합.
+
+- 트랜잭션 미지원
+
+- MyISAMpack 라는 압축 옵션 제공
+
+MyISAM에는 InnoDB의 버퍼풀과 비슷한 역할을 하는 것이 키 캐시(Key cache, 키 버퍼라고도 함)다.
+하지만 MyISAM 키 캐시는 인덱스만 대상으로 작동하며 또한 인덱스의 디스크 쓰기작업에 대해서만 
+부분적으로 버퍼링 역할을 한다. 테이블 데이터는 캐시나 버퍼링 기능이 없어 테이블의 데이터 읽기나
+쓰기 작업은 항상 디스크를 사용한다. 키 캐시의 효율성은 다음 히트율로 확인 할 수 있다.
+
+키 캐시 히트율(%) = 100 - (Key_reads / Key_read_requests * 100)
+
+Key_reads는 인덱스를 디스크에서 읽은 횟수를 저장하는 상태 변수이며 Key_read_requests는 키 캐시로부터
+인덱스를 읽은 회수를 저장하는 상태 변수이다. 상태 변수를 확인하는 방법은 
+SHOW GLOBAL STATUS 명령을 사용한다.
+
+show global status like 'Key%'
+
+키 캐시는 32비트 , 64비트 운영체제 모두 하나의 키 캐시에 4GB 이상 할당 할 수 없다.
+만약 4GB 이상 키 캐시를 할당하고 싶다면 기본 키 캐시 외에 별도의 명명된 키 캐시 공간을 할당해야 한다.
+
+아래 스크립트는 기본 키 캐시(Key_buffer_size) 4GB외의 t_board 2GB와 t_comment 2GB 
+키 캐시 공간을 설정 한다.
+
+set global key_buffer_size = 4096 * 1024;
+set global Kbuffer_board.key_buffer_size = 2048 * 1024;
+set global kbuffer_commnet.key_buffer_size = 2048 * 1024;
+
+설정된 각 키 캐시 공간에 익덱스가 캐스되도록 설정한다. 이렇게 설정하면 t_board 테이블은
+kbuff_board 키 캐시를 , t_comment 테이블은 kbuff_comment 키 캐시를 사용한다.
+
+CACHE INDEX t_board IN Kbuff_board;
+CACHE INDEX t_commnet IN kbuff_commnet;
+
+
+
+

@@ -1,0 +1,63 @@
+http://sqlmvp.kr/220340062504
+
+[MariaDB 백업 & 복원 - mysqldump]
+
+MySQL/MariaDB 백업 및 복원에 대해서 알아본다. 이번 백업은 MySQL 시절부터 널리 알려진
+mysqldump를 사용한다.
+
+mysqldump는 논리적 백업을 수행한다. 데이터 크기가 비교적 작은 경우 유연하게 사용할 수 있다.
+백업파일은 SQL 형식으로 백업 파일을 생성한다. 이렇게 생성된 백업 형식은 MariaDB , MySQL 또는
+완전히 다른 DBMS에서 쉽게 가져올 수 있다.
+
+mysqldump는 테이블 및 트리거를 덤프한다. 저장 프로시저나 뷰 등은 명시적으로 추가 매개변수를
+사용하여 명시적으로 작성해야 한다.
+
+
+[기본 사용 문법]
+
+-p 옵션 후 명시적으로 패스워드를 적지 않으면 mysqldump 수행시 패스워드를 물어본다.
+
+mysqldump -u[아이디] -p[패스워드] > [저장파일명].sql
+
+
+[전체 데이터베이스 백업 & 복원]
+
+MySQL/MariaDB 전체 데이터베이스를 백업받는다.
+
+mysqldump -uroot -p -A > backup.full.sql
+
+생성된 덤프를 이용한 복원
+
+mysql -uroot -p <backup_full.sql
+
+
+[특정 데이터베이스 백업]
+
+sw_test 라는 데이터베이스만 백업
+
+mysqldump -uroot -p sw_test > backup_sw_test.sql
+
+
+[특정 데이터베이스의 특정 테이블 백업]
+
+sw_test 데이터베이스의 tbl_a라는 테이블만 백업
+
+mysqldump -uroot -p sw_test tbl_a > backup_sw_test_tbl_a.sql
+
+
+[특정 데이터베이스의 테이블의 특정 값만 백업]
+
+sw_test 데이터베이스의 tbl_a테이블의 emp_no가 100 이상 200이하의 데이터만 백업
+
+mysqldump -uroot -p sw_test tbl_a -w'emp_no >= 100 and emp_no <= 200' > backup_sw_test_tbl_a.sql
+
+[특정 데이터베이스의 테이블 definition 백업]
+
+실제 데이터백업은 받지 않고 테이블 definition 만 백업 받는다.
+
+mysqldump -uroot -p sw_test --no-data > backup_sw_test_definition.sql
+
+
+
+
+

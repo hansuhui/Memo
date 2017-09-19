@@ -1,0 +1,26 @@
+http://pyonji.tistory.com/11
+
+[MariaDB 윈도우 버전 설치 및 사용법]
+
+Maria DB 윈도우 버전 설치 및 사용법에 대해서 알아보겠습니다,
+
+- MariaDB는 MySQL의 오픈 소스를 기반으로 만들어진 DBMS (Database Management System)로
+  기본 구조와 사용 방법이 MySQL과 동일합니다.
+
+- MariaDB는 GPLv2 라이선스를 따르기 떄문에 라이선스 정책에서 상당히 자유롭습니다.
+
+- MariaDB 다운로드 URL : https://downloads.mariadb.org
+
+설치하고자 하는 환경에 맞게 MariaDB를 다운 받습니다.
+
+포트 및 root 비밀번호 셋팅
+
+
+- MySQL Client Console로 접속해보기
+
+윈도우 '시작 > MariaDB 10.0 (x64) > MySQL Client (MariaDB 10.0 (x64))' 선택
+
+설치할 때 생성한 root 계정의 비밀번호를 입력하면 MariaDB에 접속되는 것을 확인 할 수 있습니다.
+
+
+

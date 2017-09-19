@@ -1,0 +1,77 @@
+http://sqlmvp.kr/220340062504
+
+[MariaDB Connection 관련 설정 변수]
+
+
+MySQL / MariaDB 서버에서 커넥션 관련 설정 변수와 현재 설정되어 있는 값을 확인하고 이 항목이
+어떤 의미를 뜻하는지 알아본다.
+
+설정 가능한 변수 목록은 show variables 명령을 사용하여 확인 할 수 있다.
+
+show variables;
+
+- max_connections : MySQL 서버가 최대한 허용할 수 있는 클라이언트의 연결 수를 제한하는 설정이다.
+  max_connection 값을 수천 수만으로 늘릴수록 MySQL 서버가 응답 불능 상태로 빠질 가능성이 높아지며
+  이 설정값을 낮출수록 MySQL 서버가 응답할 수 없게 될 확률이 줄어든다. 이 설정은 동적으로 변경할 수
+  있으므로 커넥션이 부족하다면 그때 변경해주면 된다.
+
+- thread_cache_size : 클라이언트와 서버와의 연결 그 자체를 의미하며 스레드는 해당 커넥션으로부터 오는
+  작업 요청을 처리하는 주체다. 최초 클라이언트로부터 접속 요청이 오면 MySQL 서버는 스레드를 준비해 그
+  그 커넥션에 작업 요청을 처리해 줄 스레드를 매핑하는 형태이다. 클라이언트가 종료되면 MySQL은 스레드를
+  매핑하는 형태이다. 클라이언트가 종료되면 MySQL은 스레드를 스레드풀에 보관한다. Thread_cache_size 설정
+  변수는 최대 몇 개까지의 스레드를 스레드 풀에 보관할지 결정한다.
+
+- wait_timeout : MySQL 서버에 연결된 클라이언트가 wait_timeout에 지정된 시간 동안 아무런 요청 없이
+  대기하는 경우 MySQL 서버는 해당 커넥션을 강제로 종료해버린다. 이 설정값의 시간 단위는 초이며
+  기본값은 28800초(8시간)이다.
+
+
+현재 설정되어 있는 상태 값은 show status 명령어를 사용하여 확인할 수 있다.
+
+show status like '%connect%';
+
+- Aborted_connects : MySQL 서버에 접속이 실패된 수
+
+- Max_used)connections : 최대로 동시에 접속한 수
+
+- Threads_connection : 현재 연결된 Thread 수
+
+show status like '%clients%';
+
+
+- Abroted_clients : 클라이언트 프로그램이 비 정상적으로 종료된 수
+
+show status like '%thread%';
+
+- Threads_cached : Threads Cache 의 Thread 수
+
+- threads_connected : 현재 연결된 Thread 수
+
+- Threads_created : 접속을 위해 생성된 Thread 수
+
+- Threads_running : sleeping 되어 있지 않은 Thread 수
+
+커넥션을 모니터링 할 떄 위에서 확인한 생태 값을 계산하여 튜닝 여부를 판단할 수 있다.
+
+- Cache Miss Reate (%) = Threads_created / Connections * 100
+
+- Conection Miss Rate(%) = Aborted_connects / Connections * 100
+
+- Connection Usage (%) = threads_connected / max_connections * 100
+
+Connection Usage(%)가 100%라면 max_connections 수를 증가시켜야 한다. Connection 수가 부족할
+경우 Too Many Connection Error 가 발생한다.
+
+DB서버의 접속이 많은 경우 wait_timeout을 최대한 적게 설정하여 불필요한 연결을 빨리 정리하는
+것이 좋다. 그러나 Connection Miss Rate(%)가 1% 이상이면 wait_timeout을 좀 더 길게 설정한다.
+
+
+MySQL 서버는 외부로부터 접속 요청을 받을 경우 인증을 위해 IP 주소를 호스트네임으로 바꾸는
+과정을 수행하여 접속 시에 불필요한 부하가 발생한다. skip-name-resolve를 설정하고 접속시 IP기반으로
+접속을 하게 되면 hostname lookup 과정을 생략하게 되어 좀 더 빠르게 접속할 수 있다.
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+http://pyonji.tistory.com/12
+
+[MariaDB JDBC 드라이버 정보]
+
+MariaDB는 MySQL의 오픈 소스를 기반으로 만들어진 DBMS (Database Management System)라서
+MySQL JDBC 드라이버를 사용해도 정상적으로 작동하지만 , MariaDB JDBC 드라이버가 존재하니
+그걸 사용하면 되겠습니다.
+
+- MySQL JDBC 드라이버 사용시
+
+드라이버 : com.mysql.jdbc.Driver
+URL : jdbc:mysql://서버아이피:3306(사용포트)/데이터베이스명
+JDBC 드라이버 다운로드 URL : http://dev.mysql.com/downloads/connector/j/
+
+- MariaDB JECT 드라이버 사용시
+드라이버 : org.mariadb.jdbc.Driver
+URL : jdbc:mariadb://서버아이피:3306(사용포트)/데이터베이스명
+JDBC 드라이버 다운로드 URL : https://downloads.mariadb.org/client-java/
+
+위 두개의 내용 모두 MariaDB 에서 사용 가능합니다.

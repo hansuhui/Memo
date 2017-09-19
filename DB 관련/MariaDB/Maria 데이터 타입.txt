@@ -1,0 +1,124 @@
+http://sqlmvp.kr/220340062504
+
+[MySQL / MariaDB 데이터 타입]
+
+- 숫자형 데이터 타입 -
+
+테이터 타입 / 의미 / 크기 / 설명
+
+TINYINT / 매우 작은 정수 / 1 byte / - 128 ~ 127 (부호없이 0 ~ 255)
+
+SMALLINT / 작은 정수 / 2 byte / -32768 ~ 32767
+
+MEDIUMINT / 중간 크기의 정수 / 3 byte / -(-8388608) ~ -1(8388607)
+
+INT / 표준 정수 / 4 byte / ~ -1
+
+BIGINT / 큰 정수 / 8 byte / - ~ -1
+
+FLOAT / 단정도 부동 소수 / 4 byte / -3.40E+45 ~ 3.40E+45 (no unsigned)
+
+DOUBLE / 배정도 부동 소수 / 8 byte / -1.7976E+320 ~ 1.7976E+320 (no unsigned)
+
+DECIMAL(m,n) / 고정 소수 / m,n에 따라 다르다 / 숫자 데이터지만 내부적으로 String형태로 저장됨. 최대 65자.
+
+BIT(n) / 비트 필드 / m 에 따라 다르다 /  공백
+
+
+- 날짜형 데이터 타입 -
+
+테이터 타입 / 의미 / 크기 / 설명
+
+DATE / CCYY-MM-DD / 3 byte / 1000-01-01 ~ 9999-12-31
+
+DATETIME / CCYY-MM-DD hh:mm:ss / 8 byte / 1000-01-01 00:00:00 ~ 9999-12-31 23:59:59
+
+TIMESTAMP / CCYY-MM-DD hh:mm:ss / 4 byte / 1970-01-01 00:00:00 ~ 2037
+
+TIME / hh:mm:ss / 3 byte / -839:59:59 ~ 839:59:59
+
+YEAR / CCYY 또는 YY / 1 byte / 1901 ~ 2155
+
+
+TIMESTAMP 는 현재 시간이 자동으로 들어가는 데이터타입 입니다.
+
+create table TS_test(
+   Num int PRIMARY KEY,
+   TS TIMESTAMP);
+
+insert into TS_test (NUM) values (1);
+select * from TS_test;
+
+
+- 문자형 데이터 타입 -
+
+테이터 타입 / 의미 / 크기 / 설명
+
+CHAR(n) / 고정길이 비어진(문자) 문자열 / n byte / 공백
+
+VARCHAR(n) / 가변 길이 비이진 문자열 / Length + 1 byte / 공백
+
+BINARY(n) / 고정 길이 이진 문자열 / n byte / 공백
+
+VARBINARY(n) / 가변 길이 이진 문자열 / Length + 1 byte OR 2 byte / 공백
+
+TINYBLOB / 매우 작은 BLOB (Binary Large Object) / Length + 1 byte / 공백
+
+BLOE / 작은 BLOB / Length + 2byte / 최대크기 64 KB
+
+MEDIUMBLOE / 중간 크기 BLOB / Length + 3 byte / 최대크기 16 MB
+
+LONGBLOB / 큰 BLOB / Length + 4 byte / 최대 4GB
+
+TINYTEXT / 매우 작은 비이진 문자열 / Length + 1 byte / 공백
+
+TEXT / 작은 비이진 문자열 / Length + 2 byte / 최대크기 64 KB
+
+MEDIUMTEXT / 중간 크기 비이진 문자열 / Length + 3 byte / 최대크기 16 MB
+
+LONGTEXT / 큰 비이진 문자열 / Length + 4 byte / 최대크기 4GB
+
+
+BLOB의 경우는 바이너리 데이터이므로 잊미지 파일 등도 저장이 가능하다. 처리성능이 높지 않으므로 
+사용할 때 주의한다.
+
+create table img_table(
+NUM int primary key auto_increment,
+filename varchar(64),
+image MEDIUMBLOB NOT NULL
+);
+ 
+insert into img_table(image,filename) values 
+(load_file("C:\\sql_data\\Daily_report.JPEG"), 'Daily_report.JPEG');
+ 
+select * from img_table;
+ 
+select image into DUMPFILE 'c:\\sql_data\\dump.jpg' 
+from img_table where filename = 'Daily_report.JPEG';
+
+
+[공간형 데이터 타입]
+
+데이터 타입 / 의미
+
+GEOMETRY / 공간 값
+
+POINT / 포인트 값 (한 쌍의 X,Y 좌표)
+
+LINESTRING / 커브 값 ( 하나 이상의 POINT 값)
+
+POLYGON / 다격형
+
+GEOMETRYCOLLECTION / 기하학(GEOMETRY) 값의 집합
+
+MULTILINESTRING / LINESTRING 값의 집합
+
+MULTIPOINT /  POINT 값의 집합
+
+MULTIPOLYGON / 다각형 값의 집합
+
+
+
+
+
+
