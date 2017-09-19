@@ -1,0 +1,324 @@
+https://medium.com/witinweb/%EB%B2%88%EC%97%AD-promise-patterns-anti-patterns-4065d8c26e89
+
+
+[Promise 안티 패턴]
+
+안티 패턴 , 또는 나쁜 사례들을 정말 많이 볼 수 있다. 여러분과 마찬가지로 나도 과거에는
+그런 코드들을 작성했다. 뭐 괜찮다 , 우리의 첫번째 목표는
+(우리가 우리의 이전 포스트에서 했던) Promise의 기초를 이해하는것이다. 두 번째는 어떤 예제가
+Promise의 아이디어와 구혀ㅕㄴ에 정말로 맞지 않는 것인지 잘 인지하고 앞으로는 그것을 
+사용하지 않도록 하는 것이다.
+
+
+- Promise를 장식적인 콜백으로 여기는것 -
+
+만약 여러분이 콜백에 매우 익숙한 상황이라면 Promise를 단지 하려한 콜백으로 간주하고
+사용하기가 쉽다.
+
+예를 들어, 아래 코드는 somethingAsysc(function(err,result)); 처럼 사용하는 일반적인 콜백 스타일과
+유사하다. 때문에 쉽게 성공, 에러 핸들러를 취할 수 있는 .then() 이점을 사용해 볼 수 있다.
+
+somethingAsync().then(function(result){
+ //에러 핸들러
+},
+fucntion(err){
+ //에러 핸들러
+});
+
+
+단일 채널에서 오류를 허용하기 위한 도구로 사용된 이런 Promise는 좀 어색하다. 여러분은 아마 이런 형태의
+.then을 거의 사용하지 않으려고 할 것이다. 오히려, 제어 흐름의 맥락에서 채널을 활용하는 것이
+상기 표현보다 더욱 관용적하고 깔끔하다.
+
+
+somethingAsync() 
+ .then(function(result){ 
+ // 성공 핸들러 
+ })
+ .catch(function(err){
+ // 오류 핸들러
+ });
+
+
+.then(successFn , errorFn) 을 사용하면 Proises 를 둘러 쌓는 등의 또 다른 문제를 야기한다.
+
+firstThingAsync().then(function(result1){
+  secoendThingAsync().then(function(result2){
+   //do somthing with result1 and result2
+ });
+}, function(err){
+  //secondThingAsync()에서 발생한 에러는 여기까지 도달하지 못한다.
+});
+
+두 Promise 의 결과로 무엇인가를 해야하기 떄문에 여러분은 중첩을 사용하기로 했다.
+그러나 secondthingAsync()에서 발생되는 어떤 error나 exception 도 firstThingAsync().then()의
+두 번째 파라미터인 에러핸들러를 통해 붙잡을 수 없다. 그 에러들은 사켜진 채 결고 나타나지 않는다.
+
+
+[중첩된 Promise]
+
+잠시 이전 예제를 다시 한번 살펴보자, 두 Promise 호출 간의 종속성으로 인해
+첫 번째 Promise 호출의 .then 처리기 안에 다른 Promise 호출이 중첩되어 있다.
+
+firstThingAsync().then (function(result1) { 
+  secondThingAsync().then(function(result2) {
+    // do something with result1 and result2 
+  });
+},
+function(err) { 
+  // secondThingAsync()에서 발생한 에러는 여기까지 도달하지 못한다.
+});
+
+
+여기서 문제는 우리가 두 Promise (firstThingAsync 와 SecondThingAsync) 모두의 결과로서
+뭔가를 할 필요가 있다는 것이다. 
+사실 Promise.all()을 사용하면 된다.
+
+
+Promise.all([firstThingAsync, secondThingAsync]) 
+  then.(function (result) {
+    // do something with result1 and result2 
+    // available as results[0] and results[1] respectively 
+  })
+  .catch (function (err) {/ * … */});
+
+Promise.all() 은 Promise 배열을 전달하여 실행할 수 있도록 한다. 이것들이
+모두 완료되었을 때 배열로된 결과를 전달한다. 그리고, 에러 핸들러를 마지막 구문의 
+catch()를 통해 바깥으로 이동시킴으로서 Promise나 내부 표혁식에서 일어나는 모든 에러를
+처리할 수 있게 되었다.
+
+그러나 두 번째 Promise 함수가 첫 번째 Promise 함수의 결과를 매개 변수로 필요로하는 경우 
+복잡해진다.  어떻게 느슨한 호출 체인을 유지하면서 Promise를 다룰 수 있을까? 두 번째 Promise에
+결과를 전달하기 위해 또 Promise 를 중첩해야 할까? 꼭 그래야만 하는건 아니다.
+
+
+firstThingAsync() 
+  .then(function(result1) { 
+    return Promise.all([result1, secondThingAsync(result1)]); 
+  })
+  .then(function(results) {
+    // do something with results array: results[0], results[1]
+  })
+  .catch(function(err){ /* … * */ });
+
+이 경우 우리는 여전히 Promise.all()를 사용할 수 있다, 그러나 우리는 파라미터로써 
+첫번쨰 결과를 사용해야 하는 두 번째 Promise와 함께 첫 번째 결과를 전달하도록 하는
+wrapper 핸들러로서 Promise.all() 을 사용한다. 기억할것, .then은 단지 값 분만 아니라
+Promise를 리턴할 수도 있다.
+
+
+[Deferred 안티 패턴]
+
+Promise의 jQuery 식 구현체로 알려진 이것은 안티 패턴으로 인식되기 힘들수도 있다.
+그러나, Promise/A+ 스펙은 Promise가 어떻게 동작하는지 분명하게 정의하고 있는데
+그것은 실제 Promise를 보유하게 되었을 때 Deferred를 사용할 필요가 없음을 뜻한다.
+
+예를 들어, 호출자가 비동기 적으로 실행되어야하고, 그 결과를 처리하는 함수를
+전달 할 수 있는 API를 구축하고 있다고 하자. 우리는 아래 예제에서 jquery의
+deferred를 사용해 볼 것이다.
+
+
+// pseudo API implementation
+var url = ‘http://www.api.com/v1/widgets’; 
+function apiGetSomething(callerGetFn) { 
+  callerGetFn(url).then(function(results) {
+    // do something further with results
+  }
+}
+// Caller
+function getSomethingAsync(url) { 
+  var deferred = $.Deferred();
+  $.getJSON(url).then(function(json) {
+    // do some stuff …
+    deferred.resolve(JSON.parse(json));
+  });
+  return deferred.promise();
+}
+apiGetSomething(getSomethingAsync);
+
+
+deferrend object를 생성하는것은 불필요하다. 우리는 단지 실제 Promise를 사용하고
+반환할 수 있다. Promise와 유사한 써드파티의 (jQuery와 같은) 제 3자 라이브러리를 사용하는
+경우 API 호출을 감싸거나 '약속'할 수 있다 
+(대부분의 Promise 라이브러리는 이를 수행하는 방법을 제공한다)
+
+// 실제 Promise를 반환하기 위해 $.getJSON를 감쌀것
+//`.fail` 메소드로 rejection을 적절히 핸들링 할 수 있다.
+var fetchJSON = function(url) { 
+  return new Promise((resolve, reject) => {
+    $.getJSON(url)
+      .done((json) => resolve(json))
+      .fail((xhr, status, err) => reject(status + err.message));
+  });
+}
+
+이제 우리는 deferred object를 제거하고 우리가 호출하는 함수 안에서 간단하게 Promise를
+생성하고 반환할 수 있다.
+
+// Caller
+function getSomethingAsync(url) { 
+  return fetchJSON(url).then(function(json) {
+    return JSON.parse(json);
+  });
+}
+apiGetSomething(getSomethingAsync);
+
+Bluebird anit-patterns wiki에서 Petka Antonov가 언급했던 setTimeout을 감싼 delay() 메소드도
+deferred object를 사용하지 않고 완설될 수 있다.
+
+function delay(ms) { 
+  return new Promise(function(resolve, reject) {   
+     setTimeout(resolve, ms);
+  });
+}
+
+그러나 Petka에 동의하는 점은 여러분이 일반적으로 Promise 라이버라리를 사용하여 래핑했던것처럼
+할 수 없는 서드파티 라이브러리 API를 사용하는 경우 구현 문제와 API 디자인이 잘못되었을
+가능성이 넢다는 것입니다.
+
+
+[기억해둘만 한 것들과 좋은 아이디어들]
+
+우리는 위의 ES6 Promises에서 꽤 많은 안티 패턴을 다루었다. 이제 기분 좋게 얼마나 우리의 코드가
+지금까지 나빴는지에 대해 얘기하는것을 그만둘 때다.
+
+다음 항목은 Promise 작업을 할 때 염두에 두어야 사항 및 우수 사례의 모음이다.
+이것들은 한줌에 불과하지만 하지만 코드를 작성할 때 기억해야 할 것들이다.
+
+[.catch를 잊지 말것]
+
+우리가 데이터와 예외처리를 하나의 흐름안에서 제어하려는 Promise의 장점을 취하고자 한다는 것을
+기억하자. 그리고 어떠한 에러도 삼켜버리거나 떨어뜨리지 않도록 하자.
+
+.then(successFn , errorFn) 패턴을 피하고 여러분의 .catch() 로 적절하게 에러를 다루면서
+Promise 체인을 평평하게 유지하라. 만약 여러분이 코드를 완성하는데 자신감이 넘친다면 뭔가를
+넣치게 된다. 자신감이 없으면 일반적인 기본 .catch() 를 사용하라 적어도 콘솔을 통해
+뭔가라도 볼 수 있게 된다.
+
+
+doThing() 
+ .then(doNextThing)
+ .then(doAnotherThing)
+ .catch(console.log.bind(console)); // just catch everything here
+
+
+
+[부작용을 피하라]
+
+완성하기 전에 Promise 안에 얼마나 긴 비동기 코드를 취할지 가정하지마라.
+.then 핸들러는 특별히 뭔가를 반환해야 한다.
+
+
+doFirstThingAsync().then(function(result) { 
+  doSecondThingAsync(result);
+})
+.then(function() {
+  doThirdThingAsync(); // did doSecondThingAsync() resolve?
+});
+
+
+
+doSecondThingAsync() Promise는 .then() 핸들러가 실행될 때까지 처리(resolved) 되지 않은 것 같다.
+여러분은 항상 .then 핸들러로부터 다음 중 하나를 반환해야한다 :
+
+- a new Promise - which would solve our case above
+
+- a synchronous value or undefined 
+
+- or,throw an Error Exception
+
+
+이로서 그 자신이 Promise인 doSecondThingAsync()를 반환 받음으로서 
+이전의 가정[위에서 dosecondThingAsync()가 처리되지 않은 것 같다고 했던 가정]을 정정할 수 있게 된다.
+
+
+doFirstThingAsync().then(function(result) { 
+  return doSecondThingAsync(result);
+})
+.then(function() {
+  doThirdThingAsync(); // doSecondThingAsync has resolved?
+});
+
+
+
+[Promise를 즉시 처리/기각 시키는 것이(resolved/rejected)대해 잊지마라.]
+
+ES6 Promise spec은 때때로 즉시 Promise를 가결하거나 기각시키는데 (resolved/rejected) 유용한 두 가지
+함수를 제공한다 : Promise.resolve() and Promise.reject().
+
+이것들은 Promise 체인안에서 사용되는, 오류를 발생시킬 수 있는 동기식 코드를 다루는데 유용할 수 있다.
+
+
+function makeSyncAsync() { 
+  return Promise.resolve().then(function(){
+    // execute synchronous code that might throw
+    return value;
+  });
+}
+
+
+[연속적으로 Promise 실행하기]
+
+우리는 병렬방식으로 Promise 리스트들을 실행하는 방법인 
+Promise.all() 을 살펴본다 있다. 이것은 동적으로 Promise를 구축하거나 
+얼마나 많은 Promise가 실행될지 정확히 모르는 경우에 편리하다. 그러나 우리가
+병렬로 실행하기를 원하지 않고 대신 , 각 Promise가 연결되어 이전의 결과를
+다음것에 전달하는 직렬방식으로 실행하기를 원한다면?
+
+
+
+// Promise returning functions to execute
+function doFirstThing(){ return Promise.resolve(1); } 
+function doSecondThing(res){ return Promise.resolve(res + 1); } 
+function doThirdThing(res){ return Promise.resolve(res + 2); } 
+function lastThing(res){ console.log(“result:”, res); }
+var fnlist = [ doFirstThing, doSecondThing, doThirdThing, lastThing];
+// Execute a list of Promise return functions in series
+function pseries(list) { 
+  var p = Promise.resolve();
+  return list.reduce(function(pacc, fn) {
+    return pacc = pacc.then(fn);
+  }, p);
+}
+pseries(fnlist); 
+// result: 4
+
+
+이 리스트안의 함수들은 본질적으로는 Promise를 반환하는 팩토리들(factories)이다.
+Promise가 만들어 지자마자 실행되기 시작되야 하므로 우리는 pserise() 메소드로 
+Promises 배열을 직접 전달하길 원하지 않는다. 우리가 Promise를 직접 전달하게 되면
+이 직렬 패턴 안에서 실행 순서를 보장 할 수 없었다. 왜냐하면 우리는 Promise를
+이전 Promise와 연결시킬 때 reduce 내부의 .then 을 통해 함수를 전달할 수 있어야 하기 때문이다.
+
+우리가 Promise를 직접 전달하게 되면 결과는 우리가 기대했던 것과는 다를 것이ㅏㄷ.
+
+
+//이제 팩토리(factories)가 아니라 Promise의 목록으로 해보자
+var fnlist = [ doFirstThing(), doSecondThing(), doThirdThing(), lastThing() ]; 
+pseries(fnlist); 
+// result: undefined
+
+
+[개요]
+
+우리는 위에서 ES6 Promise의 안티 패턴들을 다루었다. 뿐만 아니라 기억해 둘만한 좋은 관행도
+몇 가지 다루었다. 위에서 다룬 Promise의 spec이나 함수들에 대해 궁금하다면, 이전에 내가 쓴
+ES6 Promise Basics를 참고하고 아래 자료들도 보면 좋다.
+(http://www.datchley.name/es6-promises/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

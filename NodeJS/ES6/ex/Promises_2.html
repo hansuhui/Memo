@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+ <script>
+ 'use strict';
+
+// A-> $http 함수는 표준 Adapter 패턴을 따르기 위해 구현됩니다
+function $http(url){
+
+  // 간단한 사례 객체
+  var core = {
+
+    // ajax 요청을 수행하는 메서드
+    ajax: function (method, url, args) {
+
+      // 프로미스 생성
+      var promise = new Promise( function (resolve, reject) {
+
+        // XMLHttpRequest 인스턴스화
+        var client = new XMLHttpRequest();
+        var uri = url;
+
+        if (args && (method === 'POST' || method === 'PUT')) {
+          uri += '?';
+          var argcount = 0;
+          for (var key in args) {
+            if (args.hasOwnProperty(key)) {
+              if (argcount++) {
+                uri += '&';
+              }
+              uri += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]);
+            }
+          }
+        }
+
+        client.open(method, uri);
+        client.send();
+
+        client.onload = function () {
+          if (this.status >= 200 && this.status < 300) {
+            // this.status가 2xx와 같은 경우 함수 "resolve" 수행
+            resolve(this.response);
+          } else {
+            // this.status가 2xx와 다른 경우 함수 "reject" 수행
+            reject(this.statusText);
+          }
+        };
+        client.onerror = function () {
+          reject(this.statusText);
+        };
+      });
+
+      // 프로미스 반환
+      return promise;
+    }
+  };
+
+  // Adapter 패턴
+  return {
+    'get': function(args) {
+      return core.ajax('GET', url, args);
+    },
+    'post': function(args) {
+      return core.ajax('POST', url, args);
+    },
+    'put': function(args) {
+      return core.ajax('PUT', url, args);
+    },
+    'delete': function(args) {
+      return core.ajax('DELETE', url, args);
+    }
+  };
+};
+// A의 끝
+
+// B-> 여기서 그 함수 및 payload를 정의합니다
+var mdnAPI = 'https://developer.mozilla.org/en-US/search.json';
+var payload = {
+  'topic' : 'js',
+  'q'     : 'Promise'
+};
+
+var callback = {
+  success: function(data) {
+    console.log(1, 'success', JSON.parse(data));
+  },
+  error: function(data) {
+    console.log(2, 'error', JSON.parse(data));
+  }
+};
+// B의 끝
+
+// 메서드 호출 실행
+$http(mdnAPI)
+  .get(payload)
+  .then(callback.success)
+  .catch(callback.error);
+
+// 메서드 호출을 실행하지만 프로미스 거부 경우를 다루는 다른 방법 (1)
+$http(mdnAPI)
+  .get(payload)
+  .then(callback.success, callback.error);
+
+// 메서드 호출을 실행하지만 프로미스 거부 경우를 다루는 다른 방법 (2)
+$http(mdnAPI)
+  .get(payload)
+  .then(callback.success)
+  .then(undefined, callback.error);
+ </script>
+ <body>
+  
+ </body>
+</html>

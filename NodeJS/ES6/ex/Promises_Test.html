@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> ProMise Test </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script>
+  'use strict';
+
+var Parameter = "파라미터 받니?";
+var Error = 0;
+var Test_Promise = new Promise(
+	function(resolve , reject)
+	{
+			alert("Promise 실행");
+			resolve(Parameter);
+			reject("에러 실행");
+	}
+)
+
+
+Test_Promise.then(function(msg){
+	alert("then : " + msg);
+}).catch(function(msg){
+	alert("catch : "+ msg);
+});
+
+
+</script>
+ </head>
+ <body>
+
+ </body>
+</html>
