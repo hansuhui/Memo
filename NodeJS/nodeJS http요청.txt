@@ -1,0 +1,30 @@
+var http = require('http');
+
+
+var options = {
+    hostname: 'www.주소.com',
+    path: '/경로'
+  };
+ 
+function handleResponse(response) {
+  var serverData = '';
+  response.on('data', function (chunk) {
+    serverData += chunk;
+  });
+  response.on('end', function () {
+    console.log("received server data:");
+    console.log(serverData);
+
+  });
+}
+ 
+http.request(options, function(response){
+  handleResponse(response);
+  /*
+	  handleResponse(JSON.parse(response));
+	  console.log(serverData.rank);
+	  console.log(serverData.round);
+  */
+}).end();
+
+
