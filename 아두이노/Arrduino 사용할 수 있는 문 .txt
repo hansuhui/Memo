@@ -1,0 +1,134 @@
+[if]
+
+if (someVariable > 50)
+{
+  // do something here
+}
+
+
+[if..else]
+
+
+if (pinFiveInput < 500)
+{
+  // action A
+}
+else
+{
+  // action B
+}
+
+
+[for]
+
+
+for (initialization; condition; increment) {
+
+//statement(s);
+
+}
+
+
+for (int i=0; i <= 255; i++){
+   analogWrite(PWMpin, i);
+   delay(10);
+} 
+
+
+[switch]
+
+
+switch (var) {
+    case 1:
+      //do something when var equals 1
+      break;
+    case 2:
+      //do something when var equals 2
+      break;
+    default: 
+      // if nothing else matches, do the default
+      // default is optional
+    break;
+  }
+
+
+[while]
+
+while(expression){
+  // statement(s)
+}
+
+
+var = 0;
+while(var < 200){
+  // do something repetitive 200 times
+  var++;
+}
+
+
+[do - while]
+
+
+do
+{
+    // statement block
+} while (test condition);
+
+
+do
+{
+  delay(50);          // wait for sensors to stabilize
+  x = readSensors();  // check the sensors
+
+} while (x < 100);
+
+
+[breack]
+
+반복문을 빠져나옴
+
+for (x = 0; x < 255; x ++)
+{
+    analogWrite(PWMpin, x);
+    sens = analogRead(sensorPin);  
+    if (sens > threshold){      // bail out on sensor detect
+       x = 0;
+       break;
+    }  
+    delay(50);
+}
+
+
+[continue]
+
+for (x = 0; x < 255; x ++)
+{
+    if (x > 40 && x < 120){      // create jump in values
+        continue;
+    }
+
+    analogWrite(PWMpin, x);
+    delay(50);
+}
+
+
+[return]
+
+
+return;
+
+return value; // both forms are valid
+
+
+[goto]
+
+지정된 곳으로 프로그램 흐름을 전송
+
+label:
+
+goto label; // sends program flow to the label
+
+
+
+
+

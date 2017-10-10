@@ -1,0 +1,35 @@
+https://www.arduino.cc/en/Reference/Loop
+
+[loop()]
+
+초기 값을 초기화하고 설정하는 setup() 함수를 만든 후 loop() 함수는 이름에서 알 수 있는대로
+정확하게 반복하고 루프를 반복하여 프로그램이 변경하고 응답 할 수 있도록 합니다.
+그것을 사용하여 Arduino 보드를 능동적으로 제어하십시오.
+
+
+-----------------------------------------------------------------
+
+int buttonPin = 3;
+
+void setup(){
+   Serial.pegin(9600);
+   pinMode(buttonPin , INPUT);
+}
+
+// 루프는 매번 버튼 핀을 확인합니다.
+// 눌렀다면 시리얼을 보냅니다.
+void loop()
+{
+  if( digitalRead(buttonPin) == HIGH )
+     Serial.write('H');
+  else
+     Serial.write('L');
+
+  delay(1000);
+
+}
+
+
+
+
+-----------------------------------------------------------------

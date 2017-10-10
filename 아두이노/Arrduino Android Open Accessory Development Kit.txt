@@ -1,0 +1,804 @@
+http://www.hardroid.net/archives/192
+
+[Android Open Accessory Development Kit]
+
+
+안드로이드 3.1 플랫폼 ( 안드로이드 2.3 라이브러리 추가)은 외부 USB 하드웨어가 
+엑세서리(accessory) 모드로 동작하는 안드로이드 장비와 상호 연동하는 것에 대한 
+android Open Accessory 지원에 대해 소개했다. 안드로이드 장비가 엑세서리 모드일 경우 
+USB host 엑세서리들을 안드로이드 장비들과 연결되는 것과 엑세서리 모드의 안드로이드 장비를 쉽게
+검색할 수 있는 간단한 프로토콜 (Android accessory protocol)을 구체적으로 설계하였다.
+
+액세서리는 또한 충전을 5V의 550mA 전력을 제공해야 한다. 이전의 많은 안드로이드 장비는
+USB 장비로서의 능력만 제공되었고 외부 USB 장비들을 연결할 수 없었다. Android Open Accessory는
+이러한 제한을 넘어 안드로이드 장비와 연결하여 상호 연동할 수 있는 액세서리들을 
+만들 수 있도록 지원한다,
+
+- 참고 -
+액세서리 모드는 궁극적으로 장비의 하드웨어에 의존적이고 모든 장비들이 액세서리 모드를
+지원하는 것은 아니므로 안드로이드 앱의 메니페스트에 <user-feature>를 정의하여 
+지원여부를 필터링해야 한다.
+
+
+[Android Open Accessory의 호환되는 보드를 개발한 공급자 리스트]
+
+공급자 / 설명
+
+Arduino Store / ATmega2560 기반의 보드인 Arduino Mega ADK(유럽 형 , 유럽 외형)를 제공하고 ADK의 펌웨어를 지원한다
+
+DIY Drones / RC(Radio controlled; 무선조정)와 UAV(unmanned aerial vehicle; 공중부양차랑)
+	     애호가들에 맞는 Auduino 호환 보드를 제공한다.
+
+mbed / Android accessory protocal을 지원하는 액세서리를 개발하기 위한 라이브러리와
+       microcontroller를 제공한다 . 
+
+Micochip / PIC 기반 USB microcontroller 보드를 제공한다.
+
+PT Corp / Android ADK 보드 설계를 기반으로 한 Arduino 호환 보드를 제공한다.
+
+Seed Studio / ADK 펌웨어를 지원하는 Arduino 호환 보드를 제공한다.
+
+SparFun / ADK 펌웨어를 지원하는 IOIO 보드
+
+
+
+[ADK Component]
+
+Android Open Accessory Development Kit (ADK)는 Arduino open source eletronis prototyping
+platform 기반의 안드로이드USB 액세서리 래퍼런스를 제공한다 . 즉, 액세서리의 하드웨어 설계 파일들,
+액세서리 펌웨어를 구현한 코드 그리고 액세서리와 통신하는 안드로이드 앱이 포함되어져 있다.
+ADK에 포함된 주요 하드웨어와 소프트웨어 컴포넌트들은 다음과 같다.
+
+
+- Arduino Mega2560과 Circuits@Home USB Host Shield 기반의 USB mocro-controller 보드가
+  있으며 이 보드는 "shields"라고 불리우는 첨부물들을 이용할 수 있는 input,output 핀들을 제공 한다.
+  C++로 작성된 커스텀 펌웨어는 보드에 설치되어 보드의 기능을 정의하고 안드로이드 장비와 
+  shield 간에 사용연동할 수 있는 기능을 제공한다. 보드에 대한 하드웨어 설계 파일들은 
+  hardware / 디렉토리에 있다.
+
+- Arduino USB Host Shield 라이브러리 기반의 라이브러리는 USB 호스트로서 동작하는 USB
+  micro-controller 보드에 대한 로직을 제공한다. 이것은 보드가 USB 장비들과 트랜잭션을 시작할
+  수 있도록 지원한다. 앞으로의 내용은 이러한 라이브러리를 어떻게 사용하는지를 설명한다. 필요할
+  경우 이 문서는 라이브러리와 함께한 주요 동작들을 참조할 수 있도록 설명하고 있다. Arduino USB
+  Host Shield 라이브러리에 대한 소스코드는 firmware/arduino_libs/USB_HOST_Shield 디렉토리에 있다.
+
+- firmware/demokit/demokit.pde에 정의된 스케치(sketch)는 ADK 보드상에서 동작하며 C++로
+  작성되어져 있다. 이 스케치는 안드로이드 장비와 상호 연동되는 Android accessory protocol
+  라이브러리를 나타낸다. 이것은 shield가 안드로이드 앱에게 ADK 보드를 통해 데이터를 정송하고
+  데이터를 수신할 수 있도록 한다.
+
+- Android accessory protocol 라이브러리는 firmware/arduino_libs/AndroidAccessory 디렉토리에
+  위치해 있으며 어떻게 버스를 열람하여 액세서리 모드를 지원하는 연결된 안드로이드 장비를 
+  찾고 통신을 설정할 수 있는지 정의하고 있다.
+
+- ADK 보드의 기능을 제공하기 위해 다음과 같은 third party 라이브러리들이 있다.
+
+= CapSense library
+= I2C / TWI (Two-Wire Interface) library
+= Servo library
+= Spi library
+= Wire library
+= app/ 디렉토리에 있는 ADK 보드와 shield와 통신하는 안드로이드 앱(DemoKit)
+
+
+[ADK 시작하기]
+
+먼저 펌웨어를 ADK 보드에 설치하기 위해 컴퓨터에 Arduino 소프트웨어를 설치하는 방법부터 살펴보자.
+개발환경을 설정하기 위해서는 다음의 것들을 다운로드 하여야 한다.
+
+- Arduino Software : ADK 보드에 펌웨어를 설치하기 위한 IDE와 라이브러리가 포함되어져 있다.
+
+- CapSense library : ADK shield에 위치되는 용량성(capacitive) 버튼을 위해 필요한 휴먼 정전용량을
+		     감지하기 위한 라이브러리들이 포함되어져 있다.
+
+- The ADK package : ADK 보드에 대한 펌웨어와 보드와 shield에 대한 하드웨어 설꼐 문서가 포함되어져 있다.
+
+
+[Arduino 소프트웨어와 연관 라이브러리 설치]
+
+
+1,Arduino 소프트웨어를 Arduino 웹사이트에서 다운로드 한 후 설치한다.
+
+- 참고 -
+
+ADK_Release_20120606 버전은 Arduino 1.0 이상에 맟춰 수정되었으므로 Arduino 1.0 이상 버전을 이용해야 한다.
+만약 맥에서 개발한다면 설치에 대한 지시사항이 다르더라도 Arduino 패키지에 있는 
+FTDI USB Serial Driver를 반드시 설치해야 한다.
+
+2. ADK 패키지를 다운로드한 후 원하는 디렉토리에 압축을 푼다. 압축을 풀면 app, firmware , 
+   hardware 디렉토리가 있어야 한다.
+
+3. CapSense를 다운로드한 후 원하는 디렉토리에 압축을 푼다.
+
+- 참고 -
+ADK_Release_20120606 버전은 Arduino 1.0 이상을 사용하므로 CapSense04.zip 을 다운로드하여 사용한다.
+
+4. 필요한 라이브러리를 다움과 같이 구성한다.
+
+
+- 원도우 환경 -
+
+firmware/arduino_libs/AndroidAccessory 와 firmware/arduino_libs/USB_Host_sShield 디렉토리를
+설치된 arduino 루트 디렉토리 /libraries 디렉토리에 복사한다.
+
+설치된 arduino 루트 디렉토리 /libraries 디렉토리에 CapSense 디렉토리를 생성한다.
+
+압축을 품 CapSense 디렉토리에서 CapSense.cpp 와 CapSense.h 파일을 두번째에서 생성한
+CapSense 디렉토리에 복사한다.
+
+
+- 맥 환경 -
+Finder에서 Arduino 애플리케이션(보통 /Applications 디렉토리에 있음)을 
+오른쪽 클릭하여 패키지 내용 보기(Show Package Contents)를 선택한다.
+
+Arduino 애플리케이션의 Contnets/Resources/Java/libraries 
+디렉토리에 firmware/arduino_libs/AndroidAccessory 와 
+firmware/arduino_libs/USB_Host_Shield 디렉토리(파일만이 아닌 디렉토리 전체)를 복사한다.
+
+Arduino 애플리케이션의 Contnets/Resources/Java/libraries 디렉토리에 CapSense 디렉토리를 생성한다.
+압축을 푼 CapSense 디렉토리에서 CapSense.cpp와 CapSense.h 파일을 c.에서 생성한 
+CapSense 디렉토리에 복사한다.
+
+
+- 리눅스(Ubuntu) 환경 -
+firmware/arduino_libs/AndroidAccessory 와 firmware/arduino_libs/USB_Host_Shield 
+디렉토리(파일만이 아닌 디렉토리 전체)를 <설치된 arduino 루트 디렉토리 /libraries 디렉토리에 복사한다.
+
+설치된 arduino 루트 디렉토리>/libraries 디렉토리에 CapSense 디렉토리를 생성한다.
+압축을 푼 CapSense 디렉토리에서 CapSense.cpp와 CapSense.h 파일을 b.에서 
+생성한 CapSense 디렉토리에 복사한다.
+
+터미널에서 sudo apt-get install arv-libc 명령어를 실행하여 avr-libc 라이브러리를 설치한다.
+이렇게 설치 구성이 완료되면 Arduino의 libraries 디렉토리에 AndroidAccessory, 
+USB_Host_Shield, CapSense 3개의 디렉토리가 생성되어져 있으면 된다.
+
+
+[ADK 보드에 펌웨어 설치]
+
+ADK 보드에 펌웨어를 설치하는 방법은 다음과 같다.
+
+1. 개발 컴퓨터에 ADK 보드를 micro-USB 포트를 이용하여 연결한다. 
+   micro-USB 포트는 ADK 보드에 전력을 공급하고 양방향 통신을 할 수 있도록 지원한다.
+
+2. Arduino를 실행한다.
+
+3. ADK 보드의 타입을 Tools > Board > Arduino Mega 2560를 통해 선택한다.
+
+- 참고 -
+Arduino Mega 2560으로 선택하지 않으면 보드에 맞는 헤더파일이 링크되지 않기 
+때문에 컴파일 시 “‘A8′ was not declared in this scope”등과 같은 에러메시지가 발생할 것이다.
+
+
+4. 연결된 USB 포트를 선택한다.
+   윈도우환경 : Tools > Serial Port > COM# 을 선택하는데 #은 COM 포트 번호를 
+   나타내며 일반적으로는 COM1 이지만 연결된 포트에 따라 COM2, COM3 일 수 있다.
+   
+   맥 환경 : Tools > Serial Port > dev/tty.usbserial-### 을 선택한다. 
+   (본인의 것은 dev/tty.usbmodem### 형식임.)
+    
+   리눅스 환경 : Tools > Serial Port > dev/ttyUSB# 을 선택한다.
+
+5. File > Open 메뉴를 통해 펌웨어 코드(sketch)인 firmware/demokit/demokit.pde를 오픈한다.
+
+6. Sketch > Verify/Complie 을 선택하여 에러가 없이 컴파일 되어여 한다.
+
+7. File > Upload to I/O Board 를 선택하면 보드에 펌웨어가 설치되는 과정이 실행되는데 
+   Arduino의 output 영역ㅇ Done uploading. 이라고 나타날 때 설치가 완료된 것이고 
+   안드로이드 장비와 통신할 수 있도록 시작된 상태이다.
+
+- 참고 -
+
+소스에서 joystick 초기화를 주석처리해야 한다. 
+만약 주석처리를 하지 않으면 아직 joystick이 연결되어져 있지 
+않으므로 에러가 발생하여 앱과 연결이 되지 않는다.
+
+
+[DemoKit 안드로이드 앱 실행]
+
+안드로이드 장비에느 DemoKit 안드로이드 앱이 실행되어 ADK 보드와 통신한다 . 앱으로 부터 ADK 보드는
+보드의 LED 들의 불을 켜라 등의 명령어를 받거나 앱에서 조이스틱의 움직임, 온도계 변화에 대한 
+데이터를 전송한다. 이클립스를 사용하여 앱을 설치하고 실행한다.
+
+1. 액세서리 모드를 지원하는 2.3.4 디바이스들을 위한 Open Accessory 라이브러리가 
+   포함되어져 있는 Google APIs API Level 10 add-on library 를 설치한다. 
+   만약 안드로이드 3.1 이상의 안드로이드 장비들을 가지고 있다면 기본적으로 라이브러리가 
+   포함되어져 있으므로 설치할 필요가 없다. 좀 더 자세한 정보는 USB Accessory 문서를 참조하면 된다
+
+2. File > New > Project…을 클릭하면 다이얼로그 창이 나타나고 Android > Android Project를 선택한다.
+
+3. 프로젝트 창이 나타나면 Project name에 DemoKit 이라 입력한다.
+
+4. Create project from existing source를 선택하고 Browse 버튼을 클릭하여 파일 탐색창이 나타나면
+   app 디렉토리를 선택한 후 열기(Open) 버튼을 클릭한 후 프로젝트 창에서 Next 버튼을 클릭한다.
+
+5. Android 에서 앱을 빌드하기 위한 타겟으로 Google APIs (Platform 2.3.3 , API Level 10)을 선택한다.
+
+- 참고 -
+비록 2.3.3 라벨을 가지고 있지만 API Level 10에 대한 Google API add-on 
+라이브러리는 2.3.4 장비들에 대해서 지원되도록 USB Open Accessory API가 추가되어 있다.
+
+6. Finish 클릭
+
+7. 디바이스에 앱을 설치 (Run > Run)
+
+8. 안드로이드 장비의 micro-USB와 ADK 보드의 USB-A 포트를 연결한다. 여기서 액세서리에는 파워케이블이
+   연결되어져 있거나 전력 공급(ADK 모니터링 포함)을 위해 보드의 micro-USB가 개발 컴퓨터와
+   연결되어져 있어야 한다. 연결이 되면 DemoKit 앱에서 액세서리에 접근을 허용할 것인지 아닌지를
+   물어볼 것이다. 창이 나오지 않는다면 다시 시도한다.
+
+
+이제 ADK 보드에 컬럼 LED , servo 슬라이더 , 조이스틱 등 shield가 연결되어 있으면 앱의 버튼 조작등을
+통해 값을 전송하거나 움직임에 대한 값을 앱에 수신되어 표시될 것이다.
+
+- 참고 -
+테스트 결과 갤럭시 S를 2.3.4로 업그레이드 후에는 앱 설치와 
+실행이 성공적으로 되었지만 갤럭시 S II 에서는 USB 라이브러리 
+지원이 안되므로 앱 설치시 INSTALL_FAILED_MISSING_SHARED_LIBRARY 에러가 발생한다.
+
+
+[ADK 보드 모니터링]
+
+ADK의 펌웨어는 살펴보기 쉬울 정도의 약간의 파일들로 구성되어져 있다. 
+이 파일들은 firmware/arduino_libs/AndroidAccesory 디렉토리에 있으며 
+액세서리 모드를 지원하는 안드로이드 장비와 연결하고 로직을 수행하는 중요한 파일들이 존재한다. 
+설치된 Arduino의 libraries 디렉토리의 AndroidAccessory 디렉토리에 있는 코드나 
+firmware/demokit/demokit.pde에 있는 코드 안에 자유롭게 디버그 문장(Serial.print() 문장)을 
+추가한 후 다시 업로드 하면 펌웨어가 어떻게 수행되는지 확인할 수 있다.
+
+이 디버깅 문장을 확인하기 위해서는 Arduino에서 Tools > Serial Monitor 를 클릭한 후 
+baud를 115200으로 설정하면 된다.
+
+
+[Android Accessory Protocol 구현]
+
+안드로이드 USB 액세서리는 Android Accessory Protocol을 이용하여 조작해야 한다. 
+이 프로토콜은 어떻게 액세서리가 연결되고 안드로이드 장비와 통신할 수 있도록 설정하는지를 정의한 것이다.
+일반적으로 액세서리는 아래의 절차를 수행한다.
+
+1.기다리면서 연결된 장비들을 검색한다.
+
+2.장비의 액세서리 모드 지원을 결정한다.
+
+3.필요하다면 액세서리 모드에서 장비를 시작시키려고 시도한다.
+
+4.만약 장비가 Android accessory protocol을 지원한다면 통신을 위한 환경을 성립시킨다.
+
+
+- 기다리며 연결된 장비들을 검색 -
+
+액세서리는 계속해서 연결된 안드로이드 장비를 체크하며 연결될 때 
+액세서리는 장비가 액세서리 모드를 지원하는지 결정한다.
+
+- 장비의 액세서리 모드 지원을 결정 -
+
+안드로이드 장비는 다음의 3가지 경우 중 하나의 상태로 연결될 것이다.
+ 
+1.안드로이드 액세서리 모드를 지원하며 액세서리 모드로 동작하는 장비
+
+2.안드로이드 액세서리 모드를 지원하지만 아직 액세서리 모드로 동작하지 않는 장비
+
+3.안드로이드 액세서리 모드를 지원하지 않는 장비
+
+연결 초기화 동안 액세서리는 연결된 장비의 USB 장비 기술자의 벤더와 제품 ID를 체크한다. 
+만약 이미 액세서리 모드로 동작하고 있다면(1 경우) 벤더 ID가 Google의 ID(0x18D1)과 
+제품 ID가 0x2D00 혹은 0x2D01인지를 체크한다. 만약 맞으면 당장 액세서리는 
+통신 프로토콜에 따라 벌크(bulk) 전송 endpoint들을 통해 장비와의 통신을 할 수 있는 환경을 수립할 것이다.
+
+
+- 참고 -
+0x2D00은 액세서리 모드를 지원하는 안드로이드 장비들을 위해 
+예약되어져 있고 0x2D01은 액세서리 모드 뿐만 아니라 ADB(Android Debug Bridge) 
+프로토콜을 지원하는 장비들을 위해 예약되어져 있다. ADB 를 지원하는 장비들은 
+ADB를 위한 2개의 벌크(bulk) endpoint들에 관한 두번째 인터페이스를 제공한다. 
+당신이 만약 컴퓨터상에서 액세서리 동작을 시뮬레이팅하고 싶으면 액세서러 
+애플리케이션을 디버깅을 위해 이 endpoint들을 사용할 수 있다. 
+일반적으로 액세서리가 장비상의 ADB를 위한 passthrough를 구현하지 않았다면 
+이 인터페이스를 사용하지 않는다.
+
+
+만약 벤더와 제품 ID가 일치하지 않는다면 액세서리에서는 2와 3 경우를 
+구분할 방법이 없으므로 장비가 지원하는지 아닌지를 알아내기 
+위해 장비를 액세서리 모드로 시작하기를 시도할 것이다.
+
+
+[액세서리 모드로 장비가 시작하기 시도]
+
+만약 벤더와 제품 ID가 액세서리 모드의 안드로이드 장비에 해당되지 않는다. 액세서리는 장비가 
+액세서리 모드를 지원하는 동작을 하지 않고 있는 것인지 아니면 아예 지원하지 않는 것인지를 알아낼
+수 없다. 장비가 제조사 벤더 ID와 제품 ID의 초기 보고서가 없고 특별리 Android Open Accessory를
+지원하지 않는 것이 아니라면 액세서리 모드를 지원할 수도 있기 때문에 액세서리는 장비가 액세서리 
+모드를 지원하는지를 알아내기 위해 액세서리 모드에서 장비가 시작되도록 시도한다. 
+그 과정은 다음과 같다.
+
+
+1.장비가 Android accessory protocol을 지원하는지 알아내기 위해 51 컨트롤 요청을 보낸다. 만약
+지원되면 0이 아닌 숫자 즉 프로토콜의 버전(현재는 1만 존재)이 반환된다. 이 요청은 다음과 같은
+특징과 endrpoint 0의 컨트롤 요청이다.
+
+requestType : USB_DIR_IN | USE_TYPE_VENDOR
+
+request : 51
+
+value : 0
+
+index : 0
+
+data : protocol version number (16 btis little endlan sent from the device to accessory)
+
+
+2. 만약 장비가 프로토콜 버전을 반환했다면 장비에 식별 장비에 식별 문자열 정보를 보낸다.
+이 정보는 장비가 이 액세서리에 대한 적합한 앱을 찾기 위한 것이고 적합한 앱이 존재하지 않는다면
+URL과 함께 사용자에게 앱을 제안한다. 이 요청은 다음과 같은 특징을 가지고 endpoint 0 
+(각 문자열 ID에 대하여)에 보내는 컨트롤 요청들이다.
+
+
+requestType : USB_DIR_OUT | USE_TYPE_VENDOR
+
+request : 52
+
+value : 0
+
+index : stringID
+
+data zero terminated UTF 8 string sent from accessory to device
+
+다음 문자열 ID는 최대 256 bytes 크기이며 으로 종료되어야 한다.
+
+manufacturer name : 0
+
+model name : 1
+
+description : 2
+
+version : 3
+
+URI : 4
+
+serial number : 5
+
+
+구별 문자열이 보내질 때 장비가 액세서리 모드로 동작하도록 요청한다. 
+다음과 같은 특성을 endpoint 0의 컨트롤 요청한다.
+
+
+requestType : USB_DIR_OUT | USB_TYPE_VENDOR
+
+request : 53
+
+value : 0
+
+index : 0 
+
+data : none
+
+
+마지막 컨트롤 요청을 보낸 후에 연결된 USB 장비는 액세서리 모드의 버스(bus)에 자신을 재소개하고
+액세서리는 연결된 장비들을 다시 열람할 수 있다. 이 알고리즘은 벤더와 제품 ID를 체크하기 위해
+장비의 액세서리 모드 지원 결정 단계로 다시 실행된다. 만약 액세서리 모드로 성공적으로 스위칭되면
+장비의 벤더 ID와 제품 ID가 다를 것이고 장비 제조사의 ID를 대신 구글의 벤더 및 제품 ID일 것이다. 
+액세서리는 장비와의 통신 수립을 수행한다.
+
+만약 실패하면 장비는 액세서리 모드를 지원하지 않는것이고 액세서리는 다른 장비가 
+연결될 때까지 대기한다.
+
+
+[장비와 통신 수립]
+
+만약 액세서리 모드의 안드로이드 장비가 감지되면 액세서리는 장비와 통신하기 위한 벌크(bulk)
+endpoint들을 얻기 위해 장비의 인터페이스와 endpoint 기술서를 쿼리할 수 있다.
+
+
+0x2D00 제품 ID를 가지는 안드로이드 장비는 통신을 위한 input, output에 대한 2개의 벌크
+endpoint를 가지는 하나의 인터페이스를 가지고 있다. 0x2D01 제품 ID 장비는 input , output 통신을
+위한 2개의 벌크 endpoint를 가지고 있고 2개의 인터페이스를 가지고 있으며 첫번째 인터페이스는
+표준 통신을 위한 것이고 두번째 인터페이스는 ADB 통신을 위한 것이다. 인터페이스에 통신하기 위해서는
+첫번째 벌크 input 과 output endpoint들을 찾아야 하며 SET_CONFIGURATION(0x09) 장비 요청의
+값을 1로 하여 장비의 환경을 설정한 다음에 endpoint들을 사용하여 통신한다.
+
+
+[ADK 보드가 Android Accessory protocol을 구현하는 방법]
+
+만약 당신이 ADK 보드와 shield에 접근한다면 다음 섹션에 설명한 ADK 보드에 설치한 펌웨어 코드를
+살펴보기 바란다. 펌웨어는 어떻게 Android Accessory protocol을 구현하는지에 대한 예제를 보여주고 있다.
+ADK 보드와 shield를 가지고 있지 않을 가지고 있지 않을 지라도 하드웨어를 어떻게 감지하고 액세서리 모드의
+장비와 상호 연동하여 읽기것은 원하는 액세서리들에 포팅할 수 있도록 유용하다.
+
+펌웨어에서 중요한 부분은 accessory/demokit/demokit/demokit.pde 스케치(sketch)로서 안드로이드 장비에서
+실행되는 DemoKit 앱과 데이터를 주고 받는 코드를 보여주고 있다. 안드로이드 장비를 감지하고 통신을
+설정하는 것은 accessory/arduino_libs/AndroidAccessory/AndroidAccessory.h 와 
+accessory/arduino_libs/AndroidAccessory/AndroidAccessory.cpp 파일에 있다. 이 코드는 당신이 원하는
+액세서리의 펌웨어를 구현하는데 두와줄 수 있는 대부분의 로직을 포함하고 있다.
+
+다음은 위에서 설명한 Android Accessory Protocol 구현에서 설명한 알고리즘의 
+문맥에 대한 펌웨어코드를 설명한다.
+
+
+[연결된 장비들을 감지하기 위한 대기]
+
+펌웨어 코드(demokit.pde)에서 loop() 함수는 반복적으로 실행되고 어떤 연결된 장비를 체크하기 위해
+AndroidAccessory::isConnected() 를 호출한다. 만약 연결된 장비가 있을 경우 지속적으로 보드와
+앱간의 input 과 output 스트림을 업데이트한다. 만약 어떠한 것도 연결되지 않았다면 
+장비가 연결되기를 지속적으로 체크한다.
+
+
+AndroidAccessory acc(“Google, Inc.”,
+                     “DemoKit”,
+                     “DemoKit Arduino Board”,
+                     “1.0″,
+                     “http://www.android.com”,
+                     “0000000012345678″);
+…
+void loop()
+{
+…
+    if (acc.isConnected()) {
+        //communicate with Android application
+    }
+    else{
+        //set the accessory to its default state
+    }
+…
+}
+
+
+[연결된 장비의 액세서리 모드 지원 결정]
+ 
+ADK 보드에 연결되는 장비는 이미 액세서리 모드로 동작할 수도 있고 액세서리 모드를 지원하는데
+동작하지 않을 수도 있고 액세서리 모드를 지원하지 않을 수도 있다.
+AndroidAccessory::isConnected() 메서드는 이러한 경우들을 체크ㅏ고 따라서 loop() 함수가
+이 메서드를 호출할 때 응답한다. 이 함수를 먼저 연결된 장비가 이미 처리되었던 것이 아닌지 체크한다.
+만약 처리되지 않은 것이면 AndroidAccessory::isAccessoryDevice()를 호출하여 이미 액세서리 모드에서
+실행되고 있는지를 알기 위해 연결된 장비의 장비 기술서를 얻는다. 이 메서드는 장비 기술서의 
+벤더와 제품 ID를 체크한다. 액세서리 모드에 있는 장비는 0x18D1 벤더 ID와 Ox2D00 혹은 0x2D01 
+제품 ID를 가진다. 망약 액세서리 모드에서 동작하고 있으면 장비와의 통신을 수립하는 코드가 수행되고 그렇지
+않으면 액세서리 모드에서 장비를 시작할 수 있는지 체크하는 코드를 수행한다.
+
+
+bool AndroidAccessory::isConnected(void)
+{
+    USB_DEVICE_DESCRIPTOR *devDesc = (USB_DEVICE_DESCRIPTOR *) descBuff;
+    byte err;
+
+    max.Task();
+    usb.Task();
+
+    if (!connected &&
+        usb.getUsbTaskState() >= USB_STATE_CONFIGURING &&
+        usb.getUsbTaskState() != USB_STATE_RUNNING) {
+        Serial.print(“nDevice addressed… “);
+        Serial.print(“Requesting device descriptor.”);
+
+        err = usb.getDevDescr(1, 0, 0×12, (char *) devDesc);
+        if (err) {
+            Serial.print(“nDevice descriptor cannot be retrieved. Program Haltedn”);
+            while(1);
+        }
+
+        if (isAccessoryDevice(devDesc)) {
+            Serial.print(“found android accessory devicen”);
+
+            connected = configureAndroid();
+        } else {
+            Serial.print(“found possible device. switching to serial moden”);
+            switchDevice(1);
+        }
+    } else if (usb.getUsbTaskState() == USB_DETACHED_SUBSTATE_WAIT_FOR_DEVICE) {
+        connected = false;
+    }
+
+    return connected;
+}
+
+
+[액세서리 모드에서 장비가 시작되도록 시도하기]
+
+
+장비가 액세서리 모드에서 동작하지 않는다면 컨트롤 요청 51을 보내 장비가 지원하는 USB 액세서리 프로토콜의
+버전을 체크하여 액세서리 모드를 지원하는지 안하는지를 결정해야 한다.(AndroidAccessory::getProtocol() 참조)
+현재는 유일하게 버전이 1이지만 미래를 위해 0보다 큰 정수형인지를 체크한다. 
+만약 프로토콜 버전이 반환되면 보드는 식별 정보를 보내기 위해 
+AndroidAccessory::sendString()을 통해 각각 문자열로 된 컨트롤 요청 52를 보낸다. 
+그리고 컨트롤 요청 53으로 장비가 액세서리 모드를 시작하도록 시도한다. 
+AndroidAccessory::switchDevice() 메서드가 담당한다.
+
+
+bool AndroidAccessory::switchDevice(byte addr)
+{
+    int protocol = getProtocol(addr);
+    if (protocol == 1) {
+        Serial.print(“device supports protocol 1n”);
+    } else {
+        Serial.print(“could not read device protocol versionn”);
+        return false;
+    }
+
+    sendString(addr, ACCESSORY_STRING_MANUFACTURER, manufacturer);
+    sendString(addr, ACCESSORY_STRING_MODEL, model);
+    sendString(addr, ACCESSORY_STRING_DESCRIPTION, description);
+    sendString(addr, ACCESSORY_STRING_VERSION, version);
+    sendString(addr, ACCESSORY_STRING_URI, uri);
+    sendString(addr, ACCESSORY_STRING_SERIAL, serial);
+
+    usb.ctrlReq(addr, 0, USB_SETUP_HOST_TO_DEVICE |
+                USB_SETUP_TYPE_VENDOR | USB_SETUP_RECIPIENT_DEVICE,
+                ACCESSORY_START, 0, 0, 0, 0, NULL);
+    return true;
+}
+ 
+
+
+만약 이 메서드가 false를 반환하면 보드는 새로운 장비가 연결될 때까지 
+대기하고 성공한다면 ADK보드가 버스를 재열거할 때 장비는 
+액세서리 모드로서 USB 버스에 자신을 디스플레이한다. 
+장비가 액세서리 모드가 될 때 액세서리는 장비와 통신을 수립하는 코드를 수행한다.
+
+
+[장비와의 통신 환경 수립]
+
+만약 장비가 액세서리 모드로 감지가 되면 액세서리는 
+적절한 벌크 endpoint들을 찾고 장비와의 통신을 설정한다. 
+ADK 보드가 액세서리 모드의 안드로이드 장비를 감지할 때 
+AndroidAccessory::configureAndroid() 함수를 호출한다.
+
+…
+if (isAccessoryDevice(devDesc)) {
+            Serial.print(“found android acessory devicen”);
+
+            connected = configureAndroid();
+        }
+…
+ 
+
+configureAndroid() 함수는 findEndpoints() 함수를 호출한다.
+
+
+…
+bool AndroidAccessory::configureAndroid(void)
+{
+    byte err;
+    EP_RECORD inEp, outEp;
+
+    if (!findEndpoints(1, &inEp, &outEp))
+        return false;
+…
+
+
+AndroidAccessory::findEndpoints() 함수는 안드로이드 장비의 환경 
+기술서를 쿼리하고 USB 장비와 통신할 수 있는 벌크 데이터 endpoint들을 찾는다.
+
+먼저 환경 기술서에 의해 반환되는 데이터의 총 길이를 얻기 위해 첫번째 
+4 바이트(3, 4번째 바이트인 오직 descBuff[2]와 descBuff[3]만 필요)를 얻는다. 
+이 데이터는 버퍼가 기술서를 담을 수 있는지를 확인하는데 사용한다. 
+이 기술서는 인터페이스들과 endpoint의 모든 기술서들을 가지고 있는 정보이다. 
+만약 기술서의 크기가 적당한 크기라면 이 메서드는 전체 환경 기술서를 읽을 것이고 
+연결된 장비의 기술서가 버퍼에 채워쳐 읽는다. 만약 어떠한 이유로 인해 기술서를 
+획득할 수 없을 경우 에러가 반환된다.
+
+
+…
+
+bool AndroidAccessory::findEndpoints(byte addr, EP_RECORD *inEp, EP_RECORD *outEp)
+{
+    int len;
+    byte err;
+    uint8_t *p;
+
+    err = usb.getConfDescr(addr, 0, 4, 0, (char *)descBuff);
+    if (err) {
+        Serial.print(“Can’t get config descriptor lengthn”);
+        return false;
+    }
+
+
+    len = descBuff[2] | ((int)descBuff[3] << 8);
+    if (len > sizeof(descBuff)) {
+        Serial.print(“config descriptor too largen”);
+            /* might want to truncate here */
+        return false;
+    }
+
+    err = usb.getConfDescr(addr, 0, len, 0, (char *)descBuff);
+    if (err) {
+        Serial.print(“Can’t get config descriptorn”);
+        return false;
+    }
+
+…
+ 
+
+
+기술서가 메모리에 로딩되었으면 포인터는 버퍼의 첫번째 위치를 가리키고 
+있으며 읽기위해 버퍼의 인덱스를 사용하면 된다. 
+AndroidAccessory::findEndpoints() 에는 2개의 endpoint에 대한 
+포인터들이 파라메터로 넘겨졌고 이들의 주소를 적합한 벌크 
+endpoint들을 찾지 못했음을 체크하기 위해 0으로 초기화한다. 
+버퍼를 루프로 읽으면서 환경정보, 인터페이스, endpoint 기술서들을 파싱하고 
+포인터의 위치를 기술서의 길이만큼 옮긴다. 
+각 기술서를 읽기위해 포인터의 0번째에서 기술서의 길이를 얻고 
+1번재에서 기술서의 유형을 얻는다. 이 2개의 값에 따라 루프에서 
+환경정보, 인터페이스, endpoint 중 어느것을 파싱할 것인지를 결정하여 처리한다
+
+ 
+- 참고 -
+액세서리 모드의 안드로이드 장비는 잠재적으로 2개의 
+인터페이스를 가지고 있는데 기본적으로 장비와 통신하는 인터페이스를 
+가지고 있고 ADB 통신을 위한 또다른 하나를 가지고 있다. 기본적으로 통신을 
+위한 인터페이스는 항상 첫번째 인덱스로 되어 있다. 그래서 demokit.pde 소스에서는 
+첫번째 input, output 벌크 endpoint들을 찾아 기본 통신의 위한 endpoint들을 설정하는 코드이다. 
+만약 당신의 액세서리를 위한 펌웨어를 개발할 때 이부분은 다르게 코딩되어질 수 있다.
+
+첫번째 input, output endpoint 기술서들을 찾았을 때 
+그것의 주소에 대해 endpoint 포인터를 설정한다.만약 findEndpoints() 함수에서 
+input과 output endpoint를 찾았다면 true를 반환하고 다른 endpoint들이 찾아졌다면 이를 무시한다.
+(만약 존재한다면 그것은 ADB 인터페이스를 위한 endpoint일 것이다.)
+
+ 
+
+…
+    p = descBuff;
+    inEp->epAddr = 0;
+    outEp->epAddr = 0;
+    while (p < (descBuff + len)){
+        uint8_t descLen = p[0];
+        uint8_t descType = p[1];
+        USB_ENDPOINT_DESCRIPTOR *epDesc;
+        EP_RECORD *ep;
+
+        switch (descType) {
+        case USB_DESCRIPTOR_CONFIGURATION:
+            Serial.print(“config descn”);
+            break;
+
+        case USB_DESCRIPTOR_INTERFACE:
+            Serial.print(“interface descn”);
+            break;
+
+        case USB_DESCRIPTOR_ENDPOINT:
+            epDesc = (USB_ENDPOINT_DESCRIPTOR *)p;
+            if (!inEp->epAddr && (epDesc->bEndpointAddress & 0×80))
+                ep = inEp;
+            else if (!outEp->epAddr)
+                ep = outEp;
+            else
+                ep = NULL;
+
+            if (ep) {
+                ep->epAddr = epDesc->bEndpointAddress & 0x7f;
+                ep->Attr = epDesc->bmAttributes;
+                ep->MaxPktSize = epDesc->wMaxPacketSize;
+                ep->sndToggle = bmSNDTOG0;
+                ep->rcvToggle = bmRCVTOG0;
+            }
+            break;
+
+        default:
+            Serial.print(“unkown desc type “);
+            Serial.println( descType, HEX);
+            break;
+        }
+
+        p += descLen;
+    }
+
+    if (!(inEp->epAddr && outEp->epAddr))
+        Serial.println(“can’t find accessory endpoints”);
+
+    return inEp->epAddr && outEp->epAddr;
+}
+
+…
+ 
+
+
+다시 configureAndroid() 함수로 돌아와서 만약 endpoint들을 찾았다면 
+통신할 수 있도록 적합하게 설정한다. USB 액세서리와 통신을 위해 적합하게 
+처리되었음을 표시하기 위해 장비의 configuration은 1로 설정하고 
+장비의 상태는 “running”으로 설정한다. 이렇게 설정을 해놓으면
+AndroidAccessory::isConnected()함수에서 
+다시 감지되는것을 막을 수 있다.
+
+
+bool AndroidAccessory::configureAndroid(void)
+{
+    byte err;
+    EP_RECORD inEp, outEp;
+
+    if (!findEndpoints(1, &inEp, &outEp))
+        return false;
+
+    memset(&epRecord, 0×0, sizeof(epRecord));
+
+    epRecord[inEp.epAddr] = inEp;
+    if (outEp.epAddr != inEp.epAddr)
+        epRecord[outEp.epAddr] = outEp;
+
+    in = inEp.epAddr;
+    out = outEp.epAddr;
+
+    Serial.print(“inEp: “);
+    Serial.println(inEp.epAddr, HEX);
+    Serial.print(“outEp: “);
+    Serial.println(outEp.epAddr, HEX);
+
+    epRecord[0] = *(usb.getDevTableEntry(0,0));
+    usb.setDevTableEntry(1, epRecord);
+
+    err = usb.setConf( 1, 0, 1 );
+    if (err) {
+        Serial.print(“Can’t set config to 1n”);
+        return false;
+    }
+
+    usb.setUsbTaskState( USB_STATE_RUNNING );
+
+    return true;
+}
+ 
+
+
+
+마지막으로 적합한 endpoint들로 부터 읽고 쓰기를 위한 메소드가 필요한데 
+demokit.pde 스케치는 안드로이드 장비로 부터 데이터를 읽는 것과 데이터를 
+안드로이드 장비로 보내기 위해 이 메서드들을 이용한다. 예를 들어 ADK shield상의 
+조이스틱이 움직일 때 안드로이드 장비에서 실행되고 있는 DemoKit 앱에서 데이터를 읽을 수 
+있도록 움직이는 데이터를 쓴다.(write) DemoKit 앱에서 슬라이더를 움직이면 
+demokit.pde는 읽고(read) LED 조명의 색을 변경하거나 밝기를 조정하는 등의 액세서리의 상태를 변경한다.
+
+
+int AndroidAccessory::read(void *buff, int len, unsigned int nakLimit) {
+  return usb.newInTransfer(1, in, len, (char *)buff, nakLimit);
+}
+
+int AndroidAccessory::write(void *buff, int len) {
+  usb.outTransfer(1, out, len, (char *)buff);
+  return len;
+}
+ 
+
+ADK 보드가 어떻게 데이터를 읽고 쓰는지는 firmware/demokit/demokit.pde 파일을 살펴보기 바란다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,212 @@
+http://www.hardroid.net/archives/148
+
+
+[Arduino 함수와 상수에 대한 소개]
+
+Arduino의 함수는 AVR 계통의 마이크로컨트롤러를 중심으로 디지털 인아웃 , 아날로그 인아웃, 
+그외 유틸리티 함수로 기본적으로 구성되어져 있고 그외 PC와 통신을 지원하는 
+Serial , Stream(Serial , Wire , Ethernet , SD 라이브러리에서 공통으로 사용) 함수 , 
+12C 통신을 위한 Wire 함수 , Arduino 보드에 확장할 수 있는 Shiled에 따라 지원되는
+라이브러리 함수로 구성되어져 있다.
+
+여기서는 상수 , 콜백함수 , 디지털 I/O , 아날로그 I/O를 중심으로 설명하겠다.
+
+
+[상수(Constants)]
+
+Arduino는 핀의 모드 설정과 숫자 값 대신 가독성과 편리성을 위해 다음과 같은 상수를 정의하고 있다.
+
+
+상수 / 값 / 설명
+
+HIGH / 1 / - INPUT으로 설정되어 있고 digitalRead의 반환값일 떄는 3V 이상의 전압을 표현
+	   - INPUT으로 설정되어 있고 digitalWrite의 입력값으로 사용할 떄는 20K 플업저항을 활성
+	   - OUTPUT으로 설정되어 있고 digitalWrite의 입력값으로 사용할 때는 핀이 5V 상태가 된다.
+
+LOW / 0 / - INPUT 으로 설정되어있고 digitalRead의 반환값을 때는 2V 이하의 전압을 표현
+	  - OUTPUT으로 설정되어있고 digitalWrite의 입력값으로 사용할 떄는 핀이 0V 상태가 된다.
+
+INPUT / 0 / - pinMode의 입력값으로 사용
+	    - 핀의 하이임피던스(high=-impedance) 상태가 됨.
+	    - 핀으로 부터 digitalRead 를 통해 읽을 떄 사용
+	    - 풀업저항을 활성화할 때 사용
+
+OUTPUT / 1 / - pinMode의 입력값으로 사용
+	     - 핀이 로우임피던스 (log-imoedabce) 상태가 됨
+	     - 핀에 digitalWrite 혹은 analogWrite를 통해 쓸 때 사용
+
+
+
+	    
+[스케치 콜백 함수]
+
+Arduino의 스케치 프로그래밍을 할 떄 반드시 setup 과 loop 2개의 함수를 구현해야 한다.
+setup은 스케치가 시작될 때 스케치의 초기화를 위해 호출된다. 보통 변수 초기화 , 핀 모드 설정, 
+라이브러리 초기화 등에 대한 코드가 위치한다. setup 함수는 오직 한번만 실행된다.
+
+loop 함수는 반복적으로 호출되는 함수로서 장비들의 상태를 변화시키고 요청에 대한 응답을 처리하는
+코드가 위치한다. 전원이 꺼지거나 리셋버튼이 눌러졌을 때까지 반복적으로 호출된다.
+
+
+콜백함수 / 호출횟수 / 설명
+
+setup  / 1 / - 스케치 초기화
+	     - 오직 한번만 호출
+
+loop / n / - anduino 보드를 제어
+	   - 장비들의 상태 변경 및 요청에 대한 처리
+	   - 반복적으로 호출
+
+
+위의 콜백 함수는 Arduino IDE를 이용하여 스케치를 개발할 때 중요한 함수들이다. 이것만으로도 충분히
+Arduino에 대한 코딩을 위해서도 충분하지만 C/C++ 프로그래머들은 main() 함수부터 시작하는 방법도
+궁금할 것이라 생각된다 . 다음은 스케치 개발에서는 숨겨지는 C/C++ 코드이다 . 이 코드는
+Arduino IDE가 컴파일 시 삽입하여 함께 컴파일된다.
+
+int main(void)
+{
+  init();
+
+  setup();
+
+  for (;;)
+       loop();
+
+  return 0;
+}
+
+
+먼저 Arduino 하드웨어를 초기화하는 init 함수가 호출된다. 그 다음 스케치의 setup 함수가 호출되고
+마지막으로 반복적으로 loop 함수가 호출된다. loop 함수는 절대로 스케치가 실행되는 동안 종료되지
+않기 때문에 return 문은 실행되지 않는다.
+
+
+[디지털 I/O]
+
+디지털 핀과 아날로그 핀은 HIGH 와 LOW로 핀을 5V 혹은 0V 상태로 변경할 수 있다. 
+저항이 그라운드(GND) 쪽에 있는지 핀 쪽에 있는지에 따라 제어가 정해진다. 만약 LED에 저항이 
+그라운드쪽에 있다면 HIGH에 켜질 것이고 핀쪽에 있다면 LOW에서 켜질 것이다. 
+다음은 디지털 I/O에 함수들이다.
+
+
+함수  / 파라미터 / 반환값 / 설명
+
+pinMode / pin : 모드를 설정할 핀  /  None / 핀이 input 혹은 output 중 어느 모드로 동작할 것인지를 설정
+          mode : INPUT 혹은 OUTPUT
+
+
+digitalWrite / pin : 디지털 신호를 보낼 핀 / p>None / 디지털 핀( 혹은 아날로그 핀)에 HIGH 혹은 LOW 값을
+	       value : HIGH 혹은 LOW		      전송해 5V 혹은 0V 상태로 변경
+
+
+digitalRead / pin : 디지털 신호를 읽을 핀 / HIGH 혹은 LOW / 핀으로 부터 현재 상태의 값을 읽음
+
+
+
+- 예제 -
+
+int ledPin = 13;  // 디지털 핀 13에 LED 연결
+int inPin = 7;    // 디지털 핀 7에 푸시 버튼 연결
+int val = 0;      // 읽은 값을 저장하기 위한 변수
+
+void setup(){
+   pinMode(ledPin, OUTPUT);  // 디지털핀 13을 output으로 설정
+   pinMode(inPin, INPUT);  // 디지털핀 7을 input으로 설정
+}
+
+vold loop()
+{
+  val = digitalRead(inPin);   // input 핀으로 부터 값을 읽음
+  digitalWrite(ledPin, val);  // 푸시 버튼의 값을 LED로 보냄.
+  // 만약 푸시버튼이 눌려지면 HIGH을 읽으므로 LED에 HIGH이 설정되 켜지게 됨
+}
+
+
+[아날로그 I/O]
+
+아날로그 IN 핀으로 부터 데이터를 읽거나 PWM 핀으로 아날로그 값을 전송한다. 이 함수를 통해
+센서 값을 읽거나 밝기 조정이 가능한 LED를 저에할 수있다. 
+
+다음은 아날로그 I/O에 대한 함수들이다.
+
+
+함수 / 파라미터 / 반환값 / 설명
+
+analogReference / type : 사용할 참조 유형 / None / 아날로그 input에서 사용할 전압을 설정(값의 해상도 설정)
+						   DEFAULT , INTERNAL , INTERNAL1V1 , INTERNAL2V56, EXTERNAL
+						   설정하지 않으면 기본적으로 5V 설정
+
+analogRead / pin : 데이터를 읽을 아날로그 IN 핀 / int / 특정한 아날로그 IN 핀으로 부터 값을 읽음
+							0 ~ 5V 사이의 전압으로 0 ~ 1023 사이의 값을 표현
+
+
+analogWrite / pin : 데이터를 보낼 PWM핀  / None  / PWM핀(디지털 핀 중 PWM 표시가 되어져 있는 핀) 0 ~2
+	      value : 0 ~ 255 사이의 숫자	   사이의 값을 전송
+						   LED 밝기 조정 , 모터의 속도 조정에 사용
+						   PWM 신호 주파수는 490Hz 이다.
+						   analogRead와 대칭되는 함수가 아님
+
+
+- 예제 -
+
+int ledPin = 9;  //디지털 핀 9에 LED 연결
+int analogPin = A3; //포텐셔미터를 아날로그 핀 3에 연결
+int val = 0;    // 읽은 값을 저장하기 위한 변수
+
+void setup()
+{
+   pinMode(ledPin,PUTPUT);  // 9번 핀을 output으로 설정
+}
+
+void loop()
+{
+   val = analogRead(analogPin); // 아날로그 input 핀으로 부터 값을 읽음
+
+  //analogRead는 0부터 1023 사이의 값을 받으므로 이를 4로 나눠서 0부터 255 값으로 변경
+  analogWrite(lednPin , val / 4);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

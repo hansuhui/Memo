@@ -1,0 +1,17 @@
+소프트웨어 
+
+- 아두이노 공식 사이트 -
+https://www.arduino.cc/
+
+- 아두이노 공식 커뮤니티 -
+http://playground.arduino.cc/
+
+
+- 와이어링 공식 사이트 -
+http://www.wiring.org.co/
+
+
+- 피지컬 컴퓨팅 및아두이노 기초 튜토리얼  -
+http://tokage.cafe24.com/ww/
+https://itp.nyu.edu/physcomp/lessons/sensors-the-basics/
+https://itp.nyu.edu/physcomp/
