@@ -1,0 +1,36 @@
+==========================================================================================
+
+app.module.js
+
+import { HttpModule } from '@angular/http';
+imports [HttpModule]
+
+==========================================================================================
+
+import { Http,Headers,URLSearchParams } from '@angular/http';
+
+
+ title = 'app works!';
+  headers = null;       
+  parameter = null; 
+  Result = null;
+  State = null;
+  ResultMsg = null;
+  SetService = null;
+  SetData = null;
+
+    
+    constructor(private http:Http) {
+      this.headers = new Headers();
+      this.parameter = new URLSearchParams();
+      this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      this.ResultMsg = "";
+
+
+      this.http.get("http://localhost:3000/json",this.parameter).subscribe(res =>{
+        var data = res.json();
+        if(data){
+          console.log(data);
+        }
+      });
+    }
