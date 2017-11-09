@@ -1,0 +1,63 @@
+http://annotations.tistory.com/15
+
+
+[HTML 엑셀출력 셀서식 지정하기]
+
+HTML페이지를 엑셀로 출력하는 경우가 있습니다.
+
+이때 출력된 결과물을 보면 아주 더럽습니다.
+
+숫자가 길면 중간에 #이 붙어서 줄어들거나..0이 빠지게 되거나..
+
+간단하게 CSS속성으로 셀서식을 지정할수 있습니다.
+
+NO Decimals : mso-number-format:”0″
+
+3 Decimals : mso-number-format:”0\.000″
+
+Comma with 3 dec : mso-number-format:”\#\,\#\#0\.000″
+
+Date7 : mso-number-format:”mm\/dd\/yy”
+
+Date9 : mso-number-format:”mmmm\ d\,\ yyyy”
+
+D -T AMPM : mso-number-format:”m\/d\/yy\ h\:mm\ AM\/PM”
+
+01/03/1998 : mso-number-format:”Short Date”
+
+01-mar-98 : mso-number-format:”Medium Date”
+
+01-mar-1998 : mso-number-format:”d\-mmm\-yyyy”
+
+5:16 : mso-number-format:”Short Time”
+
+5:16 am : mso-number-format:”Medium Time”
+
+5:16:21:00 : mso-number-format:”Long Time”
+
+Percent ? two decimals : mso-number-format:”Percent”
+
+Percent ? no decimals : mso-number-format:”0%”
+
+Scientific Notation : mso-number-format:”0\.E+00″
+
+Text : mso-number-format:”\@”
+
+Fractions ? up to 3 digits (312/943) : mso-number-format:”\#\ ???\/???”
+
+￡12.76 : mso-number-format:”\0022￡\0022\#\,\#\#0\.00″
+
+================================================================================
+
+<td style='mso-number-format:"\@";' >텍스트형 셀서식</td>
+
+td {
+   mso-number-format:"\@";
+}
+
+
+
+
+
+
+
