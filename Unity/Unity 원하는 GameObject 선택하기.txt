@@ -1,0 +1,5 @@
+
+게임 오브젝트를 선택한후 해당 컴포넌트를 가져온다.
+Text findText = GameObject.Find("Text").GetComponent<Text>();
+
+Inspector 창을 보면 해당 컴포넌트의 속성을 알수 있다.
