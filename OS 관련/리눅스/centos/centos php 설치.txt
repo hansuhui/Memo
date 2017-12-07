@@ -1,0 +1,28 @@
+http://www.websaram.com/bbs/board.php?bo_table=web_server&wr_id=52
+
+
+[설치]
+yum install php php-mysql php-gd php-pear
+
+
+[http 서비스 시작]
+systemctl start httpd.service
+
+혹여 80 포트 사용중이라면 에러가 나서 서비스가 시작이 안된다
+
+vi /etc/httpd/conf/httpd.conf    
+
+포트 변경하기!!
+
+
+[소스 올리기]
+
+/var/www/html
+
+
+[참고 사항]
+
+
+PHP 설치 경로 : /usr/lib64/php
+PHP 설정파일 경로 :  /etc/php.ini
+
