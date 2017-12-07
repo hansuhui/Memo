@@ -1,0 +1,2 @@
+yum remove mysql-libs 지우고 
+yum install php-mysql 설치 

@@ -1,3 +1,289 @@
+http://sarc.io/index.php/miscellaneous/270-centos-cacti
+
+
+cacti홈페이지에는 Unix설치 매뉴얼밖에 없어요...
+
+Linux도 Unix계열이니, 그대로 설치를 했습니다.
+
+ 
+
+ 
+
+1. 필요한 package를 설치합니다.
+
+#yum install httpd
+
+#yum install php
+
+#yum install php-mysql
+
+#yum install php-snmp
+
+#yum install mysql
+
+#yum install mysql-server
+
+#yum install net-snmp
+
+#yum install rrdtool
+
+ 
+
+2. php설정을 잡아줍니다.
+
+php가 제대로 설치가 됐는지 php -m을 통해 확인 합니다.
+
+오류가 나지만... 일단 놔둡니다.
+
+ 
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './curl.so' - ./curl.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './fileinfo.so' - ./fileinfo.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './json.so' - ./json.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './mysql.so' - ./mysql.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './mysqli.so' - ./mysqli.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './pdo.so' - ./pdo.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './pdo_mysql.so' - ./pdo_mysql.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './pdo_sqlite.so' - ./pdo_sqlite.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './phar.so' - ./phar.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './snmp.so' - ./snmp.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './sqlite3.so' - ./sqlite3.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+PHP Warning:  PHP Startup: Unable to load dynamic library './zip.so' - ./zip.so: cannot open shared object file: No such file or directory in Unknown on line 0
+
+ 
+
+ 
+
+각종 ini(initialization)파일을 설정합니다.
+
+ini파일은 어플리케이션의 설정을 내보내거나 읽어올 때 혹은 어플리케이션 시작 시 초기정보를 읽어올 때 쓰는 파일 포맷입니다.
+
+ini파일에서는 ;이 주석의 시작을 가리킵니다.
+
+ 
+
+/etc/php.ini에서 확장모듈 경로를 확인합니다.
+
+php가 사용하게 되는 추가적인 모듈(mysql.so 등)이 있는 경로를 지정합니다.
+
+extension_dir = /etc/php.d
+
+ 
+
+다시 php -m을 해보면.. 2번에서 나던 오류가 경로가 바뀌어 납니다.
+
+find / -name mysql.so해보면...
+
+ 
+
+# find / -name mysql.so
+
+/usr/lib64/perl5/auto/DBD/mysql/mysql.so
+
+/usr/lib64/php/modules/mysql.so
+
+ 
+
+실제 /etc/php.d에 없기도 하니 경로를 바꿔줍니다.
+
+extension_dir=/usr/lib64/php/modules/
+
+이제 php -m 결과에서 오류는 안납니다. 넘어갑니다.
+
+ 
+
+ 
+
+/etc/php.d/mysql.ini에서 mysql모듈이 활성화 돼있는지 확인합니다.
+
+php-mysql을 설치했으므로 php.ini를 수정 할 필요 없이 /etc/php.d/mysql.ini에 설정이 돼있습니다.
+
+extension=mysql.so
+
+ 
+
+/etc/php.d/snmp.ini에서 snmp모듈이 활성화 돼있는지 확인합니다.
+
+php-snmp를 설치했으므로, 마찬가지로 php.ini에서가 아닌 /etc/php.d/snmp.ini의 설정을 확인합니다.
+
+extension=snmp.so
+
+ 
+
+템플릿 import를 원하면 파일 업로드 허가 여부를 아래와 같이 합니다.
+
+file_uploads = On 
+
+ 
+
+ 
+
+3.apache설정을 잡아줍니다.
+
+/etc/httpd/conf/httpd.conf에서 config파일을 로딩 할 디렉토리를 잡아줍니다.
+
+Include conf.d/*.conf
+
+ 
+
+/etc/httpd/conf.d/php.conf에 PHP연동을 설정합니다.
+
+# PHP is an HTML-embedded scripting language which attempts to make it
+
+# easy for developers to write dynamically generated webpages.
+
+LoadModule php_module modules/libphp.so
+
+#
+
+# Cause the PHP interpreter to handle files with a .php extension.
+
+AddHandler php-script .php
+
+AddType text/html .php
+
+#
+
+# Add index.php to the list of files that will be served as directory
+
+# indexes.
+
+DirectoryIndex index.php
+
+ 
+
+ 
+
+4.MySQL설정을 잡아줍니다.
+
+mysql 서비스부터 시작 해줍니다.
+
+#service mysqld start
+
+ 
+
+일단 root user pw를 잡아줘요!
+
+#mysql -uroot -p
+
+ 
+
+5.대망의 cacti입니다.
+
+repository잡아서 yum install cacti로 설치 가능하나.. 그냥 파일로 했습니다.
+
+/var/www/html위치에서 해주세요.
+
+#tar xzvf cacti-version.tar.gz
+
+ 
+
+Mysql DB를 만들어 줍니다.
+
+#mysql -uroot create cacti
+
+ 
+
+접속해서 db확인합니다.
+
+mysql>show database;
+
+ 
+
+cacti db를 import합니다.
+
+#mysql cacti < cacti.sql
+
+ 
+
+cacti를 위한 MySQL 계정을 생성 합니다.
+
+ 
+
+#mysql -u=root mysql
+
+mysql>grant all on cacti.* to cactiuser@localhost indentified by 'cacti';
+
+mysql>flush privileges; 
+
+ 
+
+includ/config.php에 db정보를 확인합니다.
+
+$database_type = "mysql";
+
+$database_default = "cacti";
+
+$database_hostname = "localhost";
+
+$database_username = "cactiuser";
+
+$database_password = "cacti";
+
+ 
+
+적절한 권한을 부여 합니다.
+
+#chwon -R apache rra/ log/
+
+ 
+
+/etc/crontab에 아래 내용을 추가 합니다.
+
+*/5 * * * * cactiuser php /var/www/html/cacti/poller.php > /dev/null 2>&1
+
+ 
+
+ 
+
+아파치를 시작합니다.
+
+#service httpd start
+
+ 
+
+ 
+
+*참고!!!
+
+파일이 그 자리에 정확히 있는데 파일을 찾을 수 없다고 할 때가 있습니다.
+
+내 마음대로 Document Root를 바꾸거나, extension dir과 so파일의 위치를 바꾸던가 하면 아파치 에러로그에서도, 웹에서도 멀쩡히 있는놈을 못찾고 오류가나는데요, SELinux정책으로인해 발생한 문제입니다.
+
+그럴 땐 고민하지 말고 아래 명령을 수행시켜줍니다.
+
+#chcon -R -t httpd_user_content_t 경로
+
+ 
+
+ls -Z를 해보시면 기존에 보던 내용과는 사뭇 다른 내용을 볼 수 있는데요, 기본 Document Root로 설정된 /var/www의 결과는 아래와 같습니다.
+
+#ls -Z /var
+
+drwxr-xr-x. root root system_u:object_r:httpd_sys_content_t:s0 www
+
+ 
+
+chcon은 파일 보안문맥을 변경하는 명령어입니다.
+
+user를 바꿀 때는 -u, role을 바꿀 때는 -r, type을 바꿀 때는 -t로 바꿀 수 있구요,
+
+만약 보안문맥을 변경해야 한다 하실 때는 기존에 폴더나 파일의 권한을 ls -Z로 확인하셔서 그와 동일하게 변경하시면 됩니다.
+
+==============================================================================
+
+
 http://www.websaram.com/bbs/board.php?bo_table=web_server&wr_id=52
 
 
