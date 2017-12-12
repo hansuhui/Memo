@@ -1,0 +1,30 @@
+https://m.blog.naver.com/PostView.nhn?blogId=perpectmj&logNo=220517084343&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F
+
+
+is_dir("경로") : 디렉토리가 존재한다면 true를 리턴한다.
+
+
+
+if(!is_dir("경로")){}
+
+
+mkdir(dir,chmod , recursive) 
+
+- dir : 디렉토리 경로
+
+- chmod : 디렉토리 권한
+
+- recusive : 하위 폴더 생성을 허락할 것인지 여부
+
+
+
+예제)
+
+mkdir("경로",0777,true);
+
+
+
+- 리눅스 폴더 권한 주기
+
+chgrp 계정명 /대상/폴더
+chmod g+w /대상/폴더

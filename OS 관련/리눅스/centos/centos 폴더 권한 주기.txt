@@ -1,0 +1,9 @@
+- 폴더 권한 주기
+
+chgrp 계정명 /대상/폴더
+chmod g+w /대상/폴더
+
+
+계정 보기
+
+cat /etc/passwd
