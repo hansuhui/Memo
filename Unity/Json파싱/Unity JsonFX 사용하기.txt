@@ -1,0 +1,26 @@
+http://geekcoders.tistory.com/entry/Unity-JsonFX-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+
+================================================================================
+
+[준비]
+
+JsonFX.dll 을 다운받고 유니티 Assets/Plugins 폴더 안에 넣으면 끝.
+
+[object -> json(string)]
+
+JsonFx.Json.JsonWriter.Serialize(object)로 string json을 만들 수 있다.
+
+
+[json(string) -> object]
+
+JsonFX.Json.JsonReader.Deserialize<T>(string)
+
+
+[예시]
+
+Dictionary<string, object> dicJson = new Dictionary<string, object>;
+dicJson.Add("name", "한수희");
+dicJson.Add("age",23);
+
+string strJson = JsonWriter.Serialize(dicJson);
+Dictionary<string, object> Result = JsonReader.Deserialize<Dictionary<string, object>>(strJson);
