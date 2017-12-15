@@ -1,0 +1,45 @@
+http://www.voicerss.org/api/documentation.aspx
+
+==============================================================================
+<? php
+require_once ( 'voicerss_tts.php');
+
+$ tts = new VoiceRSS;
+$ voice = $ tts-> speech ([
+    'key'=> '<API key>',
+    'hl'=> 'en-us',
+    'src'=> 'Hello, world!',
+    'r'=> '0',
+    'c'=> 'mp3',
+    'f'=> '44khz_16bit_stereo',
+    'ssml'=> '거짓',
+    'b64'=> '거짓'
+]));
+
+print_r ($ 음성);
+?>
+                        
+==============================================================================
+
+
+text-to-speech를 Base64 문자열로 변환
+다음 예는 TTS (text-to-speech)를 Base64 문자열로 동기 변환하여 인터넷 브라우저에서 재생하는 방법을 보여줍니다.
+
+<? php
+require_once ( 'voicerss_tts.php');
+
+$ tts = new VoiceRSS;
+$ voice = $ tts-> speech ([
+    'key'=> '<API key>',
+    'hl'=> 'en-us',
+    'src'=> 'Hello, world!',
+    'r'=> '0',
+    'c'=> 'mp3',
+    'f'=> '44khz_16bit_stereo',
+    'ssml'=> '거짓',
+    'b64'=> 'true'
+]));
+
+echo '<audio src = "'. $ voice [ 'response']. '"autoplay = "autoplay"> </ audio>';
+?>
+                        
