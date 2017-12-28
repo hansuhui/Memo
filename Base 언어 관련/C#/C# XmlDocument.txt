@@ -1,0 +1,31 @@
+using System.Xml;
+
+
+XmlDocument xmldom2 = new XmlDocument();
+xmldom2.LoadXml(_SAPCardXML);
+
+xmldom2.OuterXml;
+
+//선택
+xmldom2.SelectNodes("DATA/ITEM/ROW");
+
+//내용 보기
+xmldom2.SelectNodes("DATA/ITEM/ROW")[0].SelectSingleNode("PRODUCTNAME").InnerText;
+//지우기
+xmldom2.SelectNodes("DATA/ITEM/ROW")[0].RemoveChild(xmldom2.SelectNodes("DATA/ITEM/ROW")[0].SelectSingleNode("PRODUCTNAME"))
+
+
+추가 하기
+XmlElement addNode = xmldom2.CreateElement("들어간다");
+
+
+
+XmlDocument xmldom2 = new XmlDocument();
+xmldom2.LoadXml(_SAPCardXML);
+            foreach (XmlNode tt in xmldom2.SelectNodes("DATA/ITEM/ROW")) {
+                if (tt.SelectSingleNode("PRODUCTCODE") == null) {
+                    XmlElement Add = xmldom2.CreateElement("PRODUCTCODE");
+                    Add.InnerText = "들어간거";
+                    tt.AppendChild(Add);
+                };
+            }
