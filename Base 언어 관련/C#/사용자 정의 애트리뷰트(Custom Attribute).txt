@@ -1,0 +1,140 @@
+http://blog.eairship.kr/152
+
+사용자 정의 애트리뷰트(Custom Attribute)
+
+커스텀 애트리뷰트는, 사용자가 직접 정의하는 애트리뷰트입니다. 
+방금 말한 MSDN 링크에 들어가보시면, 모든 애트리뷰트는 System.Attribute 클래스에서 파생되었습니다. 
+그럼, '이 System.Attribute 클래스를 상속하면 우리가 직접 애트리뷰트를 만들수가 있나요?'
+라는 궁금증이 생기시는 분도 있을텐데, 물론 가능합니다. 이제부터 그것을 알아보려고 합니다. 
+아래를 한번 볼까요?
+
+
+[소스]
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Diagnostics;
+using System.Text;
+using System.Threading.Tasks;
+ 
+namespace ConsoleApplication43
+{
+    [CustomAttribute("STR", vartmp="TMP")]
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("CustomAttribute!");
+        }
+    }
+ 
+    class CustomAttribute : System.Attribute
+    {
+        private string str;
+        private string tmp;
+ 
+        public CustomAttribute(string str)
+        {
+            this.str = str;
+        }
+ 
+        public string vartmp
+        {
+            get
+            {
+                return tmp;
+            }
+            set
+            {
+                tmp = value;
+            }
+        }
+    }
+}
+
+
+이렇게, 우리가 직접 애트리뷰트를 만들 수가 있습니다. 
+10행을 보시면 우리가 정의한 CustomAttribute를 사용할 수 있고, 19~40행을 보시면 
+CustomAttribute 클래스는 System.Attribute 클래스로부터 상속받았다는 것을 알 수 있습니다. 
+그리고 애트리뷰트 클래스의 멤버로 필드, 메소드, 프로퍼티, 생성자 등을 가질 수 있다는 것도 
+알 수 있습니다. (우리가 아직 프로퍼티에 대해선 배우지 않았는데, 이 프로퍼티(Property)는 
+다음 강좌에서 배우려고 하니, 지금은 간단히 알아두기만 합시다. 프
+로퍼티는 29~38행이며, 이 프로퍼티를 이용해 private 멤버에 접근할 수 있습니다.)
+
+
+그리고, Conditional 특성처럼, System.AttributeUsage를 이용하여, 
+적용 가능한 요소값을 지정할 수 있습니다. 아래는 코드 요소를 모두 나열한 것입니다.
+
+
+
+==============<VaildOn>==============
+
+AttributeTargets / 설명
+
+All / 모든 요소
+
+Assembly  / 어셈블리 
+
+Module  / 모듈 
+
+Inferface  / 인터페이스 
+
+Class  / 클래스 
+
+Struct  / 구조체 
+
+Enum  / 열거형 
+
+Constructor  / 생성자 
+
+Method  / 메소드 
+
+Property  / 프로퍼티 
+
+Field  / 필드 
+
+Event  / 이벤트 
+
+Parameter  / 메소드의 매개 변수 
+
+Delegate / 델리게이트 
+
+ReturnValue  / 메소드의 반환 값 
+
+==============<VaildOn 끝>==============
+
+
+참고: http://msdn.microsoft.com/ko-kr/library/aa664621(v=vs.71).aspx
+
+(위 링크에서 AllowMultiple은 동일한 애트리뷰트를 여러번 
+지정할 수 있게끔 해주는 녀석입니다. default: false)
+
+(Inherited는 파생되는 클래스 혹은 재정의되는 메소드 적용여부를 
+결정하게 해주는 녀석입니다. default: true)
+
+
+
+그럼 이제, 아까의 코드에서 CustomAttribute 클래스 정의부분 
+위에 아래의 코드를 덧붙여보도록 합시다.
+
+[AttributeUsage(AttributeTargets.Method)]
+
+그리고 컴파일을 한다면, 다음과 같은 오류가 발생할 것입니다.
+
+[오류]
+
+'CustomAttribute' 특성은 이 선언 형식에서 사용할 수 없습니다. 
+'method' 선언에만 사용할 수 있습니다.	
+
+
+
+그럼, 클래스 선언에도 사용이 가능하게, 옵션을 하나 더 붙이도록 해봅시다. 아래와 같이 말입니다.
+
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+이번에는 오류가 나지않고 정상적으로 컴파일 되었습니다. 
+이처럼 논리합(|) 연산자를 사용하여 두 개 이상의 요소를 묶어서 지정할 수 있습니다. 
+애트리뷰트, 상당히 유용한 기능이죠?
+
+
