@@ -1,0 +1,62 @@
+
+using System;
+
+
+namespace GPoint_Admin.Common
+{
+    public class WebValChckAttr : Attribute
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Msg { get; set; }
+        public bool Required { get; set; }
+
+        public WebValChckAttr(string Name, string Type)
+        {
+            this.Name = Name;
+            this.Type = Type;
+            Required = true;
+        }
+        public string GetMsg()
+        {
+            if (string.IsNullOrEmpty(Msg))
+            {
+                string SetMsg = "";
+                if (Type.Equals("INPUT")) {
+                    SetMsg = "을(를) 입력해주세요";
+                }
+                else if (Type.Equals("SELECT"))
+                {
+                    SetMsg = "을(를) 선택해주세요";
+                }
+
+                Msg = Name + SetMsg;
+                return Msg;
+            }
+            else
+            {
+                return Msg;
+            }
+
+        }
+    }
+}
+
+================================================================================================================================================================
+
+//new ShopModel().InsertShop(Entity);
+            IEnumerable<CustomAttributeData> Test = Entity.GetType().GetProperty("SHOP_NAME").CustomAttributes;
+
+
+            // Using reflection.  
+            System.Attribute[] attrs = Attribute.GetCustomAttributes(Entity.GetType().GetProperty("SHOP_NAME"));  // Reflection.  
+
+            // Displaying output.  
+            foreach (System.Attribute attr in attrs)
+            {
+                if (attr is WebValChckAttr)
+                {
+                    WebValChckAttr a = (WebValChckAttr)attr;
+                    string s = a.Name;
+                }
+}
