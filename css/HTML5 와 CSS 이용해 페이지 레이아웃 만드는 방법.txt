@@ -1,0 +1,170 @@
+http://mainia.tistory.com/4210
+
+HTML5와 CSS를 이용해 페이지 레이아웃 만드는 방법
+
+HTML5는 문서 구조를 윟ㄴ 마크업으로 header , footer  , nav , article , section , aside 를
+제공합니다. 이것들을 CSS와 함께 이용하면 HTML 문서 레이아웃을 쉽게 잡을 수 있습니다. 
+태그는 단순히 구분을 위한 용도로 사용합니다. 이전에는 CSS id나 class로 만들어서 배치를 했지만
+HTML5 부터는 태그를 지원하기 때문에 휠씬 소스의 가독성은 높아졌습니다.
+
+- 각 태그별로 어떤 내용들을 배치할지 간략하게 설명을 드리겠습니다. 반드시 내용대로 배치를 해야
+되는 것은 아닙니다. 일반적인 사용 패턴을 이야기 하는 것이며 아래 처럼 구분해서 작용해 놓으면 편집할
+때 용의합니다.
+
+- <header> : 문서의 서론이나 섹션의 목차, 검색, 로고 등이 들어가는 곳이다.
+
+- <hgroup> : 제목을 정의하며 다른 섹션에서 서브 제목으로 이용된다.
+
+- <section> : 글을 구분하는데 사용한다. 단락의 개념으로 보면 된다.
+
+- <article> : 컨텐츠의 내용이 들어가는 부분이다.
+
+- <nav> : 네비게이션 영역이며 페이지 이동을 휘한 메뉴들이 모여 있는 곳이다.
+
+- <aside> : 보조 메뉴나 광고를 배치하는 곳이다.
+
+- <footer> : 저작자의 이름이나 문서의 날짜, 연락처 등이 들어간다.
+
+
+
+각 태그를 CSS로 화면에 배치한 결과입니다. 양 사이드에 바를 위치 시키고 
+상단과 하단에 header , footer를 배치 했습니다.일반적으로 사용용하는 패턴이죠.
+이 위치는 사용자가 필요에 따라 변경하면 됩니다. 
+
+먼저 태그들을 사용해서 화면을 꾸며 보겠습니다. CSS를 적용하지 않으면 자동 줄바꿈이 되어서
+아래 그림처럼 배치가 될 것입니다. 
+
+
+==========================================================================================
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta content="text/html; charset=euc-kr">
+<title>HTML5</title>
+</head>
+<body>
+    <div id="wapper">
+        <!--헤더시작-->
+        <header>
+            <p>header</p>
+        </header>
+        <!--네비게이션-->
+        <nav>
+            <p>nav</p>
+            <ul>
+                <li><a href="">link</a></li>
+                <li><a href="">link</a></li>
+                <li><a href="">link</a></li>
+            </ul>
+        </nav>
+        <!--콘텐츠부분-->
+        <section>
+            <p>section</p>
+            <article>
+                <p>article</p>
+            </article>
+        </section>
+        <!--사이드바-->
+        <aside>
+            <p>aside</p>
+        </aside>
+        <!--풋터-->
+        <footer>footer</footer>
+    </div>
+</body>
+</html>
+
+==========================================================================================
+
+header 바로 아래 3개의 요소 , navigation , section , asode 를 가로로 배치하기 위해 
+float : left 를 주었습니다.  그럼 전체 길이가 넘어가지 않는다면 가로로 배치가 됩니다. 
+두 번째 footer에서 줄 바꿈이 되어야 하기 떄문에 clear: both 를 해 주었습니다.
+이 두개의 속성값이 주요 포인트 입니다. 나머지는 넓이와 margin, padding 값을 준 것뿐입니다.
+이런 식으로 CSS 값만 변경하시면 다양한 위치의 레이아웃을 만들 수 있습니다.
+
+=======================================[css]===================================================
+   body{
+     text-align:center;
+     color : #FFF;
+     width : 900px;
+  }
+ 
+  div#wapper{
+     width: 100%;
+     text-align: left;
+     min-heigth: 300px; 
+  }
+
+  header , footer , nav , aside , section {
+     border: 1px solid #999;
+     margin: 5px;
+     padding: 10px;
+  }
+  
+  header {
+     height: 50px;
+     background-color: red;
+  }
+
+  nav, section, aside {
+     float: left;
+     height: 200px;
+  }
+
+  nav {
+     background-color: goldenrod;
+     width: 100px;
+  }
+
+  section {
+     background-color: green;
+     width: 604px;
+  }
+
+  aside {
+     background-color : goldenrod;
+     width: 100px;
+  }
+
+  footer {
+     height : 50px;
+     background-color: blue;
+     position: relative;
+     clear: both;
+  }
+
+  article {
+     width: 90%;
+     margin: 20px;
+     background-color: #999;
+  }
+
+==========================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
