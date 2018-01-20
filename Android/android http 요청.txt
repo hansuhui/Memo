@@ -1,0 +1,84 @@
+http://mainia.tistory.com/5101
+
+안드로이드 스튜디오에서 개발한 소스에 기능을 확장하려면 라이브러리를 추가해야 합니다. 
+소스 상단에 패키지 주소와 클래스명을 넣는다고 끝나는 것은 아니겠죠. 
+대표적인 외부 라이브러리 중 하나는 아파치에서 제공하는 HttpClient 입니다. 
+어플리케이션에서 Http 프로토콜을 이용하고 싶을 때 많이 사용합니다. 
+오늘은 아파치 그룹에서 배포하는 HttpClient 라이브러리를 
+안드로이드 스튜디오에 추가하는 방법에 대해 알아 보겠습니다.
+
+
+
+HttpClient 를 다운받기 위해 아래 사이트 주소로 접속합니다. 
+현재 최신 버전은 5.0 입니다. 호환을 위해 이전 버전을 다운 받을 수도 있습니다. 
+자신이 원하는 버전으로 가서 zip 파일을 클릭합니다.
+
+http://hc.apache.org/downloads.cgi
+
+
+HttpClient 파일의 압축을 해제하고 lib 폴더로 이동합니다. 
+이곳에서 필요한 것은 두 가지 입니다. httpClient 와 httpcore 를 복사합니다. 
+
+
+복사한 두 jar 파일을 안드로이드 스튜디오 lib 폴더에 붙여 넣습니다. 
+폴더를 선택하고 Ctrl + V 를 누르면 됩니다. 팝업창은 붙여 넣을 파일의 이름을 변경할 것인지 묻는 것입니다. 
+기존 파일명과 그대로 유지해도 상관 없습니다. 
+
+
+이제 붙여 넣은 외부 라이브러리를 프로젝트 소스에서 인식할 수 있도록 작업을 해야 합니다. 
+추가한 jar 파일을 선택하고 오른쪽 마우스를 누릅니다. 그리고 팝업 메뉴 하단에 있는 Add As Library 를 선택합니다. 
+
+절차에 따라 라이브러리 추가가 완료되면 소스에서 바로 인식됩니다. 
+파일 옆에 추가된 화살표를 눌러 라이브러리 내부를 볼 수 있으면 제대로 추가가 된 것입니다. 
+다른 외부 라이브러리도 이런 식으로 추가하시면 되겠죠.
+
+====================================================================================================
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+ private void sendRegistrationToServer(String token) {
+
+        try {
+            String idBySerialNumber = (String) Build.class.getField("SERIAL").get(null);
+            HttpClient client = new DefaultHttpClient();
+            String postURL = "http://222.122.202.220:8090/admin/Controller/Mobile/AddToken.php";
+            HttpPost post = new HttpPost(postURL);
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("deviceId", idBySerialNumber));
+            params.add(new BasicNameValuePair("token", token));
+
+            UrlEncodedFormEntity ent = new UrlEncodedFormEntity(params, HTTP.UTF_8);
+            post.setEntity(ent);
+            HttpResponse responsePOST = client.execute(post);
+            HttpEntity resEntity = responsePOST.getEntity();
+
+            if (resEntity != null)
+            {
+                Log.i("RESPONSE", EntityUtils.toString(resEntity));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
+
+    }

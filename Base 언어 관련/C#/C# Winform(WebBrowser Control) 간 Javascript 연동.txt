@@ -1,0 +1,110 @@
+http://www.hind.pe.kr/1219
+https://msdn.microsoft.com/ko-kr/library/system.windows.forms.webbrowser.objectforscripting(v=vs.110).aspx
+
+
+
+Web(Javascript) > WinForm(Webbrowser Control)
+
+=========================================================================================================
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using System.Security.Permissions;
+using System.Runtime.InteropServices;
+
+namespace TestApp
+{
+    [PermissionSet(SecurityAction.Demand, Name="FullTrust")]
+    [ComVisible(true)]
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            webBrowser1.AllowWebBrowserDrop = false;
+            webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            webBrowser1.WebBrowserShortcutsEnabled = false;
+            webBrowser1.ObjectForScripting = this;
+
+            webBrowser1.Url = new Uri("http://localhost:17135/Account/Test");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public void CallForm(object msg)
+        {
+            string sMsg = (string)msg;
+            {
+                // 받은 msg 값을 가지고 처리하는 로직.
+
+            }
+        }
+    }
+
+
+===============================================================
+
+<html>
+<head>
+	<title>Test Page</title>
+	<script type="text/javascript">
+		function submitToForm()
+		{
+			var textboxvalue = document.getElementById('text1').value;
+			window.external.CallForm(textboxvalue);
+		}
+	</script>
+</head>
+<body>
+	<form>
+		<input type="text" id="text1" name="text1"></input>
+		<input type="button" id="btn1" name="btn1" value="submit" onclick="submitToForm()"></input>
+	</form>
+</body>
+</html>
+
+
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Web(Javascript) > WinForm(Webbrowser Control)
+
+WinForm > Web(Javascript)
+
+
+private void ExecJavascript(string sValue1, string sValue2) { try { webBrowser1.Document.InvokeScript("CallScrript", new object[] { sValue1, sValue2 }); } catch { } }
+
+
+
+===============================================================================================
+
+
+function CallScrript(va1, va2) { alert('Val1 : ' + va1 + " / Val2 : ' + va2); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
