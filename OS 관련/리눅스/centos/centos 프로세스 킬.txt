@@ -1,0 +1,16 @@
+http://ngee.tistory.com/132
+
+리눅스 프로세스 중단, 제거, 중지 - Kill
+
+1. PID를 확인한다. 
+
+1.1 top 명령어를 통해서 PID를 확인한다.  맨 앞에 나오는 것이 PID죠.
+
+1.2 top 말고 ps -ax로 PID를 확인한다.
+
+2. kill -9 를 통해 프로세스를 제거한다.
+
+Usage : kill -9 PID
+
+
+
