@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>폼 입력 바인딩</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+
+ <body>
+	<h1>기본 사용법</h1>
+	<div id="example-1">
+		<input v-model="message" placeholder="여기를 수정해보세요">
+		<p>메시지: {{ message }}</p>
+	</div>
+
+	<div id="example-2">
+		<span>여러 줄을 가지는 메시지:</span>
+		<p style="white-space: pre-line">{{ message }}</p>
+		<br/>
+		<textarea v-model="message" placeholder="여러줄을 입력해보세요"></textarea>
+	</div>
+
+	<div id="example-3">
+		<span>체크박스 :</span>
+		<input type="checkbox" id="checkbox" v-model="checked">
+		<label for="checkbox">{{ checked }}</label>		
+		<br/>
+		<span>체크박스2 :</span>
+		<input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+		<label for="jack">Jack</label>
+		<input type="checkbox" id="john" value="John" v-model="checkedNames">
+		<label for="john">John</label>
+		<input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+		<label for="mike">Mike</label>
+		<br/>
+		<span>체크한 이름: {{ checkedNames }}</span>
+	</div>
+
+	<div id="example-4">
+		<span>라디오 :</span>
+		<input type="radio" id="one" value="One" v-model="picked">
+		<label for="one">One</label>
+		<input type="radio" id="two" value="Two" v-model="picked">
+		<label for="two">Two</label>
+		<br>
+		<span>선택: {{ picked }}</span>
+	</div>
+
+	<div id="example-5">
+		<span>셀렉트 :</span>
+		<select v-model="selected">
+		  <option disabled value="">Please select one</option>
+		  <option>A</option>
+		  <option>B</option>
+		  <option>C</option>
+		</select>
+		<span>선택함: {{ selected }}</span>
+		<br/>
+		<select v-model="selected2" multiple>
+		  <option>A</option>
+		  <option>B</option>
+		  <option>C</option>
+		</select>
+		<br/>
+		<span>Selected: {{ selected2 }}</span>
+		<br/>
+		<select v-model="selected3">
+		  <option v-for="option in options" v-bind:value="option.value">
+			{{ option.text }}
+		  </option>
+		</select>
+		<span>Selected: {{ selected3 }}</span>
+	</div>
+	
+	<script>
+		var example1 = new Vue({
+		   el : "#example-1",
+		   data : {message : null}
+		})	
+
+		var example2 = new Vue({
+		   el : "#example-2",
+		   data : {message : null}
+		})
+
+		var example3 = new Vue({
+		   el : "#example-3",
+		   data : {checked : true,checkedNames:[]}
+		})
+
+		var example4 = new Vue({
+		   el : "#example-4",
+		   data : {picked : null}
+		})
+
+		var example5 = new Vue({
+		   el : "#example-5",
+		   data : {
+		   selected : "", 
+		   selected2 : "",
+		   selected3 : "",
+		   options : [   
+			   { text: 'Vue', value: 'Vue' },
+			   { text: '동적', value: '동적' },
+			   { text: '옵션', value: '옵션' }	   
+		     ]
+		   }
+		})
+		
+		
+	</script>
+
+	<hr/>
+	<h1>값 바인딩하기</h1>
+	<div id="binding-1">
+		<!-- `picked` 는 선택시 문자열 "a" 입니다 -->
+		<input type="radio" v-model="picked" value="a">
+
+		<!-- `toggle` 는 true 또는 false 입니다 -->
+		<input type="checkbox" v-model="toggle">
+
+		<!-- `selected`는 "ABC" 선택시 "abc" 입니다 -->
+		<select v-model="selected">
+ 		  <option value="">선택하세요</option>
+		  <option value="abc">ABC</option>
+		</select>
+	</div>
+
+	<div id="binding-2">
+		<span>라디오 박스 테스트</span>
+		<input type="radio" v-model="pick" v-bind:value="a">
+		<span>{{ pick }}</span>
+		<br/>
+		<span>셀렉트 박스 : Object(selected.number)</span>
+		<select v-model="selected">
+		  <!-- inline object literal -->
+		  <option v-bind:value="{ number: 123 }">123</option>
+		</select>
+		<span>{{ selected }} <button @click="go">가잣!!</button></span>
+	</div>
+
+	<script>
+
+	var binding1 = new Vue({
+		   el : "#binding-1",
+		   data : {
+			   picked : "a", 
+			   toggle : true,
+			   selected : ""
+		   }
+		})
+
+	var binding2 = new Vue({
+		   el : "#binding-2",
+		   data : {
+			   pick : null, a: "날 선택했냐",
+			   selected : null
+		   },
+		   methods : {
+		      go : function(){
+				  if(this.selected) alert(this.selected.number);		  
+				  else alert("없음");
+			  }
+		   }
+		})
+
+	// 체크 하면:
+	//binding2.pick === binding2.a
+
+	</script>
+
+	<hr/>
+	<h1>수식어</h1>
+	<div id="lazy">
+		<span>lazy (change 이벤트 이후 동기화): </span>
+		<!-- "input" 대신 "change" 이후에 동기화 됩니다. -->
+		<input v-model.lazy="msg" >
+		<span>{{msg}}</span>
+	</div>
+
+	<div id="number">
+		<span>number : </span>
+		<input v-model.number="age" type="number">
+		<span>{{age}}</span>
+	</div>
+	
+	<script>
+		var lazy = new Vue({
+			   el : "#lazy",
+			   data : { msg :null}
+		})
+
+		var number = new Vue({
+			   el : "#number",
+			   data : { age:null}
+		})
+		
+	</script>
+
+ </body>
+</html>

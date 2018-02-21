@@ -1,0 +1,89 @@
+- v-for 와 컴포넌트 -
+
+v-for 를 사용자 정의 컴포넌트에 직접 사용할 수 있습니다.
+
+<my-component v-for="item in items" :key="item.id"></my-component>
+
+! 2.2.0 이상에서는 v-for 는 key 가 필수 입니다.
+
+그러나 컴포넌트에는 자체 범위가 분리되어있기 떄문에 컴포넌트에 데이터를 
+자동으로 전달하지는 않습니다. 반복할 데이터를 컴포넌트로 전달하려면 props 도 사용해야 합니다.
+
+<my-component
+  v-for="(item, index) in items"
+  v-bind:item="item"
+  v-bind:index="index"
+  v-bind:key="item.id"
+></my-component>
+
+컴포넌트에 item을 자동으로 주입하지 않는 이유는 컴포넌트가 v-for 의 작동 방식과
+밀접하게 결합되기 떄문입니다. 데이터의 출처를 명확히 하면 다른 상황에서 컴포넌트를 
+재사용할 수 있습니다.
+
+간단한 할일 목록 전체 예제 입니다.
+
+
+<div id="todo-list-example">
+  <input
+    v-model="newTodoText"
+    v-on:keyup.enter="addNewTodo"
+    placeholder="Add a todo">
+  <ul>
+    <li
+      is="todo-item"
+      v-for="(todo, index) in todos"
+      v-bind:key="todo.id"
+      v-bind:title="todo.title"
+      v-on:remove="todos.splice(index, 1)"
+    ></li>
+  </ul>
+</div>
+
+! is="todo-item" 속성을 보면 <li> 엘리먼트는 <ul> 안에서만 유효합니다.
+  <todo-item> 과 같은 일을 하지만 잠제적인 브라우저의 구문 분석 오류를 해결 합니다.
+  자세한 내용은 DOM 템플릿 파일 주의사항을 참조하세요.
+
+
+Vue.component('todo-item', {
+  template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">X</button>\
+    </li>\
+  ',
+  props: ['title']
+})
+
+new Vue({
+  el: '#todo-list-example',
+  data: {
+    newTodoText: '',
+    todos: [
+      {
+        id: 1,
+        title: 'Do the dishes',
+      },
+      {
+        id: 2,
+        title: 'Take out the trash',
+      },
+      {
+        id: 3,
+        title: 'Mow the lawn'
+      }
+    ],
+    nextTodoId: 4
+  },
+  methods: {
+    addNewTodo: function () {
+      this.todos.push({
+        id: this.nextTodoId++,
+        title: this.newTodoText
+      })
+      this.newTodoText = ''
+    }
+  }
+})
+
+
+

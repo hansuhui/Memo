@@ -1,0 +1,69 @@
+============================[뷰 설정]============================
+
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
+import router from './router'
+
+Vue.config.productionTip = false
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  components: { App },
+  template: '<App/>'
+})
+
+
+============================[라우트 설정]============================
+
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import HelloWorld2 from '@/components/HelloWorld2'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      props: true,
+      component: HelloWorld
+    },
+    {
+      path: '/HelloWorld2',
+      name: 'HelloWorld2',
+      props: true,
+      component: HelloWorld2
+    }
+  ]
+})
+
+
+============================[사용 설정]============================
+
+<router-link to="/">Home</router-link>
+<router-link :to="{ name: 'HelloWorld2', params: { Val: 555, test : test } }">HelloWorld2</router-link>
+
+============================[뷰페이지 설정]============================
+
+export default {
+  name: 'HelloWorld2',
+  data () {
+    return {
+      msg: '들어와지냐?',
+      s: '?A!?!'
+    }
+  },
+  props: ['test'],
+  created: function () {
+    if (!this.test) {
+      this.$router.push({name:"HelloWorld"})
+      alert('잘못된 접근입니다.') 
+    }
+  }
+}

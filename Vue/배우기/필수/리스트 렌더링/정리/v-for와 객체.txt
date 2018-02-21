@@ -1,0 +1,38 @@
+- v-for와 객체 -
+
+v-for 를 사용하여 객체의 속성을 반복할 수도 있습니다.
+
+<ul id="v-for-object" class="demo">
+  <li v-for="value in object">
+    {{value}}
+  </li>
+</ul>
+
+
+new Vue({
+  el: "#v-for-object",
+  data : {
+    object : {
+      firstName : 'Jone' ,
+      lastName : 'Doe' ,
+      age : 30
+    }
+  }
+})
+
+
+키의 두번째 전달 인자를 제공할 수도 있습니다.
+
+<div v-for="(value,key) in object">
+  {{key}} : {{value}}
+</div>
+
+
+그리고 또 인덱스도 제공합니다.
+
+<div v-for="(value, key, index) in object">
+  {{ index }}. {{ key }} : {{ value }}
+</div>
+
+! 객체를 반복할 떄 순서응 Object.keys() 의 키 나열 순서에 따라 결정됩니다.
+ 이 순서는 JavaScript 엔진 구현간에 일관적이지는 않습니다.

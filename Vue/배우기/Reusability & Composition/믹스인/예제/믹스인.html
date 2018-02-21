@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>믹스인</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+ <body>
+
+ 	<hr />
+	<h1>기초</h1>
+
+	<p>스크립트만 존재</p>
+
+
+	<script>
+	// mixin 객체 생성
+	var myMixin = {
+	  created: function () {
+		this.hello()
+	  },
+	  methods: {
+		hello: function () {
+		  console.log('hello from mixin!')
+		}
+	  }
+	}
+
+	var Component = Vue.extend({
+	   mixins : [myMixin]
+	})
+
+	var compoent = new Component()
+		
+	</script>
+
+   	<hr />
+	<h1>옵션 병합</h1>
+
+	<p>스크립트만 존재</p>
+
+	<script>
+	var mixin = {
+	   created : function () {
+		  console.log('mixin hook called')
+	   }
+	}
+
+	new Vue({
+	   mixins: [mixin],
+	   created: function() {
+		  console.log('component hook called')
+	   }
+	})
+
+	var mixin = {
+	   methods : {
+		  foo: function () {
+			 console.log('foo')
+		  },
+		  conflicting: function () {
+			 console.log('from mixin')
+		  }
+	   }
+	}
+
+	var vm = new Vue({
+	   mixins : [mixin],
+	   methods : {
+		  bar : function () {
+			 console.log('bar')
+		  },
+		  conflicting: function () {
+			 console.log('from self')
+		  }
+	   }
+	})
+
+	vm.foo() // => "foo"
+	vm.bar() // => "bar"
+	vm.conflicting() // => "from self"
+
+	</script>
+
+   	<hr />
+	<h1>전역 Mixin</h1>
+
+	<p>스크립트만 존재</p>
+
+	<script>
+		// 'myOption' 사용자 정의 옵션을 위한 핸들러 주입
+		Vue.mixin({
+		   created: function () {
+			  var myOption = this.$options.myOption
+			  if(myOption){
+				 console.log(myOption)
+			  }
+		   }
+		})
+
+		new Vue({
+		   myOption : 'myOption!!!'
+		})
+	</script>
+
+ </body>
+</html>

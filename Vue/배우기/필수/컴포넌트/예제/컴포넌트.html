@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>컴포넌트</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+
+ <body>
+	<h1>컴포넌트 사용하기</h1>
+	<div id="example">
+	  <div is="my-component"></div>
+	</div>
+
+	<div id="example2">
+	 <!-- <my-component2></my-component2> -->
+	  <div is="my-component2"></div>
+	</div>
+
+		<div id="example2">
+	 <!-- <my-component2></my-component2> -->
+	  <div is="my-component2"></div>
+	</div>
+
+	<div id="example-2">
+	  <simple-counter></simple-counter>
+	  <simple-counter></simple-counter>
+	  <simple-counter></simple-counter>
+	</div>
+
+	<script>
+	// 등록
+	Vue.component('my-component', {
+	  template: '<div>사용자 정의 컴포넌트 입니다!</div>'
+	})
+
+
+	// 루트 인스턴스 생성
+	new Vue({
+	  el: '#example'
+	})
+
+	var Child = {
+	  template: '<div>이건 지역 등록 한거</div>'
+	}
+
+	new Vue({
+	  el: '#example2',
+	  components: {
+		// <my-component> 는 상위 템플릿에서만 사용할 수 있습니다.
+		'my-component2': Child
+	  }
+	})
+
+
+	Vue.component('simple-counter', {
+	  template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+	  // 데이터는 기술적으로 함수이므로 Vue는 따지지 않지만
+	  // 각 컴포넌트 인스턴스에 대해 같은 객체 참조를 반환합니다.
+	  data: function () {
+		return {counter : 0}
+	  },
+	  methods : {
+		  go : function(){ console.log(this.counter); return "리턴까지 받냐?"; }
+	  }
+	})
+
+   var  example2 =	new Vue({
+	  el: '#example-2'
+	})
+
+	//example2.$children[0].$data.counter 해당 데이터에 접근하기!!
+	//example2.$children[0].counter 해당 데이터에 접근하기!!
+	//example2.$children[2].go()
+	</script>
+
+	<hr/>
+	<h1>Props</h1>
+	<div id="Props-1">
+		<child my-message="안녕하세요!"></child>
+	</div>
+
+	<div id="Props-2">
+		<span>동적 Props</span>
+		<input v-model="parentMsg">
+		<child v-bind:my-message="parentMsg"></child>
+	</div>
+
+	<div id="Props-3">
+		<span>동적 Props2 결과 :</span><br/>
+		<todo-item v-bind="todo"></todo-item>
+	</div>
+
+	<script>
+		Vue.component('child', {
+		  // props 정의
+		  props: ['myMessage'],
+		  // 데이터와 마찬가지로 prop은 템플릿 내부에서 사용할 수 있으며
+		  // vm의 this.message로 사용할 수 있습니다.
+		  template: '<span>{{ myMessage }}</span>'
+		})
+
+		Vue.component('todo-item', {
+		  props: ['text','test','isComplete'],
+		  template: '<span>{{ text }} | {{ test }} | {{ isComplete }}</span>'
+		})
+
+		new Vue({el:"#Props-1"});
+		new Vue({el:"#Props-2",data : { parentMsg : "이건!!"}});
+		new Vue({el:"#Props-3",
+		data : { 
+				todo : { test :"test",text: 'Learn Vue',isComplete: false}
+			}
+		});
+		
+		
+
+	</script>
+
+	<hr/>
+	<h1>Props가 아닌 속성</h1>
+
+	<div id="counter-event-example">
+	  <p>{{ total }}</p>
+	  
+	  <button-counter v-on:increment="incrementTotal"></button-counter>
+	  <button-counter v-on:increment="incrementTotal" v-on:click.native="NativeTest"></button-counter>
+	</div>
+		
+	<div id="app">
+	  <currency-input 
+		label="Price" 
+		v-model="price"
+	  ></currency-input>
+	  <currency-input 
+		label="Shipping" 
+		v-model="shipping"
+	  ></currency-input>
+	  <currency-input 
+		label="Handling" 
+		v-model="handling"
+	  ></currency-input>
+	  <currency-input 
+		label="Discount" 
+		v-model="discount"
+	  ></currency-input>
+	  
+	  <p>Total: ${{ total }}</p>
+	</div>
+	
+	<script src="https://cdn.rawgit.com/chrisvfritz/5f0a639590d6e648933416f90ba7ae4e/raw/974aa47f8f9c5361c5233bd56be37db8ed765a09/currency-validator.js"></script>
+	<script>
+	Vue.component('button-counter', {
+	  template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+	  data: function () {
+		return {
+		  counter: 0
+		}
+	  },
+	  methods: {
+		incrementCounter: function () {
+		  this.counter += 1
+		  this.$emit('increment');
+		  return "리턴!!";
+		}
+	  },
+	})
+
+	new Vue({
+	  el: '#counter-event-example',
+	  data: {
+		total: 0
+	  },
+	  methods: {
+		incrementTotal: function () {
+		  this.total += 1
+//		  alert("같이 실행되네");		  
+		}
+	  }
+	})
+
+	function NativeTest(){
+		alert("실행");
+	}
+
+	Vue.component('currency-input', {
+  template: '<div><label v-if="label">{{ label }}</label> $<input ref="input" v-bind:value="value" v-on:input="updateValue($event.target.value)" v-on:focus="selectAll" v-on:blur="formatValue"></div>',
+  props: {
+    value: {
+      type: Number,
+      default: 0
+    },
+    label: {
+      type: String,
+      default: ''
+    }
+  },
+  mounted: function () {
+    this.formatValue()
+  },
+  methods: {
+    updateValue: function (value) {
+      var result = currencyValidator.parse(value, this.value)
+      if (result.warning) {
+        this.$refs.input.value = result.value
+      }
+      this.$emit('input', result.value)
+    },
+    formatValue: function () {
+      this.$refs.input.value = currencyValidator.format(this.value)
+    },
+    selectAll: function (event) {
+      // Workaround for Safari bug
+      // http://stackoverflow.com/questions/1269722/selecting-text-on-focus-using-jquery-not-working-in-safari-and-chrome
+      setTimeout(function () {
+      	event.target.select()
+      }, 0)
+    }
+  }
+})
+
+	new Vue({
+	  el: '#app',
+	  data: {
+		price: 0,
+		shipping: 0,
+		handling: 0,
+		discount: 0
+	  },
+	  computed: {
+		total: function () {
+		  return ((
+			this.price * 100 + 
+			this.shipping * 100 + 
+			this.handling * 100 - 
+			this.discount * 100
+		  ) / 100).toFixed(2)
+		}
+	  }
+	})
+
+	</script>
+
+	<hr/>
+	<h1>동적 컴포넌트</h1>
+	<div id="Component-1">
+		<component v-bind:is="currentView">
+		  <!-- vm.currentView가 변경되면 컴포넌트가 변경됩니다! -->
+		</component>
+		<keep-alive>
+		  <component :is="currentView">
+			<!-- 비활성화 된 컴포넌트는 캐시 됩니다! -->
+		  </component>
+		</keep-alive>
+	</div>
+
+	<div id="Component-2">
+		<component v-bind:is="currentView">
+		  <!-- vm.currentView가 변경되면 컴포넌트가 변경됩니다! -->
+		</component>
+	</div>
+
+	<script>
+
+	var Component = new Vue({
+		  el: '#Component-1',
+		  data: {
+			currentView: 'home'
+		  },
+		  components: {
+			home:  {template:"<span>home</span>"},
+			posts: {template:"<span>posts</span>"} ,
+			archive: {template: "<span>archive</span>"}
+		  }
+		})
+
+		//Component.currentView = "home"
+		//Component.currentView = "posts"
+		//Component.currentView = "archive"
+
+		var Home = {  template: '<p>직접 바인딩</p>'}
+		var Component2 = new Vue({
+		  el: '#Component-2',
+		  data: {
+			currentView: Home
+		  }
+		})
+
+	</script>
+
+
+	
+ </body>
+</html>
+

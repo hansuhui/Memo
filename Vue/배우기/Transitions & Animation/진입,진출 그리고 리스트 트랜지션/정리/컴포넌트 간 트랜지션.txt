@@ -1,0 +1,30 @@
+
+- 컴포넌트 간 트랜지션 -
+
+컴포넌트 사이의 트랜지션은 더욱 간단합니다. 우리는 key 속성이 필요 없습니다.
+대신 , 우리는 동적 컴포넌트를 래핑합니다.
+
+
+<div id="transition-components-demo">
+        <input type="radio" v-model="view" value="v-a"> 
+	<input type="radio" v-model="view" value="v-b"> 
+	<transition name="component-fade" mode="out-in">
+	  <component v-bind:is="view"></component>
+	</transition>
+</div>
+
+
+new Vue({
+  el: '#transition-components-demo',
+  data: {
+    view: 'v-a'
+  },
+  components: {
+    'v-a': {
+      template: '<div>Component A</div>'
+    },
+    'v-b': {
+      template: '<div>Component B</div>'
+    }
+  }
+})

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>조건부 렌더링</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+
+ <body>
+	<h1># v-else</h1>
+	<div id="test_else">
+		<div v-if="ok">
+		  이제 나를 볼 수 있어요
+		</div>
+		<div v-else>
+		  이제는 안보입니다
+		</div>
+		<div v-if="type === 'A'">
+		  A
+		</div>
+		<div v-else-if="type === 'B'">
+		  B
+		</div>
+		<div v-else-if="type === 'C'">
+		  C
+		</div>
+		<div v-else>
+		  Not A/B/C
+		</div>
+	</div>
+
+
+	<script>
+		var vm = new Vue({
+			el:"#test_else",
+			data : {ok : true , type : 'A'}
+		});
+	</script>
+ </body>
+</html>

@@ -1,0 +1,52 @@
+- 시스템 수식어 키 목록 -
+
+다음 수식어를 사용해 해당 수식어 키가 눌러진 경우에만 마우스 또는 키보드 이벤트 리스너를
+트리거 할 수 있습니다.
+
+- .ctrl
+- .alt
+- .shift
+- .meta
+
+참고 : 매킨토시 키보드에서 meta는 command 키 입니다. 
+       Windowns 키보드에서 meta는 windows 키 이빈다. 
+
+
+<!-- Alt + C -->
+<input @keyup.alt.67="clear">
+
+<!-- Ctrl + Click -->
+<div @click.ctrl="doSomething">Do something</div>
+
+
+수식어 키는 일반 키와 다르며 keyup 이벤트와 함께 사용되면 이벤트가 
+발생할 때 수식어 키가 눌려있어야 합니다. 
+즉,keyup.ctrl는 ctrl을 누른 상태에서 키를 놓으면 트리거됩니다. 
+ctrl 키만 놓으면 트리거되지 않습니다.
+
+
+# .exact 수식어
+
+.exact 수식어는 다른 시스템 수식어와 조합해 그 핸들러가 실행되기 위해 정확한 조합이
+눌러야하는 것을 보여줍니다.
+
+
+<!-- Alt 또는 Shift와 함께 눌린 경우에도 실행됩니다. -->
+<button @click.ctrl="onClick">A</button>
+
+<!-- Ctrl 키만 눌려있을 때만 실행됩니다. -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
+
+<!-- 아래 코드는 시스템 키가 눌리지 않은 상태인 경우에만 작동합니다. -->
+<button @click.exact="onClick">A</button>
+
+
+
+# 마우스 버튼 수식어
+
+- .left
+- .right
+- .middle
+
+위 수정자는 특정 마우스 버튼에 의해 트리거 된 이벤트로 핸들러를 제한합니다.
+
