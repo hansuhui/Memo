@@ -1,10 +1,13 @@
-main.js ÆÄÀÏ¿¡ ±¸¹® Ãß°¡
+npm i --save-dev expose-loader
+npm i --save jquery
+
+main.js Ã†Ã„Ã€ÃÂ¿Â¡ Â±Â¸Â¹Â® ÃƒÃŸÂ°Â¡
 
 import jQuery from 'jQuery'
 window.$ = jQuery
 
 
-[»ç¿ë½Ã]
+[Â»Ã§Â¿Ã«Â½Ãƒ]
 
 
 
