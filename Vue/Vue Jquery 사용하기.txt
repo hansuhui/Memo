@@ -1,0 +1,26 @@
+main.js 파일에 구문 추가
+
+import jQuery from 'jQuery'
+window.$ = jQuery
+
+
+[사용시]
+
+
+
+import * as $ from 'jQuery'
+import MainLayout from '@/components/Shared/_MainLayout'
+
+export default {
+  name: 'HomeIndex',
+  components: { MainLayout },
+  data () {
+    return {
+      msg: ''
+    }
+  },
+  props: ['name'],
+  created: function () {
+    console.log(this.name)
+  }
+}
