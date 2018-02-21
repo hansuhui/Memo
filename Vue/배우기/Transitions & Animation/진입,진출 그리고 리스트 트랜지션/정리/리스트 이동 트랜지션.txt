@@ -1,0 +1,50 @@
+# 리스트 이동 트랜지션
+
+<transition-group> 컴포넌트는 또 다른 속임수를 가지고 있습니다. 그것은 진입과 진출것뿐만
+아니라 위치의 변화도 생생하게 표현할 수 있습니다. 이 기능을 사용하게 위해 알아야 할 유일한
+새로운 개념은 아이템이 위치를 바꿀 때 추가되는 v-move 클래스를 추가하는 것입니다.
+다른 클래스와 마찬가지로 접두어는 제공된 name 속성 값과 일치하며 move-class 속성을 사용하여
+클래스를 수동으로 지정할 수도 있습니다.
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+
+<div id="flip-list-demo" class="demo">
+  <button v-on:click="shuffle">Shuffle</button>
+  <transition-group name="flip-list" tag="ul">
+    <li v-for="item in items" v-bind:key="item">
+      {{ item }}
+    </li>
+  </transition-group>
+</div>
+
+
+new Vue({
+  el: '#flip-list-demo',
+  data: {
+    items: [1,2,3,4,5,6,7,8,9]
+  },
+  methods: {
+    shuffle: function () {
+      this.items = _.shuffle(this.items)
+    }
+  }
+})
+
+
+.flip-list-move {
+  transition: transform 1s;
+}
+
+
+이것은 마술처럼 보일지 모르겠지만 Vue는 FLIP 이라는 간단한 애니메이션 기법을 사용하여
+변형을 사용하여 이전 위치에서 새로운 위치로 요소를 부드럽게 트랜지션합니다.
+
+이 기술을 이전 구현과 결항하여 가능한 모든 변경 사항을 적용 할 수 있습니다!
+
+
+! 한 가지 중요한 사림은 FLIP 트랜지션은 display:inline 으로 설정된 요소로는 작동하지 않는다는 것입니다.
+  또는 display:inline-block 을 사용거나 flex 켄텍스트에 요소를 배치 할 수 있습니다.
+
+
+이러한 FLIP 애니메이션은 단일 축으로 제한되지 않습니다.다차원 그리의 항목을
+매우 쉽게 트랜지션 할 수 있습니다.

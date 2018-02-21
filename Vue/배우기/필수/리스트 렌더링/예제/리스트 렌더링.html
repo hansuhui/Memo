@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>리스트 렌더링</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+
+ <body>
+	<h1>v-for로 엘리먼트에 배열 매핑하기</h1>
+	<ul id="example-1">
+	  <li v-for="item in items">
+		{{item.message}}
+	  </li>
+	</ul>
+
+	<ul id="example-2">
+	   <li v-for="(item , index) in items">
+		{{parentMessage}} - {{index}} - {{item.message}}
+	   </li>
+	</ul>
+
+
+	<script>
+	var example1 = new Vue({
+		   el: "#example-1",
+		   data : {
+			 items : [
+				{ message : "Foo"},
+				{ message : "Bar"}
+			 ]
+		   }
+		})
+
+	var example2 = new Vue({
+	   el : "#example-2",
+	   data : {
+		 parentMessage : "부모" ,
+		 items : [
+			{ message : "Foo"},
+			{ message : "Bar"}
+		 ]
+	   }
+	})
+	</script>
+
+	<hr/>
+	<h1>v-for와 객체</h1>
+
+	<ul id="v-for-object" class="demo">
+		<div v-for="(value, key, index) in object">
+		  {{ index }}. {{ key }} : {{ value }}
+		</div>
+	</ul>
+
+	<script>
+	new Vue({
+	  el: "#v-for-object",
+	  data : {
+		object : {
+		  firstName : 'Jone' ,
+		  lastName : 'Doe' ,
+		  age : 30
+		}
+	  }
+	})
+	</script>
+
+	<hr/>
+	<h1>필터링 / 정렬 된 결과 표시하기</h1>
+
+	<div id="even_test">
+		<li v-for="n in evenNumbers">{{n}}</li>
+		<li v-for="n in even(numbers)"> {{n}} </li>
+    </div>
+
+
+	<script>
+	new Vue({
+  	    el: "#even_test",
+		data : {
+		  numbers : [1,2,3,4,5]
+		},
+		computed : {
+		   evenNumbers : function(){
+			  return this.numbers.filter(function(number){
+				return number % 2 === 0;
+			  });
+		   }
+		},
+		methods : {
+		  even : function(numbers){
+			return numbers.filter(function(number){
+			  return number % 2 === 0 ;
+			})
+		  }
+		}
+	})
+	</script>
+
+	<hr/>
+	<h1>v-for 와 컴포넌트</h1>
+
+	<div id="todo-list-example">
+		  <input
+			v-model="newTodoText"
+			v-on:keyup.enter="addNewTodo"
+			placeholder="Add a todo">
+		  <ul>
+			<li
+			  is="todo-item"
+			  v-for="(todo, index) in todos"
+			  v-bind:key="todo.id"
+			  v-bind:title="todo.title"
+			  v-on:remove="todos.splice(index, 1)">
+			</li>
+		  </ul>
+	</div>
+
+	<script>
+		Vue.component('todo-item', {
+		  template: '<li>{{ title }}<button v-on:click="$emit(\'remove\')">X</button></li>',
+		  props: ['title']
+		})
+
+		new Vue({
+		  el: '#todo-list-example',
+		  data: {
+			newTodoText: '',
+			todos: [
+			  {
+				id: 1,
+				title: 'Do the dishes',
+			  },
+			  {
+				id: 2,
+				title: 'Take out the trash',
+			  },
+			  {
+				id: 3,
+				title: 'Mow the lawn'
+			  }
+			],
+			nextTodoId: 4
+		  },
+		  methods: {
+			addNewTodo: function () {
+			  this.todos.push({
+				id: this.nextTodoId++,
+				title: this.newTodoText
+			  })
+			  this.newTodoText = ''
+			}
+		  }
+		})
+	</script>
+	
+
+ </body>
+</html>

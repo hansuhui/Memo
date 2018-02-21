@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>사용자 지정 디렉티브</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+ <body>
+
+ 	<hr />
+	<h1>시작</h1>
+
+	<div id="example-start">
+		<input v-focus></input>
+		<input v-test></input>
+	</div>
+
+	<script>
+
+	// 전역 사용자 정의 디렉티브 v-focus 등록
+	/*
+	Vue.directive('focus', {
+	   // 바인딩 된 엘리먼트가 DOM에 삽입되었을 때...
+	   inserted : function (el){
+		  // 엘리먼트에 포커스를 줍니다.
+		  el.focus()
+	   }
+	})
+	*/
+
+	var start = new Vue({
+		el : "#example-start",
+		directives : {
+		   focus : {
+	   		   //디렉티브 정의
+			   inserted: function (el) {
+			      el.focus()
+			   }
+		   },
+		   test : {
+   	   		   //디렉티브 정의
+			   inserted: function (el) {
+			      el.value = "사용자 지정 디렉티브"
+			   }
+		   }
+		}
+	})
+
+	</script>
+
+   	<hr />
+	<h1>디렉티브 훅 전달인자</h1>
+
+	<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+
+
+	<script>
+		Vue.directive('demo', {
+		  bind: function (el, binding, vnode) {
+			var s = JSON.stringify
+			el.innerHTML =
+			  'name: '       + s(binding.name) + '<br>' +
+			  'value: '      + s(binding.value) + '<br>' +
+			  'expression: ' + s(binding.expression) + '<br>' +
+			  'argument: '   + s(binding.arg) + '<br>' +
+			  'modifiers: '  + s(binding.modifiers) + '<br>' +
+			  'vnode keys: ' + Object.keys(vnode).join(', ')
+		  }
+		})
+
+		new Vue({
+		  el: '#hook-arguments-example',
+		  data: {
+			message: {text : "하하하",test : "테스트"}
+		  }
+		})
+	</script>
+
+   	<hr />
+	<h1>객체 리터럴</h1>
+
+	<div v-demo="{ color: 'white', text: 'hello!' }"></div>
+
+	<script>
+		Vue.directive('demo', function (el, binding) {
+		  console.log(binding.value.color) // => "white"
+		  console.log(binding.value.text)  // => "hello!"
+		})
+	</script>
+ </body>
+</html>

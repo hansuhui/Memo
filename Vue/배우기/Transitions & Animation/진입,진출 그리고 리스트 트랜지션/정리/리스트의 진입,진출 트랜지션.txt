@@ -1,0 +1,51 @@
+# 리스트의 진입/진출 트랜지션
+
+이제 이전에 사용한 것과 같은 CSS 클래스를 사용하여 들어가고 떠나는 간단한 예제를 살펴보겠습니다.
+
+<div id="list-demo">
+  <button v-on:click="add">Add</button>
+  <button v-on:click="remove">Remove</button>
+  <transition-group name="list" tag="p">
+    <span v-for="item in items" v-bind:key="item" class="list-item">
+      {{ item }}
+    </span>
+  </transition-group>
+</div>
+
+
+new Vue({
+  el: '#list-demo',
+  data: {
+    items: [1,2,3,4,5,6,7,8,9],
+    nextNum: 10
+  },
+  methods: {
+    randomIndex: function () {
+      return Math.floor(Math.random() * this.items.length)
+    },
+    add: function () {
+      this.items.splice(this.randomIndex(), 0, this.nextNum++)
+    },
+    remove: function () {
+      this.items.splice(this.randomIndex(), 1)
+    },
+  }
+})
+
+
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+
+이 예제에는 한 가지 문제점이 있습니다. 항목을 추가하거나 제거 할 때 항목이 순조롭게
+트랜지션되는 대신 새 위치에 즉시 변화합니다. 나중에 해결할 것입니다.
+

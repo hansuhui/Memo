@@ -1,0 +1,14 @@
+- 이벤트 청취 -
+
+v-on 디렉티브를 사용하여 DOM 이벤트를 듣고 트리거 될때 JavaScript를 실행할 수 있습니다.
+
+<div id="example-1">
+   <button v-on:click="counter += 1 ">Add 1</button>
+   <p>위 버튼을 클릭한 횟수는 {{counter}} 번 입니다.
+</div>
+
+
+var example1 = new Vue({
+   el : "#example-1",
+   data : {counter : 0}
+})

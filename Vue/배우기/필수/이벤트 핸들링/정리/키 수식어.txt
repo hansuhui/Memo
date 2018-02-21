@@ -1,0 +1,47 @@
+- 키 수식어 -
+
+키보드 이벤트를 청취할 때 , 종종 공통 키 코드를 확인해야 합니다. 
+Vue는 키 이벤트를 수신 할 때 v-on 에 대한 키 수식어를 추가할 수 있습니다.
+
+
+<!-- keyCode가 13일 때만 `vm.submit()`을 호출합니다  -->
+<input v-on:keyup.13="submit">
+
+KeyCode 를 모두 기억하는 것은 힘듭니다. 그래서 Vue는 자주 사용하는 키의 알리아스를 제공합니다.
+
+
+<!-- 위와 같습니다 -->
+<input v-on:keyup.enter="submit">
+
+<!-- 약어 사용도 가능합니다 -->
+<input @keyup.enter="submit">
+
+키 수식어 별칭의 전체 목록입니다.
+
+- .enter
+- .tab
+- .delete ("Delete 키와 "Backspace" 키 모두를 캡처합니다.) 
+- .esc
+- .space
+- .up
+- .down
+- .left
+- .right
+
+또한 전역 config.keyCodes 객체를 통해 사용자 지정 키 수식어 별칭을 지정할 수 있습니다.
+
+// `v-on:keyup.f1`을 사용할 수 있습니다.
+Vue.config.keyCodes.f1 = 112
+
+
+
+# 오토매틱 키 수식어
+
+keyboardEvent.key 를 통해 노출된 유효 키 이름을 수식어로 직접 사용할 수 있습니다.
+
+<input @keyup.page-down="onPageDown">
+
+위의 예제에서 핸들러는 $event.key === "PageDown" 만 호출됩니다.
+
+! 일부키(.esc와 모든 화살표 키)는 IE9에서 일관성 없는 key 값을 가지고 있습니다.
+  IE9를 지원해야하는 경우 내장 알리아스가 선호됩니다

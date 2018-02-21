@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>Render Functions & JSX</title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+ </head>
+ <body>
+
+ 	<hr />
+	<h1>시작</h1>
+	<div id="example-1">
+		<anchored-heading v-bind:level="1">heading1</anchored-heading><br />
+		<anchored-heading v-bind:level="2">heading2</anchored-heading><br />
+		<anchored-heading v-bind:level="3">heading3</anchored-heading><br />
+	</div>
+
+
+	<script>
+			
+		var getChildrenTextContent = function (children) {
+		  return children.map(function (node) {
+			return node.children
+			  ? getChildrenTextContent(node.children)
+			  : node.text
+		  }).join('')
+		}
+
+		Vue.component('anchored-heading', {
+		  render: function (createElement) {
+			// kebabCase id를 만듭니다.
+			var headingId = getChildrenTextContent(this.$slots.default)
+			  .toLowerCase()
+			  .replace(/\W+/g, '-')
+			  .replace(/(^\-|\-$)/g, '')
+
+			return createElement(
+			  'h' + this.level,
+			  [
+				createElement('a', {
+				  attrs: {
+					name: headingId,
+					href: '#' + headingId
+				  }
+				}, this.$slots.default)
+			  ]
+			)
+		  },
+		  props: {
+			level: {
+			  type: Number,
+			  required: true
+			}
+		  }
+		})
+
+		var example1 = new Vue({
+			el : "#example-1"
+		})
+
+	</script>
+
+   	<hr />
+	<h1>createElement 전달인자</h1>
+
+	<div id="example-2">
+		<anchored-heading2  v-bind:level="1" v-bind:name="name"  v-bind:msg="msg">createElement-1</anchored-heading2><br />
+		<anchored-heading2 v-bind:level="2" v-bind:name="name"  v-bind:msg="msg">createElement-2</anchored-heading2><br />
+		<anchored-heading2 v-bind:level="3"  v-bind:msg="msg"   v-bind:name="name" >createElement-3</anchored-heading2><br />
+	</div>
+
+
+	<script>
+
+	Vue.component('anchored-heading2', {
+		  render : function(ce) {
+		  var msg = this.msg
+		  var name = this.name
+		  console.log(msg)
+		   return ce('div',
+			  Array.apply(null, {length:20}).map(function () {
+				 return ce('p', 
+				 {style: {display:"inline",marginRight: '5px'}
+				 , attrs : {name:name}}
+				 ,msg)
+			 })
+		  )
+		},
+		  props: {
+			level: {
+			  type: Number,
+			  required: true
+			},
+			msg : {
+			  type: String,
+			  required: true
+			},
+			name : {
+			  type: String,
+			  required: true
+			},
+		  }
+		})
+
+		
+
+		var example2 = new Vue({
+			el : "#example-2",
+			data : {msg : 'why?', name : 'nameVal'}
+		})
+	</script>
+
+
+   	<hr />
+	<h1>템플릿 기능을 일반 JavaScript로 변경하기(v-if , v-for)</h1>
+
+
+	<div id="example-3">
+		<javascript-list v-bind:items="items"></javascript-list>
+	</div>
+
+	<script>
+
+		Vue.component('javascript-list',{
+		   render: function (createElement) {
+			  if (this.items.length) {
+				return createElement('ul', this.items.map(function (item) {
+				  return createElement('li', item.name)
+				}))
+			  } else {
+				return createElement('p', 'No items found.')
+			  }
+			},
+			props : ["items"]
+		})
+
+		var items = [{name:"한수희1"},{name:"한수희2"},{name:"한수희3"}]
+
+		var example3 = new Vue({
+			el : "#example-3",
+			data : {items: items}
+		})
+
+
+	</script>
+
+   	<hr />
+	<h1>템플릿 기능을 일반 JavaScript로 변경하기(v-model)</h1>
+
+
+	<div id="example-4">
+		<javascript-model v-on:log="plog"></javascript-model>
+	</div>
+
+
+	<script>
+
+	Vue.component('javascript-model',{
+			render: function (createElement) {
+			  var self = this
+			  return createElement('input', {
+				domProps: {
+				  value: self.value
+				},
+				on: {
+				  input: function (event) {
+					self.value = event.target.value
+					self.$emit('input', event.target.value)
+					self.$emit('log', event.target.value)
+				  }
+				}
+			  })
+			}
+		})
+
+
+		var example4 = new Vue({
+			el : "#example-4",
+			methods : {
+			   plog : function (val){
+				 console.log(val);
+			   }
+			}
+		})
+	</script>
+
+ </body>
+</html>
