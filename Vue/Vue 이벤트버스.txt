@@ -1,0 +1,38 @@
+https://github.com/stepanowon/vuejs_book/tree/master/ch09/todolistapp
+
+
+[Bus.vue]
+
+<script type="text/javascript">
+import Vue from 'vue';
+var eventBus = new Vue();
+
+var img = [
+    "https://image.freepik.com/free-photo/3d-grunge-room-interior-with-spotlights-shining-down_1048-7420.jpg",
+    "https://image.freepik.com/free-photo/grunge-paper-background_1048-6689.jpg",
+    "https://image.freepik.com/free-vector/polygonal-lion-head_23-2147495868.jpg",
+    "https://image.freepik.com/free-vector/a-nice-lion_1196-396.jpg",
+    "https://image.freepik.com/free-vector/pack-of-polygonal-animal-tattoos_23-2147644640.jpg"
+]
+
+eventBus.$on('getList',function () {
+    debugger
+    var Arr = new Array()
+    var random = Math.round(Math.random *10)
+    var src = img[random]
+    for(var i=0;i<30;i++){
+        Arr.push({src:src,data:{name:"이미지",index:i}})
+    }
+    return Arr;
+})
+
+export default eventBus;
+
+</script>
+
+
+[사용하는곳]
+
+import Bus from '@/Bus.vue'
+
+Bus.$emit('getList')
