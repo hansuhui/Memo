@@ -1,0 +1,437 @@
+[디렉티브]
+
+
+# v-text
+
+- 예상됨: string
+
+- 상세:
+
+  엘리먼트의 textContent를 업데이트 합니다. 
+   textContent의 일부를 갱신해야 하면 {{ Mustache }}를 사용해야 합니다.
+
+- 예제:
+
+<span v-text="msg"></span>
+<!-- 같습니다 -->
+<span>{{msg}}</span>
+
+- 참고: 데이터 바인딩 문법 - 보간
+
+
+# v-html
+
+- 예상됨: string
+
+- 상세:
+
+  엘리먼트의 innerHTML을 업데이트 합니다. 내용은 일반 HTML으로 삽입되므로 Vue 템플릿으로 
+  컴파일 되지 않습니다. v-html을 사용하여 템플릿을 작성하려는 경우 컴포넌트를 
+  사용하여 솔루션을 다시 생각해 보십시오.
+
+  웹사이트에서 임의의 HTML을 동적으로 렌더링하면 XSS 공격으로 이어질 수 있으므로 
+  매우 위험할 수 있습니다. 신뢰할 수 있는 컨텐츠에만 v-html을 사용하고 사용자가 
+  제공한 컨텐츠에는 절대로 사용하지 마십시오
+
+  싱글 파일 컴포넌트 내부에서 scoped 스타일은 v-html 내부에는 적용되지 않습니다. 
+  HTML이 Vue 템플릿 컴파일러를 거치지 않기 때문입니다. 
+  범위를 가지는 CSS로 v-html을 가리키려면 CSS modules을 추가하거나 BEM같은 범위 지정 
+  CSS 전략을 사용하세요.
+
+
+- 예제:
+
+  <div v-html="html"></div>
+
+- 참고: 데이터 바인딩 문법 - 보간
+
+
+# v-show
+
+- 예상됨: any
+
+- 사용방법:
+
+  토글은 표현식 값의 참에 기반을 둔 display CSS 속성입니다.
+  이 디렉티브는 조건이 바뀌면 트랜지션이 호출 됩니다.
+
+- 참고: 조건부 렌더링 - v-show
+
+
+
+# v-if
+
+- 예상됨: any
+
+- 사용방법:
+
+  표현식 값의 참 거짓을 기반으로 엘리먼트를 조건부 렌더링 합니다. 
+  엘리먼트 및 포함된 디렉티브 / 컴포넌트는 토글하는 동안 삭제되고 다시 작성됩니다. 
+  엘리먼트가 <template>엘리먼트인 경우 그 내용은 조건부 블록이 됩니다.
+  조건이 변경될 때 트랜지션이 호출 됩니다.
+  v-if와 함께 사용하는 경우, v-for는 v-if보다 높은 우선순위를 갖습니다. 
+  자세한 내용은 리스트 렌더링 가이드를 확인하십시오.
+
+
+- 참고: 조건부 렌더링 - v-if
+
+
+
+
+# v-else
+
+- 표현식이 필요 없습니다.
+
+- 제한: 이전 형제 엘리먼트가 v-if또는 v-else-if이어야 합니다.
+
+- 사용방법:
+
+  v-if 또는v-if /v-else-if 체인을위한 “else 블록”을 나타냅니다.
+
+<div v-if="Math.random() > 0.5">
+  Now you see me
+</div>
+<div v-else>
+  Now you don't
+</div>
+
+- 참고:
+
+  조건부 렌더링 - v-else
+
+
+
+# v-else-if
+
+2.1.0의 새로운 기능
+
+- 예상됨: any
+
+- 제한: 이전 형제 엘리먼트가 v-if 또는 v-else-if 이어야 합니다.
+
+- 사용방법:
+
+  v-if에 대한 “else if 블록”을 나타냅니다. 체이닝 가능합니다.
+
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  Not A/B/C
+</div>
+
+
+- 참고: 조건부 렌더링 - v-else-if
+
+
+# v-for
+
+- 예상됨: Array | Object | number | string
+
+- 사용방법:
+
+  원본 데이터를 기반으로 엘리먼트 또는 템플릿 블록을 여러번 렌더링합니다. 
+  디렉티브의 값은 반복되는 현재 엘리먼트에 대한 
+  별칭을 제공하기 위해 특수 구문인 alias in expression을 사용해야 합니다.
+
+  <div v-for="item in items">
+    {{ item.text }}
+  </div>
+
+  또는, 인덱스(아니면 객체의 경우 키)의 별칭을 지정할 수 있습니다.
+
+  <div v-for="(item, index) in items"></div>
+  <div v-for="(val, key) in object"></div>
+  <div v-for="(val, key, index) in object"></div>
+
+  v-for의 기본 동작은 엘리먼트를 이동하지 않고 그 자리에서 패치를 시도합니다. 
+  강제로 엘리먼트의 순서를 바꾸려면 특수 속성 key를 설정해야 합니다.
+
+  <div v-for="item in items" :key="item.id">
+    {{ item.text }}
+  </div>
+  
+  v-if와 함께 사용하는 경우, v-for는 v-if보다 높은 우선순위를 갖습니다. 
+  자세한 내용은 리스트 렌더링 가이드를 확인하십시오.
+
+  v-for에 대한 자세한 사용법은 아래 링크된 가이드에서 설명합니다.
+
+- 참고:
+
+  리스트 렌더링
+  key
+
+
+
+# v-on
+
+- 약어: @
+
+- 예상됨: Function | Inline Statement | Object
+
+- 전달인자: event
+
+- 수식어:
+
+  .stop - event.stopPropagation() 을 호출합니다.
+  .prevent - event.preventDefault() 을 호출합니다.
+  .capture - 캡처 모드에서 이벤트 리스너를 추가합니다.
+  .self - 이벤트가 이 엘리먼트에서 전달된 경우에만 처리 됩니다
+  .{keyCode | keyAlias} - 특정 키에 대해서만 처리 됩니다.
+  .native - 컴포넌트의 루트 엘리먼트에서 네이티브 이벤트를 수신합니다.
+  .once - 단 한번만 처리됩니다.
+  .left - (2.2.0) 왼쪽 버튼 마우스 이벤트 트리거 처리기.
+  .right - (2.2.0) 오른쪽 버튼 마우스 이벤트 트리거 처리기.
+  .middle - (2.2.0) 가운데 버튼 마우스 이벤트 트리거 처리기.
+  .passive - (2.3.0+) DOM 이벤트를 { passive: true }와 연결합니다.
+
+- 사용방법:
+
+  엘리먼트에 이벤트 리스너를 연결합니다. 
+  이벤트 유형은 전달인자로 표시됩니다. 
+  표현식은 메소드 이름 또는 인라인 구문일 수 있으며, 
+  수식어가 있으면 생략할 수 있습니다.
+
+  2.4.0부터 v-on도 인수없이 이벤트/리스너 쌍의 객체에 바인딩을 지원합니다. 
+  객체 구문을 사용할 때는 수식어를 지원하지 않습니다.
+
+  일반 엘리먼트에 사용되면 기본 DOM 이벤트만 받습니다. 
+  사용자 정의 컴포넌트에서 사용될 때 해당 하위 컴포넌트에서 생성된 사용자 정의 이벤트를 받습니다.
+
+  네이티브 DOM 이벤트를 수신하면 메소드는 네이티브 
+  이벤트를 유일한 전달인자로 받습니다. 인라인 구문을 사용하는 
+  경우 명령문은 특별한 $event 속성에 접근할 수 있습니다: v-on: click = "handle('ok', $event)"
+
+
+- 예제:
+
+  <!-- 메소드 핸들러 -->
+  <button v-on:click="doThis"></button>
+
+  <!-- 객체 구문 (2.4.0+) -->
+  <button v-on="{ mousedown: doThis, mouseup: doThat }"></button>
+
+  <!-- 인라인 구문 -->
+  <button v-on:click="doThat('hello', $event)"></button>
+
+  <!-- 약어 -->
+  <button @click="doThis"></button>
+
+  <!-- 전파 금지 -->
+  <button @click.stop="doThis"></button>
+
+  <!-- 기본 동작 방지 -->
+  <button @click.prevent="doThis"></button>
+
+  <!-- 표현식이 없는 기본 동작 방지 -->
+  <form @submit.prevent></form>
+
+  <!-- 수식어 체이닝 -->
+  <button @click.stop.prevent="doThis"></button>
+
+  <!-- 키 별칭을 이용한 키 입력 수식어 -->
+  <input @keyup.enter="onEnter">
+
+  <!-- 키 코드를 이용한 키 입력 수식어 -->
+  <input @keyup.13="onEnter">
+
+  <!-- the click event will be triggered at most once -->
+  <button v-on:click.once="doThis"></button>
+  하위 컴포넌트에서 사용자 지정 이벤트를 수신합니다. 
+  (자식에서 “my-event”가 생성될 때 처리기가 호출 됩니다.)
+
+  <my-component @my-event="handleThis"></my-component>
+ 
+  <!-- 인라인 구문 -->
+  <my-component @my-event="handleThis(123, $event)"></my-component>
+
+  <!-- 컴포넌트의 기본 이벤트 -->
+  <my-component @click.native="onClick"></my-component>
+
+- 참고:
+
+  메소드와 이벤트 핸들링
+  컴포넌트 - 사용자 정의 이벤트
+
+
+# v-bind
+
+- 약어: :
+
+- 예상됨: any (with argument) | Object (without argument)
+
+- 전달인자: attrOrProp (optional)
+
+- 수식어:
+
+  .prop - 속성 대신 DOM 속성으로 바인딩 (무슨 차이가 있습니까?). 
+          만약 태그가 컴포넌트라면 .props는 컴포넌트의 $el에 속성을 추가합니다.
+
+  .camel - (2.1.0+) kebab-case 속성 이름을 camelCase로 변환합니다.
+
+  .sync - (2.3.0+) 바인딩 된 값을 업데이트하기 위한 v-on를 확장하는 신택스 슈가입니다
+
+- 사용방법:
+
+  동적으로 하나 이상의 컴포넌트 속성 또는 표현식을 바인딩 합니다.
+  class또는 style 속성을 묶는 데 사용될 때, 
+  Array나 Objects와 같은 추가 값 유형을 지원합니다. 
+  자세한 내용은 아래 링크된 섹션을 참조하십시오.
+
+  속성 바인딩에 사용할 때 속성은 하위 컴포넌트에서 올바르게 선언되어야 합니다.
+  전달인자 없이 사용하면 속성 이름 - 값 쌍을 포함하는 객체를 바인딩 하는데 사용할 수 있습니다. 
+  이 모드에서는 class와 style은 Array나 Objects를 지원하지 않습니다.
+
+
+- 예제:
+
+  <!-- 속성을 바인딩 합니다. -->
+  <img v-bind:src="imageSrc">
+
+  <!-- 약어 -->
+  <img :src="imageSrc">
+
+  <!-- with inline string concatenation -->
+  <img :src="'/path/to/images/' + fileName">
+
+  <!-- 클래스 바인딩 -->
+  <div :class="{ red: isRed }"></div>
+  <div :class="[classA, classB]"></div>
+ <div :class="[classA, { classB: isB, classC: isC }]">
+
+  <!-- 스타일 바인딩 -->
+  <div :style="{ fontSize: size + 'px' }"></div>
+  <div :style="[styleObjectA, styleObjectB]"></div>
+
+  <!-- 속성 객체 바인딩 -->
+  <div v-bind="{ id: someProp, 'other-attr': otherProp }"></div>
+
+  <!-- prop 수식어를 사용하는 DOM 속성 바인딩 -->
+  <div v-bind:text-content.prop="text"></div>
+
+  <!-- 속성 바인딩. 컴포넌트에서 "prop"를 선언 해야 합니다.  -->
+  <my-component :prop="someThing"></my-component>
+
+  <!-- 자식 컴포넌트와 공통으로 사용하는 부모 props를 전달합니다 -->
+  <child-component v-bind="$props"></child-component>
+
+  <!-- XLink -->
+  <svg><a :xlink:special="foo"></a></svg>
+  .camel 수식어는 DOM 템플릿을 사용할 때 v-bind 속성 이름을 camelCase화 할수 있습니다. 
+  (예: SVG viewBox속성)
+
+  <svg :view-box.camel="viewBox"></svg>
+  문자열 템플릿을 사용하거나 vue-loader/vueify 로 컴파일 하는 경우 .camel은 필요 없습니다.
+
+
+- 참고:
+
+  클래스 및 스타일 바인딩
+  컴포넌트 - 컴포넌트 속성
+  컴포넌트 - .sync 수식어
+
+
+# v-model
+
+- 예상됨: 컴포넌트 폼 인풋 엘리먼트 또는 출력 값에 따라 다릅니다.
+
+- 제한사항:
+
+  <input>
+  <select>
+  <textarea>
+  components
+
+
+- 수식어:
+
+  .lazy - input대신 change 이벤트를 듣습니다.
+  .number - 문자열을 숫자로 변경합니다.
+  .trim - 입력에 대한 trim 을 합니다.
+
+
+- 사용방법:
+
+  폼 인풋 엘리먼트 또는 컴포넌트에 양방향 바인딩을 만듭니다. 
+  자세한 사용법은 아래 링크된 가이드 섹션을 참조하십시오.
+
+
+- 참고:
+
+  폼 인풋 바인딩
+  컴포넌트 - 사용자 정의 이벤트를 이용하는 폼 인풋 컴포넌트
+
+
+# v-pre
+
+- 표현식이 필요하지 않습니다
+
+- 사용방법:
+
+  이 엘리먼트와 모든 자식 엘리먼트에 대한 컴파일을 건너 뜁니다. 
+  원시 mustache 태그를 표시하는데 사용할 수 있습니다. 
+  디렉티브가 없는 많은 수의 노드를 뛰어 넘으면 컴파일 속도가 빨라집니다.
+
+- 예제:
+
+  <span v-pre>{{ 이 부분은 컴파일 되지 않습니다 }}</span>
+
+
+# v-cloak
+
+- 표현식이 필요하지 않습니다
+
+- 사용방법:
+
+  이 디렉티브는 Vue 인스턴스가 컴파일을 완료할 때까지 엘리먼트에 남아있습니다. 
+  [v-cloak] { display: none }와 같은 CSS규칙과 함께 
+  이 디렉티브는 Vue인스턴스가 준비될 때까지 컴파일되지 않은 mustache 
+  바인딩을 숨기는데 사용할 수 있습니다.
+
+- 예제:
+
+  [v-cloak] {
+    display: none;
+  }
+  <div v-cloak>
+    {{ message }}
+  </div>
+  <div>는 컴파일이 끝날 때까지 보이지 않습니다.
+
+
+# v-once
+
+- 표현식이 필요하지 않습니다
+
+- 상세:
+
+  엘리먼트 및 컴포넌트를 한번만 렌더링 합니다. 
+  후속 렌더링에서 엘리먼트 / 컴포넌트와 모든 하위 엘리먼트는 
+  정적으로 처리되어 건너 뜁니다. 이는 업데이트 성능을 최적화하는데 사용합니다.
+
+  <!-- 단일 엘리먼트 -->
+  <span v-once>This will never change: {{msg}}</span>
+  <!-- 자식 엘리먼트를 포함하는 엘리먼트 -->
+  <div v-once>
+    <h1>comment</h1>
+    <p>{{msg}}</p>
+  </div>
+  <!-- 컴포넌트 -->
+  <my-component v-once :comment="msg"></my-component>
+  <!-- v-for 디렉티브 -->
+  <ul>
+    <li v-for="i in list" v-once>{{i}}</li>
+  </ul>
+
+
+- 참고:
+
+  데이터 바인딩 문법 - 보간
+  컴포넌트 - v-once를 이용한 가벼운 정적 컴포넌트
+

@@ -1,0 +1,115 @@
+[인스턴스 메소드/라이프사이클]
+
+# vm.$mount( [elementOrSelector] )
+
+- 전달인자:
+
+  {Element | string} [elementOrSelector]
+  {boolean} [hydrating]
+
+- 반환 값: vm - 인스턴스 그 자체
+
+- 사용방법:
+
+  Vue 인스턴스가 인스턴스화 할 때 el 옵션이 없으면 연결된 
+  DOM 엘리먼트 없이 “unmounted” 상태가 됩니다. 
+  vm.$mount()는 unmounted 된 Vue인스턴스의 마운트를 수동으로 시작하는데 사용할 수 있습니다.
+
+  elementOrSelector 인자가 제공되지 않으면, 템플릿은 문서가 아닌 엘리먼트로 
+  렌더링 될 것이므로 DOM API를 사용하여 문서에 직접 삽입해야 합니다.
+
+  이 메소드는 다른 인스턴스 메소드를 체이닝 할 수 있도록 인스턴스 그 자체를 반환 합니다.
+
+- 예제:
+
+var MyComponent = Vue.extend({
+  template: '<div>Hello!</div>'
+})
+
+// 생성하고 #app에 마운트 합니다.(#app을 대체합니다)
+new MyComponent().$mount('#app')
+
+// 위와 같습니다.
+new MyComponent({ el: '#app' })
+
+// 또는 문서를 렌더링하고 나중에 추가할 수 있습니다.
+var component = new MyComponent().$mount()
+document.getElementById('app').appendChild(component.$el)
+
+
+- 참고:
+
+  라이프사이클 다이어그램
+  서버측 렌더링
+
+
+# vm.$forceUpdate()
+
+- 사용방법:
+
+  Vue 인스턴스를 강제로 다시 렌더링합니다. 모든 하위 컴포넌트에는 
+  영향이 미치지 않으며, 슬롯 그 자체가 삽입된 슬롯 자체 및 하위 컴포넌트에만 영향을 미칩니다.
+
+
+
+# vm.$nextTick( [callback] )
+
+- 전달인자:
+
+  {Function} [callback]
+
+
+- 사용방법:
+
+  다음 DOM 업데이트 사이클 이후 실행될 콜백을 연기합니다. 
+  DOM 업데이트를 기다리기 위해 일부 데이터를 변경한 직후 사용하십시오. 
+  이 것은 콜백의 this컨텍스트가 이 메소드를 호출하는 인스턴스에 
+  자동으로 바인딩되는 점을 제외하고 전역 Vue.nextTick과 같습니다.
+
+  2.1.0의 새로운 기능 : 콜백이 제공되지 않고 
+  Promise가 실행 환경에서 지원되는 경우 Promise를 반환합니다. 
+  Vue는 Promise 폴리필을 제공하지 않습니다. 그러므로 
+  Promise를 지원하지 않는 (IE 등) 브라우저에서 사용하려면 폴리필을 직접 해야합니다.
+
+
+- 예제:
+
+new Vue({
+  // ...
+  methods: {
+    // ...
+    example: function () {
+      // 데이터 수정
+      this.message = 'changed'
+      // 아직 DOM 이 갱신되지 않음
+      this.$nextTick(function () {
+        // DOM이 이제 갱신됨
+        // `this` 가 현재 인스턴스에 바인딩 됨
+        this.doSomethingElse()
+      })
+    }
+  }
+})
+
+
+- 참고:
+
+  Vue.nextTick
+  비동기 업데이트 큐
+
+
+
+# vm.$destroy()
+
+- 사용방법:
+
+  vm을 완전히 제거합니다. 다른 기존 VM과의 연결을 정리하고 
+  모든 디렉티브를 바인딩 해제하고 모든 이벤트 리스너를 제거합니다.
+
+  beforeDestroy와 destroyed 훅을 호출합니다.
+
+  일반적인 사용에서는 이 메소드를 직접 호출하면 안됩니다. 
+  v-if와 v-for를 사용하여 데이터 기반 방식으로 하위 
+  컴포넌트의 라이프사이클을 제어하는 것이 좋습니다.
+
+- 참고: 라이프사이클 다이어그램

@@ -1,0 +1,102 @@
+[인스턴스 메소드/데이터]
+
+# vm.$watch( expOrFn, callback, [options] )
+
+- 전달인자:
+  {string | Function} expOrFn
+  {Function | Object} callback
+  {Object} [options]
+    {boolean} deep
+    {boolean} immediate
+  
+- 반환 값: {Function} unwatch
+
+- 사용방법:
+
+  변경을 위해 Vue 인스턴스에서 표현식이나 계산된 함수를 감시합니다. 
+  콜백은 새 값과 이전 값을 인자로 호출됩니다. 
+  표현식은 점으로 구분된 경로를 허용합니다. 
+  더 복잡한 표현식을 사용하려면 함수를 사용하세요.
+
+
+! 참고: Object 또는 Array를 변경하는 대신 변형하는 경우 동일한 Object /Array를
+  참조 하므로 이전 값은 새 값과 같습니다. Vue는 사전 변이된 값의 사본을 보관하지 않습니다.
+
+- 예제:
+
+  
+// keypath
+vm.$watch('a.b.c', function (newVal, oldVal) {
+  // 필요한 코드를 작성하세요
+})
+
+// function
+vm.$watch(
+  function () {
+    return this.a + this.b
+  },
+  function (newVal, oldVal) {
+    // 필요한 코드를 작성하세요
+  }
+)
+vm.$watch는 콜백을 호출하지 않는 unwatch 함수를 반환합니다.
+
+
+var unwatch = vm.$watch('a', cb)
+// 나중에, 감시자를 제거해야합니다
+unwatch()
+
+
+- 옵션: deep
+
+  Objects 내부의 중첩된 값 변경을 감지하려면 options 인자에 
+  deep: true를 전달해야 합니다. Array 변이를 수신하기 위해 그렇게 할 필요는 없습니다.
+
+
+vm.$watch('someObject', callback, {
+  deep: true
+})
+vm.someObject.nestedValue = 123
+// 콜백이 호출됩니다
+
+
+- 옵션: immediate
+
+  옵션에서 immediate: true를 전달하면 표현식의 현재 값으로 즉시 콜백을 호출합니다.
+
+vm.$watch('a', callback, {
+  immediate: true
+})
+// 콜백은`a`의 현재 값으로 즉시 시작됩니다.
+
+
+# vm.$set( target, key, value )
+- 전달인자:
+
+  {Object | Array} target
+  {string | number} key
+  {any} value
+
+- 반환 값: 설정된 값
+
+- 사용방법:
+
+  전역 Vue.set의 별칭 입니다.
+
+  
+- 참고: Vue.set
+
+
+# vm.$delete( target, key )
+
+- 전달인자:
+
+  {Object | Array} target
+  {string | number} key
+
+- 사용방법:
+
+  전역 Vue.delete의 별칭 입니다.
+
+- 참고: Vue.delete
+

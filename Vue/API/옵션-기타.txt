@@ -1,0 +1,138 @@
+[옵션/기타]
+
+
+# name
+
+- 타입: string
+
+- 제한: 컴포넌트 옵션으로 사용될 떄만 사용할 수 있습니다.
+
+- 상세:
+
+  컴포넌트가 템플릿을 반복적으로 자체 호출 할 수 있게 합니다. 컴포넌트가
+  Vue.component() 로 전역으로 등록되면 전역 ID가 자동으로 이름으로 설정됩니다.
+
+  name 옵션을 지정하는 또 다른 이점은 디버깅입니다. 명명된 컴포넌트는 보다 
+  유용한 경고 메시지를 만듭니다. 또한 vue-devtools 에서 응용 프로그램을 살펴볼 떄
+  익명의 컴포넌트는 매우 유용하지 않은 <AnonymousComponent>로 표시됩니다.
+  name 옵션을 제공함으로써 휠씬 더 쓸모있는 컴포넌트 트리를 얻을 수 있습니다.
+
+
+# delimiters
+
+- 타입: Array<string>
+
+- 기본값: ["{{","}}"]
+
+- 제한사항: 이 옵션은 전체 빌드에서만 사용할 수 있습니다.
+
+- 상세:
+
+  일반 텍스트 보간 구분 기호를 변경하십시오.
+
+- 예제:
+
+new Vue({
+  delimiters: ['${', '}']
+})
+
+// 구분 기호가 ES6 템플릿 문자열 스타일로 변경되었습니다.
+
+
+# functional
+
+- 타입: boolean
+
+- 상세:
+
+  컴포넌트에 상태를 저장하지 않는(data가 없음) 및 인스턴스가 없도록
+  (this 컨텍스트가 없음)만듭니다. 단순히 가상 노드를 반환하는 
+  render 함수로 렌더링을 휠씬 더 가볍게 만듭니다.
+
+
+- 참고 : Functional Components
+
+
+# model
+
+2.2.0에서 추가됨
+
+- 타입 : { prop?: string, event?: string}
+
+- 상세:
+
+  커스텀 컴포넌트가 v-model 과 함께 사용될 때 prop와 이벤트르 커스터 마이징 할  수 있도록 합니다.
+  기본적으로 컴포넌트의 v-model 은 value를 보조 변수로 사용하고 input을 이벤트로 사용하지만
+  체크 박스와 라디오 버튼과 같은 이룹 입력 타입은 다른 목적으로 value 속성을 사용하려고 
+  할 수 있습니다. model 옵션을 사용하면 이 경우 충돌을 피할 수 있습니다.
+
+- 예제:
+
+
+Vue.component('my-checkbox', {
+  model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    // 다른 목적을 위해 `value` prop를 사용할 수 있습니다.
+    value: String,
+    // `value`를 대신 `checked`를 prop으로 사용하십시오.
+    checked: {
+      type: Number,
+      default: 0
+    }
+  },
+  // ...
+})
+
+
+ <my-checkbox v-model="foo" value="some value"></my-checkbox>
+
+위의 내용은 아래와 같습니다.
+
+
+<my-checkbox
+  :checked="foo"
+  @change="val => { foo = val }"
+  value="some value">
+</my-checkbox>
+
+
+
+# inheritAttrs
+
+2.4.0 이후 추가됨
+
+- 타입: boolean
+
+- 기본값: true
+
+- 상세:
+
+  기본적으로 props로 인식되지 않는 상위 스코프의 속성 바인딩은 "흘러내려가" 
+  일반 HTML 속성으로 하위 컴포넌트이 루트 엘리먼트에 적용됩니다.
+  타겟 엘리먼트 또는 다른 컴포넌트를 래핑하는 컴포넌트를 제작할 떄 
+  항상 원하는 동작을 하지 않을 수 있습니다.
+  inheritAttes 속성을 false로 지정하면 기본적인 동작이 중지됩니다.
+  속성은 $attrs 인스턴스 속성(2.4에서 새로 추가됨)로 사용할 수 있으며
+  v-bind 로 루트 엘리먼트에 명시적으로 바인딩할 수 있습니다.
+
+  Note:this option does not affect class and style bindings.
+
+
+# comments
+
+2.4.0 이후 추가됨
+
+- 타입: boolean
+
+- 기본값: false
+
+- 제한사항: 이 옵션은 전체 빌드에서만 사용할 수 있습니다.
+
+- 상세:
+ 
+  true로 설정하면 템플릿에 있는 주석을 보존하고 렌더링합니다.
+  기본값 동작은 주석을 유지합니다.
+
