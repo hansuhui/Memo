@@ -1,0 +1,49 @@
+https://vuex.vuejs.org/kr/installation.html
+
+[설치]
+
+- 직접 다움로드 / CDN -
+
+https://unpkg.com/vuex
+
+Unpkg.com 은 NPM 기반 cDN 링크를 제공합니다. 위의 링크는 항상 NPM의 최신 릴리스를 가리킵니다.
+https://unpkg.com/vuex@2.0.0과 같은 URL을 통해 특정 버전/태그를 사용할 수도 있습니다.
+
+Vue 뒤에 vuex를 추가하면 자동으로 설치됩니다.
+
+  <script src="/path/to/vue.js"></script>
+  <script src="/path/to/vuex.js"></script>
+
+
+- NPM -
+
+npm install vuex --save
+
+
+- Yarn -
+
+yarn add vuex
+
+
+모듈 시스템과 함께 사용하면 Vue.use()를 통해 Vuex를 명시적으로 추가해야 합니다.
+
+  import Vue from 'vue'
+  import Vuex from 'vuex'
+
+  Vue.use(Vuex)
+
+전역 스트립트 태그를 사용힐 때는 이 작업을 할 필요가 없습니다.
+
+
+
+[개발용 빌드]
+
+최신 dev 빌드를 사용하고 싶은 경우 직접 GitHub에서 클론하고 vuex를 직접 빌드 해야합니다.
+
+  git clone https://github.com/vuejs/vuex.git node_modules/vuex
+  cd node_modules/vuex
+  npm install
+  npm run build
+
+
+
