@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 main.js 파일에 구문 추가
 
 import jQuery from 'jQuery'
@@ -23,4 +24,31 @@ export default {
   created: function () {
     console.log(this.name)
   }
+=======
+main.js 파일에 구문 추가
+
+import jQuery from 'jQuery'
+window.$ = jQuery
+
+
+[사용시]
+
+
+
+import * as $ from 'jQuery'
+import MainLayout from '@/components/Shared/_MainLayout'
+
+export default {
+  name: 'HomeIndex',
+  components: { MainLayout },
+  data () {
+    return {
+      msg: ''
+    }
+  },
+  props: ['name'],
+  created: function () {
+    console.log(this.name)
+  }
+>>>>>>> 4c51f03a94d12abd729aed9e0d101f24f9dd2e7f
 }
