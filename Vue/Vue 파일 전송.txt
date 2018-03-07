@@ -1,0 +1,6 @@
+import axios from 'axios'
+
+// input type='file' 인 엘리먼트를의 files[0];
+var file = this.$refs.photofile.files[0];
+var data = new FormData();data.append('photo', file);
+return axios.post('url', data)
