@@ -1,0 +1,4 @@
+apt-get remove 패키지명
+
+-- 설정 파일까지 지워버리는방법
+apt-get purge 패키지명
