@@ -1,0 +1,110 @@
+http://blog.naver.com/musasin84?Redirect=Log&logNo=60190812853
+http://blog.naver.com/PostList.nhn?blogId=musasin84&from=postList&categoryNo=45
+
+
+기본적인 Jade 문법 표현법 
+
+html
+  head
+  body
+
+들여쓰기를 잘 지켜야 한다
+
+
+ID 표현법 (#)
+
+html
+  head
+  body
+    div#testID
+
+Class 표현법 (.)
+
+html
+  head
+  body
+    div.testID
+
+
+태그의 속성 표현법
+
+html
+  head
+  body
+    div(style="boder:1px soild black;")
+      input(type="text",name="input_name",realonly)
+
+
+태그 내용 표현 : 태그를 표현한후 뛰어쓰기를 하고 표현하고자 하는  내용을 기술한다.
+
+html
+  head
+  body
+    div#stoneElenent1 Hello Jade! Stone~
+
+
+내용이 길어서 줄바꿈이 필요할때는 세로선(|)을 사용한다.
+
+html
+  head
+  body
+    dir#stoneElenet1
+    | stoneisp.pe.kr
+    | cafe.naver.com/buldon
+
+
+express에선 JSON으로 Jade 엔진으로 전송한다. 
+
+JSON : {"name": "stone", "age": "30"}
+
+html
+  head
+  body
+    div#userName #{name}
+    div#userAge #{age}
+
+
+
+HTML이 표함되었을 경우
+JSON : {"content": "<strong color='red'>Stone</strong>"}
+
+html
+  head
+  body
+    div#stoneElement1 !{conent}
+
+
+
+자바스크립트와 CSS의 표현법 
+
+
+html
+  head
+    title Example
+    script
+      if (true) {
+        alert('true');
+      }
+      else {
+        alert('false');
+      }
+
+    style
+      div
+        border: 1px solid;
+
+
+
+주석
+
+   //just some comments...
+  div#stoneDiv
+
+
+단위 주석
+
+div#parentDiv
+  //
+    #childDiv
+      h1 blog.naver/com/musasin84
+
