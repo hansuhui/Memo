@@ -1,0 +1,75 @@
+https://www.npmjs.com/package/url-search-params-polyfill
+
+
+npm install url-search-params-polyfill --save
+
+
+import 'url-search-params-polyfill';
+
+
+- Usage -
+
+// new an empty object
+var search1 = new URLSearchParams();
+ 
+// from a string
+var search2 = new URLSearchParams("id=1&from=home");
+ 
+// from an object
+var search3 = new URLSearchParams({ id: 1, from: "home" });
+ 
+// from location.search, will remove first "?" automatically
+var search4 = new URLSearchParams(window.location.search);
+ 
+// from anther URLSearchParams object
+var search5 = new URLSearchParams(search2);
+
+
+- append -
+
+var search = new URLSearchParams();
+ search.append("id", 1);
+
+- delete -
+search.delete("id");
+
+
+- get -
+search.get("id");
+
+- getAll -
+search.getAll("id");
+
+- has -
+search.has("id");
+
+- set -
+search.set("id", 2);
+
+- toString -
+search.toString();
+
+- sort -
+search.sort();
+
+- forEach -
+search.forEach(function (item) {
+  console.log(item);
+});
+
+- keys -
+for (var key of search.keys()) {
+  console.log(key);
+}
+
+
+- values -
+for (var value of search.values()) {
+  console.log(value);
+}
+
+
+- for...of -
+for (var item of search) {
+  console.log('key: ' + item[0] + ', ' + 'value: ' + item[1]);
+}
