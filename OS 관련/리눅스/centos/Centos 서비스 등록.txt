@@ -1,0 +1,56 @@
+http://gafani.tistory.com/entry/CentOS7-systemd-%EC%97%90-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%93%B1%EB%A1%9D%ED%95%98%EA%B8%B0
+
+- 서비스 파일 만들기 -
+
+
+vim /etc/systemd/system/[service name].service
+
+
+===========[node]===========
+
+[Service] 
+ExecStart=/usr/bin/node /JSGlobal/jsmember_vue/express.js
+
+Restart=always 
+
+StandardOutput=syslog
+
+StandardError=syslog 
+
+SyslogIdentifier=node-sample 
+
+User=root
+Group=root
+
+Environment=NODE_ENV=production 
+
+[Install] 
+WantedBy=multi-user.target
+
+
+===========[Django]===========
+
+[Unit]
+Description=Django with Gunicorn
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/JSGlobal/Django/JsMember
+ExecStart=/bin/gunicorn --workers 3 --bind 0.0.0.0:80 JsMember.wsgi
+
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+- 실행법 -
+
+systemctl enable 서비스명
+systemctl start 서비스명
+
+
