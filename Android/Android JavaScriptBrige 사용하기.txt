@@ -1,0 +1,76 @@
+=================[WebAppInterface 클래스]=================
+
+package com.members.js.jsmembers;
+
+import android.app.Application;
+import android.content.Context;
+import android.webkit.JavascriptInterface;
+import android.widget.Toast;
+
+public class WebAppInterface {
+    WebViewActivity mContext;
+
+    /** Instantiate the interface and set the context */
+    WebAppInterface(WebViewActivity c) {
+        mContext = c;
+    }
+
+    /** Show a toast from the web page */
+    @JavascriptInterface
+    public void showToast(String toast) {
+        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+    }
+
+    /** Show a toast from the web page */
+    @JavascriptInterface
+    public void Exit(String msg) {
+        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+        mContext.Exit();
+    }
+}
+
+
+=================[WebView 설정]=================
+
+
+mWebView = (WebView)findViewById(R.id.webview); //레이어와 연결
+mWebView.addJavascriptInterface(new WebAppInterface(this), "JsMemberApp");
+mWebSettings = mWebView.getSettings(); //세부 세팅 등록
+mWebSettings.setJavaScriptEnabled(true); //자바스크립트 사용허용
+mWebView.loadUrl(Web_Url);
+mWebView.getSettings().setBuiltInZoomControls(true);
+
+
+=================[자바스크립트에서 사용시]=================
+
+var App = new Object();
+
+//if (window.HCom.isMobile()) {
+    // if (window.JsMemberApp) {
+    //     window.App.Exit('올바르지 못한 접근입니다.')
+    //   } else {
+    //     alert('올바르지 못한 접근입니다.')
+    //     window.history.back()
+    // }
+//}
+
+App.showToast = function (msg) {
+    window.JsMemberApp.showToast(msg);
+}
+
+App.Exit = function (msg) {
+    window.JsMemberApp.Exit(msg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
