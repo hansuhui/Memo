@@ -1,0 +1,58 @@
+https://www.npmjs.com/package/vue-router-back-button
+
+
+[설치]
+
+npm install vue-router-back-button --save-dev
+
+
+[셋팅]
+import Vue from 'vue'
+import Router from 'vue-router'
+import { routerHistory, writeHistory } from 'vue-router-back-button'
+
+Vue.use(Router)
+Vue.use(routerHistory)
+
+const router = new Router({
+    routes: []
+})
+
+router.afterEach(writeHistory)
+
+
+[사용]
+
+- Going back -
+
+
+<router-link
+    v-if="$routerHistory.hasPrevious()"
+    :to="{ path: $routerHistory.previous().path }">
+    GO BACK
+</router-link>
+
+
+- Going forward -
+
+<router-link
+    v-if="$routerHistory.hasForward()"
+    :to="{ path: $routerHistory.next().path }">
+    GO FORWARD
+</router-link>
+
+
+[Documentation]
+
+
+Function / Description
+
+previous () / Returns the previous visited path in an object
+
+hasPrevious() / Returns true if the user can go back
+
+next () / Returns the next visited path in an object, this happens when a user went back
+
+hasForward () / Returns true if the user can go forward
+
+
