@@ -1,0 +1,8 @@
+
+- 키값이 있다면 UPDATE문이 실행된다 -
+
+
+INSERT INTO mac_test (ADMIN_CODE, MAC_ADDR) 
+	VALUES (P_ADMIN_CODE, P_MAC_ADDR)
+	ON DUPLICATE key 
+       UPDATE MAC_ADDR = P_MAC_ADDR;
