@@ -1,0 +1,75 @@
+https://www.npmjs.com/package/express-fileup
+
+[Install]
+
+# With NPM 
+npm install --save express-fileupload
+ 
+# With Yarn 
+yarn add express-fileupload
+
+
+[Usage]
+
+req.files.foo.name: "car.jpg"
+req.files.foo.mv: A function to move the file elsewhere on your server
+req.files.foo.mimetype: The mimetype of your file
+req.files.foo.data: A buffer representation of your file
+req.files.foo.truncated: A boolean that represents if the file is over the size limit
+
+----------[¼Ò½º]----------
+
+const express = require('express');
+const fileUpload = require('express-fileupload');
+const app = express();
+ 
+// default options
+app.use(fileUpload());
+ 
+app.post('/upload', function(req, res) {
+  if (!req.files)
+    return res.status(400).send('No files were uploaded.');
+ 
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  let sampleFile = req.files.sampleFile;
+ 
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv('/somewhere/on/your/server/filename.jpg', function(err) {
+    if (err)
+      return res.status(500).send(err);
+ 
+    res.send('File uploaded!');
+  });
+});
+
+
+
+[Uploading Multiple Files]
+
+
+<input type="file" name="my_profile_pic" />
+<input type="file" name="my_pet" />
+<input type="file" name="my_cover_photo" />
+
+
+app.post('/upload', function(req, res) {
+  // Uploaded files:
+  console.log(req.files.my_profile_pic.name);
+  console.log(req.files.my_pet.name);
+  console.log(req.files.my_cover_photo.name);
+});
+
+
+
+[Using Busboy Options]
+
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
+
+
+
+
+
+
+

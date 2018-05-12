@@ -1,0 +1,57 @@
+http://gun0912.tistory.com/13
+
+Custom URL Scheme작성하기
+
+
+
+
+1. Manifest의 실행시키고 싶은 Activity에 scheme://host 형태의 URL을 정의해줍니다
+
+
+
+위의 예시에서는 scheme은 selphone, host는 post_detail이 됩니다.
+
+
+
+
+<!-- 개인거래 판매글 상세정보 -->
+<activity
+    android:name=".post.Activity_Post_Detail"
+    android:theme="@style/Theme.Selphone.Transparent"
+
+    android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+    <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="kr.co.selphone.MainActivity" />
+
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+            android:host="post_detail"
+            android:scheme="selphone" />
+    </intent-filter>
+</activity>
+
+
+======================================================================
+
+
+
+
+Intent intent = new Intent(this,Activity_Post_Detail.class);
+intent.putExtra(Activity_Post_Detail.STATE_POST_ID,"10");
+startActivity(intent);
+
+
+하지만 Custom URL을 사용한다면 아래와 같은 방법으로도 Activity를 실행시킬수 있습니다.
+
+
+String url ="selphone://post_detail?post_id=10";
+Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+startActivity(intent);
+
+

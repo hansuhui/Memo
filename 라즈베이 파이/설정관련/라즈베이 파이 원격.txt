@@ -2,9 +2,11 @@ http://blog.naver.com/roboholic84/220366419105
 
 
 업데이트
-sudo apt-get update 
+sudo apt-get update
+
 
 원격  프로그램 설치
+sudo apt-get install tightvnserver
 sudo apt-get install xrdp
 
 

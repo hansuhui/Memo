@@ -1,0 +1,105 @@
+
+
+=================[WebView 설정]=================
+
+
+mWebView = (WebView)findViewById(R.id.webview); //레이어와 연결
+mWebView.addJavascriptInterface(new WebAppInterface(this), "JsMemberApp");
+mWebSettings = mWebView.getSettings(); //세부 세팅 등록
+mWebSettings.setJavaScriptEnabled(true); //자바스크립트 사용허용
+mWebView.loadUrl(Web_Url);
+mWebView.getSettings().setBuiltInZoomControls(true);
+
+
+
+=================[WebAppInterface 클래스]=================
+
+
+public class WebAppInterface {
+    WebViewActivity mContext;
+
+    /** Instantiate the interface and set the context */
+    WebAppInterface(WebViewActivity c) {
+        mContext = c;
+    }
+
+    @JavascriptInterface
+    public void showToast(String toast) {
+        Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
+    }
+
+    @JavascriptInterface
+    public void Exit(String msg) {
+        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+        mContext.Exit();
+    }
+
+    @JavascriptInterface
+    public void GoCall(String num) {
+        Uri uri = Uri.parse("tel:"+num); //tel:xxxxxx
+        Intent it = new Intent(Intent.ACTION_DIAL, uri);
+        mContext.startActivity(it);
+    }
+
+    @JavascriptInterface
+    public void GoSms(String Msg) {
+        Intent it = new Intent(Intent.ACTION_VIEW);
+        it.putExtra("sms_body", Msg);
+        it.setType("vnd.android-dir/mms-sms");
+        mContext.startActivity(it);
+    }
+
+    @JavascriptInterface
+    public void GoMap(String location) {
+        Uri uri = Uri.parse("geo:"+location); //geo:38.899533,-77.036476
+        Intent it = new Intent(Intent.ACTION_VIEW,uri);
+        mContext.startActivity(it);
+    }
+
+    @JavascriptInterface
+    public void GoMail(String addr,String body) {
+        Intent it = new Intent(Intent.ACTION_SEND);
+        it.putExtra(Intent.EXTRA_EMAIL, addr);
+        it.putExtra(Intent.EXTRA_TEXT, body);
+        it.setType("text/plain");
+        mContext.startActivity(it);
+    }
+
+    @JavascriptInterface
+    public void GetLocation() {
+        mContext.mWebView.post(new Runnable(){
+            @Override
+            public void run(){
+                Location location = new GpsInfo(mContext).getLocation();
+                double lon  = location.getLongitude(); // 경도
+                double lat = location.getLatitude(); // 위도
+                mContext.mWebView.loadUrl("javascript:App.GetLocation('"+lon+"','"+lat+"')");
+            }
+        });
+    }
+}
+
+=================[자바스크립트에서 사용시]=================
+
+var App = new Object();
+
+//if (window.HCom.isMobile()) {
+    // if (window.JsMemberApp) {
+    //     window.App.Exit('올바르지 못한 접근입니다.')
+    //   } else {
+    //     alert('올바르지 못한 접근입니다.')
+    //     window.history.back()
+    // }
+//}
+
+App.showToast = function (msg) {
+    window.JsMemberApp.showToast(msg);
+}
+
+App.Exit = function (msg) {
+    window.JsMemberApp.Exit(msg);
+}
+
+
+
+

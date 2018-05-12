@@ -1,0 +1,59 @@
+https://www.lesstif.com/pages/viewpage.action?pageId=17105804
+
+
+- 사용법 - 
+
+mysqldump [OPTIONS] database [tables]
+OR mysqldump [OPTIONS] --databases [OPTIONS] DB1 [DB2 DB3...]
+OR mysqldump [OPTIONS] --all-databases [OPTIONS]
+
+- 주요 옵션 -
+
+옵션 / 의미 / Default / 비고
+
+-A , -all-databases / 모든 db dump
+
+--databases / dump 할 db명 기술하면 해당 db만 dump
+
+--add-drop-database / DROP DATABASE 구문 추가하여 create database 전에 기존 database 기존 db삭제 / X / 기존 데이터 삭제
+
+--add-drio-table / DROP TABLE 구문 추가하여 table 생성전 기존 table 삭제 / O / drop table을 제외하려면 --skip-add-drop-table 옵션 사용
+
+-l, --lock-tables / Lock all tables for read / O / --skip-lock/tables 로 제외가능. 이옵션보다는 아래의 --single-transaction 사용 추전
+
+--single-transaction / locak을 걸지 않고도 dump 파일의 정합성 보장 / X / InnoDB일때만 사용 가능
+
+--ignore-table / 제외할 테이블을 주면 dump에서 제외 / X / 여러개의 테이블을 제외할 경우 테이블명마다 앞에 --ignore-table 옵션을 주어야 함, 로 여러개의 테이블을 주어도 한 테이블만 처리
+
+--no-create-db / CREATE DATABASE 구문 제외 / X / dump한 파일을 load 하려는 환경의 database 명이 다를 경우 유용함
+
+--max_allowed_packet / 서버와 주고 받을 최대 패킷 사이즈 설정 / 1M / 첨부파일등이 DB에 있을 경우 이 값을 크게 해야한다.
+
+--triggers / triger 도 dump / O / --skip-triigers로 제외 할 수 있음
+
+--routines / 프로시져와 함수도 dump / X / Mysql 5는 triigger 는 기본적으로 덤프하나 function, procedure는 덤프하지 않음
+
+
+
+- 사용예 -
+
+모든 db 및 프로시져/함수 도 백업
+
+mysqldump --single-transaction --routines --all-databases -h localhost -u root -pmypwd > mydump.sql
+
+
+db1, db2 만 백업
+
+mysqldump  --single-transaction --databases db1 db2 -h localhost -u root -pmypwd > mydump.sql
+
+
+db1만 포함하고 db내 table1, table2만 제외
+
+mysqldump  --single-transaction --databases db1 --ignore-table=db1.table1  --ignore-table=db1.table2 -h localhost -u root -pmypwd > mydump.sql
+
+dump 파일 복구
+
+db2 에 복구
+
+mysql -h dbhost2 -u root -pmypwd db2 <  mydump.sql
+

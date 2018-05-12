@@ -1,0 +1,51 @@
+
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+
+namespace GPoint_Dump
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string sDirPath = @"F:\¹é¾÷\" + DateTime.Now.Year + "";
+            
+            
+            DirectoryInfo di = new DirectoryInfo(sDirPath);
+            if (di.Exists == false)
+            {
+                di.Create();
+            }
+
+            sDirPath += @"\" + string.Format("{0:yyyyMM}", DateTime.Now) + "";
+
+            di = new DirectoryInfo(sDirPath);
+            if (di.Exists == false)
+            {
+                di.Create();
+            }
+
+            string filePath = sDirPath + @"\gpoint_" + string.Format("{0:yyyyMMdd}", DateTime.Now) + ".sql";
+
+
+            Process pr = new Process();
+            ProcessStartInfo pw = new ProcessStartInfo();
+
+            pw.FileName = @"cmd.exe";
+
+            pw.UseShellExecute = false;
+            pw.RedirectStandardInput = true;
+
+            pr.StartInfo = pw;
+
+            pr.Start();
+            pr.StandardInput.WriteLine(@"cd C:\\Program Files\MySQL\MySQL Server 5.7\bin");
+            pr.StandardInput.WriteLine(@"mysqldump --single-transaction --routines --triggers --databases gpoint -h localhost -u root -ptmddnjstngml@7 > " + filePath + "");
+
+        }
+    }
+}
