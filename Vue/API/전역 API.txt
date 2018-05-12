@@ -1,0 +1,263 @@
+
+[전역 API]
+
+# Vue.extend(options)
+
+- 전달인자 : {Object} options
+
+- 사용방법 :
+
+Vue 생성자의 "하위 클래스"를 만듭니다. 전달인자는 컴포넌트 옵션을 포함하는 객체이어야 합니다.
+
+특별히 중요해야 할 경우는 data 옵션입니다. Vue.extend() 와 함께 사용하는 경우 반드시 
+함수여야 합니다.
+
+<div id="mount-point"></div>
+
+
+// 생성자를 만듭니다.
+var Profile = Vue.extend({
+  template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+  data: function () {
+    return {
+      firstName: 'Walter',
+      lastName: 'White',
+      alias: 'Heisenberg'
+    }
+  }
+})
+
+// Profile 인스턴스를 만들고, 엘리먼트에 마운트 합니다.
+new Profile().;$mount('#mount-point')
+
+아래처럼 출력됩니다 :
+
+<p>Walter White aka Heisenberg</p>
+
+
+- 참고: 컴포넌트
+
+# Vue.nextTick([callback,context])
+
+- 전달인자 : {Function} [callback] , {Object} [context]
+
+- 사용방법 :
+
+다음 DOM 업데이트 사이클 이후 실행하는 콜백을 연기합니다. DOM 업데이트를 기다리기 위해
+일부 데이터를 변경한 직후 사용해야 합니다.
+
+
+//데이터를 변경합니다.
+vm.msg = "Hello"
+//아직 DOM 업데이트가 되지 않았습니다.
+Vue.nextTick(function() {
+  // DOM이 업데이트 되었습니다.
+})
+
+
+//usage as a promise (2.1.0+ , see note below)
+Vue.nextTick()
+  .then(function () {
+     // DOM updated
+  })
+
+
+2.1.0에 새로 생겼습니다: 콜백이 없고,Promise를 지원하는 환경에서 Promise를 반환합니다.
+Vue는 Promise 폴리필을 제공하지 않습니다. 그러므로 Promise를 지원하지 않는
+(IE 등) 브라우저에서 사용하려면 폴리필을 직접 해야 합니다.
+
+- 참고: 비동기 갱신 큐
+
+
+# Vue.set(target,ket,value)
+
+- 전달인자 : 
+   
+   {Object | Array} target
+   {string | number} key
+   {any} value
+
+- 반환 값 : 설정한 값.
+
+- 사용방법 : 
+
+   객체에 대한 속성을 설정합니다. 객체가 반응형이면, 속성이 반응형 속성으로 만들어지고
+   뷰 업데이트를 발생시킵니다.
+   이는 Vue가 속성 추가를 감지하지 못하는 한계를 넘기 위해 사용합니다.
+
+   객체 Vue 인스턴스 또는 Vue 인스턴스의 루트 객체일 수 없습니다.
+
+- 참고: 반응형에 대해 깊이 알기
+
+
+# Vue.delete(target,ket)
+
+- 전달인자 : 
+
+  {Object | Array} target
+  {string | number} key/index
+
+
+Only in 2.2.0+: Also works with Array + index
+
+
+- 사용방법 :
+  
+  객체의 속성을 삭제합니다. 객체가 반응형이면, 뷰 업데이트를 발생시킵니다. 주로 Vue가 
+  속성 삭제를 감지하지 못하는 한계를 극복하기 위해 사용하지만 거의 사용하지 않아야 합니다.
+  객체는 Vue 인스턴스 또는 Vue 인스턴스의 루트 데이터 객체일 수 없습니다.
+
+  2.2.0 버전 이후에서 배열과 인덱스를 사용할 수 있습니다.
+
+! 목표 객체는 Vue 인스턴스이거나 인스턴스의 루트 데이터 객체일 수 없습니다.
+
+- 참고 : 반응형에 대해 깊이 알기
+ 
+  
+# Vue.directive(id,[definition])
+
+- 전달인자:
+  
+  {string} id
+  {Function | Object} [definition]
+
+- 사용방법:
+
+  전역 디렉티브를 등록하거나 검색합니다.
+
+// 등록
+Vue.directive('my-directive', {
+  bind: function () {}.
+  inserted: function () {}.
+  update : function () {}.
+  componentUpdated: function () {}.
+  unbind : function() {}
+})
+
+
+// 등록 (간단한 함수 디렉티브)
+Vue.directive('my-directive',function() {
+   // 'bind'와 'update'를 호출합니다.
+})
+
+// getter , 등록된 지시어의 경우 경우 반홥합니다.
+var myDirective = Vue.directive('my-directive')
+
+- 참고 : 사용자 정의 디렉티브
+
+
+# Vue.filter(id,[definition])
+
+- 전달인자 : 
+ 
+  {string} id
+  {Function} [definition]
+
+- 사용방법 :
+
+  전역 필터를 등록하거나 검색합니다.
+
+//등록
+Vue.filter('my-filter', function (value) {
+  // 처리된 값을 반환합니다.
+})
+
+
+//getter, 필터가 등록된 경우 반환합니다
+var myFilter = Vue.filter('my-filter')
+
+
+# Vue.component(id,[definition])
+
+- 전달인자
+
+  {string} id
+  {Function | Object} [definition]
+
+- 사용방법 :
+
+  전역 컴포넌트를 등록하거나 검색합니다. 등록 시 자동으로 
+  컴포넌트의 name을 주어진 id로 설정합니다.
+
+// 확장된 생성자를 등록합니다.
+Vue.component('my-component', Vue.extend({/* ... */})) 
+
+// 옵션 객체를 등록합니다 (자동으로 Vue.extend를 호출합니다.)
+Vue.component('my-component', { /* ... */ })
+
+// 등록된 컴포넌트를 검색합니다 (항상 생성자를 반환합니다.)
+var MyComponent = Vue.component('my-component')
+
+
+- 참고 : 컴포넌트
+
+
+# Vue.use(plugin)
+
+- 전달인자 :
+
+  {Object | Function} plugin
+
+- 사용방법 : 
+
+  Vue.js 플러그인을 설치합니다. 플러그인이 Object인 경우 install 메소드를 가져야 합니다.
+  플러그인이 함수 그 자체이면 install 메소드로 처리됩니다. install 메소드는 Vue를
+  인자로 사용해 호출합니다.
+
+  이 메소드가 동일한 플러그인에서 여러번 호출되면 한번만 설치합니다.
+
+- 참고: 플러그인
+
+
+# Vue.mixun(mixin)
+
+- 전달인자 :
+  
+  {Object} mixin
+
+- 사용방법
+
+  전역으로 mixin을 적용합니다. 생성된 모든 Vue 인스턴스에 영향을 줍니다. 플러그인
+  작성자가 컴포넌트에 사용자 정의 동작을 주입하는데 플러그인을 사용할 수 있습니다.
+  애플리케이션 코드에서는 추천하지 않습니다.
+
+- 참고 : Global Mixin
+
+
+# Vue.compile(template)
+
+- 전달인자 : 
+
+  {string} template
+
+- 사용인자 :
+
+  템플릿 문자열을 렌더링 함수로 컴파일합니다. 전체 빌드에서만 가능합니다.
+
+var res = Vue.compile('<div><span>{{ msg }}</span></div>')
+
+new Vue({
+  data: {
+    msg: 'hello'
+  },
+  render: res.render,
+  staticRenderFns : res.staticRenderFns
+})
+
+- 참고: 렌더 함수
+
+
+# Vue.version
+
+var version = Number(Vue.version.split('.')[0])
+
+if(version === 2){
+   //Vue v2.x.x
+} else if (version === 1) {
+  // Vue v1.x.x
+} else {
+  // 지원하지 않는 버젼의 경우..
+}
+
+
+

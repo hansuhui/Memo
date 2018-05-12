@@ -1,0 +1,237 @@
+[내장 컴포넌트]
+
+
+# component
+
+- Props:
+
+  is - 문자열 | ComponentDefinition | ComponentConstructor
+  inline-template - boolean
+
+
+- 사용방법:
+
+  동적 컴포넌트 렌더링을 위한 “메타 컴포넌트”입니다. 
+  렌더링할 실제 컴포넌트는 is prop에 의해 결정됩니다.
+
+
+  <!-- vm 의 `componentId` 속성에 의해   -->
+  <!-- 제어되는 동적 컴포넌트 -->
+  <component :is="componentId"></component>
+
+  <!-- 등록된 컴포넌트 또는 컴포넌트를 prop로 전달할 수 있습니다. -->
+  <component :is="$options.components.child"></component>
+  
+- 참고: 동적 컴포넌트
+
+
+# transition
+
+
+- Props:
+
+  name - string, 트랜지션 CSS 클래스 이름을 자동으로 생성하는데 사용됩니다. 
+                 예: name: 'fade'는 자동으로 .fade-enter, .fade-enter-active로 확장됩니다. 
+                 기본값은 "v"입니다.
+
+  appear - boolean, 초기 렌더링에서 트랜지션 적용 여부를 정합니다. 기본값은 false 입니다.
+
+  css - boolean, CSS 트랜지션 클래스를 적용할 여부입니다. 기본 값은 true입니다. 
+                 false로 설정하면 컴포넌트 이벤트를 통해 등록된 자바스크립트 훅만 호출됩니다.
+
+  type - string, 트랜지션 종료 타이밍을 결정하기 위해 대기할 트랜지션 이벤트의 유형을 지정합니다. 
+                 사용 가능한 값은 "transition"과 "animation"입니다. 기본적으로 
+                 더 긴 지속시간을 갖는 유형을 자동으로 감지합니다.
+
+  mode - string, 트랜지션을 나가거나 들어가는 타이밍 순서를 제어합니다. 
+                 사용 가능한 모드는 "out-in"과 "in-out"입니다. 기본값은 동시에 발생하는 방식입니다.
+
+  enter-class - string
+  leave-class - string
+  appear-class - string
+  enter-to-class - string
+  leave-to-class - string
+  appear-to-class - string
+  enter-active-class - string
+  leave-active-class - string
+  appear-active-class - string
+
+이벤트:
+
+  before-enter
+  before-leave
+  before-appear
+  enter
+  leave
+  appear
+  after-enter
+  after-leave
+  after-appear
+  enter-cancelled
+  leave-cancelled (v-show only)
+  appear-cancelled
+
+- 사용방법:
+
+  <transition>은 단일 엘리먼트 / 컴포넌트에 대한 트랜지션 효과로 사용됩니다. 
+  <transition>은 추가 DOM 엘리먼트를 렌더링 하지 않으며 컴포넌트 계층에도 나타나지 않습니다. 
+  내부의 래핑된 컨텐츠에 단순히 트랜지션 효과를 적용합니다.
+
+  <!-- 단일 엘리먼트 -->
+  <transition>
+    <div v-if="ok">toggled content</div>
+  </transition>
+
+  <!-- 동적 컴포넌트 -->
+  <transition name="fade" mode="out-in" appear>
+    <component :is="view"></component>
+  </transition>
+
+  <!-- 이벤트 훅 -->
+  <div id="transition-demo">
+    <transition @after-enter="transitionComplete">
+      <div v-show="ok">toggled content</div>
+    </transition>
+  </div>
+  
+new Vue({
+  ...
+  methods: {
+    transitionComplete: function (el) {
+      // 전달된 'el'에 대해 DOM 엘리먼트를 전달인자로 사용하는 경우..
+    }
+  }
+  ...
+}).$mount('#transition-demo')
+
+- 참고: Transitions: 진입, 진출, 그리고 리스트
+
+
+
+# transition-group
+
+- Props:
+
+  tag - string, 기본값은 span 입니다.
+  move-class - 이동 트랜지션 중에 적용된 CSS클래스를 덮어 씁니다.
+  mode를 제외한 <transition>과 동일한 prop를 노출합니다.
+
+이벤트:
+
+  <transition>과 같은 이벤트를 노출합니다.
+
+- 사용방법:
+
+  <transition-group>은 여러 엘리먼트 / 컴포넌트에 대한 트랜지션 효과로 사용합니다. 
+  <transition-group>은 실제 DOM 엘리먼트를 렌더링 합니다. 
+  기본값으로 <span>을 렌더링하고 tag 속성을 통해 렌더링 해야하는 엘리먼트를 설정할 수 있습니다.
+
+  애니메이션이 제대로 작동되게 하려면 <transition-group>에 있는 모든 자식이 유일 키 가 되어야 합니다.
+
+  <transition-group>은 CSS transform을 통해 장면 트랜지션을 지원합니다. 
+  스크린에서 자식의 위치가 변경된 후 움직이는 CSS클래스 
+  (name 속성에서 자동 생성되거나 move-class 속성으로 설정됨)가 적용됩니다. 
+  움직이는 클래스가 적용될 때 CSS transform 속성이 
+ “트랜지션가능”하면, 엘리먼트는 FLIP technique을 사용하여 목적지로 부드럽게 움직입니다.
+
+  <transition-group tag="ul" name="slide">
+      <li v-for="item in items" :key="item.id">
+        {{ item.text }}
+      </li>
+  </transition-group>
+
+
+- 참고: Transitions: 진입, 진출, 그리고 리스트
+
+
+
+# keep-alive
+
+- Props:
+
+  include - string 또는 RegExp 또는 Array . 일치하는 컴퍼넌트만 캐시됩니다.
+  exclude - string 또는 RegExp 또는 Array. 일치하는 컴퍼넌트는 캐시되지 않습니다.
+
+
+- 사용방법:
+
+  동적 컴포넌트를 감싸는 경우 <keep-alive>는 비활성 컴포넌트 인스턴스를 파괴하지 않고 캐시합니다. 
+  <transition>과 비슷하게 <keep-alive>는 추상 엘리먼트입니다. 
+  DOM 엘리먼트 자체는 렌더링 하지 않고 컴포넌트 부모 체인에는 나타나지 않습니다.
+
+  컴포넌트가 <keep-alive>내에서 토글 될 때, activated와 deactivated 
+  라이프사이클 훅이 그에 따라 호출됩니다.
+
+  2.2.0 이상에서는 <keep-alive> 트리 안에 있는 
+  모든 중첩 된 컴포넌트에서activated와 deactivated가 실행됩니다.
+
+  주로 컴포넌트 상태를 보존하거나 재 렌더링을 피하는데 사용합니다.
+
+  <!-- 기본 사용 -->
+  <keep-alive>
+    <component :is="view"></component>
+  </keep-alive>
+
+  <!-- 여러개의 조건부 자식 컴포넌트 -->
+  <keep-alive>
+    <comp-a v-if="a > 1"></comp-a>
+    <comp-b v-else></comp-b>
+  </keep-alive>
+
+  <!-- <transition>과 함께 사용합니다. -->
+  <transition>
+    <keep-alive>
+      <component :is="view"></component>
+    </keep-alive>
+  </transition>
+
+  <keep-alive>는 한개의 자식 컴포넌트가 토글되고 있는 경우를 위해 설계된 것에 주의해야합니다. 
+  내부에 v-for가 있으면 작동하지 않습니다. 위와 같이 조건부 
+  자식 컴포넌트가 여러개인 경우 <keep-alive>는 한번에 하나의 자식만 렌더링도록 요청됩니다.
+
+
+- include 와 exclude
+
+  2.1.0의 새로운 기능
+
+  include와exclude prop는 컴포넌트를 조건부 캐시 할 수 있습니다. 
+  두 prop는 쉼표로 분리 된 문자열이거나 RegExp 또는 배열입니다.
+
+  <!-- 콤마로 구분된 문자열 -->
+  <keep-alive include="a,b">
+    <component :is="view"></component>
+  </keep-alive>
+
+  <!-- regex (v-bind 사용) -->
+  <keep-alive :include="/a|b/">
+    <component :is="view"></component>
+  </keep-alive>
+
+  <!-- Array (use `v-bind`) -->
+  <keep-alive :include="['a', 'b']">
+    <component :is="view"></component>
+  </keep-alive>
+
+  name 옵션을 사용할 수없는 경우, 컴포넌트 자신의name 옵션에서 일치하는 
+  항목을 먼저 확인한 다음 로컬 등록 이름 (부모의components 옵션에서 키)을 확인합니다. 
+  익명의 컴포넌트는 일치시킬 수 없습니다.
+
+  <keep-alive>는 캐시 될 인스턴스가 없으므로 함수형 컴포넌트에서 작동하지 않습니다.
+
+
+- 참고: 동적 컴포넌트 - keep-alive
+
+
+
+# slot
+
+- Props:
+
+  name - string, 명명된 슬롯으로 사용합니다
+
+- 사용방법:
+
+  <slot> 은 컴포넌트 템플릿의 컨텐츠 배포 역할을 합니다. <slot>은 대체됩니다
+  자세한 사용법은 아래 링크된 가이드 섹션을 참조하십시오.
+
+-참고: Slot을 이용한 컨텐트 배포

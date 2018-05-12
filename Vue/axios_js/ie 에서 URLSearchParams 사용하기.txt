@@ -1,0 +1,6 @@
+install npm url-search-params-polyfill
+
+import 'url-search-params-polyfill'
+
+var params = new URLSearchParams()
+params.append('req_name', 'han')

@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace vos
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            webBrowser1.Navigate(new Uri("http://voc.kaoni.com/login"));
+            webBrowser1.ObjectForScripting = this;
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+
+            }
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+
+
+            if (webBrowser1.Url.AbsoluteUri.Equals("http://voc.kaoni.com/login"))
+            {
+                HtmlElement username = webBrowser1.Document.GetElementById("username");
+                username.SetAttribute("value", "ryu0306");
+
+                HtmlElement password = webBrowser1.Document.GetElementById("password");
+                password.SetAttribute("value", "123456");
+
+                webBrowser1.Document.GetElementsByTagName("INPUT").GetElementsByName("login")[0].InvokeMember("Click");
+
+            }
+            else if (webBrowser1.Url.AbsoluteUri.Equals("http://voc.kaoni.com/my/page"))
+            {
+
+            }
+
+
+        }
+    }
+}

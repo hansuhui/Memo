@@ -1,0 +1,23 @@
+npm axios 설치 하기
+
+--------------[설정]--------------
+
+import axios from 'axios'
+
+axios.defaults.baseURL = 'http://222.122.202.220'
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+Vue.prototype.$axios = axios
+
+
+--------------[사용]--------------
+
+      var params = new URLSearchParams()
+      params.append('req_name', 'han')
+      this.$axios.post(`/Vue/List/`, params, {responseType: 'json'})
+      .then((result) => {
+        if (result.data.result === '00') {
+          this.ImageList = JSON.parse(result.data.list)
+        } else {
+          alert(result.data.message)
+        }
+      })

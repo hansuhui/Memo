@@ -1,0 +1,79 @@
+http://humble.tistory.com/34
+
+
+[NFC 사용하기]
+
+NFC : Near Field Communication
+10cm 이하의 거리에서 데이터를 주고 받는 기술
+
+동작방식
+
+car Emulation : 단말을 태그처럼 동작하게 한다. 프로그램으로 태그를 만들어서 
+신용카드나 버스카드 등을 넣을 수 있다.
+
+Reader/Writer : 종이 딱지 같은 태그를 단말에 갖다 대면 태그에 있는 정보를 read 하거나 
+		write 할 수 있다.
+
+peer-to-peer :단말 두개를 붙여서 데이터를 전송(안드로이드 빔)
+
+블루투스에 비해서 가장 적은 에너지를 사용한다.
+
+NDEF 메시지를 태그로부터 읽는다.
+
+
+사용방법
+1. 메니패스트 설정
+2. 단말기 설정에서 NFC 활성화
+
+NfcAdapter 객체를 얻어서 지원여부를 확인한다.
+
+if(!mNfcApapter.isenabled()) : 단말에서 NFC가 활성화 되어있는지 확인.
+
+NDEF 메시지 (NFC Data Exchange Format)
+NFC에서 데이터를 교환할 때 사용되는 데이터 포맷
+
+여러개의 NDEF Record로(이미지 참조) 구성
+레코드는 Type, Id , Payload(data)를 담는다.
+
+
+TNF : 1bit로 payload(데이터)가 어떤 형식의 데이터인지를 나타내는 값(이미지 참조)
+
+type이 텍스트, 길이가 8
+
+레코드 생성 방법
+
+TNF_ABSOLUTE_URI
+
+TNF_MIME_MEDIA
+
+TNF_WELL_KNOWN(RTD_TEXT)
+
+TNF_WELL_KNOWN(RTD_URI)
+
+TNF_EXTERNAL_TYPE
+
+Android Application Record(안드로이드에서만 처리되는 Record , API 14) : 패키지 명으로 다른 앱을 실행시킨다.
+
+
+NFC 수신 (이미지 참조)
+
+단말이 NFC 태그를 수신하면 NDEF 메시지인지 확인하여 NDFE 메시지이면 
+NDEF_DISCOVERED를 액션으로 가진 Aactivity중 처리할 Activity를 찾아 인텐트를 전달한다.
+만약 아니면 TECH_DISCOVERED를 가진 Activity에게 전달한다.
+그것도 없으면 TAG_DISCOVERD를 가진 ACtivity를 구동한다.
+
+
+참고자료
+
+http://blog.naver.com/PostView.nhn?blogId=horajjan&logNo=220492560615
+
+https://developer.android.com/guide/topics/connectivity/nfc/nfc.html
+
+
+
+
+
+
+
+
+

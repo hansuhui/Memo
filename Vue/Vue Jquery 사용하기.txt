@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 main.js ���Ͽ� ���� �߰�
 
 import jQuery from 'jQuery'
@@ -52,3 +53,34 @@ export default {
   }
 >>>>>>> 4c51f03a94d12abd729aed9e0d101f24f9dd2e7f
 }
+=======
+npm i --save-dev expose-loader
+npm i --save jquery
+
+main.js ÆÄÀÏ¿¡ ±¸¹® Ãß°¡
+
+import jQuery from 'jQuery'
+window.$ = jQuery
+
+
+[»ç¿ë½Ã]
+
+
+
+import * as $ from 'jQuery'
+import MainLayout from '@/components/Shared/_MainLayout'
+
+export default {
+  name: 'HomeIndex',
+  components: { MainLayout },
+  data () {
+    return {
+      msg: ''
+    }
+  },
+  props: ['name'],
+  created: function () {
+    console.log(this.name)
+  }
+}
+>>>>>>> bc38dc4638e2175c2b3f88ea93c6da0da6434376

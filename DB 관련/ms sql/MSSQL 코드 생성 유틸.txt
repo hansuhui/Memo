@@ -1,0 +1,114 @@
+
+SET ANSI_NULLS ON
+
+GO
+
+SET QUOTED_IDENTIFIER ON
+
+GO
+
+-- =============================================
+
+-- Author:<Author,,Name>
+
+-- Create date: <Create Date, ,>
+
+-- Description:<Description, ,>
+
+-- =============================================
+
+alter FUNCTION [dbo].[getDocApprovalCode]
+
+(
+
+@TypeName char(20)
+
+)
+
+RETURNS varchar(30)
+
+AS
+
+BEGIN
+
+Declare @RtnVal varchar(30)
+
+Declare @TmpVal varchar(30)
+
+Declare @Today varchar(10)
+
+Declare @Count varchar(100)
+
+ 
+
+SET @Today = CONVERT(VARCHAR(20),GETDATE(),112) 
+
+ 
+
+IF(@TypeName = '타입')
+
+BEGIN
+
+SELECT @Count = COUNT(*) FROM DOCAPPROVAL_STORAGE_HISTORY WHERE CONVERT(VARCHAR(20),RegDate,112) = @Today
+
+SET @Count = (@Count + 1)
+
+SET @TmpVal = 'PK_'+@Today+'_'
+
+While EXISTS(Select StoragePk from 테이블명 WITH(NOLOCK) where PK = @TmpVal+@Count)
+
+BEGIN
+
+SET @Count = (@Count + 1)
+
+END
+
+SET @RtnVal = 'PK_'+@Today+'_'+@Count
+
+END
+
+ELSE IF(@TypeName = '타입')
+
+BEGIN
+
+SET @RtnVal = 'PK_'+@Today+'_'+@Count
+
+SELECT @Count = COUNT(*) FROM DOCAPPROVAL_STORAGE_HISTORY WHERE CONVERT(VARCHAR(20),RegDate,112) = @Today
+
+SET @Count = (@Count + 1)
+
+SET @TmpVal = 'PK_'+@Today+'_'
+
+While EXISTS(Select StoragePk from 테이블명 WITH(NOLOCK) where PK = @TmpVal+@Count)
+
+BEGIN
+
+  SET @Count = (@Count + 1)
+
+END
+
+  SET @RtnVal = 'PK_'+@Today+'_'+@Count
+
+END
+
+ELSE 
+
+BEGIN
+
+  SET @RtnVal = ''
+
+END
+
+ 
+
+ 
+
+-- Return the result of the function
+
+RETURN @RtnVal;
+
+ 
+
+END
+
+ 
