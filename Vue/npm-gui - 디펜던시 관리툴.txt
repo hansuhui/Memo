@@ -1,0 +1,24 @@
+https://m.blog.naver.com/PostView.nhn?blogId=writer0713&logNo=221317259221&proxyReferer=http%3A%2F%2Fm.facebook.com
+
+npm-gui - 디펜던시 관리툴 
+
+
+
+설치 방법 :
+$ npm install -g npm-gui
+
+실행 :
+$ cd my-own-project
+$ npm-gui localhost:9000 // and then connect to localhost:9000 on the browser
+
+주요 기능들은 아래와 같다.
+
+- 모듈 추가 가능
+- 특정 모듈 삭제 가능
+- 특정 모듈 업데이트 가능 (현재 버전 표시 / 최신 버전 표시)
+- 모듈 일괄 삭제 가능
+- 모듈 일괄 재설치 가능
+- 콘솔 지원
+- 설치되지 않은 모듈 확인 가능 
+- 커맨드 실행 가능 (package.json의 task)
+- 커맨드 생성 가능
