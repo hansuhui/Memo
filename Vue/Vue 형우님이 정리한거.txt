@@ -1,0 +1,434 @@
+프레임워크:개발자들의 개발 생산성을 높이기 위해 일정한 틀과 규칙에 따라 개발하도록 미리 구조를 정의해 놓은 도구
+라이브러리:자주 사용되는 기능들을 모아 재활용할 수 있도록 정리한 기술 모음집
+
+
+
+뷰 라이브러리 로드-> 
+뷰 생성자로 커스텀 컴포넌트 생성 -> 
+뷰 인스턴스 객체 생성-> 
+beforecreate,create,mounted,updated,desytoryed->
+(위에 created단계에 뷰 인스턴스 옵션이 걸림)
+->인스턴스 내용 변환
+->변환된 화면 요소를 사용자가 최종확인
+
+
+
+
+props 는 자식 컴포넌트에 값 전달, 배열로
+
+//전역
+        Vue.component('전역컴포넌트명', {
+            data() {
+                return {
+                    '데이터명1':10
+                }
+            },
+            props:['',''],
+            template:'컴포넌트 노드'
+        })
+
+
+
+//지역
+        var cmp1 = {
+            template:'<div>지역컴포넌트</div>'
+        }
+
+        new Vue({
+            el:'#app',
+            components:{
+                '컴포넌트명':cpm1
+            }
+        })      
+
+
+
+
+//이벤트버스
+        var eventBus = new Vue();
+
+        Vue.component('my-component1',{
+            template:'<div>하위 컴포넌트 <button @click="showLog"></button></div>',
+            methods:{
+                showLog(){
+                    eventBus.$emit('triggerBus',100)
+                }
+            }
+        })
+
+        new Vue({
+            el:'#app',
+            created(){
+                eventBus.$on('triggerBus',function(value){
+                    console.log('event',value)
+                })
+            }
+        })
+
+showLog 클릭->
+컴포넌트 내의 메서드 showLog()의 실행으로 eventBus에 triggerBus에 값100과 이벤트 전파 ->
+root 뷰 인스턴스에서  $on으로 triggerBus 이벤트 실행, 콜백함수 value값에 값100 수신
+
+
+
+
+
+
+
+
+
+뷰라우터
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+      <p>
+          <router-link  to="/main">m</router-link>
+          <router-link  to="/login">l</router-link>
+      </p>
+      <router-view></router-view>
+    </div>
+
+
+    <script>
+
+        var Main = {
+            template:'<div>Main</div>'
+        }
+
+        var Login = {
+            template:'<div>Login</div>'
+        }
+
+        var router = new VueRouter({
+            routes:[
+                {path:'/main',component:Main},
+                {path:'/login',component:Login}
+            ]
+        })
+
+        var app = new Vue({
+            router
+        }).$mount('#app')
+     
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+// $mount() api 는 el속성과 동일하다. el속성을 넣지않았더라도, 생성하고나서 강제로 인스턴스를 화면에 붙일수 있다.
+// 뷰 라우터 공식문서는 모두 인스턴스안에 el을 지정하지않고, 생성된 인스턴스를 $mount를 이용해 붙이는 식으로 안내한다
+
+
+
+
+
+
+
+
+
+
+
+
+http://127.0.0.1:5500/index.html#/main 를
+http://127.0.0.1:5500/main 로 변환
+
+뷰 라우터의 기본 RUL 형식은 해시값을 사용한다.
+만약 #값을 없애고 싶으면 history mode를 활용한다
+
+   var router = new VueRouter({
+            mode:'history',
+            routes
+        })
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+      <router-view></router-view>
+    </div>
+
+
+    <script>
+
+        var User ={
+            template:`
+                <div>
+                User Component
+                <router-view></router-view>
+                </div>
+            `
+        };
+
+
+        var UserProfile = {
+            template:'<p>User Profile Component</p>'
+        };
+
+        var UserPost = {
+            template:'<p>User Post Component</p>'
+        };
+
+
+        var routes = [ 
+            {
+                path:'/user',
+                component:User,
+                children:[
+                    {
+                        path:'posts',
+                        component:UserPost
+                    },
+                    {
+                        path:'profile',
+                        component:UserProfile
+                    }
+                ]
+            }
+        ]
+
+       var router = new VueRouter({
+            routes
+        })
+ 
+        var app = new Vue({
+ 
+            router
+        }).$mount('#app')
+     
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+뷰로더
+
+
+웹팩환경에서 App.vue파일의 내용이 웹페이지에 표시되는데
+뷰로더가 변환기능을 수행한다. 웹팩은 자바스크립트 모듈만 인식하기때문에 뷰로더가 .vue파일을 일단 자바스크립트
+모듈로 변환한다. 
+이후 웹팩의 추가플러그인으로 인해 css,html파일로 분리가된다.
+
+1:1대응으로 뷰로더가 .vue파일을 번역한다.
+
+
+
+
+
+
+
+단일책임원칙(Single Resposibility Principle)이란 함수 하나가 하나의 기능만 담당하도록  설계하는 객체지향 프로그래밍의 디자인패턴이다.
+
+
+
+
+
+:key
+
+v-for 디렉티브를 사용할 때 지정하는 게 좋다.
+
+유일하게 구분되는 값을 넣어야 한다.
+
+뷰는 목록의 특정 아이템이 삭제되거나 추가될때, 돔에서 나머지 아이템 순서를 다시 조정하지않고 프레임워크 내부적으로 전체 아이템의 순서를 제어한다.
+(가상돔)
+예를들어 돔에서 목록 순서를 제어하는 경우, 목록아이템이 1000개가 있을때 두번째 목록 아이템을 지우면 나머지 998개의 아이템이 모두 한번씩 이동해야하기때문에 화면을 다시 그려야 하는 브라우저 입장에서는 
+목록 아이템이 많으면 많을수록 랜더링 부담이 된다. 하지만 뷰 프레임워크에서 순서를 제어하는 경우 두 번째 아이템을 삭제 했을때 나머지 목록을 움직이지 않고, 내부적으로 아이템의 순서만 재조정하여 돔 이동을 최소화한다.
+
+
+
+
+
+
+
+뷰의 반응성
+
+
+뷰의 인스턴스 생성하는시점 data속성에 정의된 객체를 getter,setter형태로 변환(사용자접근불가, 프레임워크 내부로직)(브라우저마다 다르게처리됨, 그래서 확장프로그램vue-devtools설치 권장)-> (data속성의 setter가 트리거되면)화면 갱신속성인 watcher속성으로 가상돔으로 화면을 다시구성
+
+(인스턴스를 생성하는시점에 data속성의 반응성이 정의되기때문에, 인스턴스를 생성하고 난후에 data속성에 객체를 추가하면 반응성이 없다 ) == whatcher속성이 실행되지않는다
+
+그러나 Vue.set(object, key, value) 메소드를 사용하여 중첩 된 객체에 반응성 속성을 추가 할 수 있다
+ex)Vue.set(vm.someObject, 'b', 2)
+
+Vm.$set 인스턴스 메소드를 사용할 수도 있습니다. 이 메소드는 전역 Vue.set 에 대한 별칭입니다.
+ex)this.$set(this.someObject, 'b', 2)
+ 
+
+<참고:https://kr.vuejs.org/v2/guide/reactivity.html
+Vue 인스턴스에 JavaScript 객체를 data 옵션으로 전달하면 Vue는 모든 속성에 Object.defineProperty를 사용하여 getter/setter로 변환합니다. 이는 Vue가 ES5를 사용할 수 없는 IE8 이하를 지원하지 않는 이유입니다.
+>
+
+
+
+
+
+
+npm run dev를 원래는 dist라는 빌드된 폴더로 보여줘야 하나, 컴퓨터 메모리에 저장해서 보여준다, 
+이유는 컴퓨터 파일읅 쓰고 읽는시간보다 메모리가 빠르다.
+
+
+
+
+
+ resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    },
+    extensions: ['*', '.js', '.vue', '.json']
+  },
+
+
+웹팩으로 빌드할때 뷰 라이브러리의 여러 유형중 어떤것을 선택할지 선택.
+vue.esm.js는 최신 웹팩 버전과 사용할 수 있는 Full 버전의 라이브러리
+
+
+
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true,
+    overlay: true
+  },
+
+historyApiFallback 클라이언트 사이드 라우팅인 뷰 라우터와 함께 사용하기위해서는 true
+noInfo는 처음시작할때만 웹팩 빌드 정보를 보여주고, 변경시에는 안보여줌
+overlay속성 웹팩빌드 오류일때 브라우저 화면에 전체 오류 표시
+
+
+
+  performance: {
+    hints: false
+  },
+
+웹팩 빌드파일의 크기가 250kb를 넘으면 경고메시지를 표시할지 설정.
+hints가 false이므로 표시되지않음
+
+
+
+  devtool: '#eval-source-map'
+
+웹팩으로 빌드된 파일로 웹 앱을 구동했을 때 개발자 도구에서 사용할 디버깅 방식을 지정
+
+
+
+
+
+
+그냥 install 하면 ./node_modules 디렉터리에 패키지 설치를 하고 끝. --save, --save-dev 옵션은 ./package.json 업데이트를 같이해준다. 
+
+어디에 패키지 정보를 추가하느냐가 다른데,
+
+ --save 옵션은 dependencies object에 추가하고        (뷰 코어라이브러리)
+
+--save-dev 옵션은 devDepenencies object에 추가한다.     (웹팩 관련라이브러리)
+
+dependencies와 devDepenencies 차이는 npm install을 할 때 나타난다. dependencies는 항상 설치되고 devDepenencies는 --production 옵션을 붙이면 빠진다. 
+
+npm install “$package” 명령어로 설치할 때는 --dev 옵션을 붙여야지만 설치된다.
+
+
+
+
+
+
+
+vue를 제이쿼리처럼 사용하기
+
+
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <script src="C:/Users/leewoo/AppData/Roaming/EditPlus/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+ </head>
+ <body>
+<div id="app">
+	<button v-on:click="clickBtn">
+		시작	
+	</button>
+	<p ref="pEl"></p>
+
+</div>	
+
+  <script>
+  var vm = new Vue({
+  el:'#app',
+  data: {
+    // 빈 값으로 메시지를 선언 합니다.
+    message: ''
+  },
+  methods:{
+	clickBtn:function(){
+	this.$refs.pEl.innerText='vue'
+	}
+ }
+})
+ 
+  </script>
+ </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

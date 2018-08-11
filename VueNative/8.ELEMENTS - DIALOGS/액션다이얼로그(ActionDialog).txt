@@ -1,0 +1,16 @@
+[액션다이얼로그(ActionDialog)]
+
+액션 다이얼로그(ActionDialog)로 선택가능한 옵션드의 리스트를 가진 다이얼로그를 만들 수 있습니다.
+selectable options.
+
+
+const dialogs = require('ui/dialogs')
+
+module.exports = {
+   mounted () {
+     dialogs.action('Choose one!', 'Or cancel...' ,['cheses', 'wine'])
+     .then(result => {
+       console.log(result);
+     })
+  }
+}

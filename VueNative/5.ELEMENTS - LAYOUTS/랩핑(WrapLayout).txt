@@ -1,0 +1,47 @@
+[랩핑(WrapLayout)]
+
+WrapLayout 컨테이너는 orientation 프로퍼티에 기초하여 공간이 다 찰떄까지 자식들을 행이나
+열에 위치시키고 그들을 새로운 행이나 열로 래핑합니다.
+
+- 기본 WrapLayout
+
+<WrapLayout backgroundColor="#3c4953">
+   <Label text="first" width="30%" height="30%"" backgroundColor="#43b883" />
+   <Label text="second" width="30%" height="30%"" backgroundColor="#1c6b48" />
+   <Label text="third" width="30%" height="30%"" backgroundColor="#289062" />
+   <Label text="fourth" width="30%" height="30%"" backgroundColor="#289062" />
+</WrapLayout>
+
+
+- 수직 WrapLayout
+
+<WrapLayout orientation="vertical" backgroundColor="#3c4953">
+   <Label text="first" width="30%" height="30%"" backgroundColor="#43b883" />
+   <Label text="second" width="30%" height="30%"" backgroundColor="#1c6b48" />
+   <Label text="third" width="30%" height="30%"" backgroundColor="#289062" />
+   <Label text="fourth" width="30%" height="30%"" backgroundColor="#289062" />
+</WrapLayout>
+
+
+- Props
+
+이름 / 타입 / 설명
+
+orientation / String  / 흐름의 방향. horizontal 이면 아이템이 행들에 배치됨. 
+			vertical 이면 아이테들이 열들에 배치됨. 기본값은 horizontal
+
+itemWidth / Number / 각 자식을 측정하고 위치시키는데 쓰이는 너비. 기본값은 Number.NaN.
+		     이 값은 자식들을 제한하지 않음
+
+itemHeight / Number / 각 자식을 측정하고 위치시키는데 쓰이는 너비. 기본값은 Number.NaN.
+		     이 값은 자식들을 제한하지 않음
+
+
+- 추가적인 자식 Props
+
+없음
+
+
+
+
+

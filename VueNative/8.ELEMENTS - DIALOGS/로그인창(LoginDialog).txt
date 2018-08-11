@@ -1,0 +1,13 @@
+[로그인창(LoginDialog)]
+
+로그인창(LoginDialog)는 사용자 인증에 사용되는 두개의 인풋을 가집니다.
+
+
+const dialogs = require('ui/dialogs')
+
+module.exports = {
+  dialogs.login('Please log in', 'Username', 'Password')
+  .then(result => {
+    console.log(result)
+  })
+}

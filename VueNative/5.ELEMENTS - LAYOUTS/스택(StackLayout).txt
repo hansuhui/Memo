@@ -1,0 +1,60 @@
+[스택 (StackLayout)]
+
+StackLayout 컨테이너는 자식 요소들을 세로(기본값)나 가로로 쌓음(stack)
+
+- 기본 StackLayout
+
+<StackLayout backgroundColor="#3c495e">
+   <Label text="first" height="70" backgroundColor="#43b883"/>
+   <Label text="second" height="70" backgroundColor="#289062"/>
+   <Label text="third" height="70" backgroundColor="#1c6b48"/>
+</StackLayout>
+
+- 가로방향 StackLayout
+
+<StackLayout orientation="horizontal" backgroundColor="#3c495e">
+   <Label text="first" width="70" backgroundColor="#43b883"/>
+   <Label text="second" width="70" backgroundColor="#289062"/>
+   <Label text="third" width="70" backgroundColor="#1c6b48"/>
+</StackLayout>
+
+
+- 가로로 자식들이 정렬된 StackLayout
+
+<StackLayout backgroundColor="#3c495e">
+   <Label text="left" horizontalAlignment="left" 
+          width="33%" height="70" backgroundColor="#43b883"/>
+   <Label text="center" horizontalAlignment="center" 
+          width="33%" height="70" backgroundColor="#289062"/>
+   <Label text="right" horizontalAlignment="right" 
+          width="33%" height="70" backgroundColor="#1c6b48"/>
+   <Label text="stretch" horizontalAlignment="stretch" 
+          height="70" backgroundColor="#43b883"/>
+</StackLayout>
+
+
+- 수직으로 자식들이 정렬된 가로방향 StackLayout
+
+<StackLayout orientation="horizontal" backgroundColor="#3c495e">
+   <Label text="top" verticalAlignment="top" 
+          width="70" height="33%" backgroundColor="#43b883"/>
+   <Label text="center" verticalAlignment="center" 
+          width="70" height="33%" backgroundColor="#289062"/>
+   <Label text="bottom" verticalAlignment="bottom" 
+          width="70" height="33%" backgroundColor="#1c6b48"/>
+   <Label text="stretch" verticalAlignment="stretch" 
+          width="70"  backgroundColor="#43b883"/>
+</StackLayout>
+
+
+- Props
+
+이름 / 타입 / 설명
+
+orientation / String / 쌓이는 방향을 지정. 2가지 값이 가능: verticla , horizontal . 기본값 verticla
+
+
+- 추가적인 자식 Props
+
+없음
+

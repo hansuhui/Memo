@@ -1,0 +1,152 @@
+플렉스박스(FlexboxLayout)
+
+FlexboxLayout 컨테이너는 Css Flexbox Layout의 유사 구현입니다.
+
+
+- 기본 플렉스 레이아웃
+
+<FlexboxLayout backgroundColor="#3c495e">
+   <Lable text="first" width="70" backgroundColor="#43b88c"/>
+   <Lable text="second" width="70" backgroundColor="#1c6b48"/>
+   <Lable text="thired" width="70" backgroundColor="#289062"/>
+</FlexboxLayout>
+
+
+- 컬럼 플렉스 레이아웃
+
+<FlexboxLayout flexDirection="column" backgroundColor="#3c495e">
+   <Lable text="first" height="70" backgroundColor="#43b88c"/>
+   <Lable text="second" height="70" backgroundColor="#1c6b48"/>
+   <Lable text="thired" height="70" backgroundColor="#289062"/>
+</FlexboxLayout>
+
+- 행 레이아웃과 flex-start 로 아이템 정렬(align)
+
+<FlexboxLayout alignItems="flex-start" backgroundColor="#3c495e">
+   <Lable text="first" width="70" height="70" backgroundColor="#43b88c"/>
+   <Lable text="second" width="70" height="70" backgroundColor="#1c6b48"/>
+   <Lable text="thired" width="70" height="70" backgroundColor="#289062"/>
+</FlexboxLayout>
+
+
+- 행 레이아웃과 사용자 순서
+
+
+<FlexboxLayout alignItems="flex-start" backgroundColor="#3c495e">
+   <Lable text="first" order="2" width="70" height="70" backgroundColor="#43b88c"/>
+   <Lable text="second" order="3" width="70" height="70" backgroundColor="#1c6b48"/>
+   <Lable text="thired" order="1" width="70" height="70" backgroundColor="#289062"/>
+</FlexboxLayout>
+
+
+- 랩핑(Wrapping)
+
+<FlexboxLayout flexWrap="wrap" backgroundColor="#3c495e">
+   <Lable text="first" width="30%" backgroundColor="#43b88c"/>
+   <Lable text="second" width="30%" backgroundColor="#1c6b48"/>
+   <Lable text="thired" width="30%" backgroundColor="#289062"/>
+   <Lable text="fourth" width="30%" backgroundColor="#289062"/>
+</FlexboxLayout>
+
+
+
+
+- 리버스 컬럼과 여러가지 alignSelf
+
+<FlexboxLayout flexDirection="column-reverser" justifyContent="space-around" backgroundColor="#3c495e">
+   <Lable text="first" height="70" backgroundColor="#43b88c"/>
+   <Lable text="second" alignSelf="center" width="70" height="70" backgroundColor="#1c6b48"/>
+   <Lable text="thired\nflex-end" alignSelf="flex-end" width="70" height="70" backgroundColor="#289062"/>
+   <Lable text="fourth" height="70" backgroundColor="#289062"/>
+</FlexboxLayout>
+
+
+
+- Props
+
+이름 / 타입 / 설명
+
+flexDirection / String / flex 컨테이너 안에서 flex 아이템들이 위치하는 방향.
+                         다음 4가지 값이 가능  - 기본값 : row
+                         row : 텍스트 방향과 같음
+                         row-reverse : 텍스트 방향과 반대
+                         column : row와 같지만 위에서 아래
+                         coulmn-reverse : row-reverse와 같지만 위에서 아래  
+                         
+
+flexWrap / String / flex 아이템이 한 줄로 강제 될지 여러 줄이 가능할지 설정.
+                    여러줄로 설정되면, 새로운 줄이 쌓이는 방향을 결정하고 교차축(cross-axis)도 정의됨
+                    3가지 다른값이 가능 - 기본값 : nowrap
+                    nowrap : 한줄. 컨텐츠는 오버플로우 될 수 있음
+                    wrap : 여러줄. 방향은 flexDirection
+                    wrap-reverse : 여러줄. flexDirection 반대방향
+                    
+
+justifyContent / String / 메인 축을 따라 정렬. 줄 위의 모든 플렉스 아이템들이 융통성이 없을때 혹은
+			  융통성은 있지만 최대 크기에 도달했을때, 남은 공간을 분배하는데 유용합니다.
+			  또한 아이템들이 줄을 넘어갈 때(overflow), 아이템들의 정렬을 제어합니다.
+			  가능한 값 5가지 - 기본값 : flex-start
+			  flex-start : 아이템들이 줄의 시작쪽으로 뭉쳐짐(pack)
+			  flex-end : 아이템들이 줄의 끝쪽으로 뭉처짐
+			  center : 아이템들이 줄의 중간의 위치
+			  space-between : 아이템들이 줄위에 균등하게 배치됨 첫번째 줄의 시작 부분의
+			                  마지막 아이템의 줄의 끝에 배치
+			  space-arount : 아이템들이 그들을 둘러싸는 일정한 공간을 가지며 중위에 균등 배치
+
+
+alignItems / String / 플렉스 항목들이 교차축(cross axis)을 따라 배치되는 방법을 설정
+		      justifyContent의 교차축(주축의수직) 버젼으로 생각할 수 있습니다.
+		      5가지 가능한 값 - 기본값 : stretch
+		      flex-start : 아이템의 교차-시작 여백(margin) 가장자리가 줄의 교차-시작에 위치
+		      center : 아이템들이 교차죽의 중앙에 위치
+		      baseline : 기준선 정렬(baseline align) 처럼 정렬됨
+		      stretch : 아이템들을 늘려서 컨테이너를 채움, 하지만 min-width / max-width 유지
+
+alignContent / String / justifyContent가 주축 내의 아이템들을 배치하는 것처럼, alignContent sms 교차축
+                        상에서 아이템들을 배치 
+                        가능한 6가지 값  - 기본값 : stretch
+                        flex-start : 라인들이 컨테이너의 시작부분으로 뭉쳐짐
+                        flex-end : 라인들이 컨테이너의 끝 부분으로 뭉쳐짐
+                        space-between : 라인들이 균등하게 배포치됨. 
+                                        첫번째 라인은 컨테이너의 시작 부분에 
+                                        마지막 라인은 컨테이너의 끝 부분에 배치
+                        space-around : 라인들이 일정한 간격으로 균등하게 배치됨
+                        stretch : 라인들이 남은 공각을 채우도록 늘려짐                        
+		      
+		      
+
+
+- 추가적인 자식 Props
+
+요소가 FlexboxLayout의 직접적인 자식일때 다음 prop 들이 가능합니다
+
+이름 / 타입 / 설명
+
+order / Number / 플렉스 아이템의 기본 순서를 변경
+
+flexGrow / Number / 플렉스 아이템이 필요한 경우 커질수(grow) 있는지 나타내는 단위 없는 비율.
+                    이 값은 아이템이 차지해야 하는 플렉스 컨테이너의 사용가능한 공간의 크기를 결정
+
+flexShrink / Number / "flex shrink factor" 값. 행(row)에 충분한 공간이 없을때 플렉스 아이템이
+		       다른 플렉스 아이템들에 대해 상대적으로 얼마나 줄어들어야하는지 결정.
+		       생략될 경우. 1이 ㅅ ㅓㄹ정되고 음수 공각을 분배할때 flex basis 가 곱해집니다.
+
+alignSelf / String / alignItems를 오버라이드. alignItems 처럼 
+		     5가지 값이 가능 - 기본값 : stretch
+		     flex-start : 아이템의 교차-시작 여백 가장자리가 줄의 교차-시작의 위치
+		     flex-end : 교차-끝 여백 가장자리가 줄의 교차-긑 부분에 놓임
+		     center : 아이템들이 교차축의 중앙에 위치
+		     baseline : 기준선 정렬처럼 정렬됨
+		     stretch : 아이템들을 늘려서 컨테이너를 채움 , 하지만 min-width / max-width 유지
+
+flexWrapBefore / Boolean / 아이템 래핑을 제어하는 부울값. true 로 설정되면 아이템의 새로운 라인으로
+   			   래핑되도록 강제. 기본값은 false (이 프로퍼티는 고식 flexbox 스펙에는 없음)
+
+		     
+
+
+
+
+
+
+

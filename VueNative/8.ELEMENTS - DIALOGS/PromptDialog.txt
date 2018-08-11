@@ -1,0 +1,24 @@
+[PromptDialog]
+
+PromptDialog는 사용자의 인풋을 요구할 수 있게 해줍니다.
+
+const dialogs = require('ui/dialogs')
+
+module.exports = {
+  dialogs.prompt('How are you?', 'Amazion!')
+  .then(result => {
+    console.log(`Diglog result: ${result.result}, text: ${result.text}`)
+  })
+}
+
+
+PromptDialog 는 전역적으로 사용할 수 있기 때문에, 다이얼로그 모듈에서 임포트하는 대신,
+다음과 같이 간단히 호출할 수 있습니다.
+
+prompt('How are you?', 'Amazion!')
+.then(result => {
+  console.log(`Diglog result: ${result.result}, text: ${result.text}`)
+})
+
+여러분의 코드 어디에서라도 말이죠.
+

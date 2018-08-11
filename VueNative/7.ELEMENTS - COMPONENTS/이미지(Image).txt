@@ -1,0 +1,30 @@
+[이미지(Image)]
+
+이미지(Image) 컴포넌트는 ImageSource 나 URL 로부터 이미지를 표시합니다.
+
+- app 디렉토리로부터 상대경로로 이미지 표시
+  <Image src="~/logo.png" stretch="none" />
+
+- URL로 부터 이미지 표시
+  <Image src="https://art.nativescrpt-vue-org/NativeScript-Vue-White-Green.png" stretch="none" />
+
+- App_Resources 로 부터 이미지 표시
+  <Image src="res://icon" stretch="none" />
+
+- base64 인코딩 이미지
+  <Image src="data:Image/png;base64,iVBOew..." stretch="none" />
+
+- Props
+
+이름 / 타입 / 설명
+
+src / String.ImageSource / 이미지 소스
+
+- 네이티브 컴포넌트
+
+Android / iOS
+
+android.widget.ImageView / UIImageView
+
+
+

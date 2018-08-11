@@ -1,0 +1,20 @@
+[네비게이션 버튼(NavigationButton)]
+
+<ActionBar title="My App">
+   <NavigationButton text="Go back" android.systemIcon="ic_menu_back" @tap="goBack" />
+</ActionBar>
+
+- Props
+
+이름 / 타입 / 설명
+
+text / String / 텍스트를 iOS 에서 보여주도록 설정
+
+android.systemIcon / String / 해당 아이콘이 안드로이드에서 보입니다.
+
+- Events
+
+이름 / 설명
+
+tap / 네비게이션 버튼을 탭(tab) 했을때 발생(Emit)
+

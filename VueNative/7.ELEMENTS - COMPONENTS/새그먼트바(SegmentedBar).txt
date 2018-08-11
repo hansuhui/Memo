@@ -1,0 +1,37 @@
+[새그먼트바(SegmentedBar)]
+
+세그먼트바(SegmentedBar) 컴포넌트는 불연속적인 선택을 위해
+탭 형태의 뷰 컬렉션ㅇ늘 보여주는 간단한 방법을 제공합니다.
+
+<SegmentedBar :items="listOfItems" seletedIndex="0"
+  @seletedIndexChange="onSeletedIndexChange" />
+
+노트 : 이 컴포넌트는 v-model 을 이용한 양방향(two-way) 바인딩을 지원합니다:
+
+<SegmentedBar :items="listOfitems" v-model="selectedItem" />
+
+- Props
+
+이름 / 타입 / 설명
+
+items / Array<SegmentedBarItem> / 세그먼트바에 표시될 아이템 리스트
+
+selectedIndex / Numbetr / 선택된 아이템들의 인덱스
+
+selectedBackgroundColor / Color / 선택된 아이템들의 배경색. 전체바에 배경색을 
+                        	  적용하려면 backgroundColor를 사용하세요.
+
+
+- 이벤트
+
+이름 / 설명
+
+selectedIndexChange / 세그멘트 바의 아이템이 탭될떄 발생
+
+- Native Component
+
+Android / iOS
+
+android.widget.TabHost / UISegmentedControl
+
+

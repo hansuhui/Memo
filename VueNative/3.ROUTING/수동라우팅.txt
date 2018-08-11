@@ -1,0 +1,160 @@
+[¼öµ¿ ¶ó¿ìÆÃ]
+
+NativeScript-Vue ¿¡¼­ ¶ó¿ìÆÃÀ» ÇÏ´Â °¡Àå ½¬¿î ¹æ¹ıÀº $navigateTo , $nativeBack , $showModal °ú °°Àº
+Æí¸®ÇÑ ÇÔ¼ö¸¦ »ç¿ëÇÏ´Â °ÍÀÔ´Ï´Ù.
+
+- $navigateTo
+
+  Master ¿Í Detail ÀÌ¶ó´Â ÄÄÆ÷³ÍÆ®µéÀÌ ÀÖ´Ù°í °¡Á¤ÇÏ°í, Master ¿¡¼­ Detail ·Î ÀÌµ¿ÇÏ±â¸¦ ¿øÇÒ ¶§ 
+  $naviageTo ¸¦ È£ÃâÇÏ±â À§ÇÑ µÎ°¡Áö ¹æ¹ıÀÌ ÀÖ½À´Ï´Ù.
+
+
+- ºä(view)¿¡¼­
+
+  Master ÄÄÆ÷³ÍÆ®ÀÇ data ÇÁ·ÎÆÛÆ¼¸¦ ÅëÇØ Detail ÄÄÆ÷³ÍÆ®¸¦ ³ëÃâ½ÃÅ°°í view ¿¡¼­ ¹Ù·Î
+  $naviageTo(<ÇÁ·ÎÆÛÆ¼ ÀÌ¸§>)À» È£ÃâÇÕ´Ï´Ù.
+
+
+const Vue = require('nativescript-vue');
+
+const Master = {
+   template: `
+     <Page>
+       <ActionBar title="Master" />
+       <StackLayout>
+         <Button text="To Details directly" @tap="$navigateTo(detailPage)" />
+       </StackLayout>
+     </Page>
+   }',
+   data() {
+     return {
+        datailPage: Detail
+     }
+   }
+ };
+
+const Detail = { 
+   template: `
+     <Page>
+       <ActionBar title="Detail" />
+       <StackLayout>
+         <Button text="Details.." />
+       </StackLayout>
+     </Page>
+   `
+};
+
+
+new Vue({
+   render: h => h(Master)
+}).$start()
+
+
+
+- ¸Ş¼Òµå¿¡¼­
+
+  ¹öÆ°À» ¸Ş¼Òµå¿¡ ¿¬°áÇÏ°í ÀÌ ¸Ş¼Òµå¿¡¼­ this.$navigateTo(Detail) À» »ç¿ëÇÏ¿© Detail ÄÄÆ÷³ÍÆ®·Î ÀÌµ¿ÇÕ´Ï´Ù.
+
+
+const Master = {
+   template: `
+     <Page>
+       <ActionBar title="Master" />
+       <StackLayout>
+         <Button text="To Details via method" @tap="goToDetailPage" />
+       </StackLayout>
+     </Page>
+   }',
+   method: {
+     goToDetailPage() {
+        this.$navigateTo(Detail);
+     }
+   }
+ };
+
+const Detail = { 
+   template: `
+     <Page>
+       <ActionBar title="Detail" />
+       <StackLayout>
+         <Button text="Details.." />
+       </StackLayout>
+     </Page>
+   `
+};
+
+
+
+- $navigetBack
+
+Detail ¿¡ Àü¿ªÀûÀ¸·Î ³ëÃâµÈ $navigateBack ÇÔ¼ö¸¦ È£­ŒÇÏ´Â ¹öÆ°À» Ãß°¡ÇÕ´Ï´Ù.
+
+const Detail = {
+   template: `
+     <Page>
+       <ActionBar title="Detila" />
+        <StackLayout>
+          <Button text="Back to Master" @tap="$navigateBack" />
+        </StackLayout>
+     </Page>
+   `
+};
+
+- $showModal
+
+Detail ÆäÀÌÁö¸¦ ¸ğ´Ş ÆäÀÌÁö·Î º¸¿©ÁÖ°í ½Í´Ù¸é, °£´ÜÈ÷ $navigateTo ¸¦ $showModal·Î ¹Ù²Ù¸é µË´Ï´Ù.
+¾Õ¿¡¼­ Ã³·³ ÀÌ ¸Ş¼Òµå´Â view ³ª ÇÔ¼ö¿¡¼­ È£ÃâÇÕ´Ï´Ù. 
+
+¸ğ´ŞÀ» ´İÀ¸·Á¸é $modal.close ¸¦ È£ÃâÇÏ¸é µË´Ï´Ù.
+
+const Master = {
+   template: `
+     <Page>
+       <ActionBar title="Master" />
+       <StackLayout>
+         <Button text="Show Details modally" @tap="showDetailPageModally" />
+       </StackLayout>
+     </Page>
+   `,
+   methods: {
+      showDetailPageModally() {
+       this.$showModal(Detail);
+      }
+   }
+};
+
+
+const Detail = {
+   template: '
+      <Page>
+        <ActionBar title="Detail" />
+        <StackLayout>
+          <Button @tap="$modal.close" text="Close" />
+        </StackLayout>
+      </Page>
+   '
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

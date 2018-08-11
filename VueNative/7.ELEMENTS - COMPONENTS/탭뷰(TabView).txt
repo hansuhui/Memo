@@ -1,0 +1,31 @@
+[탭뷰(TabView)]
+
+탭뷰(TabView) 컴포넌트는 탭으로 그룹화된 컨텐츠를 표시할 수 있도록 해줍니다.
+
+<TabView :selectedIndex="selectedIndex">
+   <TabViewItem title="Tab 1">
+      <label text="Content for Tab 1"></label>
+   </TabViewItem>
+   <TabViewItem title="Tab 2">
+      <label text="Content for Tab 2"></label>
+   </TabViewItem>
+</TabView>
+
+
+- Props
+
+이름 / 타입 / 설명
+
+selectedIndex / Number / 현재 선택된 탭. 기본값은 0
+
+- 이벤트
+
+이름 / 설명
+
+tabChange / tab-view-tiem 컴포넌트중 하나가 탭되었을때 발생
+
+- Native Component
+
+Android / iOS
+
+android.support.v4.view.ViewPager / UITabBarController

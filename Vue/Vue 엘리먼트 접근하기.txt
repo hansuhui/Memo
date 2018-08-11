@@ -1,0 +1,39 @@
+
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <script src="C:/Users/leewoo/AppData/Roaming/EditPlus/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+ </head>
+ <body>
+<div id="app">
+   <button v-on:click="clickBtn">
+      시작   
+   </button>
+   <p ref="pEl"></p>
+
+</div>   
+
+  <script>
+  var vm = new Vue({
+  el:'#app',
+  data: {
+    // 빈 값으로 메시지를 선언 합니다.
+    message: ''
+  },
+  methods:{
+   clickBtn:function(){
+   this.$refs.pEl.innerText='vue'
+   }
+ }
+})
+ 
+  </script>
+ </body>
+</html>
