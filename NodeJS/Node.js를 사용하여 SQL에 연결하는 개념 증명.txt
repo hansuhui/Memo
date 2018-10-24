@@ -1,0 +1,118 @@
+[설치]
+
+npm install tedious
+
+[1단계: 연결]
+
+새 연결 함수는 SQL Database에 연결 하는 데 사용됩니다.
+
+var Connection = require('tedious').Connection;
+var config = {
+  userName: 'yourusername',
+  password: 'yourpassword',
+  server: 'yourserver.database.windows.net'm
+  // If you are on Microsoft Azure, you ness this;
+  options: {encrypt: true, database: 'AdventureWorks'}
+};
+var connection = new Connection(config);
+connection.on('connect', function(err){
+// If no error, then good to proceed.
+  console.log("Connected");
+});
+
+
+[2단계 : 쿼리 실행]
+
+모든 SQL 문을 사용하여 실행하는 new request() 함수입니다. 문이 select 문과 같은 행을 반환 하는 경우
+검색할 수 있습니다 사용하는 request.on() 함수입니다. 행이 없는 경우 reqeuest.on() 함수는 빈 목록을 반환합니다.
+
+
+var Connection = require('tedious').Connection;
+var config = {
+  userName: 'yourusername',
+  password: 'yourpassword',
+  server: 'yourserver.database.windows.net'm
+  // If you are on Microsoft Azure, you ness this;
+  options: {encrypt: true, database: 'AdventureWorks'}
+};
+var connection = new Connection(config);
+connection.on('connect', function(err){
+// If no error, then good to proceed.
+  console.log("Connected");
+  executeStatement();
+});
+
+
+var Reqeuest = require('tedious').Request;
+var TYPES = require('tedious').TYPES;
+
+function executeStatement() {
+  request = new Request("SELECT 쿼리", function(err) {
+    if(err){ console.log(err); }
+  })
+  var result = "";
+  request.on('row', function (columns) {
+    columns.forEach(function (column) {
+      if(column.value === null) {
+        console.log('NULL');
+      } else {
+        result += column.value + " ";
+      }
+    });
+      console.log(result);
+      result = "";
+  });
+
+  request.on('done', function(rowCount, more) {
+    console.log(rowCount + 'rows returned');
+  });
+  connection.execSql(reqeust);
+}
+
+
+[3단계 : 행 삽입]
+
+이 예제에서는 실행 하는 방법에에서는 삽입에서 응용 프로그램을 보호 하는 매개 변수를 안전하게 전달하는 문을
+SQL 주입 값입니다.
+
+
+var Connection = require('tedious').Connection;
+var config = {
+  userName: 'yourusername',
+  password: 'yourpassword',
+  server: 'yourserver.database.windows.net'm
+  // If you are on Microsoft Azure, you ness this;
+  options: {encrypt: true, database: 'AdventureWorks'}
+};
+var connection = new Connection(config);
+connection.on('connect', function(err){
+// If no error, then good to proceed.
+  console.log("Connected");
+  executeStatement1();
+});
+
+var Request = require('tedious').Request;
+var TYPES = require('tedious').TYPES;
+
+
+function executeStatement1() {
+  request = new Request("INSETR 테이블(컬럼1,컬럼2) VALUES (@VAL1,@VAL2);",function(err){
+    if(err) { console.log(err); }
+  }); 
+
+  request.addParameter('VAL1', TYPES.NVarChar, '값1');
+  request.addParameter('VAL2', TYPES.Int, 11);
+  request.on('row', function(columns) {
+    columns.forEach(function(column){
+      if(column.value === null){
+        console.log('NULL');
+      } else {
+        console.log("Product id of inserted item is "+ column.value);
+      }
+    });
+  });
+  connection.execSql(request);
+}
+
+
+
