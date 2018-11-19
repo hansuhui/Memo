@@ -1,0 +1,33 @@
+https://cli.vuejs.org/guide/installation.html
+
+[설치]
+
+- 이전 버전에 관한 경고 - 
+패키지 이름이 vue-cli 에서  변경 되었습니다.
+이전 버전이 있는 경우 
+npm uninstall vue-cli -g 
+yarn global remove vue-cli
+하여 제거 해야 합니다.
+
+- 노드 버전 요구 사항 -
+
+Vue CLI 에는 Node.js 버전 8.9 이상이 필요합니다. ( 8.11.0 이상 권장)
+nvm 또는 nvm-windows 를 사용하여 동일한 시스템이서 여러 버전의 Node를 관리 할 수 있습니다.
+
+새 피키지를 설치할면 다음 명령 중 하나를 사용하십시오.
+
+npm install -g @vue/cli
+# OR
+yarn global add @vue/cli
+
+설치가 끝나면 vue 명령 줄에서 바이너리에 액세스 할 수 있습니다.
+단순히 실행 만하면 제대로 설치되었는지 확인할 수 있습니다. 
+vue. 사용 가능한 모든 명령을 나열하는 도움말 메시지가 나타납니다.
+
+다음 명령을 사용하여 올바른 버전 (3.X)을 가지고 있는지 확인할 수 있습니다.
+
+vue --version
+
+
+
+

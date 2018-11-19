@@ -1,0 +1,181 @@
+[CSS로 작업하기]
+
+Vue CLI 프로젝트는 PostCSS , CSS 모듈 및 Sass , Less , Stylus를 포함한 프리 프로세서를 지원합니다.
+
+- 참조 자산 -
+
+컴파일 된 모든 CSS는 css-loader에 의해 처리됩니다. css-loader는 이 url()를 모듈 요청으로 분석하고 해석합니다.
+즉, 로컬 파일 구조를 기반으로 상대 경로를 사용하여 에셋을 참조 할 수 있습니다. Npm의 존성 또는 webpack 별칭을
+사용하여 파일을 참조하려는 경우 ~ 모호성을 방지하기 위해 경로 앞에 접두사를 사용해야합니다.
+자세한 내용은 고정 자산 처리를 참조하십시오.
+
+
+- 전처리 기 -
+
+프로젝트를 생성 할 때 전처리 기 (Sass / Less / Stylus)를 선택할 수 있습니다. 그렇게하지 않으면
+내부 webpack 구성이 여전히 모두 처리되도록 미리 구성됩니다. 해당 webpack 로더를 수동으로 설치하기만
+하면 됩니다.
+
+
+# Sass
+npm install -D sass-loader node-sass
+
+# Less 
+npm install -D less-loader less
+
+# Stylus
+npm install -D stylus-loader stylus
+
+
+그런 다음 해당 파일 유형을 가져오거나 *.vue 다음 파일과 함께 사용할 수 있습니다.
+
+<style lang="scss">
+ $color: red;
+</style>
+
+
+- 자동 수입 -
+
+파일 (색상,변수,믹스 인 등)을 자동으로 가져오려면 style-resources-loader를  사용할 수 있습니다.
+다음은 ./src/styles/imports.styl 모든 SFC 및 모든 스타일러스 파일을 가져오는 스타일러스의 예입니다.
+
+
+// vue.config.js
+const path = require('path')
+
+module.exports = {
+  chainWebpack: config => {
+    const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
+    types.forEach(type => addStyleResource(config.module.rule('stylus'),oneOf(type)))
+  },
+}
+
+
+function addStyleResource (rule) {
+  rule.use('style-resource')
+    .loader('style-resources-loader')
+    .options({
+      patterns: [
+        path.resolve(__dirname, './src/styles/imports.styl'),
+      ],
+    })
+}
+
+
+vue-cli-plugin-style-resources-loader를 사용할 수도 있습니다.
+
+
+- PostCSS -
+
+Vue CLI는 PostCSS를 내부적으로 사용합니다.
+
+postcss-load-config가 .postcssrc 지원하는 모든 구성 소스를 통해 PostCSS를 구성하고 in을 통해
+postcss-loader를 구성할 수 있습니다. css.loaderOptions.postcss vue.config.js
+
+autoprefixer의 플러그인은 기본적으로 활성화되어 있습니다. 브라우저 대상을 구성하려면 
+package.json의 브라우저 목록 필드를 사용하십시오. 
+
+공급 업체 접두어가 붙은 CSS 규칙에 대한 참고 사항
+  프로덕션 빌드에서 Vue CLI는 CSS를 최적화하고 브라우저 대상을 기반으로 불필요한 공급 업체
+  접두사 CSS 규칙을 삭제합니다. autoprefixer 기본적으로 사용 하도록 설정 하면 접두어가 아닌
+  CSS 규칙만 사용해야 합니다.
+
+
+- CSS 모듈 -
+
+상자에 들어 있는 *.vue 파일에서 CSS 모듈을 사용할 수 있습니다 <style module>
+
+JavaScript에서 CSS 모듈이나 기타 사전 처리기 파일을 가져 오려면 파일 이름이 다음과 
+.module(css|less|sass|scss|styl) 같이 끝나야합니다.
+
+
+import styles from './foo.module.css'
+// works for all supported pre-processors as well
+import sassStyles from './foo.module.scss'
+
+당신은 삭제하려면 .module 설정 파일 이름에 css.modules에 true에 vue.config.js
+
+
+// vue.config.js
+module.exports = {
+  css : {
+    modules: true
+  }
+}
+
+생성된 CSS 모듈 클래스 이름을 사용자 정의하려면 css.loaderOptions.css in vue.config.js 
+모든 css-loader 옵션이 여기에서 지원됩니다. (예 localIdentName) camelCase
+
+// vue.config.js
+module.exports = {
+  css: {
+    locaderOptions: {
+      css : {
+        localIdentName: '[name]-[hash]',
+        cameCase: 'only'
+      }
+    }
+  }
+}
+
+
+- 전처리 로더로 옵션 전달 -
+
+경우에 따라 옵션을 전 처리기의 웹팩 로더에 전달할 수도 있습니다. 
+vue.config.js에 css.loaderOptions의 옵션을 사용하여 이를 수행할 수 있습니다.  
+예를 들어 공유된 전역 변수를 모든 Sass 스타일에 전달하려면 다음을 수행하십시오.
+
+// vue.config.js
+module.exports = {
+  css: {
+    loaderOptions: {
+      // pass options to sass-loader
+      sass: {
+        // @/ is an alias to src/
+        // so this assumes you hava a file named 'src/variables.scss'
+        data: '@import "@/variables.scss";'
+      }
+    }
+  }
+}
+
+
+loaderOptions 로더는 다음을 통해 구성 할 수있습니다. 
+
+- CSS 로더
+- postcss-로더
+- 사스-로더
+- 덜 로더
+- 스타일러스 로더
+
+팁
+  이 chainWebpack 옵션은 해당 로더가 사용되는 여러 위치에 적용해야하기 때문에 수동으로
+  사용하는 트정 로더를 수동으로 누르는 것보다 선호됩니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
