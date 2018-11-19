@@ -1,0 +1,95 @@
+================================================================================
+
+[db_info.js]
+
+const config = (function (){
+  return {
+    local : {
+    user: 'poixgks',
+    password: 'tngml123',
+    server: 'localhost', 
+    database: 'vue',
+    options : {
+      encrypt : false
+    }
+    },
+    dev : {
+      user: 'poixgks',
+      password: 'tngml123',
+      server: 'localhost', 
+      database: 'vue'
+    },
+    real : {
+        user: 'poixgks',
+        password: 'tngml123',
+        server: 'localhost', 
+        database: 'vue'
+    }
+  }  
+})
+
+  module.exports = config();
+
+================================================================================
+
+[db_conn.js]
+
+var db_info = require("./db_info")
+const sql =  require("mssql")
+
+module.exports = (function () {
+    return {
+      query: function (query,input) {
+        return sql.connect(db_info.local).then(pool => {
+            var request =  pool.request()
+
+            for(var index in input ){ 
+                console.log(input[index])
+                request.input(input[index].Name, input[index].SqlType, input[index].SqlValue)
+            }
+            
+            return request.query(query)
+            .then(data =>{
+                pool.close();
+                sql.close();
+                return data;
+            }).catch(err => {
+                console.log(err);
+                pool.close();
+                sql.close();
+              })
+          }).catch(err => {
+            console.log(err);
+            sql.close();
+            // ... error checks
+          })
+      }
+    }
+  })();
+
+
+================================================================================
+
+var db_conn = require("../db/db_conn")
+const sql =  require("mssql")
+
+module.exports = function (app) {
+    app.get('/', function( req, res){
+        var input = Array();
+        input.push({Name : 'b_title' , SqlType :sql.NVarChar(200), SqlValue : '제목' });
+        input.push({Name : 'b_content' ,SqlType :sql.NText, SqlValue : '값들어간다.' });
+
+        db_conn.query('insert into board (b_title , b_content ,regdate) values (@b_title, @b_content, getdate())',input).then(data2 => {
+            db_conn.query('select * from board',null).then(data => {
+                console.log(data)
+                res.status(200).json(data.recordset)
+            })
+        })
+        
+    })
+    
+    app.get('/api', function( req, res){
+        res.status(200).json({msg:"야스"})
+    })
+
+}
