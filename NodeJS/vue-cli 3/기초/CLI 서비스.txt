@@ -1,0 +1,170 @@
+https://cli.vuejs.org/guide/cli-service.html#using-the-binary
+
+[CLI 서비스]
+
+- 바이너리 사용하기 -
+
+Vue CLI 프로젝트 내에서 @vue/cli-service 이름이 지정된 이진 파일을 설치합니다.
+vue-cli-service. vue-cli-service npm 스크립트에서 와 같이 바이너리에 직접 액세스 하거나
+./node_modules/.bin/vue-cli-service 단말기에서 액세스 할 수 있습니다.
+
+이것은 package.json 기본 프리셋을 사용하는 프로젝트에서 볼 수 있습니다
+
+{
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  }
+}
+
+npm 또는 Yarn을 사용하여 이 스크립트를 호출 할 수 있습니다.
+
+npm run serve
+# OR
+yarn serve
+
+npx를 사용할 수 있는 경우 (npm의 최신 버전과 함께 제공 되어야함),
+다음과 같이 바이너리를 직접 호출 할 수도 있습니다.
+
+npx vue-cli-service serve
+
+팁 
+   vue ui 명령과 함께 GUI를 사용하여 추가 기능으로 스크립트를 실행 할 수 있습니다.
+
+작동중인 GUI Webpack Analyzer는 다음과 같습니다.
+
+- vue-cli-service serve -
+
+Usage : vue-cli-service serve [options] [entry]
+
+Options : 
+  --open open browser on serve start
+  --copy copy url to clipboard on server start
+  --mode specify env mode (default: develoment)
+  --host  specify  host (default: 0.0.0.0)
+  --port  specift port (default: 8080)
+  --https use https (default: false)
+
+이 vue-cli-service serve 명령은 핫 모듈 교체 (HMR)와 함께 제공되는 dev 서버
+(webpack-dev-server 기본)를 시작합니다.
+
+명령 행 플래그 외에도 devServer 필드를 사용하여 dev 서버를 구성 할 수 있습니다.
+vue.config.js
+
+- vue-cli-service 빌드 -
+
+Usage : vue-cli-service build [options] [entry|pattern]
+
+Options :
+  --mode        specify env mode (default: production)
+  --dest        specify output directory (default: dist)
+  --modern      build app targeting modern browsers with auto fallback
+  --target      app | lib | wc | wc-async (default: app)
+  --name        name for lib or web-component mode (default: "name" in package.json or entry filename)
+  --no-clean    do not remove the dist directory before building the project
+  --report      generate report.html to help analyze bundle content
+  --report-json generate report.json to help analyze bundle content
+  --watch       watch for changes
+
+vue-cli-service build dist/JS/CSS/HTML을 축소하고 더 나은 캐싱을 위해 자동차 공급 업체 청크 분할을
+사용하여  디렉토리에 생상 준비된 번들을 생성합니다. 청크 매니페스트 HTML에 인라인 됩니다.
+
+다음과 같은 유용한 플래그가 있습니다.
+
+-- modern : Modern Mode를 사용하여 응용 프로그램을 구축 하고 레거시 번들에 대한 
+                자동 폴백(fallback)과 함께 최신 ES2015 코드를 지원하는 최신 브라우저로 보냅니다.
+
+--target : 라이브러리 또는 웹 구성 요소로 프로젝트 내의 모든 구성 요소를 작성할 수 있습니다.
+            자세한 내용은 빌드 대상을 참조하십시오.
+
+--report 그리고 --report-json 당신이 당신의 번들에 포함 된 모듈의 크기를 분석 할 수 있는
+                                       빌드 통계를 기반으로 보고서를 생성합니다.
+
+- vue-cli-service inspect -
+
+Usage: vue-cli-service inspect [options] [...paths]
+
+Options:
+  --mode    specify env mode (default: development)
+
+vue-cli-service inspect Vue CLI 프로젝트 내에서 webpack 구성을 검사하는 데 사용할 수 있습니다.
+자세한 내용은 Webpack 구성 검사를 참조하십시오.
+
+- 사용 가능한 모든 명령 검사 -
+
+일부 CLI  플러그인은에 추가 명령을 주입합니다. vue-cli-service 예를 들어, 명령을 
+@vue/cli-plugin-eslint 주입합니다. vue-cli-service lint 다음을 실행하여 주입 된 모든 명령을
+볼 수 있습니다.
+
+npx vue-cli-service help
+
+다음을 사용하여 각 명령의 사용 가능한 옵션에 대해 알아볼 수도 있습니다.
+
+npx vue-cli-service help [command]
+
+- 캐싱 및 병렬화 -
+
+- cache-loader 기본적으로 Vue / Babel / TypeScript 컴파일에 사용됩니다. 파일이
+캐싱 node_modules/.cache 됩니다. 컴파일 문제가 발생하면 항상 캐시 디렉토리를 먼저 삭제하십시오.
+
+- thread-loader 기계에 1개 이상의 CPU 코어가 있는 경우 Babel / TypeScript 변환이 활성화됩니다.
+
+- 망할 놈의 고리 -
+
+설치 한 경우, @vue/cli-service 또한 설치 요크셔 쉽게 사용 망할 놈의 후크를 지정할 수 있습니다,
+gitHooks 당신에 필드 package.json :
+
+{
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  }
+}
+
+경고
+   yorkie 포크이며 후자와 호환되지 않습니다. husky
+
+- 배출하지 않고 구성 -
+
+via를 통해 생성 된 프로젝트 vue create 는 추가 구성 없이도 사용할 수 있습니다.
+플러그인은 서로 작동하도록 설계되어 있으므로 대부분의 경우 대화식 프롬프트에서 
+원하는 기능을 선택하기 만하면 됩니다.
+
+그러나 우리는 또한 가능한 모든 필요를 충족시키는 것이 불가능하며, 프로젝트의 필요성 또한
+시간이 지남에 따라 변할 수 있음을 이해합니다. Vue CLI로 생성 된 프로젝트를 통해 
+툴을 꺼낼 필요없이 거의 모든면을 구성 할 수 있습니다. 
+자세한 내용은 구성 참조를 확인하십시오.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

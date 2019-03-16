@@ -1,0 +1,74 @@
+https://cli.vuejs.org/guide/creating-a-project.html#vue-create
+
+[프로젝트 만들기]
+- vue create -
+
+새 프로젝트를 만들려면 다음을 실행하십시오.
+
+vue create hello-world
+
+경고
+   minTTY와 함께 Git Bash를 사용하는 Windows 사용자는 대화형 프롬프트가 작동하지 않습니다.
+   다음과 같이 명령을 실행해야 합니다. winpty vue.cmd create hello-wolrd
+
+사전 설정을 선택하라는 메시지가 표시됩니다. 기본 Babel + ESLint 설정과 함께 제공되는
+기본 사전 설정을 선택하거나 "수동으로 기능 선택"을 선택하여 필요한 기능을 선택할 수 있습니다.
+
+기본 설정은 새로운 프로젝트를 신속하게 프로토 타이핑하는 데 유용하지만 수동 설정은
+생산 지향 프로젝트를 위해 더 많은 옵션을 제공합니다.
+
+기능을 수동으로 선택하면 프롬프트 마지막에 선택 항목을 미리 설정으로 저장하여 나중에 다시
+사용할 수 있습니다. 다음 섹션에서는 사전 설정과 플러그인에 대해 설명합니다.
+
+~ / .vuere
+   저장된 프리셋은 .vuerc 사용자 홈 디렉토리에 있는 JSON 파일에 저장됩니다.
+   저장된 프리셋 / 옵션을 수정하려면 이 파일을 편집하면 됩니다.
+   프로젝트 생성 프로세스 중에 기본 패키지 관리자를 선택하거나 보다 빠른 의존성 설치를 위해
+   Taobao npm 레지스트리 미러를 사용하라는 메시지가 표시 될 수도 있습니다.
+   선택 사항은 ~/.vuerc 에 저장됩니다.
+
+이 vue create 명령에는 여러 옵션이 있으며 다음을 실행하여 모두 탐색 할 수 있습니다.
+
+vue create --help
+
+Usage: create [options] <app-name>
+
+create a new project powerd by vue-cli-service
+
+Options :
+ -p , --preset <presetName>  Skip prompts and use saved or remote preset
+ -d , --default		  Skip prompts and use default preset
+ -i , --inlinePreset <json>       Skip Prompts and use inline JSON string as preset
+ -m , --packageManager <command>  Use specified npm clinet when installing dependencies
+ -r , --registry <url>                          Use specified npm registry when installing dependencies
+ -g , --git [message|false]        Force / skip git initialization, optionally specify initial commit message
+ -n , --no-git		   Skip git initialization
+ -f , --force		   Overwrite target directory if it exists
+ -c , --clone		   Use git clone when fetching remote preset
+ -x , --proxy		   Use specified proxy when creating project
+ -b, --bare		   Scaffold project without bginner instructions
+ -h , --help		  Output usage information
+
+[GUI 사용]
+
+다음 vue ui 명령을 사용하여 그래픽 인터페이스를 사용하여 프로젝트를 만들고 관리 할 수도 있습니다.
+
+vue ui
+
+위 명령은 프롲게트 생성 프로세스를 안내하는 GUI가 있는 브라우저 창을 엽니다.
+
+[2.Pulling 2.x Templates(Legacy)]
+Vue CLI 3은 동일한 vue 바이너리를 사용하므로 Vue CLI 2 (vue-cli)를 덮어 씁니다. 그래도
+래거시 vue init 기능이 필요한 경우 글로벌 브리지를 설치할 수 있습니다.
+
+npm install -g @vue/cli-init
+# vue init now works exactly the same as vue-cli@2.x
+vue init webpack my-project
+
+
+
+
+
+
+   
+

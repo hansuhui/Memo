@@ -1,0 +1,501 @@
+blog.syszone.co.kr/791
+
+
+<25가지 SQL 작성법>
+
+1. 데이터와 비즈니스 어플리케이션을 잘 알아야 한다.
+
+동일한 정보는 다른 비즈니스 데이터 원천으로부터 검색될 수 있다. 
+이러한 원천에 익숙해야 한다 .당신은 당신의 데이터베이스 안의 데이터의 크기와 분포를 반드시
+알아야 한다. 또한 SQL을 작성하기 전에 비즈니스 개체 안의 관계와 같은 데이터 모델을 전체적으로
+이해해야 한다. 이러한 이해는 당신이 여러 테이블에서 정보를 검색하는데 있어서 보다 좋은 쿼리를 작성할 수 있다.
+DESIGNER/2000 과 같은 CASE TOOLS은 다른 비즈니스와 데이터베이스 객체사이의 관계를 문서화 하는데
+좋은 역할을 한다.
+
+2. 실제 데이터를 가지고 당신의 쿼리를 검사하라.
+
+대부분의 조식은 개발, 검사, 제품의 3가지 데이터베이스 환경을 가진다.
+프로그래머는 어플리케이션을 만들고 검사하는데 개발 데이터베이스 환경을 사용하는데,
+이 어플리케이션이 제품 환경으로 전환되기 전에 프로그래머와 사용자에 의해 검사 환경하에서 보다 
+엄격하게 검토되어야 한다.
+SQL이 검사 환경하에서 테스트될 때, 검사 데이터베이스가 가지고 있는 데이터는 제품 데이터베이스를 
+반영해야 한다. 비실제적인 데이터를 가지고 테스트된 SQL문은 제품 안에서는 다르게 작동할 수 있다.
+엄격한 테스트를 보장하기 위해서는, 검사 환경하에서의 데이터 분포는 반드시 제품 환경에서의 분포와 
+밀접하게 닮아야 한다.
+
+3. 동일한 SQL을 사용하라.
+
+가능한한 BIND VARIABLE , STORED PROCEDURE , PACKAGE의 이점을 활용하라.
+IDENTICAL SQL문의 이점은 PARSING이 불필요하기에 데이터베이스 서버안에서 메모리 사용의
+축소와 빠른 수행을 포함한다. 예로서 아래의 SQL 문은 IDENTICAL 하지 않다.
+
+SELECT * FROM EMPLOYEE WHERE EMPID = 10;
+SELECT * FROM EMPLOYEE WHERE EMPID = 10;
+SELECT * FROM EMPLOYEE WHERE EMPID = 20;
+
+그러나 I_EMPID라고 이름 주어진 BIND VARIABLE을 사용하면 SQL 문은 이렇게 된다.
+
+SELECT * FROM EMPLOYEE WHERE EMPID =: I_EMPID;
+
+4. 주의 깊게 인덱스를 사용하라.
+
+테이블상에 모든 필요한 인덱스는 생성되어야 한다. 하지만 너무 많은 인덱스는
+성능을 떨어뜨릴 수 있다. 그러면 어떻게 인덱스를 만들 칼럼을 선택해야 하는가?
+
+* 최종 사용자에 의해 사용되는 어플리케이션 SQL과 쿼리의 
+  WHERE 절에서 빈번하게 사용되는 칼럼에 인덱스를 만들어야 한다.
+
+* SQL 문에서 자주 테이블을 JOIN하는데 사용되는 칼럼은 인덱스되어야 한다.
+
+* 같은 값을 가지고 ROW가 적은 비율을 가지는 칼럼에 인덱스를 사용하라.
+
+* 쿼리의 WHERE 절에서 오직 함수와 OPERATOR로 사용되는 
+  칼럼에는 인덱스를 만들면 안된다.
+
+* 자주 변경되거나 인덱스를 만들때 얻는 효율성보다 삽입, 갱신, 삭제로 인해 잃는
+  효율성이 더 큰 칼럼에는 인덱스를 만들면 안된다. 이러한 OPERATION은 인덱스를
+  유지하기 위해 필요 때문에 느려진다.
+
+* UNIQUE 인덱스는 더 나은 선택성 때문에 NONUNIQUE 인덱스보다 좋다.
+  PRIMARY KEY 칼럼에 UNIQUE 인덱스를 사용한다. 그리고 FOREIGN KEY 칼럼과
+  WHERE 절에서 자주 사용되는 칼럼에는 NONUNIQUE 인덱스를 사용한다.
+
+5. 가용한 인덱스 PATH를 만들어라
+
+인덱스를 사용하기 위해서는 기술한 SQL문을 이용할 수 있는 식으로 SQL을 작성하라.
+OPTIMIZER는 인덱스가 존재하기 떄문에 인덱스를 사용하는 ACESS PATH를 사용할 수 없다.
+따라서 ACCESS PATH는 반드시 SQL이 사용할 수 있게 만들어 져야 한다. 
+SQL HINT를 사용하는 것은 인덱스 사용을 보증해주는 방법중 하나이다.
+특정 ACCESS PATH를 선택하기 위한 다음의 힌트를 참고 하라
+
+
+6. 가능하면 EXPLAIN과 TKPROF를 사용하라
+
+만약 SQL문이 잘 다듬어지지 않았다면 비록 오라클 데이터베이스가 잘 짜여져 있어도
+효율성이 떨어질 것이다. 이럴 경우 EXPLAIN TKPROF에 능숙해져야 한다.
+EXPALIN PLAN은 SQL이 사용하는 ACCESS PATH를 발견할 수 있게 해주고
+TKPROF는 실제 PERFORMANCE의 통계치를 보여준다. 이 TOOL은 오라클 서버 소프트웨어에 
+포함되어 있고 SQL의 성능을 향상시켜준다.
+
+
+7. OPTIMIZER를 이해하라
+
+SQL은 RULE-B ASED나 COST-BASED중 하나를 이용해서 가동된다. 
+기존의 소프트웨어는 RULE B ASED 방식을 채택하고 있다. 그리고 많은 오라클 소프트웨어가
+이러한 방식을 오랫동안 사용해왔다. 그러나 새로 출시된 스프트웨어에 대해서는 COST BASED 방식의
+OPTIMIZER를 고려해야 한다. 오라클은 새로 출시되는 프로그램을 COST B ASED 방식으로 업그레이드 시켜왔으며 
+이러한 방식은 시스템은 휠씬 더 안정적으로 만들었다. 만약 COST BASED방식의 OPTIMIZER를 사용한다면 반드시 
+ANALYZE 스키마를 정기적으로 사용해야한다. ANALZE 스키마는 데이터베이스 통계를 데이터 사전 테이블에
+기록하는 역할을 수행하며 그렇게 되면 COST BASED OPTIMIZER를 사용할 떄만 잘 조정될 수 있다. 만약
+RULE BASED에서 COST BASED로 바꾸고 싶다면 데이터베이스를 사용하는 모든 소프트웨어의 모든 SQL문의
+성능을 평가해 보아야 한다.
+
+8. 지엽적으로 동작하더라도 전역적으로 생각하라.
+
+항상 주의할 것은 하나의 SQL문을 조정하기 위해 생긴 데이터베이스안의 변화는 
+다른 응용프로그램이나 다른 사용자가 이용하는 다른 명령문에 영향을 미친다는 사실이다.
+
+9. WHERE 절은 매우 중요하다
+
+비록 인덱스가 가용하독 해도 다음의 WHERE 절은 그 인덱스 ACCESS PATH를 사용하지 않는다
+(즉 COL1 과 COL2는 같은 테이블에 있으며 인덱스는 COL1에 만들어진다.)
+
+COL1 > COL2
+COL1 < COL2
+COL1 >= COL2
+COL1 <= COL2
+COL1 IS NULL
+COL1 IS NOT NULL
+
+인덱스는 NULL 값을 갖는 칼럼에는 ROWID를 저장하지 않는다. 따라서 NULL 값을
+갖는 ROW를 검색할 떄는 인덱스를 사용하지 못한다.
+
+COL1 NOT IN (VALUE1, VALUE2)
+COL1 != EXPRESSION
+COL1 LIKE ''%PATTERN''
+
+이럴 경우 THE LEADING EDGE OF THE INDEX(?)는 작동되지 않고 인덱스가 사용되지 못하게 한다.
+한편 COL1 LIKE ''PATTERN %'' 이나 COL1 LIKE ''PATTERN % RATTERN%'' 는 한정된 인덱스 스캔을 
+수행하기 떄문에 인덱스를 사용할 수 있다.
+
+NOT EXISTS SUB QUERY
+EXPRESSION1 = EXPRESSION2
+
+인덱스된 컬럼을 포함하는 표현(EXPRESSION), 함수 , 계산(CALCULATIONS)은 인덱스를
+사용하지 못한다. 다음의 예에서 보면 UPPER SQL 함수를 사용하면 인덱스 스캔을 사용할 수 없고
+FULL TABLE SCAN으로 끝나고 만다.
+
+SELECT DEPT_NAME
+FROM DEPARTMENT
+WHERE UPPER(DEPT_NAME) LIKE ''SALES%'';
+
+10. 레코드 필터링을 위해서는 HAVING 보다는 WHERE를 사용하라
+
+인덱스가 걸려있는 칼럼에는 GROUP BY와 같이 HAVING절을 사용하지 마라. 
+이 경우 인덱스는 사용되지 않는다. 또한 WHERE 절로 된 ROW를 사용하지 마라.
+만약 EMP 테이블이 DEPTID 컬럼에 인덱스를 가지고 있다면 다음 질의는 HAVING 절을
+이용하지 못한다.
+
+
+그러나 같은 질의가 인덱스를 사용하기 위해 다시 씌여질 수 있다.
+
+SELECT DEPTID , 
+SUM(SALRY)
+FROM EMP
+GROUP BY DEPTID
+HAVING DEPTID = 100;
+
+그러나 같은 질의가 인덱스를 사용하기 위해 다시 씌여질 수 있다.
+
+SELECT DEPTID , 
+SUM(SALRY)
+FROM EMP
+WHERE DEPTID = 100
+GROUP BY DEPTID;
+
+11. WHERE 절에 선행 INDEX 컬럼을 명시하라.
+
+복합 인덱스의 경우, 선행 인덱스가 WHERE 절에 명시되어 있다면 쿼리는
+그 인덱스를 사용할 것이다. 다음의 질의는 PART_NUM 과 PRODUCT_ID 칼럼에 있는
+PRIMARYKEY CONSTRAINT에 기초한 복한 인덱스를 이용할 것이다.
+
+SELECT *
+FROM PARTS
+WHERE PART_NUM = 100;
+
+반면, 다음의 쿼리는 복합인덱스를 사용하지 않는다.
+
+SELECT *
+FROM PARTS
+WHERE PRODUCT_ID = 5555;
+
+같은 요청(REQUEST)이 인덱스를 이용하기 위해 다시 씌어 질 수 있다. 다음 질의의 경우,
+PART_NUM 컬럼은 항상 0 보다 큰 값을 가질것이다.
+
+SELECT *
+FROM PARTS
+WHERE PART_NUM > 0
+AND PRODUCT_ID = 5555;
+
+12. 인덱스 SCAN과 FULL TABLE SCAN을 평가하라.
+
+한 행(ROW)의 15% 이상을 검색하는 경우에는 FULL TABLE SCAN이 
+INDEX ACESS PATH 보다 빠르다. 이런 경우, SQL이 FULL TABLE SCAN을 이용할 수 있도록
+여러분 스스로 SQL을 작성하라. 다음의 명령문은 비록 인덱스가 SALARY COLUMN에 만들어져 
+있어도 인덱스 SCAN을 사용하지 않을 것이다. 첫 번째 SQL에서, FULL HINT를 사용한다면 
+오라클은 FULL TABLE SCAN을 수행할 것이다. 인덱스의 사용이 나쁜 점이 더 많다면 아래의 
+기술을 이용해서 인덱스 수행을 막을 수 있다.
+
+
+SELECT * --+ FULL
+FROM EMP
+WHERE SALRAY+0 = 50000;
+
+
+SELECT * 
+FROM EMP
+WHERE SALRAY+0 = 50000;
+
+다음의 명령문은 비록 인덱스가 SS# COLUNM에 있어도 인덱스 SCAN을 사용하지 않을 것이다.
+
+SELECT * 
+FROM EMP
+WHERE SS#||'' = '111-22-333';
+
+오라클이 불분명한 데이터 변환을 수행해야 하는 경우 인덱스가 항상 사용되지 
+않는 것은 아니다. 다음의 예를 보면, EMP 칼럼에 있는 SALARY는 숫자형 칼럼이고
+문자형이 숫자값으로 변환된다.
+
+SELECT *
+FROM EMP
+WHERE SALARY = '50000';
+
+테이블 행이 15% 이거나 그보다 작을 경우 인덱스 스캔은 보다 잘 수행 될 것이다.
+왜냐 하면 인덱스 스캔은 검색된 행(ROW)하나 하나 마다 다중의 논리적인 읽기 검색(READ)을
+할 것이기 떄문이다. 그러나 FULL TABLE SCAN은 하나의 논리적인 읽기 검색 영역 안의 BLOCK에 있는
+모든 행들을  읽을 수 있다. 그래서 테이블의 많은 행들에 접근해야 하는 경우에는 FULL TABLE SCAN이 낫다.
+예로 다음의 경우를 보자. 만약 EMP TABLE과 그 테이블으 ㅣ모든 인덱스에 대해 ANALYZE라는
+명령어가 수행된다면, 오라클은 데이터 사전인 USER_TABLES와 USER_INDEXES에 다음과 같은 통계치를 산출해 낸다.
+
+
+TABLE STATUSTUCS:
+NUM_ROW = 1000
+BLOCKS = 100
+
+INDEX STATISTICS : 
+
+BLEVER = 2
+AVG_LEAF_BLOCKS_PER_KEY = 1
+AVG_DATA_BLOCKS_PER_KEY = 1
+
+이러한 통계치에 근거해서, 아래에 보이는 것이 각각의 SCAN에 대한 논리적인
+읽기(READ) - 즉 ACESS 된 BLOCK이 될 것이다.
+
+USE OF INDEX TO RETURN ONE ROW = 3
+
+(BLEVEL + (AVG_LEAF_BLOCKS_PER_KEY - 1) +
+AVG_DATA_PER_KEY
+
+FULL TABLE SCAN = 100
+(BLOCKS)
+
+USE IF UBDEX TI RETURN ALL ROWS = 3000
+(NUM_ROWS * BLOCKS ACCESSED TO RETURN ONE ROW USING INDEX)
+
+13. 인덱스 스캔에 ORDER BY를 사용하라
+
+오라클의 OPTIMIZER는 , 만약 ORDER BY라는 절이 인덱스된 칼럼에 있다면 인덱스
+스캔을 사용할 것이다. 아래의 질의는 이러한 점을 보여 주는 것인데 이 질의는
+비록 그 칼럼이 WHERE 절에 명시되어 있지 않다고 해도 EMPID 컬럼에 있는 가용한 
+인덱스를 사용할 것이다. 이 질의는 인덱스로부터 각각의 ROWID를 
+검색하고 그 ROWID를 사용하는 테이블에 접근한다.
+
+SELECT SALARY
+FROM EMP
+ORDER BY EMPID;
+
+만약 이 질의가 제대로 작동하지 않는다면, 당신은 위에서 명시되었던 FULL HINT를
+사용하는 같은 질의를 다시 작성함으로써 다른 대안들을 이용해 볼 수 있다.
+
+14. 자신의 데이터를 알아라
+
+내가 이미 설명한 것처럼, 당신은 당신의 데이터를 상세하게 알고 있어야 한다.
+예를 들어 당신이 BOXER라는 테이블을 가지고 있고 그 테이블이 유일하지 않은
+인덱스를 가진 SEX라는 컬럼과 BOXER_NAME이라는 두개의 테이블을 가지고 있다고 가정해 보자.
+만약 그 테이블에 같은 수의 남자 , 여자 복서가 있다면 오라클이 
+FULL TABLE SCAN을 수행하는 경우 다음의 질의가 휠씬 빠를 것이다.
+
+SELECT BOXER_NAME
+FROM BOXER
+WHERE SEX = 'F';
+
+당신은 다음과 같이 기술함으로써 질의가 FULL TABLE SCAN을 수행하는지 확실하게 해 둘 수 있다.
+
+SELECT BOXER_NAME --+ FULL
+FROM BOXER
+WHERE SEX = 'F';
+
+만약 테이블에 980 명의 남성 복서 데이터가 있다면, 질의는 인덱스 SCAN으로 
+끝나기 때문에 아래형식의 질의가 더 빠를 것이다.
+
+SELECT BOXER_NAME --+ INDEX (BOXER BOXER_SEX)
+FROM BOXER
+WHERE SEX = 'F';
+
+이 예는 데이터의 분포에 대해 잘 알고 있는 것이 얼마나 중요한 가를 예시해 준다.
+데이터가 많아지고(GROW) 데이터 분포가 변화하는 것처럼 SQL도 매우 다양할 것이다.
+오라클은 OPTIMIZER가 테이블에 있는 데이터의 분포를 잘 인식하고
+적절한 실행 계획을 선택하도록 하기 위해 오라클 7.3에 HISTOGRAMS라는 기능을 추가했다.
+
+
+15. KNOW WHEN TO USE LARGE-TABLE SCANS.
+
+작거나 큰 테이블에서 행들을 추출할 때, 전체 테이블의 검색은 인덱스를 사용한
+검색보다 성능이 더 좋을 수도 있다. 매우 큰 테이블의 인덱스 검색은 수많은
+인덱스와 테이블 블록의 검색이 필요할수도 있다. 이러한 블록들이 데이터베이스
+버퍼 캐쉬에 이동되면 가능한한 오래도록 그곳에 머무른다. 그래서 이러한
+블록들이 다른 질의등에 필요하지 않을 수도 있기 때문에, 데이터베이스 버퍼 히트
+비율이 감소하며 다중 사용자 시스템의 성능도 저하되기도 한다. 그러나 전체 테이블 검색에
+의해서 읽혀진 블록들은 데이터베이스 버퍼 캐쉬에서 일찍 제거가 되므로 데이터베이스 
+버퍼 캐쉬 히트 비율은 영향을 받지 않게 된다.
+
+
+16. MINIMIZE TABLE PASSES.
+
+보통, SQL 질의시 참조하는 테이블의 숫자를 줄임으로 성능을 향상시킨다.
+참조되는 테이블의 숫자가 적을 수록 질의는 빨라진다. 예를 들면 NAME, STATUS,
+PARENT_INCOME , SELE_INCOME의 네개의 컬럼으로 이루어진 학생 테이블에서
+부모님에 의존하는 학생과 독립한 학생의 이름과 수입에 대해서 질의시,
+이 학생 테이블을 두번 참조하여 질의하게 된다.
+
+SELECT NAME, PARENT_INCOME
+FROM STUDENT
+WHERE STATUS = 1
+UNION
+SELECT NAME, SELF_INCOME
+FROM STUDENT
+WHERE STATUS = 0;
+
+(NAME이 프라이머리 키이며, STATUS는 독립한 학생의 경우는 1, 부모님의
+ 의존적인 학생은 0으로 표시한다)
+위와 같은 결과를 테이블을 두번 참조하지 않고도 질의 할 수 있다.
+
+SELECT NAME,PARENT_INCOME*STATUE + SELF_INCOME(1-STATUS)
+FROM STUDENT;
+
+17. JOIN TABLES IN THE PROPER ORDER
+
+다수의 테이블 조인시 테이블들의 조인되는 순서는 매우 중요하다. 전반적으로,
+올바른 순서로 테이블이 조인되었다면 적은 수의 행들이 질의시 참조된다. 언제나
+다수의 조인된 테이블들을 질의시 우선 엄격하게 조사하여 행들의 숫자를 최대한으로 줄인다.
+이러한 방법으로 옵티마이저는 조인의 차후 단계에서 적은 행들을 조사하게 된다.
+뿐만 아니라, 여러 조인을 포함하는 LOOP JOIN에서는 가장 먼저 참조되는 테이블(DRIVING TABLE)이
+행들을 최소한으로 리턴하도록 해야한다. 그리고, 마스터와 상세 테이블 조인시에는 
+(예를 들면 ORDER & ORDER LINE ITEM TABLES) 마스터 테이블을 먼저 연결 시켜야 한다.
+규칙에 근거한 옵티마이저의 경우에는 FROM CLAUSE의 마지막 테이블이 NESTED LOOP JOIN의 DRIVING TABLE이 된다.
+NESTED LOOP JOIN이 필요한 경우에는 LOOP의 안쪽의 테이블에는 인덱스를 이용하는 것을 고려할 만하다.
+EXPLAIN PLAN과 TKPROF는 조인 타입, 조인 테이블 순서, 조인의 단계별 처리된 행들의 숫자들을 나타낸다.
+비용에 근거한 옵티마이저의 경우에는 WHERE CLAUSE에 보여지는 테이블의 손서는
+옵티마이저가 가장 최족의 실행 계획을 찾으려고 하는 것과 상관없다. 조인되는
+테이블의 순서를 통재하기 위해서 ORDERED HINT를 사용하는 것이 낫다.
+
+SELECT ORDERS.CUSTID , ORDERS.ORDERNO,
+ORDER_LINE_ITEMS.PRODUCTNO --+ORDERED 
+FROM ORDERS, ORDER_LINE_ITEMS
+WHERE ORDERS.ORDERNO = ORDERLINE_ITEMS.ORDERNO;
+
+
+18. USE INDEX-ONLY SEARCHES WHEN POSSIBLE.
+
+가능하다면, 인덱스만을 이용하여 잘의를 사용하라. 옵티마이저는 오직 인덱스만을
+찾을 것이다. 옵티마이저는 SQL을 만족시키는 모든 정보를 인덱스에서 찾을 수 있들 때,
+인덱스만을 이용할 것이다. 예를 들면, EMP 테이블이 LANME과 FNAME의 열에 복합 인덱스를
+가지고 있다면 다음의 질의는 인덱스만은 이용할 것이다.
+
+SELECT FNAME
+FROM EMP
+WHERE LNAME = 'SMITH';
+
+반면에 다음의 질의는 인덱스와 테이블을 모두 참조한다.
+
+SELECT FNAME , SALARY
+FROM EMP
+WHERE LNAME = 'SMITH';
+
+
+19. REDUNDANCY IS GOOD.
+
+WHERE CLAUSE에 가능한한 많은 정보를 제공하라. 예를 들면 WHERE COL1 = COL2 AND COL1 = 10이라면
+옵티마이저는 COL2 = 10이라고 추론하지만 ,
+WHERE COL1 = COL2 AND COL2 = COL3 이면 COL1 = COL3이라고 추론하지는 않는다.
+
+20. KEEP IT SIMPLE, STUPID.
+
+가능하면 SQL문을 간단하게 만들라. 매우 복잡한 SQL문은 옵티마이저를 무력화시킬 수도 있다. 
+때로는 다수의 간단한 SQL 문이 단일의 복잡한 SQL문보다 성능이 좋을 수도 있다. 오라클의 비용에
+근거한 옵티마이저는 아직은 완벽하지 않다. 그래서 EXPLAIN PLAN에 주의를 기울여야 한다.
+여기서 비용이란 상대적인 개념이기에 정확히 그것이 무엇을 의미하는지 알지 못한다.
+하지만 분명한 것은 적은 비용이 보다 좋은 성능을 의미한다는 것이다.
+종종 임시 테이블을 사용하여 많은 테이블들을 포함하는 복잡한 SQL 조인을 쪼개는 것이 효율적일 수도 있다.
+예를 들면, 조인이 대량의 데이터가 있는 8개의 테이블을 포함할 때, 복잡한 SQL을 두 세개의 SQL로 쪼개는 것이
+낫을 수 있다. 각각의 질의는 많아야 네개정도의 테이블들을 포함하며 그 중간 값을 저장하는 것이 낫을 수 있다.
+
+21. YOU CAN REACH THE SAME DESTINATION IN DIFFERENT WAYS.
+
+많은 경우에, 하나 이상의 SQL문은 의도한 같은 결과를 줄 수 있다. 각각의
+SQL은 다른 접근 경로를 사용하며 다르게 수행한다. 예를 들면, MINUS(-) 산술자는
+WHERE NOT IN (SELECT ) OR WHERE NOT EXISTS 보다 더 빠르다.
+예를들면, STATE와 AREA_CODE에 각각 다른 인덱스가 걸려 있다. 인덱스에도
+불구하고 다음의 질의는 NOT IN의 사용으로 인해 테이블 전체를 조사하게 된다.
+
+SELECT CUSTOMER_ID
+FROM CUSTOMERS
+WHERE STATE IN ('VA','DC','MD')
+AND AREA_CODE NOT IN (804,410);
+
+그러나 같은 질의가 다음 처럼 쓰여진다면 인덱스를 사용하게 된다.
+SELECT CUSTOMER_ID
+FROM CUSTOMERS
+WHERE STATE IN ('VA','DC','MD')
+MINUS
+SELECT CUSTOMER_ID
+FROM CUSTOMERS
+WHERE AREA_CODE NOT IN (804,410)
+
+WHERE 절에 OR을 포함한다면 OR 대신에 UNION을 사용할 수 있다. 그래서,
+SQL 질의를 수행하기 전에 먼저 실행계획을 조심스럽게 평가해야 한다. 이러한
+평가는 EXPLAIN PLAN AND TKPROF를 이용하여 할 수 있다.
+
+
+22. USE THE SPECIAL COLUMNS.
+
+ROWID AND ROWNUM 열을 이용하라. ROWID를 이용하는 것이 가장 빠르다.
+예를들면, ROWID를 이요한 UPDATE는 다음과 같다.
+
+SELECT ROWID, SALARY
+INTO TEMP_ROWID, TEMP_SALARY
+FROM EMPOYEE;
+
+UPDATE EMPLOYEE
+SET SALARY = TEMP_SALARY * 1.5
+WHERE ROWID = TEMP_ROWID;
+
+ROWID값은 데이터베이스에서 언제나 같지는 않다. 그래서 SQL이나 응용 프로그램 이용시
+ROWID 값을 절대화 시키지 말라. 리턴되는 행들의 숫자를 제한 시키기 위해 ROWNUM을 이용하라. 
+만약에 리턴되는 행들을 정확히 모른다면
+리턴되는 행들의 숫자를 제한하기 위해 ROWNUM을 사용하라
+다음의 질의는 100개 이상의 행들을 리턴하지 않는다.
+SELECT EMPLOTE.SS# , DEPARTMENT.DEPT_NAME
+FROM EMPLOYEE, DEPENDENT
+WHERE EMPLOYEE.DEPT_ID = DEPARTMENT.DEPT_ID
+AND ROWNUM < 100;
+
+23. 함축적인 커서대신 명시적인 커서를 사용하라.
+
+함축적 커서는 여분의 FETCH를 발생시킨다. 명시적 커서는 DECLARE, OPEN, FETCH와 CLOSE CURSOR문을 사용하여
+개발자의 의해서 생성된다. 함축 커스는 DELETE , UPDATE, INSERT와 SELECT 문을 사용하면 오라클에 의해서 생성된다.
+
+
+24. 오라클 병렬 쿼리 옵션을 찾아서 이용하라.
+
+병렬 쿼리 옵션을 사용하면, 보다 빠른 성능으로 SQL을 병렬로 실행할 수 있다.
+오라클 7에서는, 오직 FULL TABLE SCAN에 기반한 쿼리만이 병렬로 수행될 수 있다.
+오라클 8에서는, 인덱스가 분할되어 있다면 INDEXED RANGE SCANS에 기반한 쿼리도 
+SMP와 MPP SYSTEM에서만 사용될 수 있다.
+
+오라클 서버는 많은 우수한 특성을 가지고 있지만, 이러한 특성의 존재만으로는
+빠른 성능을 보장하지 않는다. 이러한 특성을 위해서 데이터베이스를 조정해야하며
+특성을 이용하기 위해 특별하게 SQL을 작성해야 한다. 예를 들면, 다음의 SQL은 병렬로 수행될 수 있다.
+
+SELECT *--+PARALLEL(ORDERS,6)
+FROM ORDERS;
+
+25. 네트윅 소통량을 줄이고 한번에 처리되는 작업량을 늘려라.
+
+ARRAY PROCESSING 과 PL/SQL BLOCK을 사용하면 보다 나은 성능을 얻을 수 있고
+네트윅 소통량을 줄인다. ARRAY PROCESSING 은 하나의 SQL문으로 많은 ROW를 처리할 수 있게 한다.
+예를 들면, INSERT 문에서 배열을 사용하면 테이블내의 1,000 ROW를 삽입할 수 있다.
+이러한 기술을 사용하면 주요한 성능 향상을 클라이언트/서버와 배치시스템에서 얻어질 수 있다.
+
+복합 SQL문은 과도한 네트윅 소통을 유발할 수 있다. 그러나 만일 SQL문이 단일 PL/SQ 블록안에 있다면, 
+전체 블럭은 오라클 서버에 보내져서 그곳에서 수행되고, 결과는 클라이언트의 APPLACATION 에게 돌아온다.
+
+개발자와 사용자는 종종 SQL을 데이터베이스에서 데이터를 검색하고 전송하는 간단한 방법으로 사용한다.
+때때로 직접적으로 SQL을 작성하지 않고 코드 밸생기를 사용하여 작성한 APPLICATION은 심각한 성능 문제를 일으킨다. 
+이러한 성은감퇴는 데이터베이스가 커지면서 증가한다.
+
+SQL은 유연하기 떄문에, 다양한 SQL문으로 같은 결과를 얻을 수 있다.
+그러나 어던 문은 다른 것보다 더 효율적이다. 여기에 기술된 팁과 기법을 사용하면 빠르게 사용자에게
+정보를 제공할 수 있는 APPLICATION과 리포트를 얻을 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

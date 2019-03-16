@@ -1,0 +1,107 @@
+https://cli.vuejs.org/guide/prototyping.html
+
+[인스턴트 프로토 타이핑]
+
+and 명령을 *.vue 사용하여 하나의 파일로 신속하게 프로토 타이핑 할 수 있지만 추가 
+글로벌 애드온을 먼저 설치해야 합니다.  
+vue serve  vue build
+
+npm install -g @vue/cli-service-global
+
+단점은 vue serve 다른 컴퓨터에서 일괄성이 없는 전역 적으로 설치된 종속성에 
+의존한다는 것입니다. 따라서 이 방법은 신속한 프로토 타이핑에만 권장됩니다.
+
+- VUE 봉사 -
+
+Usage : serve [options] [entry]
+
+serve a .js or .vue file in development mode with zero config
+
+Options : 
+ -o , --open Open browser
+ -c , --copy Copy local url to clipboard
+ -h , --help ouput usage information
+
+필요한 App.vue 파일은 다음과 같습니다.
+
+<template>
+  <h1>Hello!</h1>
+</template>
+
+그런 다음 App.vue 파일이 있는 디렉토리에서 다음을 실행 하십시오.
+
+vue serve
+
+vue serve에 의해 만들어진 프로젝트와 동일한 
+기본 설정 (webpack , babel, postcss 및 eslint)을 사용합니다.
+vue create 그것은 자동으로 현재 디렉토리의 항목 파일을 유추 - 항목 중 하나가 될 수 있습니다.
+main.js , index.js , App.vue 또는 app.vue  명시적으로 파일을 지정할 수도 있습니다.
+
+vue serve Myomponent.vue
+
+필요한 경우,,를 제공하고 index.html , package.json 로컬 종속성을 설치 및 사용하거나
+, babel , postcss 및 eslint를 해당 구성 파일과 함께 구성 할 수도 있습니다.
+
+[VUE 빌드]
+
+Usage: build [options] [entry]
+
+build a .js or .vue file in production mode with zero config
+
+Options : 
+
+ -t , --target <target> Build target (app | lib | wc | wc-async , default : app)
+ -n , --name <name> name for or web-component ( default: entry filename)
+ -d , --dest <dir> output directory
+ -h , --help         output usage information
+
+다음과 vue buld 같은 배포를 위해 다상 번들을 프로덕션 번들로 빌드 할 수도 있습니다.
+
+vue build MyComponent.vue
+
+vue build 또한 라이브러리 또는 웹 구성 요소로 빌드하는 기능을 제공합니다.
+자세한 내용은 빌드 대상을 참조하십시오.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
