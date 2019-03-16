@@ -1,0 +1,25 @@
+ParamsTest.Check("asdasd", "123", 123, 1.1f, new ParamsTest());
+
+ 
+ public class ParamsTest
+
+{
+
+  public string test { get; set; }
+
+ 
+
+  public static void Check(string fmt, params object[] args)
+
+  {
+
+   foreach (var s in args) {
+
+     string Type = s.GetType().FullName;
+
+   }
+
+  }
+
+}
+
